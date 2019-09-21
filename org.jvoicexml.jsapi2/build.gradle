@@ -79,3 +79,6 @@ uploadArchives {
   }
 }
 
+task pom << {
+    pom {}.writeTo("${projectDir}/pom.xml");
+}

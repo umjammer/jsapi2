@@ -18,6 +18,7 @@ import javax.sound.sampled.AudioFormat;
 import javax.speech.AudioException;
 import javax.speech.Engine;
 import javax.speech.EngineStateException;
+import javax.speech.synthesis.SynthesizerProperties;
 
 import org.jvoicexml.jsapi2.BaseAudioManager;
 import org.jvoicexml.jsapi2.protocols.JavaSoundParser;
@@ -30,6 +31,9 @@ public class BaseSynthesizerAudioManager extends BaseAudioManager {
     /** The output stream from the synthesizer. */
     private OutputStream outputStream;
 
+    /** */
+    private SynthesizerProperties synthesizerProperties;
+
     /**
      * Constructs a new object.
      * @param engine the associated engine
@@ -38,6 +42,7 @@ public class BaseSynthesizerAudioManager extends BaseAudioManager {
     public BaseSynthesizerAudioManager(final Engine engine,
             final AudioFormat format) {
         super(engine, format);
+        synthesizerProperties = BaseSynthesizer.class.cast(engine).getSynthesizerProperties();
     }
 
     /**
@@ -75,6 +80,11 @@ public class BaseSynthesizerAudioManager extends BaseAudioManager {
                 }
             }
         }
+    }
+
+    /** */
+    public float getVolume() {
+        return synthesizerProperties.getVolume() / (float) SynthesizerProperties.MAX_VOLUME;
     }
 
     /**

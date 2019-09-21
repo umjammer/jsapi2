@@ -32,6 +32,7 @@ import java.io.OutputStream;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
+import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineListener;
 import javax.sound.sampled.LineUnavailableException;
@@ -81,6 +82,12 @@ public final class SpeakerOutputStream extends OutputStream
             throw new IOException(e.getMessage(), e);
         }
         line.start();
+
+        FloatControl gainControl = (FloatControl) line.getControl(FloatControl.Type.MASTER_GAIN);
+        double gain = BaseSynthesizerAudioManager.class.cast(manager).getVolume(); // number between 0 and 1 (loudest)
+//System.err.println("volume: " + gain);
+        float dB = (float) (Math.log(gain) / Math.log(10.0) * 20.0);
+        gainControl.setValue(dB);
     }
 
     /**
