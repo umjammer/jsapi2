@@ -60,7 +60,7 @@ JNIEXPORT jlong JNICALL Java_org_jvoicexml_jsapi2_mac_synthesis_MacSynthesizer_m
 //          std::cout << "Set " << currName << std::endl;
           voiceSpec = tmpVSpec;
         }
-        free(currName);
+        delete currName;
       }
       free(voiceName);
     }
