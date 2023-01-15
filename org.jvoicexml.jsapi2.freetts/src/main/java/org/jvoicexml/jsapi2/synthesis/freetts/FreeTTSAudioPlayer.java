@@ -69,114 +69,80 @@ public final class FreeTTSAudioPlayer implements AudioPlayer {
         audioFormat = baseAudioManager.getEngineAudioFormat();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void begin(final int size) {
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void cancel() {
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void close() {
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public boolean drain() {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public boolean end() {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public AudioFormat getAudioFormat() {
         return audioFormat;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public long getTime() {
         return 0L;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public float getVolume() {
         return 0.0F;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void pause() {
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void reset() {
         synchronized (buffer) {
             buffer.reset();
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void resetTime() {
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void resume() {
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void setAudioFormat(final AudioFormat format) {
         audioFormat = format;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void setVolume(final float volume) {
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void showMetrics() {
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void startFirstSampleTimer() {
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public boolean write(final byte[] audioData) {
         try {
             synchronized (buffer) {
@@ -188,9 +154,7 @@ public final class FreeTTSAudioPlayer implements AudioPlayer {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public boolean write(final byte[] audioData, final int offset,
             final int size) {
         synchronized (buffer) {

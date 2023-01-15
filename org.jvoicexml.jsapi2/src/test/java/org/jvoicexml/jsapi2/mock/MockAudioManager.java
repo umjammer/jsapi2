@@ -17,54 +17,35 @@ public class MockAudioManager extends BaseAudioManager {
      * Creates a new object.
      */
     public MockAudioManager() {
-        super (new MockEngine());
+        super (new MockEngine(), new AudioFormat(AudioFormat.Encoding.ULAW,
+                8000.0f, 16, 1, 16, 8000, false));
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public AudioFormat getAudioFormat() {
-        return new AudioFormat(AudioFormat.Encoding.ULAW,
-                8000.0f, 16, 1, 16, 8000, false);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public InputStream getInputStream() {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public OutputStream getOutputStream() {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     protected void handleAudioStart() throws AudioException {
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     protected void handleAudioStop() throws AudioException {
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void setMediaLocator(String locator, InputStream stream)
             throws AudioException, IllegalStateException,
             IllegalArgumentException, SecurityException {
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void setMediaLocator(String locator, OutputStream stream)
             throws AudioException, IllegalStateException,
             IllegalArgumentException, SecurityException {

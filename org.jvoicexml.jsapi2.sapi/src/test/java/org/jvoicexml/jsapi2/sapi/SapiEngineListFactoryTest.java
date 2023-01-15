@@ -4,37 +4,40 @@
 package org.jvoicexml.jsapi2.sapi;
 
 import java.util.Enumeration;
-
 import javax.speech.EngineList;
 import javax.speech.synthesis.SynthesizerMode;
 import javax.speech.synthesis.Voice;
 
-import junit.framework.Assert;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 /**
  * Test cases for {@link SapiEngineListFactory}.
  * @author Dirk Schnelle-Walka
  *
  */
+@EnabledOnOs(OS.WINDOWS)
 public final class SapiEngineListFactoryTest {
 
     /**
      * Test method for {@link org.jvoicexml.jsapi2.sapi.SapiEngineListFactory#createEngineList(javax.speech.EngineMode)}.
      */
     @Test
-    public void testCreateEngineList() {
+    void testCreateEngineList() {
         final SapiEngineListFactory factory = new SapiEngineListFactory();
         final EngineList list =
             factory.createEngineList(SynthesizerMode.DEFAULT);
         final Enumeration<?> e = list.elements();
-        Assert.assertTrue(e.hasMoreElements());
+        assertTrue(e.hasMoreElements());
         final SynthesizerMode mode = (SynthesizerMode) e.nextElement();
         final Voice[] voices = mode.getVoices();
-        Assert.assertTrue(voices.length > 0);
+        assertTrue(voices.length > 0);
         final Voice voice = voices[0];
-        Assert.assertEquals("Microsoft Anna", voice.getName());
+        assertEquals("Microsoft Anna", voice.getName());
     }
-
 }

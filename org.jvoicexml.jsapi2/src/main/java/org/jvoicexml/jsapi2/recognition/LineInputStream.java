@@ -38,26 +38,17 @@ public final class LineInputStream extends InputStream {
         format = audioFormat;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int read() throws IOException {
         final byte[] buffer = new byte[1];
         return read(buffer, 0, buffer.length);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int read(final byte[] buffer) throws IOException {
         return read(buffer, 0, buffer.length);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int read(final byte[] buffer, final int off, final int len)
         throws IOException {
@@ -97,9 +88,6 @@ public final class LineInputStream extends InputStream {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void close() throws IOException {
         if (line != null) {

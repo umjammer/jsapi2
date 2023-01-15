@@ -28,7 +28,8 @@ package javax.speech;
 
 import javax.speech.mock.MockSpeechEvent;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test case for {@link javax.speech.SpeechEvent}.
@@ -36,12 +37,13 @@ import junit.framework.TestCase;
  * @author Dirk Schnelle
  * 
  */
-public class SpeechEventTest extends TestCase {
+public class SpeechEventTest {
 
     /**
      * Test method for {@link javax.speech.SpeechEvent#getId()}.
      */
-    public void testGetId() {
+    @Test
+    void testGetId() {
         SpeechEvent event = new MockSpeechEvent(new Object(), 42);
         assertEquals(42, event.getId());
     }
@@ -49,20 +51,22 @@ public class SpeechEventTest extends TestCase {
     /**
      * Test method for {@link javax.speech.SpeechEvent#paramString()}.
      */
-    public void testParamString() {
+    @Test
+    void testParamString() {
         SpeechEvent event = new MockSpeechEvent(new Object(), 43);
         String str = event.paramString();
 
-        assertTrue(str.indexOf("43") >= 0);
+        assertTrue(str.contains("43"));
     }
 
     /**
      * Test method for {@link javax.speech.SpeechEvent#toString()}.
      */
-    public void testToString() {
+    @Test
+    void testToString() {
         SpeechEvent event = new MockSpeechEvent(new Object(), 44);
         String str = event.toString();
 
-        assertTrue(str.indexOf("44") >= 0);
+        assertTrue(str.contains("44"));
     }
 }

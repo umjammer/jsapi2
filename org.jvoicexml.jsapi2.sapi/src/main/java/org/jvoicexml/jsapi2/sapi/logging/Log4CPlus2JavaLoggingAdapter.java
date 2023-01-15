@@ -55,9 +55,6 @@ public final class Log4CPlus2JavaLoggingAdapter extends Thread {
         lock = new Object();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void run() {
         handle = initLogging();

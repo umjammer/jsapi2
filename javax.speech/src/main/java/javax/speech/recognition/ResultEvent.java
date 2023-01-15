@@ -86,9 +86,7 @@ public class ResultEvent extends SpeechEvent {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     protected Vector getParameters() {
         final Vector parameters = super.getParameters();
 

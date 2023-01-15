@@ -3,19 +3,22 @@
  */
 package javax.speech.recognition;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Test case for {@link javax.speech.recognition.RuleSequence}.
  * 
  * @author Dirk Schnelle-Walka
  */
-public class RuleSequenceTest extends TestCase {
+public class RuleSequenceTest {
 
     /**
      * Test method for {@link javax.speech.recognition.RuleSequence#toString()}.
      */
-    public void testToString() {
+    @Test
+    void testToString() {
         final RuleComponent[] components1 = new RuleComponent[0];
         final RuleSequence sequence1 = new RuleSequence(components1);
         assertEquals("", sequence1.toString());
@@ -58,7 +61,8 @@ public class RuleSequenceTest extends TestCase {
      * Test method for
      * {@link javax.speech.recognition.RuleSequence#getRuleComponents()}.
      */
-    public void testGetRuleComponents() {
+    @Test
+    void testGetRuleComponents() {
         final RuleComponent[] components1 = new RuleComponent[0];
         final RuleSequence sequence1 = new RuleSequence(components1);
         assertEquals(components1, sequence1.getRuleComponents());

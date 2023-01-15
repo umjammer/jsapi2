@@ -3,14 +3,18 @@
  */
 package javax.speech;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * @author Dirk Schnelle
  * 
  */
-public class WordTest extends TestCase {
-    public void testConstructor() {
+public class WordTest {
+    @Test
+    void testConstructor() {
         final String[] pronounciations = new String[] { "one", "two", "three" };
         final String locator = "file:///user/smith/hello.wav";
         final String markup = "<speak xml:lang='en-US' version='1.0'>Hello</speak>";
@@ -33,7 +37,8 @@ public class WordTest extends TestCase {
     /**
      * Test method for {@link javax.speech.Word#getAudioSegment()}.
      */
-    public void testGetAudioSegment() {
+    @Test
+    void testGetAudioSegment() {
         final String[] pronounciations = new String[] { "one", "two", "three" };
         final String locator = "file:///user/smith/hello.wav";
         final String markup = "<speak xml:lang='en-US' version='1.0'>Hello</speak>";
@@ -46,7 +51,8 @@ public class WordTest extends TestCase {
     /**
      * Test method for {@link javax.speech.Word#getCategories()}.
      */
-    public void testGetCategories() {
+    @Test
+    void testGetCategories() {
         final String[] pronounciations = new String[] { "one", "two", "three" };
         final String locator = "file:///user/smith/hello.wav";
         final String markup = "<speak xml:lang='en-US' version='1.0'>Hello</speak>";
@@ -59,7 +65,8 @@ public class WordTest extends TestCase {
     /**
      * Test method for {@link javax.speech.Word#getPronunciations()}.
      */
-    public void testGetPronunciations() {
+    @Test
+    void testGetPronunciations() {
         final String[] pronounciations = new String[] { "one", "two", "three" };
         final String locator = "file:///user/smith/hello.wav";
         final String markup = "<speak xml:lang='en-US' version='1.0'>Hello</speak>";
@@ -72,7 +79,8 @@ public class WordTest extends TestCase {
     /**
      * Test method for {@link javax.speech.Word#getSpokenForm()}.
      */
-    public void testGetSpokenForm() {
+    @Test
+    void testGetSpokenForm() {
         final String[] pronounciations = new String[] { "one", "two", "three" };
         final String locator = "file:///user/smith/hello.wav";
         final String markup = "<speak xml:lang='en-US' version='1.0'>Hello</speak>";
@@ -85,7 +93,8 @@ public class WordTest extends TestCase {
     /**
      * Test method for {@link javax.speech.Word#getText()}.
      */
-    public void testGetText() {
+    @Test
+    void testGetText() {
         final String[] pronounciations = new String[] { "one", "two", "three" };
         final String locator = "file:///user/smith/hello.wav";
         final String markup = "<speak xml:lang='en-US' version='1.0'>Hello</speak>";

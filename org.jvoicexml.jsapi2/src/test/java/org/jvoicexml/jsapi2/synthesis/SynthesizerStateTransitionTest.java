@@ -3,46 +3,51 @@ package org.jvoicexml.jsapi2.synthesis;
 import javax.speech.Engine;
 import javax.speech.synthesis.Synthesizer;
 
-import junit.framework.TestCase;
-
-import org.junit.Assert;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.jvoicexml.jsapi2.mock.synthesis.MockSynthesizer;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 /**
  * Test cases for state transitions of the
  * {@link javax.speech.synthesis.Synthesizer}.
+ *
  * @author Stefan Radomski
  * @author Dirk Schnelle-Walka
  */
-public final class SynthesizerStateTransitionTest extends TestCase {
+class SynthesizerStateTransitionTest {
+
     /** The synthesizer to test. */
     private BaseSynthesizer synthesizer;
 
     /**
      * Set up the test environment.
-     * @exception Exception set up failed
+     *
+     * @throws Exception set up failed
      */
-    protected void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         synthesizer = new MockSynthesizer();
-        super.setUp();
     }
 
     /**
      * Checks for the given state.
+     *
      * @param expected the expected state
      */
     private void checkState(final long expected) {
-        Assert.assertTrue("Expected " + synthesizer.stateToString(expected)
-                + " but was "
-                + synthesizer.stateToString(synthesizer.getEngineState()),
-                synthesizer.testEngineState(expected));
+        assertTrue(synthesizer.testEngineState(expected), "Expected " + synthesizer.stateToString(expected) + " but was " + synthesizer.stateToString(synthesizer.getEngineState()));
     }
 
     /**
      * Test cases for the PAUSED-RESUMED transitions.
-     * @exception Exception test failed
+     *
+     * @throws Exception test failed
      */
-    public void testSynthesizerPauseResume() throws Exception {
+    @Test
+    void testSynthesizerPauseResume() throws Exception {
         synthesizer.allocate();
         synthesizer.waitEngineState(Engine.ALLOCATED);
         checkState(Synthesizer.RESUMED);
@@ -65,9 +70,11 @@ public final class SynthesizerStateTransitionTest extends TestCase {
 
     /**
      * Test cases for nested PAUSED-RESUMED transitions.
-     * @exception Exception test failed
-     */    
-    public void testSynthesizerNestedPauseResume() throws Exception {
+     *
+     * @throws Exception test failed
+     */
+    @Test
+    void testSynthesizerNestedPauseResume() throws Exception {
         synthesizer.allocate();
         synthesizer.waitEngineState(Engine.ALLOCATED);
         checkState(Synthesizer.RESUMED);

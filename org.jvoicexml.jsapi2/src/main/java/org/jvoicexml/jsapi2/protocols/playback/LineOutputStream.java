@@ -36,35 +36,23 @@ public final class LineOutputStream extends OutputStream
         line = source;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void write(final int b) throws IOException {
         byte[] bytes = new byte[1];
         write(bytes, 0, bytes.length);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void write(final byte[] b, final int off, final int len)
         throws IOException {
         line.write(b, off, len);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void write(final byte[] b) throws IOException {
         write(b, 0, b.length);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void close() throws IOException {
         line.drain();
@@ -73,9 +61,6 @@ public final class LineOutputStream extends OutputStream
         super.close();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void flush() throws IOException {
         line.drain();

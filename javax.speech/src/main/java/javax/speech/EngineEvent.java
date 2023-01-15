@@ -95,9 +95,7 @@ public class EngineEvent extends SpeechEvent {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     protected void id2String(StringBuffer str) {
         maybeAddId(str, ENGINE_ALLOCATED, "ENGINE_ALLOCATED");
         maybeAddId(str, ENGINE_DEALLOCATED, "ENGINE_DEALLOCATED");
@@ -113,9 +111,7 @@ public class EngineEvent extends SpeechEvent {
         super.id2String(str);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     protected Vector getParameters() {
         final Vector parameters = super.getParameters();
 

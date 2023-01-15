@@ -28,53 +28,57 @@ package javax.speech;
 
 import javax.speech.mock.MockEngine;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class AudioEventTest extends TestCase {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+
+public class AudioEventTest {
     /** The test engine. */
     private Engine engine;
 
-    /**
-     * {@inheritDoc}
-     */
+    @BeforeEach
     protected void setUp() throws Exception {
-        super.setUp();
-
         engine = new MockEngine();
     }
 
     /**
      * Test method for {@link javax.speech.AudioEvent#paramString()}.
      */
-    public void testParamString() {
+    @Test
+    void testParamString() {
         AudioEvent event = new AudioEvent(engine, AudioEvent.AUDIO_STARTED);
         String str = event.paramString();
-        assertTrue("'" + str + "' does not contain AUDIO_STARTED",
-                str.indexOf("AUDIO_STARTED") >= 0);
+        assertTrue(str.contains("AUDIO_STARTED"),
+                "'" + str + "' does not contain AUDIO_STARTED");
 
         AudioEvent event2 = new AudioEvent(engine, AudioEvent.AUDIO_LEVEL,
                 AudioEvent.AUDIO_LEVEL_QUIET);
         String str2 = event2.paramString();
-        assertTrue("'" + str2 + "' does not contain AUDIO_LEVEL",
-                str2.indexOf("AUDIO_LEVEL") >= 0);
+        assertTrue(str2.contains("AUDIO_LEVEL"),
+                "'" + str2 + "' does not contain AUDIO_LEVEL");
     }
 
     /**
      * Test method for {@link javax.speech.AudioEvent#toString()}.
      */
-    public void testToString() {
+    @Test
+    void testToString() {
         AudioEvent event = new AudioEvent(engine, AudioEvent.AUDIO_STOPPED);
         String str = event.toString();
 
-        assertTrue(str.indexOf("AUDIO_STOPPED") >= 0);
+        assertTrue(str.contains("AUDIO_STOPPED"));
 
         AudioEvent event2 = new AudioEvent(engine, AudioEvent.AUDIO_LEVEL,
                 AudioEvent.AUDIO_LEVEL_LOUD);
         String str2 = event2.paramString();
-        assertTrue(str2.indexOf("AUDIO_LEVEL") >= 0);
+        assertTrue(str2.contains("AUDIO_LEVEL"));
     }
 
-    public void testGetAudioLevel() {
+    @Test
+    void testGetAudioLevel() {
         AudioEvent event = new AudioEvent(engine, AudioEvent.AUDIO_STARTED);
         assertEquals(AudioEvent.AUDIO_LEVEL_MIN, event.getAudioLevel());
 

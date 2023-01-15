@@ -71,47 +71,29 @@ public final class SmlInterpretationExtractor implements ContentHandler {
     /** Confidence in the utterance. */
     private float confidence;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setDocumentLocator(final Locator locator) {
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void startDocument() throws SAXException {
         interpretations = new java.util.ArrayList<SmlInterpretation>();
         tagprefixes = new java.util.Stack<String>();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void endDocument() throws SAXException {
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void startPrefixMapping(final String prefix, final  String uri)
             throws SAXException {
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void endPrefixMapping(final String prefix) throws SAXException {
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void startElement(final String uri, final String localName,
             final String qName, final Attributes atts) throws SAXException {
@@ -148,9 +130,6 @@ public final class SmlInterpretationExtractor implements ContentHandler {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void endElement(final String uri, final String localName,
             final String qName)
@@ -188,9 +167,6 @@ public final class SmlInterpretationExtractor implements ContentHandler {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void characters(final char[] ch, final int start, final int length)
             throws SAXException {
@@ -201,25 +177,16 @@ public final class SmlInterpretationExtractor implements ContentHandler {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void ignorableWhitespace(final char[] ch, final int start,
             final int length) throws SAXException {
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void processingInstruction(final String target, final String data)
             throws SAXException {
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void skippedEntity(final String name) throws SAXException {
     }

@@ -26,20 +26,28 @@
 
 package javax.speech.recognition;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Test case for {@link javax.speech.recognition.SpeakerProfile}.
  * 
  * @author Dirk Schnelle-Walka
  */
-public class SpeakerProfileTest extends TestCase {
+public class SpeakerProfileTest {
 
     /**
      * Test method for
      * {@link javax.speech.recognition.SpeakerProfile#hashCode()}.
      */
-    public void testHashCode() {
+    @Test
+    void testHashCode() {
         final SpeakerProfile profile1 = SpeakerProfile.DEFAULT;
         final SpeakerProfile profile2 = SpeakerProfile.DEFAULT;
 
@@ -49,7 +57,8 @@ public class SpeakerProfileTest extends TestCase {
     /**
      * Test method for {@link javax.speech.recognition.SpeakerProfile#getName()}.
      */
-    public void testGetName() {
+    @Test
+    void testGetName() {
         final SpeakerProfile profile1 = SpeakerProfile.DEFAULT;
         assertNull(profile1.getName());
 
@@ -63,7 +72,8 @@ public class SpeakerProfileTest extends TestCase {
      * Test method for
      * {@link javax.speech.recognition.SpeakerProfile#getVariant()}.
      */
-    public void testGetVariant() {
+    @Test
+    void testGetVariant() {
         final SpeakerProfile profile1 = SpeakerProfile.DEFAULT;
         assertNull(profile1.getVariant());
 
@@ -77,38 +87,40 @@ public class SpeakerProfileTest extends TestCase {
      * Test method for
      * {@link javax.speech.recognition.SpeakerProfile#equals(Object)}.
      */
-    public void testEqualsObject() {
+    @Test
+    void testEqualsObject() {
         final SpeakerProfile profile1 = SpeakerProfile.DEFAULT;
-        assertFalse(profile1.equals("test"));
-        assertFalse(profile1.equals((SpeakerProfile) null));
+        assertNotEquals("test", profile1);
+        assertNotEquals(profile1, (SpeakerProfile) null);
 
         final SpeakerProfile profile2 = SpeakerProfile.DEFAULT;
-        assertTrue(profile1.equals(profile2));
+        assertEquals(profile1, profile2);
 
         final String name3 = "name3";
         final String variant3 = "variant3";
         final SpeakerProfile profile3 = new SpeakerProfile(name3, variant3);
-        assertFalse(profile1.equals(profile3));
-        assertTrue(profile3.equals(profile3));
+        assertNotEquals(profile1, profile3);
+        assertEquals(profile3, profile3);
 
         final String name4 = "name3";
         final String variant4 = "variant3";
         final SpeakerProfile profile4 = new SpeakerProfile(name4, variant4);
-        assertTrue(profile3.equals(profile4));
-        assertTrue(profile4.equals(profile3));
+        assertEquals(profile3, profile4);
+        assertEquals(profile4, profile3);
 
         final String name5 = "name5";
         final String variant5 = "variant5";
         final SpeakerProfile profile5 = new SpeakerProfile(name5, variant5);
-        assertFalse(profile3.equals(profile5));
-        assertFalse(profile5.equals(profile3));
+        assertNotEquals(profile3, profile5);
+        assertNotEquals(profile5, profile3);
     }
 
     /**
      * Test method for
      * {@link javax.speech.recognition.SpeakerProfile#toString()}.
      */
-    public void testToString() {
+    @Test
+    void testToString() {
         final SpeakerProfile profile1 = SpeakerProfile.DEFAULT;
         final String str1 = profile1.toString();
         assertNotNull(str1);
@@ -126,7 +138,8 @@ public class SpeakerProfileTest extends TestCase {
      * Test method for
      * {@link javax.speech.recognition.SpeakerProfile#match(SpeakerProfile)}.
      */
-    public void testMatch() {
+    @Test
+    void testMatch() {
         final SpeakerProfile profile1 = SpeakerProfile.DEFAULT;
         assertTrue(profile1.match(null));
 

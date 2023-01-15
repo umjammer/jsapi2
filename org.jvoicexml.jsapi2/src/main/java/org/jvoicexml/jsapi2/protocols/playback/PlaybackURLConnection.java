@@ -91,9 +91,7 @@ public final class PlaybackURLConnection extends URLConnection {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void connect() throws IOException {
         if (connected) {
             return;
@@ -159,9 +157,7 @@ public final class PlaybackURLConnection extends URLConnection {
         throw new UnknownServiceException("Cannot read from a playback device");
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public OutputStream getOutputStream() throws IOException {
         if (outputStream == null) {
             outputStream = new LineOutputStream(line);

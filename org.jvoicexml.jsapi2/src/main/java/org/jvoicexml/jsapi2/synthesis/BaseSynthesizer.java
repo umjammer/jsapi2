@@ -87,9 +87,6 @@ public abstract class BaseSynthesizer extends BaseEngine
         queueManager = new QueueManager(this);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final void fireEvent(final Collection<EngineListener> listeners,
             final EngineEvent event) {
@@ -101,9 +98,6 @@ public abstract class BaseSynthesizer extends BaseEngine
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final EngineEvent createStateTransitionEngineEvent(
             final long oldState, final long newState, final int eventType) {
@@ -168,18 +162,12 @@ public abstract class BaseSynthesizer extends BaseEngine
         executor.execute(runnable);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected long getEngineStates() {
         return super.getEngineStates() | Synthesizer.QUEUE_EMPTY
                 | Synthesizer.QUEUE_NOT_EMPTY;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final void addSpeakableListener(final SpeakableListener listener) {
         if (!speakableListeners.contains(listener)) {
@@ -187,36 +175,24 @@ public abstract class BaseSynthesizer extends BaseEngine
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final void removeSpeakableListener(
             final SpeakableListener listener) {
         speakableListeners.remove(listener);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final void addSynthesizerListener(
             final SynthesizerListener listener) {
         addEngineListener(listener);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final void removeSynthesizerListener(
             final SynthesizerListener listener) {
         removeEngineListener(listener);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final boolean cancel() throws EngineStateException {
         checkEngineState(DEALLOCATED | DEALLOCATING_RESOURCES);
@@ -232,9 +208,6 @@ public abstract class BaseSynthesizer extends BaseEngine
         return queueManager.cancelItem();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final boolean cancel(final int id) throws IllegalArgumentException,
             EngineStateException {
@@ -251,9 +224,6 @@ public abstract class BaseSynthesizer extends BaseEngine
         return queueManager.cancelItem(id);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final boolean cancelAll() throws EngineStateException {
         checkEngineState(DEALLOCATED | DEALLOCATING_RESOURCES);
@@ -283,9 +253,6 @@ public abstract class BaseSynthesizer extends BaseEngine
         return new BaseSynthesizerProperties(this);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final SynthesizerProperties getSynthesizerProperties() {
         return synthesizerProperties;
@@ -321,9 +288,7 @@ public abstract class BaseSynthesizer extends BaseEngine
         return queueManager.appendItem(speakable, listener);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public int speak(final String text, final SpeakableListener listener)
             throws EngineStateException {
         checkEngineState(DEALLOCATED | DEALLOCATING_RESOURCES);
@@ -343,9 +308,7 @@ public abstract class BaseSynthesizer extends BaseEngine
         return queueManager.appendItem(speakable, listener, text);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public int speakMarkup(final String synthesisMarkup,
             final SpeakableListener listener) throws EngineStateException,
             SpeakableException, IllegalArgumentException {
@@ -363,9 +326,7 @@ public abstract class BaseSynthesizer extends BaseEngine
         return queueManager.appendItem(speakable, listener);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     protected final void baseAllocate() throws EngineStateException,
             EngineException, AudioException, SecurityException {
 
@@ -399,9 +360,6 @@ public abstract class BaseSynthesizer extends BaseEngine
         EngineException, AudioException, SecurityException;
 
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void baseDeallocate() throws EngineStateException,
             EngineException, AudioException {
@@ -421,9 +379,6 @@ public abstract class BaseSynthesizer extends BaseEngine
                 EngineEvent.ENGINE_DEALLOCATED);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void basePause() {
         handlePause();
@@ -573,9 +528,6 @@ public abstract class BaseSynthesizer extends BaseEngine
         return queueManager;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected SpeechEventExecutor createSpeechEventExecutor() {
         return new ThreadSpeechEventExecutor();
@@ -587,18 +539,12 @@ public abstract class BaseSynthesizer extends BaseEngine
      */
     protected abstract AudioFormat getEngineAudioFormat();
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected AudioManager createAudioManager() {
         final AudioFormat format = getEngineAudioFormat();
         return new BaseSynthesizerAudioManager(this, format);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected VocabularyManager createVocabularyManager() {
         return new BaseVocabularyManager();

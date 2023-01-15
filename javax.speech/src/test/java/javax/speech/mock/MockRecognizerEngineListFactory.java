@@ -15,9 +15,7 @@ import javax.speech.spi.EngineListFactory;
  * @author Dirk Schnelle
  */
 public class MockRecognizerEngineListFactory implements EngineListFactory {
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public EngineList createEngineList(EngineMode require)
             throws SecurityException {
         if ((require == null) || (require instanceof RecognizerMode)) {

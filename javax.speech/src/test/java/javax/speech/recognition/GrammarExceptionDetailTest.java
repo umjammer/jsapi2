@@ -3,20 +3,24 @@
  */
 package javax.speech.recognition;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Test case for {@link javax.speech.recognition.GrammarExceptionDetail}.
  * 
  * @author Dirk Schnelle
  */
-public class GrammarExceptionDetailTest extends TestCase {
+public class GrammarExceptionDetailTest {
 
     /**
      * Test method for
      * {@link javax.speech.recognition.GrammarExceptionDetail#getCharNumber()}.
      */
-    public void testGetCharNumber() {
+    @Test
+    void testGetCharNumber() {
         final GrammarExceptionDetail detail1 = new GrammarExceptionDetail(
                 GrammarExceptionDetail.UNKNOWN_TYPE, "info1", "reference1",
                 "ruleName1", 42, 43, "message1");
@@ -32,7 +36,8 @@ public class GrammarExceptionDetailTest extends TestCase {
      * Test method for
      * {@link javax.speech.recognition.GrammarExceptionDetail#getGrammarReference()}.
      */
-    public void testGetGrammarReference() {
+    @Test
+    void testGetGrammarReference() {
         final GrammarExceptionDetail detail1 = new GrammarExceptionDetail(
                 GrammarExceptionDetail.UNKNOWN_TYPE, "info1",
                 "reference1", "ruleName1", 42, 43, "message1");
@@ -48,7 +53,8 @@ public class GrammarExceptionDetailTest extends TestCase {
      * Test method for
      * {@link javax.speech.recognition.GrammarExceptionDetail#getLineNumber()}.
      */
-    public void testGetLineNumber() {
+    @Test
+    void testGetLineNumber() {
         final GrammarExceptionDetail detail1 = new GrammarExceptionDetail(
                 GrammarExceptionDetail.UNKNOWN_TYPE, "info1",
                 "reference1", "ruleName1", 42, 43, "message1");
@@ -64,7 +70,8 @@ public class GrammarExceptionDetailTest extends TestCase {
      * Test method for
      * {@link javax.speech.recognition.GrammarExceptionDetail#getMessage()}.
      */
-    public void testGetMessage() {
+    @Test
+    void testGetMessage() {
         final GrammarExceptionDetail detail1 = new GrammarExceptionDetail(
                 GrammarExceptionDetail.UNKNOWN_TYPE, "info1",
                 "reference1", "ruleName1", 42, 43, "message1");
@@ -80,7 +87,8 @@ public class GrammarExceptionDetailTest extends TestCase {
      * Test method for
      * {@link javax.speech.recognition.GrammarExceptionDetail#getRuleName()}.
      */
-    public void testGetRuleName() {
+    @Test
+    void testGetRuleName() {
         final GrammarExceptionDetail detail1 = new GrammarExceptionDetail(
                 GrammarExceptionDetail.UNKNOWN_TYPE, "info1",
                 "reference1", "ruleName1", 42, 43, "message1");

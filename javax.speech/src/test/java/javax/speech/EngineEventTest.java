@@ -27,7 +27,13 @@ package javax.speech;
 
 import javax.speech.mock.MockEngine;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 /**
  * Test case for {@link javax.speech.EngineEvent}.
@@ -35,23 +41,20 @@ import junit.framework.TestCase;
  * @author Dirk Schnelle
  * 
  */
-public class EngineEventTest extends TestCase {
+public class EngineEventTest {
     /** The test engine. */
     private Engine engine;
 
-    /**
-     * {@inheritDoc}
-     */
+    @BeforeEach
     protected void setUp() throws Exception {
-        super.setUp();
-
         engine = new MockEngine();
     }
 
     /**
      * Test method for {@link javax.speech.EngineEvent#getNewEngineState()}.
      */
-    public void testGetNewEngineState() {
+    @Test
+    void testGetNewEngineState() {
         final Throwable problem = new Exception();
         final EngineEvent event = new EngineEvent(engine,
                 EngineEvent.ENGINE_ERROR,
@@ -64,7 +67,8 @@ public class EngineEventTest extends TestCase {
     /**
      * Test method for {@link javax.speech.EngineEvent#getOldEngineState()}.
      */
-    public void testGetOldEngineState() {
+    @Test
+    void testGetOldEngineState() {
         final Throwable problem = new Exception();
         final EngineEvent event = new EngineEvent(engine,
                 EngineEvent.ENGINE_ERROR,
@@ -76,7 +80,8 @@ public class EngineEventTest extends TestCase {
     /**
      * Test method for {@link javax.speech.EngineEvent#getEngineError()}.
      */
-    public void testGetEngineError() {
+    @Test
+    void testGetEngineError() {
         final Throwable problem = new Exception();
         final EngineEvent event = new EngineEvent(engine,
                 EngineEvent.ENGINE_ALLOCATED,
@@ -93,23 +98,24 @@ public class EngineEventTest extends TestCase {
     /**
      * Test method for {@link javax.speech.SpeechEvent#paramString()}.
      */
-    public void testParamString() {
+    @Test
+    void testParamString() {
         final EngineEvent event = new EngineEvent(engine, 43,
                 EngineEvent.ENGINE_DEALLOCATED,
                 EngineEvent.ENGINE_ALLOCATING_RESOURCES, null);
         final String str = event.paramString();
-        assertTrue(str.indexOf("43") >= 0);
+        assertTrue(str.contains("43"));
     }
 
     /**
      * Test method for {@link javax.speech.SpeechEvent#toString()}.
      */
-    public void testToString() {
+    @Test
+    void testToString() {
         final EngineEvent event = new EngineEvent(engine, 44,
                 EngineEvent.ENGINE_DEALLOCATED,
                 EngineEvent.ENGINE_ALLOCATING_RESOURCES, null);
         final String str = event.toString();
-        assertTrue(str.indexOf("44") >= 0);
+        assertTrue(str.contains("44"));
     }
-
 }

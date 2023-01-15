@@ -224,9 +224,6 @@ public final class SapiResult extends BaseResult {
         return sml;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
         final StringBuilder str = new StringBuilder();

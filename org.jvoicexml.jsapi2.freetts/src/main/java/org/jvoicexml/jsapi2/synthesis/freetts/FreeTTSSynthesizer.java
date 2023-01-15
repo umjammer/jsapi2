@@ -77,17 +77,11 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
         audioPlayer = null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected SynthesizerProperties createSynthesizerProperties() {
         return new FreeTTSEngineProperties(this);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void handleAllocate() throws EngineStateException, EngineException,
             AudioException, SecurityException {
@@ -152,7 +146,7 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
         if (audioPlayer != null) {
             try {
                 audioPlayer.close();
-            } catch (IOException e) {
+            } catch (Exception e) {
                 throw new AudioException(e.getMessage());
             }
         }
@@ -182,7 +176,7 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
     /**
      * Outputs the given queue item to the current voice
      *
-     * @param item
+     * @param id
      *            the item to output
      */
     private AudioSegment handleSpeak(final int id,
@@ -217,9 +211,6 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public AudioSegment handleSpeak(int id, Speakable item) {
         final String markup = item.getMarkupText();
@@ -229,50 +220,32 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
         return handleSpeak(id, speakable);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public AudioSegment handleSpeak(int id, String text) {
         final FreeTTSSpeakableImpl speakable = new FreeTTSSpeakableImpl(text);
         return handleSpeak(id, speakable);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean handleCancelAll() {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean handleCancel(int id) {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean handleCancel() {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected AudioFormat getEngineAudioFormat() {
         return new AudioFormat(8000f, 16, 1, true, true);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void handlePropertyChangeRequest(
             final BaseEngineProperties properties, final String propName,

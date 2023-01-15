@@ -130,25 +130,17 @@ public abstract class BaseRecognizer extends BaseEngine implements Recognizer {
         setEngineMask(getEngineMask() | RecognizerEvent.DEFAULT_MASK);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected VocabularyManager createVocabularyManager() {
         return new BaseVocabularyManager();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final GrammarManager getGrammarManager() {
         return grammarManager;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public final void requestFocus() throws EngineStateException {
         checkEngineState(DEALLOCATED | DEALLOCATING_RESOURCES);
 
@@ -173,9 +165,7 @@ public abstract class BaseRecognizer extends BaseEngine implements Recognizer {
         handleRequestFocus();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public final void releaseFocus() throws EngineStateException {
         checkEngineState(DEALLOCATED | DEALLOCATING_RESOURCES);
 
@@ -199,9 +189,7 @@ public abstract class BaseRecognizer extends BaseEngine implements Recognizer {
         handleReleaseFocus();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public final void pause(final int mode) throws EngineStateException {
         // Validate current state
         if (testEngineState(PAUSED)) {
@@ -245,9 +233,6 @@ public abstract class BaseRecognizer extends BaseEngine implements Recognizer {
         // }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final void fireEvent(final Collection<EngineListener> listeners,
             final EngineEvent event) {
@@ -259,9 +244,6 @@ public abstract class BaseRecognizer extends BaseEngine implements Recognizer {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public EngineEvent createStateTransitionEngineEvent(final long oldState,
             final long newState, final int eventType) {
@@ -327,17 +309,11 @@ public abstract class BaseRecognizer extends BaseEngine implements Recognizer {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final void addRecognizerListener(final RecognizerListener listener) {
         addEngineListener(listener);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final void removeRecognizerListener(
             final RecognizerListener listener) {
@@ -386,9 +362,6 @@ public abstract class BaseRecognizer extends BaseEngine implements Recognizer {
         recognizerProperties = properties;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final SpeakerManager getSpeakerManager() {
         final SecurityManager security = System.getSecurityManager();
@@ -400,25 +373,16 @@ public abstract class BaseRecognizer extends BaseEngine implements Recognizer {
         return speakerManager;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final void setResultMask(final int mask) {
         resultMask = mask;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final int getResultMask() {
         return resultMask;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void processGrammars() throws EngineStateException {
         // Flag that indicates if grammars were changed
@@ -488,18 +452,12 @@ public abstract class BaseRecognizer extends BaseEngine implements Recognizer {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected long getEngineStates() {
         return super.getEngineStates() | Recognizer.LISTENING
                 | Recognizer.PROCESSING;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String stateToString(final long state) {
         StringBuffer buf = new StringBuffer(super.stateToString(state));
@@ -591,9 +549,6 @@ public abstract class BaseRecognizer extends BaseEngine implements Recognizer {
                 EngineEvent.ENGINE_DEALLOCATED);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected final void basePause() {
         handlePause();
@@ -602,10 +557,8 @@ public abstract class BaseRecognizer extends BaseEngine implements Recognizer {
         setEngineState(BUFFERING, NOT_BUFFERING);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected final void basePause(final int flags) {
+    /** */
+    protected final void basePause(int flags) {
         handlePause(flags);
         setEngineState(LISTENING | PROCESSING,
                 getEngineState() & ~LISTENING & ~PROCESSING);
@@ -683,9 +636,6 @@ public abstract class BaseRecognizer extends BaseEngine implements Recognizer {
      */
     protected abstract AudioFormat getAudioFormat();
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected AudioManager createAudioManager() {
         final AudioFormat format = getAudioFormat();

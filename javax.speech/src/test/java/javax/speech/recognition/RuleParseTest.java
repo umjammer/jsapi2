@@ -3,26 +3,25 @@
  */
 package javax.speech.recognition;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Test case for {@link javax.speech.recognition.RuleParse}.
  * 
  * @author Dirk Schnelle
  */
-public class RuleParseTest extends TestCase {
+public class RuleParseTest {
     private RuleReference reference;
 
     private RuleComponent parse;
 
     private RuleParse ruleParse;
 
-    /**
-     * {@inheritDoc}
-     */
+    @BeforeEach
     protected void setUp() throws Exception {
-        super.setUp();
-
         final RuleComponent component1 = new RuleParse(new RuleReference(
                 "action"), new RuleAlternatives(
                 new RuleComponent[] { new RuleSequence(new RuleComponent[] {
@@ -54,7 +53,8 @@ public class RuleParseTest extends TestCase {
     /**
      * Test method for {@link javax.speech.recognition.RuleParse#toString()}.
      */
-    public void testToString() {
+    @Test
+    void testToString() {
         final String str = ruleParse.toString();
         assertEquals("<ruleref uri=\"#command\"><ruleref uri=\"#action\">"
                 + "<one-of><item>close<tag>CL</tag></item></one-of></ruleref>"
@@ -69,7 +69,8 @@ public class RuleParseTest extends TestCase {
     /**
      * Test method for {@link javax.speech.recognition.RuleParse#getTags()}.
      */
-    public void testGetTags() {
+    @Test
+    void testGetTags() {
         final Object[] tags = ruleParse.getTags();
         final Object[] expected = new String[] { "CL" };
         assertEquals(expected.length, tags.length);
@@ -83,7 +84,8 @@ public class RuleParseTest extends TestCase {
     /**
      * Test method for {@link javax.speech.recognition.RuleParse#getParse()}.
      */
-    public void testGetParse() {
+    @Test
+    void testGetParse() {
         assertEquals(parse, ruleParse.getParse());
     }
 
@@ -91,7 +93,8 @@ public class RuleParseTest extends TestCase {
      * Test method for
      * {@link javax.speech.recognition.RuleParse#getRuleReference()}.
      */
-    public void testGetRuleReference() {
+    @Test
+    void testGetRuleReference() {
         assertEquals(reference, ruleParse.getRuleReference());
     }
 

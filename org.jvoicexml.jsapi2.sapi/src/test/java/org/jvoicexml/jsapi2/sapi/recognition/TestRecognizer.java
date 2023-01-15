@@ -1,7 +1,5 @@
 package org.jvoicexml.jsapi2.sapi.recognition;
 
-import static org.junit.Assert.assertTrue;
-
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -13,7 +11,6 @@ import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.speech.Engine;
 import javax.speech.EngineManager;
 import javax.speech.recognition.Grammar;
@@ -30,12 +27,16 @@ import javax.speech.recognition.RuleGrammar;
 import javax.speech.recognition.RuleTag;
 import javax.speech.recognition.RuleToken;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 import org.jvoicexml.jsapi2.sapi.SapiEngineListFactory;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -48,6 +49,7 @@ import org.jvoicexml.jsapi2.sapi.SapiEngineListFactory;
  * @author Josua Arndt
  *
  */
+@EnabledOnOs(OS.WINDOWS)
 public final class TestRecognizer implements ResultListener {
     /** The test object. */
     private Recognizer recognizer;
@@ -63,7 +65,7 @@ public final class TestRecognizer implements ResultListener {
      * @throws Exception
      *         prepare failed
      */
-    @BeforeClass
+    @BeforeAll
     public static void init() throws Exception {
         EngineManager.registerEngineListFactory(
                 SapiEngineListFactory.class.getCanonicalName());
@@ -80,7 +82,7 @@ public final class TestRecognizer implements ResultListener {
      * @throws Exception
      *         set up failed
      */
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         System.out.println("Allocating ASR Engine");
         recognizer =
@@ -95,7 +97,7 @@ public final class TestRecognizer implements ResultListener {
      * @throws Exception
      *         tear down failed
      */
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         System.out.println("Deallocating ASR Engine");
         if (recognizer != null) {
@@ -115,7 +117,7 @@ public final class TestRecognizer implements ResultListener {
      *         test failed.
      */
     @Test
-    public void testRecognize() throws Exception {
+    void testRecognize() throws Exception {
         recognizer.addResultListener(this);
 
         final GrammarManager grammarManager = recognizer.getGrammarManager();
@@ -160,7 +162,7 @@ public final class TestRecognizer implements ResultListener {
      *         test failed.
      */
     @Test
-    public void testRecognizePause() throws Exception {
+    void testRecognizePause() throws Exception {
         /* timeout for enginestate change requests */
         int timeOut = 3000;
         
@@ -175,9 +177,9 @@ public final class TestRecognizer implements ResultListener {
         recognizer.requestFocus();
         recognizer.resume();
         recognizer.waitEngineState(Engine.RESUMED, timeOut);
-        assertTrue("Enginestate should be RESUMED.",
-                    recognizer.testEngineState(Engine.RESUMED)
-                );
+        assertTrue(recognizer.testEngineState(Engine.RESUMED),
+                "Enginestate should be RESUMED."
+                        );
         
         System.out.println("delaying...");
         Thread.sleep(500);
@@ -186,16 +188,16 @@ public final class TestRecognizer implements ResultListener {
         // test pause
         recognizer.pause();
         recognizer.waitEngineState(Engine.PAUSED, timeOut);
-        assertTrue("Enginestate should be PAUSED.",
-                recognizer.testEngineState(Engine.PAUSED)
-            );
+        assertTrue(recognizer.testEngineState(Engine.PAUSED),
+                "Enginestate should be PAUSED."
+                    );
         
         // test resume after pause
         recognizer.resume();
         recognizer.waitEngineState(Engine.RESUMED, timeOut);
-        assertTrue("Enginestate should be RESUMED.",
-                recognizer.testEngineState(Engine.RESUMED)
-            );
+        assertTrue(recognizer.testEngineState(Engine.RESUMED),
+                "Enginestate should be RESUMED."
+                    );
 //        
 //        System.out.println("Say something");
 //        synchronized (lock) {
@@ -218,7 +220,7 @@ public final class TestRecognizer implements ResultListener {
      *         test failed.
      */
     @Test
-    public void testRecognizeResume() throws Exception {
+    void testRecognizeResume() throws Exception {
         recognizer.addResultListener(this);
 
         final GrammarManager grammarManager = recognizer.getGrammarManager();
@@ -239,8 +241,8 @@ public final class TestRecognizer implements ResultListener {
         System.out.print("Recognized: ");
         final ResultToken[] tokens = result.getBestTokens();
 
-        for (int i = 0; i < tokens.length; i++) {
-            System.out.print(tokens[i].getText() + " ");
+        for (ResultToken token : tokens) {
+            System.out.print(token.getText() + " ");
         }
          System.out.println();
          
@@ -255,9 +257,9 @@ public final class TestRecognizer implements ResultListener {
         
         Grammar[] grams = grammarManager.listGrammars();
         System.out.println("count: "+ grams.length);
-        
-        for (int i=0; i<grams.length; i++){
-            System.out.println(grams[i].getReference());
+
+        for (Grammar gram : grams) {
+            System.out.println(gram.getReference());
         }
         System.out.println("Load new grammar... ");
         final InputStream in2 =
@@ -275,8 +277,8 @@ public final class TestRecognizer implements ResultListener {
         System.out.print("Recognized: ");
         final ResultToken[] tokens2 = result.getBestTokens();
 
-        for (int i = 0; i < tokens2.length; i++) {
-            System.out.print(tokens2[i].getText() + " ");
+        for (ResultToken resultToken : tokens2) {
+            System.out.print(resultToken.getText() + " ");
         }
         System.out.println();
     }
@@ -296,7 +298,7 @@ public final class TestRecognizer implements ResultListener {
      *         test failed.
      */
     @Test
-    public void testRecognize2Grammars() throws Exception {
+    void testRecognize2Grammars() throws Exception {
         recognizer.addResultListener(this);
 
         final GrammarManager grammarManager = recognizer.getGrammarManager();
@@ -352,7 +354,7 @@ public final class TestRecognizer implements ResultListener {
      *         test failed.
      */
     @Test
-    public void testSetGrammarContent() throws Exception {
+    void testSetGrammarContent() throws Exception {
                 
         recognizer.addResultListener(this);
         
@@ -393,9 +395,6 @@ public final class TestRecognizer implements ResultListener {
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void resultUpdate(final ResultEvent event) {
         System.out.println(event);
@@ -420,7 +419,7 @@ public final class TestRecognizer implements ResultListener {
      *            test failed
      */
     @Test
-    public void testReportResult() throws Exception {
+    void testReportResult() throws Exception {
         recognizer.addResultListener(this);
         final GrammarManager manager = recognizer.getGrammarManager();
         final String ruleName = "test";
@@ -441,7 +440,7 @@ public final class TestRecognizer implements ResultListener {
         for (int i = 0; i < tokens.length; i++) {
             words += tokens[i].getText() + " ";
         }
-        Assert.assertEquals("Hello Dirk ", words);
+        assertEquals("Hello Dirk ", words);
     }
 
     /**
@@ -450,7 +449,7 @@ public final class TestRecognizer implements ResultListener {
      *            test failed
      */
     @Test
-    public void testReportResultMultipleTags() throws Exception {
+    void testReportResultMultipleTags() throws Exception {
         recognizer.addResultListener(this);
         final GrammarManager manager = recognizer.getGrammarManager();
         final String ruleName = "test";
@@ -472,7 +471,7 @@ public final class TestRecognizer implements ResultListener {
         for (int i = 0; i < tokens.length; i++) {
             words += tokens[i].getText() + " ";
         }
-        Assert.assertEquals("Hello Dirk ", words);
+        assertEquals("Hello Dirk ", words);
 }
     
     /**

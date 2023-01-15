@@ -122,9 +122,6 @@ public final class SmlInterpretation {
         return confidence;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
         final StringBuilder str = new StringBuilder();

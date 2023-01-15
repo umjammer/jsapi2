@@ -28,16 +28,12 @@ public class EngineEventAccumulator
         events = new Vector();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void synthesizerUpdate(final SynthesizerEvent e) {
         events.addElement(e);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void recognizerUpdate(RecognizerEvent e) {
         events.addElement(e);
     }

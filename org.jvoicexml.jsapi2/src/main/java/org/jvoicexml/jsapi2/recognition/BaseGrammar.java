@@ -97,38 +97,26 @@ public class BaseGrammar implements Grammar, ResultListener {
         activationMode = ACTIVATION_FOCUS;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** */
     public final Recognizer getRecognizer() {
         return recognizer;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public final String getReference() {
         return reference;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public final void setActivatable(final boolean value) {
         activatable = value;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final boolean isActivatable() {
         return activatable;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final void setActivationMode(final int mode)
         throws IllegalArgumentException {
@@ -143,17 +131,11 @@ public class BaseGrammar implements Grammar, ResultListener {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final int getActivationMode() {
         return activationMode;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final boolean isActive() {
         if (!isActivatable()) {
@@ -168,17 +150,11 @@ public class BaseGrammar implements Grammar, ResultListener {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final GrammarManager getGrammarManager() {
         return recognizer.getGrammarManager();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final void addGrammarListener(final GrammarListener listener) {
         if (!grammarListeners.contains(listener)) {
@@ -186,17 +162,11 @@ public class BaseGrammar implements Grammar, ResultListener {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final void removeGrammarListener(final GrammarListener listener) {
         grammarListeners.remove(listener);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final void addResultListener(final ResultListener listener) {
         if (!resultListeners.contains(listener)) {
@@ -204,9 +174,6 @@ public class BaseGrammar implements Grammar, ResultListener {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final void removeResultListener(final ResultListener listener) {
         resultListeners.remove(listener);
@@ -321,9 +288,7 @@ public class BaseGrammar implements Grammar, ResultListener {
         postGrammarEvent(event);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public final void resultUpdate(final ResultEvent event) {
         final int id = event.getId();
         // TODO correct the event filter.

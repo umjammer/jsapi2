@@ -105,16 +105,12 @@ public abstract class BaseEngineProperties implements EngineProperties {
         setBase("");
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public final int getPriority() {
         return priority;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public final void setPriority(final int prio) {
         if (prio == priority) {
             return;
@@ -123,9 +119,7 @@ public abstract class BaseEngineProperties implements EngineProperties {
                 new Integer(priority), new Integer(prio));
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public final void setBase(final String uri) {
         if (base == null) {
             if (uri == null) {
@@ -139,16 +133,12 @@ public abstract class BaseEngineProperties implements EngineProperties {
         engine.handlePropertyChangeRequest(this, BASE, base, uri);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public final String getBase() {
         return base;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public final void addEnginePropertyListener(
             final EnginePropertyListener listener) {
         if (!propertyChangeListeners.contains(listener)) {
@@ -156,9 +146,7 @@ public abstract class BaseEngineProperties implements EngineProperties {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public final void removeEnginePropertyListener(
             final EnginePropertyListener listener) {
         propertyChangeListeners.remove(listener);

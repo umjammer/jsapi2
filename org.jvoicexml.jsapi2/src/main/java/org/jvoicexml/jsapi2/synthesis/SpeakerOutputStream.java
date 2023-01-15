@@ -90,9 +90,6 @@ public final class SpeakerOutputStream extends OutputStream
         gainControl.setValue(dB);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void write(final int b) throws IOException {
         openLine();
@@ -102,9 +99,6 @@ public final class SpeakerOutputStream extends OutputStream
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void write(final byte[] bytes, final int offset, final int len)
         throws IOException {
@@ -112,26 +106,17 @@ public final class SpeakerOutputStream extends OutputStream
         line.write(bytes, offset, len);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void write(final byte[] bytes) throws IOException {
         openLine();
         line.write(bytes, 0, bytes.length);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void flush() throws IOException {
         line.drain();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void close() throws IOException {
         if (line != null) {
@@ -140,9 +125,6 @@ public final class SpeakerOutputStream extends OutputStream
         super.close();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void update(final LineEvent event) {
         if ((event.getType() == LineEvent.Type.CLOSE)

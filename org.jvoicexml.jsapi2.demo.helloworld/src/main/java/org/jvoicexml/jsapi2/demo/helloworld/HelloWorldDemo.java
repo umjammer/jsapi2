@@ -88,17 +88,11 @@ public final class HelloWorldDemo implements SpeakableListener, SynthesizerListe
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void speakableUpdate(SpeakableEvent e) {
         System.out.println(e);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void synthesizerUpdate(SynthesizerEvent e) {
         System.out.println(e);

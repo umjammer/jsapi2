@@ -49,65 +49,46 @@ public class MockEngine extends BaseEngine {
         super(null);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     protected void baseAllocate() throws AudioException, EngineException,
             EngineStateException, SecurityException {
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     protected AudioManager createAudioManager() {
         return new MockAudioManager();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     protected VocabularyManager createVocabularyManager() {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     protected SpeechEventExecutor createSpeechEventExecutor() {
         return new MockSpeechEventExecutor();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     protected void baseDeallocate() throws EngineStateException,
             EngineException, AudioException {
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     protected void basePause() throws EngineStateException {
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     protected boolean baseResume() throws EngineStateException {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final void fireEvent(final Collection<EngineListener> listeners,
             final EngineEvent event) {
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     protected EngineEvent createStateTransitionEngineEvent(long oldState, long newState,
             int id) {
         return new MockEngineEvent(this, id, oldState, newState, null);

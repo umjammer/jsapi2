@@ -26,19 +26,22 @@
 
 package javax.speech.synthesis;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Test case for {@link jjavax.speech.synthesis.PhoneInfo}.
  * 
  * @author Dirk Schnelle
  */
-public class PhoneInfoTest extends TestCase {
+public class PhoneInfoTest {
 
     /**
      * Test method for {@link javax.speech.synthesis.PhoneInfo#getDuration()}.
      */
-    public void testGetDuration() {
+    @Test
+    void testGetDuration() {
         final PhoneInfo info = new PhoneInfo("phoneme", 45);
         assertEquals(45, info.getDuration());
 
@@ -50,7 +53,8 @@ public class PhoneInfoTest extends TestCase {
     /**
      * Test method for {@link javax.speech.synthesis.PhoneInfo#getPhoneme()}.
      */
-    public void testGetPhoneme() {
+    @Test
+    void testGetPhoneme() {
         final PhoneInfo info = new PhoneInfo("phoneme", 45);
         assertEquals("phoneme", info.getPhoneme());
 

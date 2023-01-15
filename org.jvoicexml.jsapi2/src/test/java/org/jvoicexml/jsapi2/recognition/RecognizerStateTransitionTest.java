@@ -4,50 +4,54 @@ import javax.speech.Engine;
 import javax.speech.recognition.Recognizer;
 import javax.speech.synthesis.Synthesizer;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.jvoicexml.jsapi2.mock.recognition.MockRecognizer;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Test cases for state transitions of the
  * {@link javax.speech.synthesis.Synthesizer}.
+ *
  * @author Dirk Schnelle-Walka
  */
 public final class RecognizerStateTransitionTest {
+
     /** The recognizer to test. */
     private BaseRecognizer recognizer;
 
     /**
      * Set up the test environment.
-     * @exception Exception
-     *            set up failed
+     *
+     * @throws Exception set up failed
      */
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         recognizer = new MockRecognizer();
     }
-    
+
     /**
      * Checks for the given state.
+     *
      * @param expected the expected state
      */
     private void checkState(final long expected) {
-        Assert.assertTrue("Expected " + recognizer.stateToString(expected)
-                + " but was "
-                + recognizer.stateToString(recognizer.getEngineState()),
-                recognizer.testEngineState(expected));
+        assertTrue(recognizer.testEngineState(expected),
+                "Expected " + recognizer.stateToString(expected)
+                        + " but was "
+                        + recognizer.stateToString(recognizer.getEngineState()));
     }
 
 
     /**
      * Test cases for PAUSED/RESUMED state transitions.
-     * @throws Exception
-     *          test failed
+     *
+     * @throws Exception test failed
      */
     @Test
-    public void testRecognizerPausedResumed() throws Exception {
+    void testRecognizerPausedResumed() throws Exception {
         recognizer.allocate();
         recognizer.waitEngineState(Engine.ALLOCATED);
         checkState(Recognizer.PAUSED);
@@ -73,11 +77,11 @@ public final class RecognizerStateTransitionTest {
 
     /**
      * Test cases for FOCUSED/DEFOCUSED state transitions.
-     * @throws Exception
-     *         test failed
+     *
+     * @throws Exception test failed
      */
     @Test
-    public void testRecognizerFocusedDefocused() throws Exception {
+    void testRecognizerFocusedDefocused() throws Exception {
         recognizer.allocate();
         recognizer.waitEngineState(Engine.ALLOCATED);
         checkState(Recognizer.ALLOCATED);
@@ -101,7 +105,7 @@ public final class RecognizerStateTransitionTest {
         recognizer.deallocate();
         recognizer.waitEngineState(Synthesizer.DEALLOCATED);
         checkState(Synthesizer.DEALLOCATED);
-        
+
         // TODO add checks if another recognizer requests the focus
     }
 }

@@ -27,21 +27,21 @@
 package org.jvoicexml.jsapi2.recognition;
 
 import java.io.InputStream;
-
 import javax.speech.recognition.Rule;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 public class SrgsRuleGrammarParserTest {
 
     @Test
-    public void testLoadInputStream() {
+    void testLoadInputStream() {
         final InputStream in = SrgsRuleGrammarParserTest.class
                 .getResourceAsStream("pizza-de.xml");
         SrgsRuleGrammarParser parser = new SrgsRuleGrammarParser();
         final Rule[] rules = parser.load(in);
-        Assert.assertEquals(5, rules.length);
+        assertEquals(5, rules.length);
     }
-
 }

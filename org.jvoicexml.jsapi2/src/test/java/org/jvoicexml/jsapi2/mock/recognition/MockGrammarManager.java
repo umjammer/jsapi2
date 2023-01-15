@@ -24,30 +24,22 @@ import javax.speech.recognition.RuleGrammar;
  */
 public class MockGrammarManager implements GrammarManager {
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void addGrammarListener(GrammarListener listener) {
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void removeGrammarListener(GrammarListener listener) {
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public RuleGrammar createRuleGrammar(String grammarReference,
             String rootName) throws IllegalArgumentException,
             EngineStateException, EngineException {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public RuleGrammar createRuleGrammar(String grammarReference,
             String rootName, SpeechLocale locale)
             throws IllegalArgumentException, EngineStateException,
@@ -55,53 +47,39 @@ public class MockGrammarManager implements GrammarManager {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void deleteGrammar(Grammar grammar) throws IllegalArgumentException,
             EngineStateException {
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public Grammar getGrammar(String grammarReference)
             throws EngineStateException {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public int getGrammarMask() {
         return 0;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void setGrammarMask(int mask) {
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public Grammar[] listGrammars() throws EngineStateException {
         return new Grammar[0];
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public Grammar loadGrammar(String grammarReference, String mediaType)
             throws GrammarException, IllegalArgumentException, IOException,
             EngineStateException, EngineException {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public Grammar loadGrammar(String grammarReference, String mediaType,
             boolean loadReferences, boolean reloadReferences,
             Vector loadedGrammars) throws GrammarException,
@@ -110,9 +88,7 @@ public class MockGrammarManager implements GrammarManager {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public Grammar loadGrammar(String grammarReference, String mediaType,
             InputStream byteStream, String encoding) throws GrammarException,
             IllegalArgumentException, IOException, EngineStateException,
@@ -120,9 +96,7 @@ public class MockGrammarManager implements GrammarManager {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public Grammar loadGrammar(String grammarReference, String mediaType,
             Reader charStream) throws GrammarException,
             IllegalArgumentException, IOException, EngineStateException,
@@ -130,9 +104,7 @@ public class MockGrammarManager implements GrammarManager {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public Grammar loadGrammar(String grammarReference, String mediaType,
             String grammarText) throws GrammarException,
             IllegalArgumentException, IOException, EngineStateException,

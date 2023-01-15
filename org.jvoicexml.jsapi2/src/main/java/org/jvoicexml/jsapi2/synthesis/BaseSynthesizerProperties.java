@@ -91,17 +91,11 @@ public class BaseSynthesizerProperties extends BaseEngineProperties
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final int getInterruptibility() {
         return interruptibility;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final void setInterruptibility(final int level) {
         if ((level != WORD_LEVEL) && (level != OBJECT_LEVEL)
@@ -117,17 +111,11 @@ public class BaseSynthesizerProperties extends BaseEngineProperties
                 new Integer(level));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final int getPitch() {
         return pitch;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final void setPitch(final int hertz) {
         if (hertz <= 0) {
@@ -141,17 +129,11 @@ public class BaseSynthesizerProperties extends BaseEngineProperties
                 new Integer(pitch), new Integer(hertz));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final int getPitchRange() {
         return pitchRange;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final void setPitchRange(final int hertz) {
         if (hertz < 0) {
@@ -165,17 +147,11 @@ public class BaseSynthesizerProperties extends BaseEngineProperties
                 new Integer(pitchRange), new Integer(hertz));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final int getSpeakingRate() {
         return speakingRate;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final void setSpeakingRate(final int wpm) {
         if (wpm < 0) {
@@ -189,17 +165,11 @@ public class BaseSynthesizerProperties extends BaseEngineProperties
                 new Integer(speakingRate), new Integer(wpm));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final Voice getVoice() {
         return voice;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setVoice(final Voice voice) {
         final Engine synthesizer = getEngine();
@@ -219,17 +189,11 @@ public class BaseSynthesizerProperties extends BaseEngineProperties
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final int getVolume() {
         return volume;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final void setVolume(final int vol) {
         if ((vol < MIN_VOLUME) || (vol > MAX_VOLUME)) {
@@ -243,9 +207,7 @@ public class BaseSynthesizerProperties extends BaseEngineProperties
                 new Integer(volume), new Integer(vol));
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void reset() {
         setInterruptibility(OBJECT_LEVEL);
         setPitch(160);
@@ -269,9 +231,6 @@ public class BaseSynthesizerProperties extends BaseEngineProperties
         super.reset();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected boolean setProperty(final String propName, final Object value) {
         if (propName.equals(INTERRUPTIBILITY)) {

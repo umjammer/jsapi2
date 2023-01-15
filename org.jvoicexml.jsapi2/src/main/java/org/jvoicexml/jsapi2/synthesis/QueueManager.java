@@ -66,9 +66,9 @@ public class QueueManager {
         playQueue = new PlayQueue(this);
         synthQueue = new SynthesisQueue(this, playQueue);
 
-        final Thread synthThread = new Thread(synthQueue);
+        final Thread synthThread = new Thread(null, synthQueue, "Synth Queue");
         synthThread.start();
-        final Thread playThread = new Thread(playQueue);
+        final Thread playThread = new Thread(null, playQueue, "Play Queue");
         playThread.start();
     }
 

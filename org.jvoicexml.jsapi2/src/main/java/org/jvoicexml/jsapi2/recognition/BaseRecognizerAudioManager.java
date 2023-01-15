@@ -119,9 +119,6 @@ public class BaseRecognizerAudioManager extends BaseAudioManager {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final void handleAudioStart() throws AudioException {
         // Just convert samples if we already have the correct stream
@@ -227,9 +224,6 @@ public class BaseRecognizerAudioManager extends BaseAudioManager {
         return format;
     }
     
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final void handleAudioStop() throws AudioException {
         if (inputStream == null) {
@@ -246,9 +240,6 @@ public class BaseRecognizerAudioManager extends BaseAudioManager {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setMediaLocator(final String locator, final InputStream stream)
             throws AudioException {
@@ -269,17 +260,11 @@ public class BaseRecognizerAudioManager extends BaseAudioManager {
         throw new IllegalArgumentException("output streams are not supported");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public InputStream getInputStream() {
         return inputStream;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final OutputStream getOutputStream() {
         throw new IllegalArgumentException("output streams are not supported");

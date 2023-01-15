@@ -7,10 +7,12 @@ import javax.speech.synthesis.SpeakableListener;
 import javax.speech.synthesis.Synthesizer;
 import javax.speech.synthesis.SynthesizerMode;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 import org.jvoicexml.jsapi2.sapi.SapiEngineListFactory;
 
 /**
@@ -29,6 +31,7 @@ import org.jvoicexml.jsapi2.sapi.SapiEngineListFactory;
  * Disregard this will cause native code to crash
  * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
  */
+@EnabledOnOs(OS.WINDOWS)
 public final class TestSynthesizer {
     /** The test object. */
     private Synthesizer synthesizer;
@@ -38,7 +41,7 @@ public final class TestSynthesizer {
      * @throws Exception
      *         prepare failed
      */
-    @BeforeClass
+    @BeforeAll
     public static void init() throws Exception {
         EngineManager.registerEngineListFactory(
                 SapiEngineListFactory.class.getCanonicalName());
@@ -49,7 +52,7 @@ public final class TestSynthesizer {
      * @throws Exception
      *         set up failed
      */
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         synthesizer =  (Synthesizer) EngineManager
             .createEngine(SynthesizerMode.DEFAULT);
@@ -63,7 +66,7 @@ public final class TestSynthesizer {
      * @throws Exception
      *         tear down failed
      */
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
        if (synthesizer != null) {
            synthesizer.deallocate();
@@ -77,7 +80,7 @@ public final class TestSynthesizer {
      *         test failed
      */
     @Test
-    public void testSpeak() throws Exception {
+    void testSpeak() throws Exception {
         synthesizer.speak("this is a test output", null);
         synthesizer.speak("this is another test output", null);
         System.out.println("this is a test output");
@@ -95,7 +98,7 @@ public final class TestSynthesizer {
      *         test failed
      */
     @Test
-    public void testPause() throws Exception {
+    void testPause() throws Exception {
         synthesizer.speak("this is a test output with a pause and resume test", null);     
         System.out.println("this is a test output with a pause and resume test");
         Thread.sleep(1800);
@@ -115,7 +118,7 @@ public final class TestSynthesizer {
      *         test failed
      */
     @Test
-    public void testCancel() throws Exception {
+    void testCancel() throws Exception {
         final Object lock = new Object();
         final SpeakableListener listener = new SpeakableListener() {
             @Override
@@ -142,7 +145,7 @@ public final class TestSynthesizer {
      *         test failed
      */
     @Test
-    public void testSpeakSsml() throws Exception {
+    void testSpeakSsml() throws Exception {
         synthesizer.speakMarkup(
                 "<?xml version=\"1.0\" encoding=\"UTF-8\"?><speak version=\"1.0\" xml:lang=\"en-US\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schematicLocation=\"http://www.w3.org/2001/10/synthesis http://www.w3.org/TR/speech-synthesis/synthesis.xsd\">This is a test</speak>", null);
         System.out.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?><speak version=\"1.0\" xml:lang=\"en-US\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schematicLocation=\"http://www.w3.org/2001/10/synthesis http://www.w3.org/TR/speech-synthesis/synthesis.xsd\">This is a test</speak>");

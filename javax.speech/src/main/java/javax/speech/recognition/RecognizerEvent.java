@@ -103,9 +103,7 @@ public class RecognizerEvent extends EngineEvent {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     protected Vector getParameters() {
         final Vector parameters = super.getParameters();
 

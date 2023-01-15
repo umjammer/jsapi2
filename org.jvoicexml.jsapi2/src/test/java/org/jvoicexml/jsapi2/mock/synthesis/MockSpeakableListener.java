@@ -74,9 +74,7 @@ public class MockSpeakableListener implements SpeakableListener {
         return (SpeakableEvent) events.elementAt(pos);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void speakableUpdate(SpeakableEvent e) {
         events.add(e);
         System.out.println(e);

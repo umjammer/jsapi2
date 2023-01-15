@@ -41,9 +41,6 @@ import javax.speech.Word;
  *
  */
 public class BaseVocabularyManager implements VocabularyManager {
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void addWord(final Word word) throws EngineStateException,
             SecurityException {
@@ -55,9 +52,6 @@ public class BaseVocabularyManager implements VocabularyManager {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void addWords(final Word[] words) throws EngineStateException,
             SecurityException {
@@ -69,9 +63,6 @@ public class BaseVocabularyManager implements VocabularyManager {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String[] getPronounciations(final String text,
             final SpeechLocale locale)
@@ -80,9 +71,6 @@ public class BaseVocabularyManager implements VocabularyManager {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Word[] getWords(final String text, final SpeechLocale locale)
             throws EngineStateException {
@@ -90,9 +78,6 @@ public class BaseVocabularyManager implements VocabularyManager {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeWord(final Word word) throws EngineStateException,
             IllegalArgumentException, SecurityException {
@@ -104,9 +89,6 @@ public class BaseVocabularyManager implements VocabularyManager {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeWords(final Word[] words) throws EngineStateException,
             IllegalArgumentException, SecurityException {

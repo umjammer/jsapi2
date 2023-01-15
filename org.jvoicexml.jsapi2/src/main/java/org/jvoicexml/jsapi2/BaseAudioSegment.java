@@ -113,9 +113,6 @@ public class BaseAudioSegment extends AudioSegment {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final boolean isGettable() {
         final SecurityManager security = System.getSecurityManager();

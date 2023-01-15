@@ -14,7 +14,7 @@ package javax.speech;
  * <p>
  * Implementations are requested to keep the signature of this method and
  * perform a security check with the help of a class
- * <code>SpeechPermissiony</code> that needs to be written and integrated into
+ * <code>SpeechPermission</code> that needs to be written and integrated into
  * the implementation
  * </p>.
  * <pre>
@@ -32,7 +32,7 @@ package javax.speech;
  */
 public class JavaSpeechSecurity {
     /**
-     * Must be overriden by implementations.
+     * Must be overridden by implementations.
      * @param name permission to check for
      * @throws SecurityException
      *         always

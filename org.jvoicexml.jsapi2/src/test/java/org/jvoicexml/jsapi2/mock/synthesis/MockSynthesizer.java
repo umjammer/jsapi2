@@ -42,63 +42,39 @@ import org.jvoicexml.jsapi2.synthesis.BaseSynthesizer;
  * @author Dirk Schnelle-Walka
  */
 public final class MockSynthesizer extends BaseSynthesizer {
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void handleAllocate() throws EngineStateException,
             EngineException, AudioException, SecurityException {
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected boolean handleCancel() {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected boolean handleCancel(final int id) {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected boolean handleCancelAll() {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void handleDeallocate() {
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void handlePause() {
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected boolean handleResume() {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected AudioSegment handleSpeak(final int id, final String item) {
         return new AudioSegment(
@@ -106,9 +82,6 @@ public final class MockSynthesizer extends BaseSynthesizer {
                 item);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected AudioSegment handleSpeak(final int id, final Speakable item) {
         final String text = item.getMarkupText();
@@ -117,33 +90,21 @@ public final class MockSynthesizer extends BaseSynthesizer {
                 text);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected AudioManager createAudioManager() {
         return new MockAudioManager();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected SpeechEventExecutor createSpeechEventExecutor() {
         return new MockSpeechEventExecutor();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected VocabularyManager createVocabularyManager() {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void handlePropertyChangeRequest(
             BaseEngineProperties properties,
@@ -151,9 +112,6 @@ public final class MockSynthesizer extends BaseSynthesizer {
         properties.commitPropertyChange(propName, oldValue, newValue);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected AudioFormat getEngineAudioFormat() {
         return null;

@@ -2,7 +2,6 @@
  * JSAPI - An base implementation for JSR 113.
  *
  * Copyright (C) 2009-2017 JVoiceXML group - http://jvoicexml.sourceforge.net
- *
  */
 
 package org.jvoicexml.jsapi2.synthesis.freetts;
@@ -10,8 +9,9 @@ package org.jvoicexml.jsapi2.synthesis.freetts;
 import java.util.Locale;
 
 import javax.speech.SpeechLocale;
+import javax.speech.synthesis.Voice;
 
-/**
+/*
  * Copyright 2003 Sun Microsystems, Inc.
  *
  * See the file "license.terms" for information on usage and
@@ -23,6 +23,7 @@ import javax.speech.SpeechLocale;
  * Extends the BaseVoice class to encapsulate FreeTTSSynthesizer specific data.
  */
 public class FreeTTSVoice extends javax.speech.synthesis.Voice {
+
     /** The encapsulated voice. */
     private com.sun.speech.freetts.Voice freettsVoice;
 

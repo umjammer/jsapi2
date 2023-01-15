@@ -80,9 +80,6 @@ public final class SapiSynthesizer extends BaseSynthesizer {
         super.finalize();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void handleAllocate() throws EngineStateException,
         EngineException, AudioException, SecurityException {
@@ -108,9 +105,6 @@ public final class SapiSynthesizer extends BaseSynthesizer {
      */
     private native long sapiHandleAllocate(final Voice voice);
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean handleCancel() {
         return sapiHandleCancel(synthesizerHandle);
@@ -123,9 +117,6 @@ public final class SapiSynthesizer extends BaseSynthesizer {
      */
     private native boolean sapiHandleCancel(final long handle);
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected boolean handleCancel(final int id) {
         return sapiHandleCancel(synthesizerHandle, id);
@@ -140,9 +131,6 @@ public final class SapiSynthesizer extends BaseSynthesizer {
      */
     private native boolean sapiHandleCancel(final long handle, final int id);
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected boolean handleCancelAll() {
         return sapiHandleCancelAll(synthesizerHandle);
@@ -157,9 +145,6 @@ public final class SapiSynthesizer extends BaseSynthesizer {
      */
     private native boolean sapiHandleCancelAll(final long handle);
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void handleDeallocate() {
         // Leave some time to let all resources detach
@@ -179,9 +164,6 @@ public final class SapiSynthesizer extends BaseSynthesizer {
      */
     private native void sapiHandlDeallocate(final long handle);
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void handlePause() {
         sapiHandlPause(synthesizerHandle);
@@ -194,9 +176,6 @@ public final class SapiSynthesizer extends BaseSynthesizer {
      */
     private native void sapiHandlPause(final long handle);
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean handleResume() {
         return sapiHandlResume(synthesizerHandle);
@@ -210,9 +189,6 @@ public final class SapiSynthesizer extends BaseSynthesizer {
      */
     private native boolean sapiHandlResume(final long handle);
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public AudioSegment handleSpeak(final int id, final String item) {
         final byte[] bytes = sapiHandleSpeak(synthesizerHandle, id, item);
@@ -246,9 +222,6 @@ public final class SapiSynthesizer extends BaseSynthesizer {
     private native byte[] sapiHandleSpeak(final long handle, final int id,
             final String item);
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected AudioSegment handleSpeak(final int id, final Speakable item)
             throws SpeakableException {
@@ -285,9 +258,6 @@ public final class SapiSynthesizer extends BaseSynthesizer {
     private native byte[] sapiHandleSpeakSsml(final long handle, final int id,
             final String ssml) throws SpeakableException;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected AudioFormat getEngineAudioFormat() {
         return sapiGetAudioFormat(synthesizerHandle);
@@ -300,9 +270,6 @@ public final class SapiSynthesizer extends BaseSynthesizer {
      */
     private native AudioFormat sapiGetAudioFormat(final long handle);
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void handlePropertyChangeRequest(
             final BaseEngineProperties properties,

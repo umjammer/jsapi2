@@ -3,18 +3,23 @@
  */
 package javax.speech.recognition;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Test case for {@link javax.speech.recognition.RuleReference}.
  * 
  * @author Dirk Schnelle
  */
-public class RuleReferenceTest extends TestCase {
+public class RuleReferenceTest {
     /**
      * Test method for {@link javax.speech.recognition.RuleReference}
      */
-    public void testNewRuleReference() {
+    @Test
+    void testNewRuleReference() {
         final RuleReference reference1 = new RuleReference("ruleNameOne");
         assertEquals("ruleNameOne", reference1.getRuleName());
 
@@ -60,7 +65,8 @@ public class RuleReferenceTest extends TestCase {
     /**
      * Test method for {@link javax.speech.recognition.RuleReference#toString()}.
      */
-    public void testToString() {
+    @Test
+    void testToString() {
         final RuleReference reference1 = new RuleReference("ruleNameOne");
         assertEquals("<ruleref uri=\"#ruleNameOne\"/>", reference1.toString());
 
@@ -85,7 +91,8 @@ public class RuleReferenceTest extends TestCase {
      * Test method for
      * {@link javax.speech.recognition.RuleReference#getGrammarReference()}.
      */
-    public void testGetGrammarReference() {
+    @Test
+    void testGetGrammarReference() {
         final RuleReference reference1 = new RuleReference("ruleNameOne");
         assertNull(reference1.getGrammarReference());
 
@@ -102,7 +109,8 @@ public class RuleReferenceTest extends TestCase {
      * Test method for
      * {@link javax.speech.recognition.RuleReference#getMediaType()}.
      */
-    public void testGetMediaType() {
+    @Test
+    void testGetMediaType() {
         final RuleReference reference1 = new RuleReference("ruleNameOne");
         assertEquals("application/srgs+xml", reference1.getMediaType());
 
@@ -119,7 +127,8 @@ public class RuleReferenceTest extends TestCase {
      * Test method for
      * {@link javax.speech.recognition.RuleReference#getRuleName()}.
      */
-    public void testGetRuleName() {
+    @Test
+    void testGetRuleName() {
         final RuleReference reference1 = new RuleReference("ruleNameOne");
         assertEquals("ruleNameOne", reference1.getRuleName());
 

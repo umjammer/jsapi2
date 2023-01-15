@@ -29,19 +29,21 @@ package javax.speech;
 import javax.speech.mock.MockEngineMode;
 import javax.speech.synthesis.SynthesizerMode;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test case for {@link javax.speech.EngineMode}.
  * 
  * @author Dirk Schnelle
  */
-public class EngineModeTest extends TestCase {
+public class EngineModeTest {
 
     /**
      * Test method for {@link javax.speech.EngineMode#hashCode()}.
      */
-    public void testHashCode() {
+    @Test
+    void testHashCode() {
         final EngineMode mode1 = new MockEngineMode();
         final EngineMode mode2 = new MockEngineMode();
         assertEquals(mode1.hashCode(), mode2.hashCode());
@@ -50,7 +52,8 @@ public class EngineModeTest extends TestCase {
     /**
      * Test method for {@link javax.speech.EngineMode#getEngineName()}.
      */
-    public void testGetEngineName() {
+    @Test
+    void testGetEngineName() {
         final EngineMode mode1 = new MockEngineMode();
         assertNull(mode1.getEngineName());
 
@@ -76,7 +79,8 @@ public class EngineModeTest extends TestCase {
     /**
      * Test method for {@link javax.speech.EngineMode#getSupportsMarkup()}.
      */
-    public void testGetSupportsMarkup() {
+    @Test
+    void testGetSupportsMarkup() {
         final EngineMode mode1 = new MockEngineMode();
         assertNull(mode1.getSupportsMarkup());
 
@@ -111,7 +115,8 @@ public class EngineModeTest extends TestCase {
     /**
      * Test method for {@link javax.speech.EngineMode#getModeName()}.
      */
-    public void testGetModeName() {
+    @Test
+    void testGetModeName() {
         final EngineMode mode1 = new MockEngineMode();
         assertNull(mode1.getModeName());
 
@@ -137,7 +142,8 @@ public class EngineModeTest extends TestCase {
     /**
      * Test method for {@link javax.speech.EngineMode#getRunning()}.
      */
-    public void testGetRunning() {
+    @Test
+    void testGetRunning() {
         final EngineMode mode1 = new MockEngineMode();
         assertNull(mode1.getRunning());
 
@@ -173,7 +179,8 @@ public class EngineModeTest extends TestCase {
      * Test method for
      * {@link javax.speech.EngineMode#getSupportsLetterToSound()}.
      */
-    public void testGetSupportsLetterToSound() {
+    @Test
+    void testGetSupportsLetterToSound() {
         final EngineMode mode1 = new MockEngineMode();
         assertNull(mode1.getSupportsLetterToSound());
 
@@ -209,7 +216,8 @@ public class EngineModeTest extends TestCase {
      * Test method for
      * {@link javax.speech.EngineMode#match(javax.speech.EngineMode)}.
      */
-    public void testMatch() {
+    @Test
+    void testMatch() {
         final EngineMode mode1 = new MockEngineMode();
         assertTrue(mode1.match((EngineMode) null));
 
@@ -251,7 +259,8 @@ public class EngineModeTest extends TestCase {
     /**
      * Test method for {@link javax.speech.EngineMode#equals(java.lang.Object)}.
      */
-    public void testEqualsObject() {
+    @Test
+    void testEqualsObject() {
         final EngineMode mode1 = new MockEngineMode();
         assertFalse(mode1.equals("test"));
 
@@ -289,7 +298,8 @@ public class EngineModeTest extends TestCase {
     /**
      * Test method for {@link javax.speech.EngineMode#toString()}.
      */
-    public void testToString() {
+    @Test
+    void testToString() {
         final EngineMode mode1 = new MockEngineMode();
         assertNotNull(mode1.toString());
 

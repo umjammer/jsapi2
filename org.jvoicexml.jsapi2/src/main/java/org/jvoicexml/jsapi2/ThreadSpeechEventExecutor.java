@@ -52,9 +52,7 @@ public final class ThreadSpeechEventExecutor
         super.finalize();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void terminate() {
         shouldRun = false;
         synchronized (commands) {
@@ -81,9 +79,6 @@ public final class ThreadSpeechEventExecutor
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void run() {
         while (shouldRun) {

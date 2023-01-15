@@ -33,9 +33,6 @@ public class FreeTTSEngineProperties extends BaseSynthesizerProperties {
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setVoice(final Voice voice) {
         if (voice instanceof FreeTTSVoice) {

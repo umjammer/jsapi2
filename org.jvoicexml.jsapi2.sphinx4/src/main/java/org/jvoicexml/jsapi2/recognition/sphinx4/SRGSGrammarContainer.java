@@ -75,9 +75,6 @@ public class SRGSGrammarContainer extends Grammar {
         recognizer = rec;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void newProperties(final PropertySheet ps) throws PropertyException {
         super.newProperties(ps);

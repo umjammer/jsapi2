@@ -34,9 +34,6 @@ public final class SapiEngineListFactory implements EngineListFactory {
         adapter.waitStarted();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public EngineList createEngineList(final EngineMode require) {
         if (require instanceof SynthesizerMode) {

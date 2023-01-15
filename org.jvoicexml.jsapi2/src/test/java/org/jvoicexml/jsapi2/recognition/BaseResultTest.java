@@ -34,9 +34,11 @@ import javax.speech.recognition.RuleSequence;
 import javax.speech.recognition.RuleTag;
 import javax.speech.recognition.RuleToken;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvoicexml.jsapi2.mock.recognition.MockRecognizer;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 /**
@@ -51,7 +53,7 @@ public final class BaseResultTest {
      * @exception Exception test failed
      */
     @Test
-    public void testGetTags() throws Exception {
+    void testGetTags() throws Exception {
         final BaseRecognizer recognizer = new MockRecognizer();
         final GrammarManager manager = recognizer.getGrammarManager();
         final RuleGrammar grammar =
@@ -66,8 +68,8 @@ public final class BaseResultTest {
         recognizer.processGrammars();
         final BaseResult result = new BaseResult(grammar, "test");
         final Object[] tags = result.getTags(0);
-        Assert.assertNotNull(tags);
-        Assert.assertEquals(1, tags.length);
-        Assert.assertEquals("T", tags[0]);
+        assertNotNull(tags);
+        assertEquals(1, tags.length);
+        assertEquals("T", tags[0]);
     }
 }

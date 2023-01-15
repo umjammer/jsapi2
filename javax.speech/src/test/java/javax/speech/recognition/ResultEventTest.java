@@ -28,23 +28,24 @@ package javax.speech.recognition;
 
 import javax.speech.mock.recognition.MockResult;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Test case for {@link javax.speech.recognition.ResultEvent}.
  * 
  * @author Dirk Schnelle
  */
-public class ResultEventTest extends TestCase {
+public class ResultEventTest {
+
     /** The result. */
     private Result result;
 
-    /**
-     * {@inheritDoc}
-     */
+    @BeforeEach
     protected void setUp() throws Exception {
-        super.setUp();
-
         result = new MockResult();
     }
 
@@ -52,7 +53,8 @@ public class ResultEventTest extends TestCase {
      * Test method for
      * {@link javax.speech.recognition.ResultEvent#isFinalizedChanged()}.
      */
-    public void testIsFinalizedChanged() {
+    @Test
+    void testIsFinalizedChanged() {
         final ResultEvent event = new ResultEvent(result,
                 ResultEvent.GRAMMAR_FINALIZED);
         assertFalse(event.isFinalizedChanged());
@@ -102,7 +104,8 @@ public class ResultEventTest extends TestCase {
      * Test method for
      * {@link javax.speech.recognition.ResultEvent#isUnfinalizedChanged()}.
      */
-    public void testIsUnfinalizedChanged() {
+    @Test
+    void testIsUnfinalizedChanged() {
         final ResultEvent event = new ResultEvent(result,
                 ResultEvent.GRAMMAR_FINALIZED);
         assertFalse(event.isUnfinalizedChanged());
@@ -151,35 +154,36 @@ public class ResultEventTest extends TestCase {
     /**
      * Test method for {@link javax.speech.SpeechEvent#paramString()}.
      */
-    public void testParamString() {
+    @Test
+    void testParamString() {
         final ResultEvent event = new ResultEvent(result, 43);
         final String str = event.paramString();
-        assertTrue("id not found in toString", str.indexOf("43") >= 0);
+        assertTrue(str.contains("43"), "id not found in toString");
 
         final ResultEvent event2 = new ResultEvent(result, 44, true, true);
         final String str2 = event2.paramString();
-        assertTrue("id not found in toString", str2.indexOf("44") >= 0);
+        assertTrue(str2.contains("44"), "id not found in toString");
     }
 
     /**
      * Test method for {@link javax.speech.SpeechEvent#toString()}.
      */
-    public void testToString() {
+    @Test
+    void testToString() {
         final ResultEvent event = new ResultEvent(result, 43);
         final String str = event.toString();
-        assertTrue("id not found in toString", str.indexOf("43") >= 0);
+        assertTrue(str.contains("43"), "id not found in toString");
 
         String paramString = event.paramString();
-        assertTrue("toString not longer than paramString",
-                str.length() > paramString.length());
+        assertTrue(str.length() > paramString.length(),
+                "toString not longer than paramString");
 
         final ResultEvent event2 = new ResultEvent(result, 44, true, true);
         final String str2 = event2.toString();
-        assertTrue("id not found in toString", str2.indexOf("44") >= 0);
+        assertTrue(str2.contains("44"), "id not found in toString");
 
         String paramString2 = event.paramString();
-        assertTrue("toString not longer than paramString",
-                str2.length() > paramString2.length());
+        assertTrue(str2.length() > paramString2.length(),
+                "toString not longer than paramString");
     }
-
 }

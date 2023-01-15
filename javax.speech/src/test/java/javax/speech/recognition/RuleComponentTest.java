@@ -3,19 +3,22 @@
  */
 package javax.speech.recognition;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Test case for {@link javax.speech.recognition.RuleComponent}.
  * 
  * @author Dirk Schnelle
  */
-public class RuleComponentTest extends TestCase {
+public class RuleComponentTest {
 
     /**
      * Test method for {@link javax.speech.recognition.RuleComponent#toString()}.
      */
-    public void testToString() {
+    @Test
+    void testToString() {
         final RuleComponent component = new RuleComponent();
         assertNull(component.toString());
     }
