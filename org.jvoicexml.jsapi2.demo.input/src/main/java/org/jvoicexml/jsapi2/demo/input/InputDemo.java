@@ -138,9 +138,6 @@ public final class InputDemo implements ResultListener {
 
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void resultUpdate(final ResultEvent event) {
         System.out.println(event);

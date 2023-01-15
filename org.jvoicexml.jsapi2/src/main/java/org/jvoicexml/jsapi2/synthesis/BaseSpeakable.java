@@ -46,17 +46,11 @@ public class BaseSpeakable implements Speakable {
         markup = text;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final String getMarkupText() {
         return markup;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
         final StringBuilder str = new StringBuilder();

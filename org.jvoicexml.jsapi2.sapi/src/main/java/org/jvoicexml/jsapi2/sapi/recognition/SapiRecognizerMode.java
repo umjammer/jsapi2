@@ -56,9 +56,6 @@ public final class SapiRecognizerMode extends RecognizerMode
         super(locale);
     }
     
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Engine createEngine() throws IllegalArgumentException,
             EngineException {

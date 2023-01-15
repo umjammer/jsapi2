@@ -212,9 +212,7 @@ public final class CaptureURLConnection extends URLConnection {
         return audioFormat;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public InputStream getInputStream() throws IOException {
         // Get line associated with connection
         if (line == null) {

@@ -115,9 +115,6 @@ public class GrammarNode {
         return component;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
         final StringBuilder str = new StringBuilder();

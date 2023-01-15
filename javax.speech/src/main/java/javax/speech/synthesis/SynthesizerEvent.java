@@ -72,9 +72,7 @@ public class SynthesizerEvent extends EngineEvent {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     protected void id2String(StringBuffer str) {
         maybeAddId(str, QUEUE_EMPTIED, "QUEUE_EMPTIED");
         maybeAddId(str, QUEUE_UPDATED, "QUEUE_UPDATED");
@@ -85,9 +83,7 @@ public class SynthesizerEvent extends EngineEvent {
         super.id2String(str);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     protected Vector getParameters() {
         final Vector parameters = super.getParameters();
 

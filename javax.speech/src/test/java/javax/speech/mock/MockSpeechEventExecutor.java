@@ -11,9 +11,7 @@ import javax.speech.SpeechEventExecutor;
  * @author Dirk Schnelle
  */
 public class MockSpeechEventExecutor implements SpeechEventExecutor {
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void execute(Runnable command) {
     }
 }

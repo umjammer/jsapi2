@@ -49,7 +49,7 @@ final class SynthesisQueue implements Runnable {
     private final PlayQueue playQueue;
 
     /** Queued speakables. */
-    private List<QueueItem> queue;
+    private final List<QueueItem> queue;
 
     /** Id of the last queued item. */
     private int queueId;
@@ -63,7 +63,7 @@ final class SynthesisQueue implements Runnable {
             final PlayQueue pqueue) {
         queueManager = manager;
         playQueue = pqueue;
-        queue = new java.util.ArrayList<QueueItem>();
+        queue = new java.util.ArrayList<>();
         queueId = 0;
     }
 
@@ -178,7 +178,7 @@ final class SynthesisQueue implements Runnable {
      * Cancels the first item in the queue.
      * @return <code>true</code> if an item was removed from the queue
      */
-    protected boolean cancelFirstItem() {
+    boolean cancelFirstItem() {
         synchronized (queue) {
             if (queue.size() == 0) {
                 return false;
@@ -195,7 +195,7 @@ final class SynthesisQueue implements Runnable {
      * @param id the id of the item to cancel
      * @return <code>true</code> if the item was cancelled
      */
-    protected boolean cancelItem(final int id) {
+    boolean cancelItem(final int id) {
         // search item in queue
         synchronized (queue) {
             final QueueItem item = getQueueItem(id);

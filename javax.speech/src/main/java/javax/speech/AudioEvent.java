@@ -93,9 +93,7 @@ public class AudioEvent extends SpeechEvent {
         return mediaLocator;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     protected void id2String(StringBuffer str) {
         maybeAddId(str, AUDIO_STARTED, "AUDIO_STARTED");
         maybeAddId(str, AUDIO_STOPPED, "AUDIO_STOPPED");
@@ -104,9 +102,7 @@ public class AudioEvent extends SpeechEvent {
     }
 
     
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     protected Vector getParameters() {
         final Vector parameters = super.getParameters();
 

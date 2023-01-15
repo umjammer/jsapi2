@@ -1,4 +1,14 @@
-[![](https://jitpack.io/v/umjammer/jsapi.svg)](https://jitpack.io/#umjammer/jsapi) [![Parent](https://img.shields.io/badge/Parent-vavi--speech2-pink)](https://github.com/umjammer/vavi-speech2)
+[![Release](https://jitpack.io/v/umjammer/jsapi.svg)](https://jitpack.io/#umjammer/jsapi)
+[![Java CI](https://github.com/umjammer/jsapi/actions/workflows/maven.yml/badge.svg)](https://github.com/umjammer/jsapi/actions/workflows/maven.yml)
+[![CodeQL](https://github.com/umjammer/jsapi/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/umjammer/jsapi/actions/workflows/codeql-analysis.yml)
+[![GitHub Packages (only natives)](https://github.com/umjammer/jsapi/actions/workflows/maven-publish.yml/badge.svg)](https://github.com/umjammer/jsapi/actions/workflows/maven-publish.yml)
+[![Parent](https://img.shields.io/badge/Parent-vavi--speech2-pink)](https://github.com/umjammer/vavi-speech2)
+
+mavenized JSAPI2
+
+---
+
+[Original](https://github.com/JVoiceXML/jsapi)
 
 # JSAPI
 

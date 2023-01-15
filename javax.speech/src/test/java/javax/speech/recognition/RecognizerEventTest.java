@@ -27,7 +27,12 @@ package javax.speech.recognition;
 
 import javax.speech.mock.recognition.MockRecognizer;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Test case for {@link javax.speech.recognition.RecognizerEvent}.
@@ -35,7 +40,7 @@ import junit.framework.TestCase;
  * @author Dirk Schnelle
  * 
  */
-public class RecognizerEventTest extends TestCase {
+public class RecognizerEventTest {
     /** The recognizer. */
     private Recognizer recognizer;
 
@@ -44,9 +49,8 @@ public class RecognizerEventTest extends TestCase {
      * 
      * @see junit.framework.TestCase#setUp()
      */
+    @BeforeEach
     protected void setUp() throws Exception {
-        super.setUp();
-
         recognizer = new MockRecognizer();
     }
 
@@ -54,7 +58,8 @@ public class RecognizerEventTest extends TestCase {
      * Test method for
      * {@link javax.speech.recognition.RecognizerEvent#getAudioPosition()}.
      */
-    public void testGetAudioPosition() {
+    @Test
+    void testGetAudioPosition() {
         final Throwable problem = new Exception();
         long audioPosition = RecognizerEvent.UNKNOWN_AUDIO_POSITION;
         final RecognizerEvent event = new RecognizerEvent(recognizer,
@@ -70,7 +75,8 @@ public class RecognizerEventTest extends TestCase {
      * Test method for
      * {@link javax.speech.recognition.RecognizerEvent#getGrammarException()}.
      */
-    public void testGetGrammarException() {
+    @Test
+    void testGetGrammarException() {
         long audioPosition = RecognizerEvent.UNKNOWN_AUDIO_POSITION;
         final RecognizerEvent event = new RecognizerEvent(recognizer, 42,
                 RecognizerEvent.CHANGES_COMMITTED,
@@ -93,30 +99,31 @@ public class RecognizerEventTest extends TestCase {
     /**
      * Test method for {@link javax.speech.AudioEvent#paramString()}.
      */
-    public void testParamString() {
+    @Test
+    void testParamString() {
         long audioPosition = RecognizerEvent.UNKNOWN_AUDIO_POSITION;
         final RecognizerEvent event = new RecognizerEvent(recognizer, 42,
                 RecognizerEvent.CHANGES_COMMITTED,
                 RecognizerEvent.ENGINE_ALLOCATING_RESOURCES, null,
                 null, audioPosition);
         final String str = event.paramString();
-        assertTrue("id not found in paramString", str.indexOf("42") >= 0);
+        assertTrue(str.contains("42"), "id not found in paramString");
     }
 
     /**
      * Test method for {@link javax.speech.AudioEvent#toString()}.
      */
-    public void testToString() {
+    @Test
+    void testToString() {
         long audioPosition = RecognizerEvent.UNKNOWN_AUDIO_POSITION;
         final RecognizerEvent event = new RecognizerEvent(recognizer, 43,
                 RecognizerEvent.CHANGES_COMMITTED,
                 RecognizerEvent.ENGINE_ALLOCATING_RESOURCES, null,
                 null, audioPosition);
         final String str = event.toString();
-        assertTrue("id not found in toString", str.indexOf("43") >= 0);
+        assertTrue(str.contains("43"), "id not found in toString");
 
         String paramString = event.paramString();
-        assertTrue("toString not longer than paramString",
-                str.length() > paramString.length());
+        assertTrue(str.length() > paramString.length(), "toString not longer than paramString");
     }
 }

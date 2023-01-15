@@ -33,23 +33,17 @@ public final class Handler extends URLStreamHandler {
     public Handler() {
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     protected URLConnection openConnection(final URL url) throws IOException {
         return new PlaybackURLConnection(url);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     protected int getDefaultPort() {
         return 0;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     protected synchronized InetAddress getHostAddress(final URL url) {
         try {
             return InetAddress.getLocalHost();

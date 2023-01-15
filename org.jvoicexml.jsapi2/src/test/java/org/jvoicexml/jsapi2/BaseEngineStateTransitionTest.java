@@ -7,17 +7,22 @@ import javax.speech.Engine;
 import javax.speech.EngineEvent;
 import javax.speech.SpeechEventExecutor;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.jvoicexml.jsapi2.mock.EngineEventAccumulator;
 import org.jvoicexml.jsapi2.mock.synthesis.MockSynthesizer;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 /**
  * State transition test cases for {@link BaseEngine}.
  * @author Dirk Schnelle-Walka
  *
  */
-public final class BaseEngineStateTransitionTest extends TestCase {
+class BaseEngineStateTransitionTest {
+
     /** The engine to test. */
     private Engine engine;
 
@@ -28,7 +33,8 @@ public final class BaseEngineStateTransitionTest extends TestCase {
      * Set up the test environment.
      * @exception Exception set up failed
      */
-    protected void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
         final MockSynthesizer synthesizer = new MockSynthesizer();
         synthesizer.setEngineMask(EngineEvent.DEFAULT_MASK
                 | EngineEvent.ENGINE_ALLOCATING_RESOURCES
@@ -39,14 +45,14 @@ public final class BaseEngineStateTransitionTest extends TestCase {
         final SpeechEventExecutor executor =
                 new SynchronousSpeechEventExecutor();
         engine.setSpeechEventExecutor(executor);
-        super.setUp();
     }
 
     /**
      * Test method for {@link org.jvoicexml.jsapi2.BaseEngine#allocate(int)}.
      * @throws Exception test failed
      */
-    public void testAllocate() throws Exception {
+    @Test
+    void testAllocate() throws Exception {
         engine.allocate();
         engine.waitEngineState(Engine.ALLOCATED);
         final EngineEvent[] events = eventAccu.getEvents();
@@ -60,7 +66,8 @@ public final class BaseEngineStateTransitionTest extends TestCase {
      * Test method for {@link org.jvoicexml.jsapi2.BaseEngine#allocate(int)}.
      * @throws Exception test failed
      */
-    public void testDeallocate() throws Exception {
+    @Test
+    void testDeallocate() throws Exception {
         engine.allocate();
         engine.waitEngineState(Engine.ALLOCATED);
         engine.deallocate();
@@ -74,5 +81,4 @@ public final class BaseEngineStateTransitionTest extends TestCase {
                 events[2].getId());
         assertEquals(EngineEvent.ENGINE_DEALLOCATED, events[3].getId());
     }
-
 }

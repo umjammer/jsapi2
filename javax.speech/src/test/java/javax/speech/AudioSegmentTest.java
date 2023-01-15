@@ -26,19 +26,25 @@
 
 package javax.speech;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 /**
  * Test case for {@link javax.speech.AudioSegment}.
  * 
  * @author Dirk Schnelle
  */
-public class AudioSegmentTest extends TestCase {
+public class AudioSegmentTest {
 
     /**
      * Test method for {@link javax.speech.AudioSegment#getMediaLocator()}.
      */
-    public void testGetLocator() {
+    @Test
+    void testGetLocator() {
         final String locator1 = "file:///user/smith/hello.wav";
         final String markup1 = "<speak xml:lang='en-US' version='1.0'>Hello</speak>";
         final AudioSegment segment1 = new AudioSegment(locator1, markup1);
@@ -53,7 +59,8 @@ public class AudioSegmentTest extends TestCase {
     /**
      * Test method for {@link javax.speech.AudioSegment#getMarkupText()}.
      */
-    public void testGetMarkupText() {
+    @Test
+    void testGetMarkupText() {
         final String locator1 = "file:///user/smith/hello.wav";
         final String markup1 = "<speak xml:lang='en-US' version='1.0'>Hello</speak>";
         final AudioSegment segment1 = new AudioSegment(locator1, markup1);
@@ -70,7 +77,8 @@ public class AudioSegmentTest extends TestCase {
      * @throws Exception
      *         test failed 
      */
-    public void testOpenInputStream() throws Exception {
+    @Test
+    void testOpenInputStream() throws Exception {
         final String locator1 = "file:///user/smith/hello.wav";
         final String markup1 = "<speak xml:lang='en-US' version='1.0'>Hello</speak>";
         final AudioSegment segment1 = new AudioSegment(locator1, markup1);
@@ -80,11 +88,11 @@ public class AudioSegmentTest extends TestCase {
     /**
      * Test method for {@link javax.speech.AudioSegment#isGettable()}.
      */
-    public void testIsGettable() {
+    @Test
+    void testIsGettable() {
         final String locator1 = "file:///user/smith/hello.wav";
         final String markup1 = "<speak xml:lang='en-US' version='1.0'>Hello</speak>";
         final AudioSegment segment1 = new AudioSegment(locator1, markup1);
-        assertTrue("segment should be gettable", segment1.isGettable());
+        assertTrue(segment1.isGettable(), "segment should be gettable");
     }
-
 }

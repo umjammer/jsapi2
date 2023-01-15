@@ -4,6 +4,7 @@
  * Copyright (C) 2007-2017 JVoiceXML group - http://jvoicexml.sourceforge.net
  *
  */
+
 package org.jvoicexml.jsapi2.synthesis;
 
 import java.io.IOException;
@@ -13,7 +14,6 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
-
 import javax.sound.sampled.AudioFormat;
 import javax.speech.AudioException;
 import javax.speech.Engine;
@@ -23,11 +23,13 @@ import javax.speech.synthesis.SynthesizerProperties;
 import org.jvoicexml.jsapi2.BaseAudioManager;
 import org.jvoicexml.jsapi2.protocols.JavaSoundParser;
 
+
 /**
  * Supports the JSAPI 2.0 {@link javax.speech.AudioManager} interface. Actual JSAPI
  * implementations might want to extend or modify this implementation.
  */
 public class BaseSynthesizerAudioManager extends BaseAudioManager {
+
     /** The output stream from the synthesizer. */
     private OutputStream outputStream;
 
@@ -36,21 +38,18 @@ public class BaseSynthesizerAudioManager extends BaseAudioManager {
 
     /**
      * Constructs a new object.
+     *
      * @param engine the associated engine
      * @param format native engine audio format
      */
-    public BaseSynthesizerAudioManager(final Engine engine,
-            final AudioFormat format) {
+    public BaseSynthesizerAudioManager(Engine engine, AudioFormat format) {
         super(engine, format);
-        synthesizerProperties = BaseSynthesizer.class.cast(engine).getSynthesizerProperties();
+        synthesizerProperties = ((BaseSynthesizer) engine).getSynthesizerProperties();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void handleAudioStart() throws AudioException {
-        final String locator = getMediaLocator();
+        String locator = getMediaLocator();
         if (locator == null) {
             outputStream = new SpeakerOutputStream(this);
         } else {
@@ -58,12 +57,10 @@ public class BaseSynthesizerAudioManager extends BaseAudioManager {
             // TODO: check if this is really correct. The URL encoding is only
             // used by some protocol handlers
             try {
-                final URL url = new URL(locator);
-                final AudioFormat format = JavaSoundParser.parse(url);
+                URL url = new URL(locator);
+                AudioFormat format = JavaSoundParser.parse(url);
                 setTargetAudioFormat(format);
-            } catch (MalformedURLException e) {
-                throw new AudioException(e.getMessage());
-            } catch (URISyntaxException e) {
+            } catch (MalformedURLException | URISyntaxException e) {
                 throw new AudioException(e.getMessage());
             }
 
@@ -71,12 +68,10 @@ public class BaseSynthesizerAudioManager extends BaseAudioManager {
             if (outputStream == null) {
                 // Open URL described in locator
                 try {
-                    final URLConnection urlConnection = openURLConnection(true);
+                    URLConnection urlConnection = openURLConnection(true);
                     outputStream = urlConnection.getOutputStream();
                 } catch (IOException ex) {
-                    throw new AudioException(
-                            "Cannot get OutputStream from URL: "
-                            + ex.getMessage());
+                    throw new AudioException("Cannot get OutputStream from URL: " + ex.getMessage());
                 }
             }
         }
@@ -87,9 +82,6 @@ public class BaseSynthesizerAudioManager extends BaseAudioManager {
         return synthesizerProperties.getVolume() / (float) SynthesizerProperties.MAX_VOLUME;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void handleAudioStop() throws AudioException {
         if (outputStream != null) {
@@ -105,39 +97,33 @@ public class BaseSynthesizerAudioManager extends BaseAudioManager {
 
     /**
      * Retrieves the output stream from the synthesizer.
+     *
      * @return the output stream.
      */
     public final OutputStream getOutputStream() {
         return outputStream;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void setMediaLocator(final String locator, final OutputStream stream)
-            throws AudioException {
+    public void setMediaLocator(final String locator, final OutputStream stream) throws AudioException {
         super.setMediaLocator(locator);
         this.outputStream = stream;
     }
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * Throws an {@link IllegalArgumentException} since output streams are not
      * supported.
      */
     @Override
-    public final void setMediaLocator(final String locator,
-            final InputStream stream)
-            throws AudioException, EngineStateException,
-            IllegalArgumentException, SecurityException {
+    public final void setMediaLocator(final String locator, final InputStream stream) throws AudioException, EngineStateException, IllegalArgumentException, SecurityException {
         throw new IllegalArgumentException("input streams are not supported");
     }
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * Throws an {@link IllegalArgumentException} since output streams are not
      * supported.
      */

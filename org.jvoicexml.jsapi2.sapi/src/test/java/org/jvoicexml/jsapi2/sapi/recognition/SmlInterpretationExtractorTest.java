@@ -28,7 +28,6 @@ package org.jvoicexml.jsapi2.sapi.recognition;
 
 import java.io.InputStream;
 import java.util.List;
-
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
@@ -36,25 +35,32 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.stream.StreamSource;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.OS;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 
 /**
  * Test cases for {@link SmlInterpretationExtractor}.
- * @author Dirk Schnelle-Walka
  *
+ * @author Dirk Schnelle-Walka
  */
+@EnabledOnOs(OS.WINDOWS)
 public final class SmlInterpretationExtractorTest {
+
     /** Maximal diff for parsing the confidence value. */
     private static final float MAX_CONFIDENCE_DIFF = 0.0001f;
 
     /**
      * Test case for a simple recognition process.
-     * @exception Exception
-     *            test failed
+     *
+     * @throws Exception test failed
      */
     @Test
-    public void testSimple() throws Exception {
+    void testSimple() throws Exception {
         final TransformerFactory factory = TransformerFactory.newInstance();
         final Transformer transformer = factory.newTransformer();
         final InputStream in =
@@ -65,23 +71,23 @@ public final class SmlInterpretationExtractorTest {
                 new SmlInterpretationExtractor();
         final Result result = new SAXResult(extractor);
         transformer.transform(source, result);
-        Assert.assertEquals("Hello Dirk",
+        assertEquals("Hello Dirk",
                 extractor.getUtterance());
-        Assert.assertEquals(0.5100203, extractor.getConfidence(),
+        assertEquals(0.5100203, extractor.getConfidence(),
                 MAX_CONFIDENCE_DIFF);
         final List<SmlInterpretation> interpretations =
                 extractor.getInterpretations();
-        Assert.assertEquals(0, interpretations.size());
-        Assert.assertEquals("Hello Dirk", extractor.getUtteranceTag());
+        assertEquals(0, interpretations.size());
+        assertEquals("Hello Dirk", extractor.getUtteranceTag());
     }
 
     /**
      * Test case for a simple recognition process with a single tag.
-     * @exception Exception
-     *            test failed
+     *
+     * @throws Exception test failed
      */
     @Test
-    public void testTag() throws Exception {
+    void testTag() throws Exception {
         final TransformerFactory factory = TransformerFactory.newInstance();
         final Transformer transformer = factory.newTransformer();
         final InputStream in =
@@ -92,23 +98,23 @@ public final class SmlInterpretationExtractorTest {
                 new SmlInterpretationExtractor();
         final Result result = new SAXResult(extractor);
         transformer.transform(source, result);
-        Assert.assertEquals("Good morning Dirk",
+        assertEquals("Good morning Dirk",
                 extractor.getUtterance());
-        Assert.assertEquals(0.7378733, extractor.getConfidence(),
+        assertEquals(0.7378733, extractor.getConfidence(),
                 MAX_CONFIDENCE_DIFF);
         final List<SmlInterpretation> interpretations =
                 extractor.getInterpretations();
-        Assert.assertEquals(0, interpretations.size());
-        Assert.assertEquals("Projectmanager", extractor.getUtteranceTag());
+        assertEquals(0, interpretations.size());
+        assertEquals("Projectmanager", extractor.getUtteranceTag());
     }
 
     /**
      * Test case for multiple tags.
-     * @exception Exception
-     *            test failed
+     *
+     * @throws Exception test failed
      */
     @Test
-    public void testMultipleTags() throws Exception {
+    void testMultipleTags() throws Exception {
         final TransformerFactory factory = TransformerFactory.newInstance();
         final Transformer transformer = factory.newTransformer();
         final InputStream in =
@@ -119,33 +125,33 @@ public final class SmlInterpretationExtractorTest {
                 new SmlInterpretationExtractor();
         final Result result = new SAXResult(extractor);
         transformer.transform(source, result);
-        Assert.assertEquals("Hello Dirk",
+        assertEquals("Hello Dirk",
                 extractor.getUtterance());
-        Assert.assertEquals(0.6734907, extractor.getConfidence(),
+        assertEquals(0.6734907, extractor.getConfidence(),
                 MAX_CONFIDENCE_DIFF);
         final List<SmlInterpretation> interpretations =
                 extractor.getInterpretations();
-        Assert.assertEquals(2, interpretations.size());
+        assertEquals(2, interpretations.size());
         final SmlInterpretation greet = interpretations.get(0);
-        Assert.assertEquals("greet", greet.getTag());
-        Assert.assertEquals("\"general\"", greet.getValue());
-        Assert.assertEquals(2.069468E-02f, greet.getConfidence(),
+        assertEquals("greet", greet.getTag());
+        assertEquals("\"general\"", greet.getValue());
+        assertEquals(2.069468E-02f, greet.getConfidence(),
                 MAX_CONFIDENCE_DIFF);
         final SmlInterpretation who = interpretations.get(1);
-        Assert.assertEquals("who", who.getTag());
-        Assert.assertEquals("\"Projectmanager\"", who.getValue());
-        Assert.assertEquals(2.069468E-02f, who.getConfidence(),
+        assertEquals("who", who.getTag());
+        assertEquals("\"Projectmanager\"", who.getValue());
+        assertEquals(2.069468E-02f, who.getConfidence(),
                 MAX_CONFIDENCE_DIFF);
-        Assert.assertEquals("", extractor.getUtteranceTag());
+        assertEquals("", extractor.getUtteranceTag());
     }
 
     /**
      * Test case for a compound object.
-     * @exception Exception
-     *            test failed
+     *
+     * @throws Exception test failed
      */
     @Test
-    public void testCompundObject() throws Exception {
+    void testCompundObject() throws Exception {
         final TransformerFactory factory = TransformerFactory.newInstance();
         final Transformer transformer = factory.newTransformer();
         final InputStream in =
@@ -156,28 +162,28 @@ public final class SmlInterpretationExtractorTest {
                 new SmlInterpretationExtractor();
         final Result result = new SAXResult(extractor);
         transformer.transform(source, result);
-        Assert.assertEquals("a small pizza with salami",
+        assertEquals("a small pizza with salami",
                 extractor.getUtterance());
-        Assert.assertEquals(0.8081474f, extractor.getConfidence(),
+        assertEquals(0.8081474f, extractor.getConfidence(),
                 MAX_CONFIDENCE_DIFF);
         final List<SmlInterpretation> interpretations =
                 extractor.getInterpretations();
-        Assert.assertEquals(3, interpretations.size());
+        assertEquals(3, interpretations.size());
         final SmlInterpretation order = interpretations.get(0);
-        Assert.assertEquals("order", order.getTag());
-        Assert.assertNull(order.getValue());
-        Assert.assertEquals(0.8131593f, order.getConfidence(),
+        assertEquals("order", order.getTag());
+        assertNull(order.getValue());
+        assertEquals(0.8131593f, order.getConfidence(),
                 MAX_CONFIDENCE_DIFF);
         final SmlInterpretation size = interpretations.get(1);
-        Assert.assertEquals("order.size", size.getTag());
-        Assert.assertEquals("\"small\"", size.getValue());
-        Assert.assertEquals(0.8131593f, size.getConfidence(),
+        assertEquals("order.size", size.getTag());
+        assertEquals("\"small\"", size.getValue());
+        assertEquals(0.8131593f, size.getConfidence(),
                 MAX_CONFIDENCE_DIFF);
         final SmlInterpretation topping = interpretations.get(2);
-        Assert.assertEquals("order.topping", topping.getTag());
-        Assert.assertEquals("\"salami\"", topping.getValue());
-        Assert.assertEquals(0.8131593f, topping.getConfidence(),
+        assertEquals("order.topping", topping.getTag());
+        assertEquals("\"salami\"", topping.getValue());
+        assertEquals(0.8131593f, topping.getConfidence(),
                 MAX_CONFIDENCE_DIFF);
-        Assert.assertEquals("", extractor.getUtteranceTag());
+        assertEquals("", extractor.getUtteranceTag());
     }
 }

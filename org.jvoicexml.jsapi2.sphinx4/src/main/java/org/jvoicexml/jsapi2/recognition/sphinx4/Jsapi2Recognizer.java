@@ -134,9 +134,6 @@ public class Jsapi2Recognizer extends AbstractSpeechRecognizer
     public void newProperties(PropertySheet ps) throws PropertyException {
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void statusChanged(State status) {
         synchronized (stateMonitor) {

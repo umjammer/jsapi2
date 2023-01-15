@@ -15,9 +15,7 @@ import javax.speech.synthesis.SynthesizerMode;
  */
 public class MockSynthesizerFactory extends SynthesizerMode implements
         EngineFactory {
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public Engine createEngine() throws IllegalArgumentException,
             EngineException, SecurityException {
         return new MockSynthesizer();

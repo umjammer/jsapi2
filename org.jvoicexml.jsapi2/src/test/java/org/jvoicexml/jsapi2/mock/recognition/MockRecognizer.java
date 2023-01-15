@@ -34,93 +34,66 @@ public final class MockRecognizer extends BaseRecognizer {
         super(RecognizerMode.DEFAULT);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected GrammarManager createGrammarManager() {
+    GrammarManager createGrammarManager() {
         return new BaseGrammarManager(this);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void postResultEvent(final Result result, final ResultEvent event,
-            final SpeechEventExecutor executor) {
+    @Override
+    protected void postResultEvent(Result result, ResultEvent event, SpeechEventExecutor executor) {
         // TODO Auto-generated method stub
-
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     protected void handleAllocate() throws EngineStateException,
             EngineException, AudioException, SecurityException {
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     protected void handleDeallocate() {
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     protected void handlePause() {
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     protected void handlePause(final int flags) {
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    protected boolean handleResume(final InputStream in)
-            throws EngineStateException {
+    @Override
+    protected boolean handleResume(final InputStream in) throws EngineStateException {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     protected void handleRequestFocus() {
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     protected void handleReleaseFocus() {
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public Collection<Grammar> getBuiltInGrammars() {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     protected SpeechEventExecutor createSpeechEventExecutor() {
         return new MockSpeechEventExecutor();
     }
 
     @Override
-    protected boolean setGrammars(
-            final Collection<GrammarDefinition> grammarDefinition) {
+    protected boolean setGrammars(Collection<GrammarDefinition> grammarDefinition) {
         // TODO Auto-generated method stub
         return false;
     }
 
     @Override
     protected void handlePropertyChangeRequest(
-            final BaseEngineProperties properties,
-            final String propName, final Object oldValue,
-            final Object newValue) {
+            BaseEngineProperties properties,
+            String propName, final Object oldValue,
+            Object newValue) {
         properties.commitPropertyChange(propName, oldValue, newValue);
     }
 

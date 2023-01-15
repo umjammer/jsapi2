@@ -70,9 +70,6 @@ public final class SapiSynthesizerMode extends SynthesizerMode
                 Boolean.TRUE, voices);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Engine createEngine() throws IllegalArgumentException,
             EngineException {

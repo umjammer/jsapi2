@@ -147,89 +147,57 @@ public class BaseRecognizerProperties extends BaseEngineProperties
         trainingProvided = false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final int getAdaptation() {
         return adaptation;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final int getCompleteTimeout() {
         return completeTimeout;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final int getConfidenceThreshold() {
         return confidenceThreshold;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final int getEndpointStyle() {
         return endpointStyle;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final int getIncompleteTimeout() {
         return incompleteTimeout;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final int getNumResultAlternatives() {
         return numResultAlternatives;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final int getSensitivity() {
         return sensitivity;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final int getSpeedVsAccuracy() {
         return speedVsAccuracy;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final boolean isResultAudioProvided() {
         return resultAudioProvided;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final boolean isTrainingProvided() {
         return trainingProvided;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void reset() {
         setAdaptation(ADAPT_PAUSED | ADAPT_RESUMED);
         setCompleteTimeout(500);
@@ -245,9 +213,6 @@ public class BaseRecognizerProperties extends BaseEngineProperties
         super.reset();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final void setAdaptation(final int adapt) {
         if (adaptation == adapt) {
@@ -258,9 +223,6 @@ public class BaseRecognizerProperties extends BaseEngineProperties
                 new Integer(adapt));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final void setCompleteTimeout(final int value) {
         if (value < 0) {
@@ -275,9 +237,6 @@ public class BaseRecognizerProperties extends BaseEngineProperties
                 completeTimeout), new Integer(value));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final void setConfidenceThreshold(final int threshold) {
         if ((threshold > MAX_CONFIDENCE) || (threshold < MIN_CONFIDENCE)) {
@@ -291,9 +250,6 @@ public class BaseRecognizerProperties extends BaseEngineProperties
                 confidenceThreshold), new Integer(threshold));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final void setEndpointStyle(final int style) {
         if ((style != ENDPOINT_SPEECH_DETECTION)
@@ -309,9 +265,6 @@ public class BaseRecognizerProperties extends BaseEngineProperties
                 new Integer(style));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final void setIncompleteTimeout(final int timeout) {
         if (timeout < 0) {
@@ -325,9 +278,6 @@ public class BaseRecognizerProperties extends BaseEngineProperties
                 incompleteTimeout), new Integer(timeout));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final void setNumResultAlternatives(final int num) {
         if (numResultAlternatives == num) {
@@ -337,9 +287,6 @@ public class BaseRecognizerProperties extends BaseEngineProperties
                 numResultAlternatives), new Integer(num));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final void setSensitivity(final int value) {
         if ((value > MAX_CONFIDENCE) || (value < MIN_CONFIDENCE)) {
@@ -352,9 +299,6 @@ public class BaseRecognizerProperties extends BaseEngineProperties
                 new Integer(value));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final void setSpeedVsAccuracy(final int value) {
         if ((value != MAX_ACCURACY) && (value != NORM_ACCURACY)
@@ -369,9 +313,6 @@ public class BaseRecognizerProperties extends BaseEngineProperties
                 speedVsAccuracy), new Integer(value));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final void setResultAudioProvided(final boolean value) {
         if (resultAudioProvided == value) {
@@ -381,9 +322,6 @@ public class BaseRecognizerProperties extends BaseEngineProperties
                 resultAudioProvided), new Boolean(value));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final void setTrainingProvided(final boolean value) {
         if (trainingProvided == value) {
@@ -393,9 +331,6 @@ public class BaseRecognizerProperties extends BaseEngineProperties
                 trainingProvided), new Boolean(value));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final boolean setProperty(final String propName, final Object value) {
         if (propName.equals(TRAINING_PROVIDED)) {

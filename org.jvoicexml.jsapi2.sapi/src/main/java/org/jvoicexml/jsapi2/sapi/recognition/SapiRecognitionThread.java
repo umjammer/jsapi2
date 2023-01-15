@@ -67,9 +67,7 @@ final class SapiRecognitionThread extends Thread {
         setDaemon(true);
     }
     
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void run() {
         final long handle = recognizer.getRecognizerHandle();
         //start recognition and get the recognition result

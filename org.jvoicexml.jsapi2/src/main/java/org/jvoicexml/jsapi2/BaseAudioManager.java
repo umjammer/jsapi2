@@ -129,23 +129,17 @@ public abstract class BaseAudioManager implements AudioManager {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public final int getAudioMask() {
         return audioMask;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public final void setAudioMask(final int mask) {
         audioMask = mask;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public final void audioStart()
             throws SecurityException, AudioException, EngineStateException {
         final SecurityManager security = System.getSecurityManager();
@@ -175,9 +169,7 @@ public abstract class BaseAudioManager implements AudioManager {
      */
     protected abstract void handleAudioStart() throws AudioException;
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public final void audioStop()
             throws SecurityException, AudioException, EngineStateException {
         final SecurityManager security = System.getSecurityManager();
@@ -234,9 +226,6 @@ public abstract class BaseAudioManager implements AudioManager {
         return audioStarted;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final void setMediaLocator(final String locator)
             throws AudioException, EngineStateException,
@@ -266,9 +255,6 @@ public abstract class BaseAudioManager implements AudioManager {
         postAudioEvent(event);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final String getMediaLocator() {
         return mediaLocator;
@@ -284,9 +270,6 @@ public abstract class BaseAudioManager implements AudioManager {
         return new String[] { mediaLocator };
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final boolean isSupportedMediaLocator(final String locator)
             throws IllegalArgumentException {

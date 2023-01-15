@@ -3,7 +3,6 @@ package org.jvoicexml.jsapi2.recognition;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-
 import javax.speech.recognition.Grammar;
 import javax.speech.recognition.GrammarManager;
 import javax.speech.recognition.Rule;
@@ -14,14 +13,17 @@ import javax.speech.recognition.RuleSequence;
 import javax.speech.recognition.RuleTag;
 import javax.speech.recognition.RuleToken;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvoicexml.jsapi2.mock.recognition.MockRecognizer;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 
 public class RuleParserTest {
 
     @Test
-    public void testParseStringGrammarManagerStringString() throws Exception {
+    void testParseStringGrammarManagerStringString() throws Exception {
         final MockRecognizer recognizer = new MockRecognizer();
         final GrammarManager manager = new BaseGrammarManager(recognizer);
         final InputStream in = RuleParserTest.class
@@ -36,15 +38,16 @@ public class RuleParserTest {
 
     /**
      * Test method for {@link org.jvoicexml.jsapi2.recognition.BaseResult#getTags(int)}.
-     * @exception Exception test failed
+     *
+     * @throws Exception test failed
      */
     @Test
-    public void testTags() throws Exception {
+    void testTags() throws Exception {
         final BaseRecognizer recognizer = new MockRecognizer();
         final GrammarManager manager = recognizer.getGrammarManager();
         final RuleGrammar grammar =
-            manager.createRuleGrammar("grammar:test", "test");
-        final RuleComponent[] components = new RuleComponent[]  {
+                manager.createRuleGrammar("grammar:test", "test");
+        final RuleComponent[] components = new RuleComponent[] {
                 new RuleToken("test"),
                 new RuleTag("T")
         };
@@ -55,9 +58,8 @@ public class RuleParserTest {
         final RuleParse parse = RuleParser.parse("test",
                 manager, "grammar:test", "test");
         final Object[] tags = parse.getTags();
-        Assert.assertNotNull(tags);
-        Assert.assertEquals(1, tags.length);
-        Assert.assertEquals("T", tags[0]);
+        assertNotNull(tags);
+        assertEquals(1, tags.length);
+        assertEquals("T", tags[0]);
     }
-
 }

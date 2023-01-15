@@ -1,31 +1,28 @@
 package org.jvoicexml.jsapi2.recognition.sphinx4;
 
-import javax.sound.sampled.AudioFileFormat.Type;
-
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
-
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.TargetDataLine;
 import javax.speech.SpeechLocale;
 
-import org.junit.Assert;
-import org.junit.Test;
-
 import edu.cmu.sphinx.api.Configuration;
 import edu.cmu.sphinx.api.SpeechResult;
 import edu.cmu.sphinx.api.StreamSpeechRecognizer;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 /**
  * Test cases for {@link SphinxRecognizerMode}.
  * 
  * @author Dirk Schnelle-Walka
  */
+@DisabledIfEnvironmentVariable(named = "GITHUB_WORKFLOW", matches = ".*")
 public class SphinxRecognizerModeTest {
+
     /**
      * Test method to create an engine.
      * 
@@ -33,7 +30,7 @@ public class SphinxRecognizerModeTest {
      *             test failed
      */
     @Test
-    public void testCreateEngine() throws Exception {
+    void testCreateEngine() throws Exception {
 
         Configuration configuration = new Configuration();
 
@@ -119,7 +116,7 @@ public class SphinxRecognizerModeTest {
 //        fout.close();
         final SphinxRecognizerMode mode = new SphinxRecognizerMode(
                 SpeechLocale.ENGLISH);
-        Assert.assertEquals(Sphinx4Recognizer.class,
+        assertEquals(Sphinx4Recognizer.class,
                 mode.createEngine().getClass());
     }
 }

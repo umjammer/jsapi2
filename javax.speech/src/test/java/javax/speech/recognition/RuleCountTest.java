@@ -3,29 +3,30 @@
  */
 package javax.speech.recognition;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Test case for {@link javax.speech.recognition.RuleCount}.
  * 
  * @author Dirk Schnelle
  */
-public class RuleCountTest extends TestCase {
+public class RuleCountTest {
     private RuleComponent component;
 
-    /**
-     * {@inheritDoc}
-     */
+    @BeforeEach
     protected void setUp() throws Exception {
-        super.setUp();
-
         component = new RuleToken("token");
     }
 
     /**
      * Test method for {@link javax.speech.recognition.RuleCount#toString()}.
      */
-    public void testToString() {
+    @Test
+    void testToString() {
         final RuleCount count1 = new RuleCount(component, 42);
         final String str1 = count1.toString();
         assertEquals("<item repeat=\"42-\">token</item>", str1);
@@ -49,7 +50,8 @@ public class RuleCountTest extends TestCase {
      * Test method for
      * {@link javax.speech.recognition.RuleCount#RuleCount(javax.speech.recognition.RuleComponent, int)}.
      */
-    public void testRuleCountRuleComponentInt() {
+    @Test
+    void testRuleCountRuleComponentInt() {
         final RuleCount count1 = new RuleCount(component, 42);
 
         Exception failure = null;
@@ -65,7 +67,8 @@ public class RuleCountTest extends TestCase {
      * Test method for
      * {@link javax.speech.recognition.RuleCount#RuleCount(javax.speech.recognition.RuleComponent, int, int)}.
      */
-    public void testRuleCountRuleComponentIntInt() {
+    @Test
+    void testRuleCountRuleComponentIntInt() {
         final RuleCount count1 = new RuleCount(component, 42, 43);
 
         final RuleCount count2 = new RuleCount(component, 42, 42);
@@ -91,7 +94,8 @@ public class RuleCountTest extends TestCase {
      * Test method for
      * {@link javax.speech.recognition.RuleCount#RuleCount(javax.speech.recognition.RuleComponent, int, int, int)}.
      */
-    public void testRuleCountRuleComponentIntIntInt() {
+    @Test
+    void testRuleCountRuleComponentIntIntInt() {
         final RuleCount count1 = new RuleCount(component, 42, 43, 0);
 
         final RuleCount count2 = new RuleCount(component, 42, 42,
@@ -127,7 +131,8 @@ public class RuleCountTest extends TestCase {
     /**
      * Test method for {@link javax.speech.recognition.RuleCount#getRepeatMax()}.
      */
-    public void testGetRepeatMax() {
+    @Test
+    void testGetRepeatMax() {
         final RuleCount count1 = new RuleCount(component, 42);
         assertEquals(RuleCount.REPEAT_INDEFINITELY, count1.getRepeatMax());
 
@@ -142,7 +147,8 @@ public class RuleCountTest extends TestCase {
     /**
      * Test method for {@link javax.speech.recognition.RuleCount#getRepeatMin()}.
      */
-    public void testGetRepeatMin() {
+    @Test
+    void testGetRepeatMin() {
         final RuleCount count1 = new RuleCount(component, 42);
         assertEquals(42, count1.getRepeatMin());
 
@@ -158,7 +164,8 @@ public class RuleCountTest extends TestCase {
      * Test method for
      * {@link javax.speech.recognition.RuleCount#getRepeatProbability()}.
      */
-    public void testGetRepeatProbability() {
+    @Test
+    void testGetRepeatProbability() {
         final RuleCount count1 = new RuleCount(component, 42);
         assertEquals(RuleCount.REPEAT_INDEFINITELY, count1
                 .getRepeatProbability());
@@ -175,7 +182,8 @@ public class RuleCountTest extends TestCase {
      * Test method for
      * {@link javax.speech.recognition.RuleCount#getRuleComponent()}.
      */
-    public void testGetRuleComponent() {
+    @Test
+    void testGetRuleComponent() {
         final RuleCount count1 = new RuleCount(component, 42);
         assertEquals(component, count1.getRuleComponent());
 

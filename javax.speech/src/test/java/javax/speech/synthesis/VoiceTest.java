@@ -30,7 +30,8 @@ import java.util.Locale;
 
 import javax.speech.SpeechLocale;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test case for {@link javax.speech.synthesis.Voice}.
@@ -38,12 +39,13 @@ import junit.framework.TestCase;
  * @author Dirk Schnelle-Walka
  * 
  */
-public class VoiceTest extends TestCase {
+public class VoiceTest {
 
     /**
      * Test method for {@link javax.speech.synthesis.Voice#hashCode()}.
      */
-    public void testHashCode() {
+    @Test
+    void testHashCode() {
         final Voice voice1 = new Voice();
         final Voice voice2 = new Voice();
         assertEquals(voice1.hashCode(), voice2.hashCode());
@@ -52,7 +54,8 @@ public class VoiceTest extends TestCase {
     /**
      * Test method for {@link javax.speech.synthesis.Voice#getAge()}.
      */
-    public void testGetAge() {
+    @Test
+    void testGetAge() {
         final Voice voice1 = new Voice();
         assertEquals(Voice.AGE_DONT_CARE, voice1.getAge());
 
@@ -68,7 +71,8 @@ public class VoiceTest extends TestCase {
     /**
      * Test method for {@link javax.speech.synthesis.Voice#getGender()}.
      */
-    public void testGetGender() {
+    @Test
+    void testGetGender() {
         final Voice voice1 = new Voice();
         assertEquals(Voice.GENDER_DONT_CARE, voice1.getGender());
 
@@ -84,7 +88,8 @@ public class VoiceTest extends TestCase {
     /**
      * Test method for {@link javax.speech.synthesis.Voice#getSpeechLocale()}.
      */
-    public void testGetSpeechLocale() {
+    @Test
+    void testGetSpeechLocale() {
         final Voice voice1 = new Voice();
         assertNull(voice1.getSpeechLocale());
 
@@ -100,7 +105,8 @@ public class VoiceTest extends TestCase {
     /**
      * Test method for {@link javax.speech.synthesis.Voice#getName()}.
      */
-    public void testGetName() {
+    @Test
+    void testGetName() {
         final Voice voice1 = new Voice();
         assertNull(voice1.getName());
 
@@ -120,7 +126,8 @@ public class VoiceTest extends TestCase {
     /**
      * Test method for {@link javax.speech.synthesis.Voice#getVariant()}.
      */
-    public void testGetVariant() {
+    @Test
+    void testGetVariant() {
         final Voice voice1 = new Voice();
         assertEquals(Voice.VARIANT_DONT_CARE, voice1.getVariant());
 
@@ -137,35 +144,37 @@ public class VoiceTest extends TestCase {
      * Test method for
      * {@link javax.speech.synthesis.Voice#equals(java.lang.Object)}.
      */
-    public void testEqualsObject() {
+    @Test
+    void testEqualsObject() {
         Voice voice1 = new Voice();
-        assertFalse(voice1.equals("test"));
+        assertNotEquals("test", voice1);
 
         Voice voice2 = new Voice();
-        assertTrue(voice1.equals(voice2));
+        assertEquals(voice1, voice2);
 
         Voice voice3 = new Voice(null, null, Voice.GENDER_DONT_CARE,
                 Voice.AGE_DONT_CARE, Voice.VARIANT_DONT_CARE);
-        assertTrue(voice1.equals(voice3));
+        assertEquals(voice1, voice3);
 
         final Voice voice4 = new Voice(SpeechLocale.US, "john", Voice.GENDER_MALE,
                 Voice.AGE_DONT_CARE, Voice.VARIANT_DEFAULT);
-        assertFalse(voice1.equals(voice4));
+        assertNotEquals(voice1, voice4);
 
         final Voice voice5 = new Voice(SpeechLocale.US, "mary", Voice.GENDER_FEMALE,
                 41, Voice.VARIANT_DEFAULT);
-        assertFalse(voice1.equals(voice5));
-        assertFalse(voice4.equals(voice5));
+        assertNotEquals(voice1, voice5);
+        assertNotEquals(voice4, voice5);
 
         final Voice voice6 = new Voice(SpeechLocale.US, "john", Voice.GENDER_MALE,
                 Voice.AGE_DONT_CARE, Voice.VARIANT_DEFAULT);
-        assertTrue(voice4.equals(voice6));
+        assertEquals(voice4, voice6);
     }
 
     /**
      * Test method for {@link javax.speech.synthesis.Voice#toString()}.
      */
-    public void testToString() {
+    @Test
+    void testToString() {
         final Voice voice = new Voice(SpeechLocale.US, "john", Voice.GENDER_MALE,
                 Voice.AGE_DONT_CARE, Voice.VARIANT_DEFAULT);
         final String str = voice.toString();
@@ -177,7 +186,8 @@ public class VoiceTest extends TestCase {
      * Test method for
      * {@link javax.speech.synthesis.Voice#match(javax.speech.synthesis.Voice)}.
      */
-    public void testMatch() {
+    @Test
+    void testMatch() {
         Voice voice1 = new Voice();
         assertTrue(voice1.match((Voice) null));
 
@@ -208,5 +218,4 @@ public class VoiceTest extends TestCase {
                 Voice.AGE_MIDDLE_ADULT, Voice.VARIANT_DEFAULT);
         assertTrue(voice7.match(voice8));
     }
-
 }

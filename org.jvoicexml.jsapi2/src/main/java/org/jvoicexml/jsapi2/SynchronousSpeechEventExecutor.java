@@ -9,20 +9,16 @@ package org.jvoicexml.jsapi2;
 
 import javax.speech.SpeechEventExecutor;
 
+
 /**
  * A {@link SpeechEventExecutor} that runs synchronously.
- * @author Dirk Schnelle-Walka
  *
+ * @author Dirk Schnelle-Walka
  */
-public final class SynchronousSpeechEventExecutor
-    implements SpeechEventExecutor {
-    /**
-     * {@inheritDoc}
-     */
+public final class SynchronousSpeechEventExecutor implements SpeechEventExecutor {
+
     @Override
-    public void execute(final Runnable command) throws IllegalStateException,
-            NullPointerException {
+    public void execute(final Runnable command) throws IllegalStateException, NullPointerException {
         command.run();
     }
-
 }

@@ -12,19 +12,21 @@
 
 package org.jvoicexml.jsapi2;
 
-import java.util.Enumeration;
 import java.util.List;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Assert;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 /**
  * Test cases for {@link ThreadSpeechEventExecutor}.
  * @author Dirk Schnelle-Walka
  *
  */
-public final class ThreadSpeechEventExecutorTest extends TestCase {
+class ThreadSpeechEventExecutorTest {
+
     /** The test object. */
     private ThreadSpeechEventExecutor executor;
 
@@ -33,6 +35,7 @@ public final class ThreadSpeechEventExecutorTest extends TestCase {
      * @throws java.lang.Exception
      *         setup failed
      */
+    @BeforeEach
     public void setUp() throws Exception {
         executor = new ThreadSpeechEventExecutor();
     }
@@ -51,19 +54,14 @@ public final class ThreadSpeechEventExecutorTest extends TestCase {
      * @exception Exception
      *            test failed
      */
-    public void testExecute() throws Exception {
-        final List<Integer> list = new java.util.ArrayList<Integer>();
-        final Runnable runnable1 = new Runnable() {
-            public void run() {
-                list.add(new Integer(1));
-            }
-        };
-        final Runnable runnable2 = new Runnable() {
-            public void run() {
-                list.add(new Integer(2));
-                synchronized (list) {
-                    list.notifyAll();
-                }
+    @Test
+    void testExecute() throws Exception {
+        final List<Integer> list = new java.util.ArrayList<>();
+        final Runnable runnable1 = () -> list.add(1);
+        final Runnable runnable2 = () -> {
+            list.add(2);
+            synchronized (list) {
+                list.notifyAll();
             }
         };
         executor.execute(runnable1);
@@ -71,9 +69,8 @@ public final class ThreadSpeechEventExecutorTest extends TestCase {
         synchronized (list) {
             list.wait();
         }
-        Assert.assertEquals(2, list.size());
-        Assert.assertEquals(new Integer(1), list.get(0));
-        Assert.assertEquals(new Integer(2), list.get(1));
+        assertEquals(2, list.size());
+        assertEquals(1, list.get(0));
+        assertEquals(2, list.get(1));
     }
-
 }

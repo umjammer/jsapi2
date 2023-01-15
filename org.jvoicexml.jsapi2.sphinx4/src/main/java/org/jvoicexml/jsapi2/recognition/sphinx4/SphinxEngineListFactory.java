@@ -51,9 +51,7 @@ public class SphinxEngineListFactory implements EngineListFactory {
                 new SphinxRecognizerMode(SpeechLocale.GERMAN) };
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public EngineList createEngineList(final EngineMode require) {
         // Must be a recognizer.
         if (!(require instanceof RecognizerMode)) {

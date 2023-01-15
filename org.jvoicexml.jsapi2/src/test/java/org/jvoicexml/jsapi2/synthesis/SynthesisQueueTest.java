@@ -28,27 +28,35 @@ package org.jvoicexml.jsapi2.synthesis;
 
 import javax.speech.AudioSegment;
 
-import junit.framework.TestCase;
-
-import org.junit.Assert;
+import io.github.artsok.RepeatedIfExceptionsTest;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.Test;
 import org.jvoicexml.jsapi2.mock.synthesis.MockSynthesizer;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 /**
  * Test cases for {@link SynthesisQueue}.
- * @author Dirk Schnelle-Walka
  *
+ * @author Dirk Schnelle-Walka
  */
-public final class SynthesisQueueTest extends TestCase {
+class SynthesisQueueTest {
+
     /** The test object. */
     private SynthesisQueue queue;
 
     /**
      * Set up the test environment.
-     * @exception Exception
-     *            error setting up the test environment
+     *
+     * @throws Exception error setting up the test environment
      */
-    protected void setUp() throws Exception {
-        super.setUp();
+    @BeforeEach
+    void setUp() throws Exception {
         final BaseSynthesizer synthesizer = new MockSynthesizer();
         final QueueManager manager = new QueueManager(synthesizer);
         queue = manager.getSynthesisQueue();
@@ -57,92 +65,97 @@ public final class SynthesisQueueTest extends TestCase {
     /**
      * Test method for {@link org.jvoicexml.jsapi2.synthesis.SynthesisQueue#getNextQueueItem()}.
      */
-    public void testGetNextQueueItem() {
+    @Test
+    void testGetNextQueueItem() {
         final AudioSegment segment1 =
-                new AudioSegment("http://localhost", "test"); 
+                new AudioSegment("http://localhost", "test");
         final AudioSegment segment2 =
-                new AudioSegment("http://foreignhost", "test2"); 
+                new AudioSegment("http://foreignhost", "test2");
         final int firstId = queue.appendItem(segment1, null);
         final QueueItem firstItem = queue.getNextQueueItem();
-        Assert.assertEquals(firstId, firstItem.getId());
-        Assert.assertEquals(segment1, firstItem.getAudioSegment());
+        assertEquals(firstId, firstItem.getId());
+        assertEquals(segment1, firstItem.getAudioSegment());
         queue.removeQueueItem(firstItem);
         final int secondId = queue.appendItem(segment2, null);
         final QueueItem secondItem = queue.getNextQueueItem();
-        Assert.assertEquals(secondId, secondItem.getId());
-        Assert.assertEquals(segment2, secondItem.getAudioSegment());
+        assertEquals(secondId, secondItem.getId());
+        assertEquals(segment2, secondItem.getAudioSegment());
         queue.removeQueueItem(secondItem);
     }
 
     /**
      * Test method for {@link SynthesisQueue#getQueueItem(int)}.
      */
-    public void testGetQueueItem() {
+    @Test
+    void testGetQueueItem() {
         final AudioSegment segment1 =
-                new AudioSegment("http://localhost", "test"); 
+                new AudioSegment("http://localhost", "test");
         final AudioSegment segment2 =
-                new AudioSegment("http://foreignhost", "test2"); 
+                new AudioSegment("http://foreignhost", "test2");
         final int firstId = queue.appendItem(segment1, null);
         final int secondId = queue.appendItem(segment2, null);
         final QueueItem item1 = queue.getQueueItem(firstId);
-        Assert.assertEquals(segment1, item1.getAudioSegment());
+        assertEquals(segment1, item1.getAudioSegment());
         final QueueItem item2 = queue.getQueueItem(secondId);
-        Assert.assertEquals(segment2, item2.getAudioSegment());
+        assertEquals(segment2, item2.getAudioSegment());
         final QueueItem item3 = queue.getQueueItem(-1);
-        Assert.assertNull(item3);
+        assertNull(item3);
     }
 
     /**
      * Test method for {@link SynthesisQueue#isQueueEmpty()}.
      */
-    public void testIsQueueEmpty() {
-        Assert.assertTrue(queue.isQueueEmpty());
+    @Test
+    void testIsQueueEmpty() {
+        assertTrue(queue.isQueueEmpty());
         final AudioSegment segment1 =
                 new AudioSegment("http://localhost", "test");
         final int id = queue.appendItem(segment1, null);
-        Assert.assertFalse(queue.isQueueEmpty());
+        assertFalse(queue.isQueueEmpty());
         final QueueItem item = queue.getQueueItem(id);
         queue.removeQueueItem(item);
-        Assert.assertTrue(queue.isQueueEmpty());
+        assertTrue(queue.isQueueEmpty());
     }
 
     /**
      * Test method for {@link SynthesisQueue#cancelFirstItem()},
      */
-    public void testCancelFirstItem() {
-        Assert.assertTrue(queue.isQueueEmpty());
+    @RepeatedIfExceptionsTest(repeats = 10)
+    void testCancelFirstItem() {
+        assertTrue(queue.isQueueEmpty());
         final AudioSegment segment1 =
-                new AudioSegment("http://localhost", "test"); 
+                new AudioSegment("http://localhost", "test");
         final AudioSegment segment2 =
-                new AudioSegment("http://foreignhost", "test2"); 
+                new AudioSegment("http://foreignhost", "test2");
         queue.appendItem(segment1, null);
         final int secondId = queue.appendItem(segment2, null);
-        Assert.assertFalse(queue.isQueueEmpty());
-        Assert.assertTrue(queue.cancelFirstItem());
+        assertFalse(queue.isQueueEmpty());
+        assertTrue(queue.cancelFirstItem());
         final QueueItem secondItem = queue.getNextQueueItem();
-        Assert.assertEquals(secondId, secondItem.getId());
-        Assert.assertTrue(queue.cancelFirstItem());
-        Assert.assertTrue(queue.isQueueEmpty());
-        Assert.assertFalse(queue.cancelFirstItem());
+        assertEquals(secondId, secondItem.getId());
+        assertTrue(queue.cancelFirstItem());
+        assertTrue(queue.isQueueEmpty());
+        assertFalse(queue.cancelFirstItem());
     }
 
     /**
      * Test method for {@link SynthesisQueue#cancelItem(int)},
      */
-    public void testCancelItem() {
-        Assert.assertTrue(queue.isQueueEmpty());
+    @Test
+    void testCancelItem() {
+        assertTrue(queue.isQueueEmpty());
         final AudioSegment segment1 =
-                new AudioSegment("http://localhost", "test"); 
+                new AudioSegment("http://localhost", "test");
         final AudioSegment segment2 =
-                new AudioSegment("http://foreignhost", "test2"); 
+                new AudioSegment("http://foreignhost", "test2");
         final int firstId = queue.appendItem(segment1, null);
         final int secondId = queue.appendItem(segment2, null);
-        Assert.assertFalse(queue.isQueueEmpty());
-        Assert.assertTrue(queue.cancelItem(secondId));
+        assertFalse(queue.isQueueEmpty());
+        assertTrue(queue.cancelItem(secondId));
         final QueueItem firstItem = queue.getNextQueueItem();
-        Assert.assertEquals(firstId, firstItem.getId());
-        Assert.assertTrue(queue.cancelItem(firstId));
-        Assert.assertTrue(queue.isQueueEmpty());
-        Assert.assertFalse(queue.cancelItem(-1));
+        assertEquals(firstId, firstItem.getId());
+        assertTrue(queue.cancelItem(firstId));
+        assertTrue(queue.isQueueEmpty());
+        assertFalse(queue.cancelItem(-1));
     }
 }

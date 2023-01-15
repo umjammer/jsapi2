@@ -32,29 +32,27 @@ import javax.speech.mock.MockEngineMode;
 import javax.speech.recognition.RecognizerMode;
 import javax.speech.synthesis.SynthesizerMode;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test case for {@link javax.speech.EngineList}.
  * 
  * @author Dirk Schnelle
  */
-public class EngineListTest extends TestCase {
+public class EngineListTest {
     /** The engine list to test. */
     private EngineList list;
 
-    /**
-     * {@inheritDoc}
-     */
+    @BeforeEach
     protected void setUp() throws Exception {
-        super.setUp();
-
-        final EngineMode[] modes = new EngineMode[] {
+        EngineMode[] modes = new EngineMode[] {
                 new SynthesizerMode(SpeechLocale.US),
                 new RecognizerMode(SpeechLocale.GERMAN),
-                new MockEngineMode("name1", "mode1", Boolean.TRUE,
-                        Boolean.TRUE,
-                        Boolean.TRUE) };
+                new MockEngineMode("name1", "mode1",
+                        true, true, true)
+        };
         list = new EngineList(modes);
     }
 
@@ -62,20 +60,22 @@ public class EngineListTest extends TestCase {
      * Test method for
      * {@link javax.speech.EngineList#anyMatch(javax.speech.EngineMode)}.
      */
-    public void testAnyMatch() {
-        final EngineMode require1 = new MockEngineMode("name1", "mode1",
-                Boolean.TRUE, Boolean.TRUE, Boolean.TRUE);
+    @Test
+    void testAnyMatch() {
+        EngineMode require1 = new MockEngineMode("name1", "mode1",
+                true, true, true);
         assertTrue(list.anyMatch(require1));
 
-        final EngineMode require2 = new MockEngineMode("name2", "mode1",
-                Boolean.TRUE, Boolean.TRUE, Boolean.TRUE);
+        EngineMode require2 = new MockEngineMode("name2", "mode1",
+                true, true, true);
         assertFalse(list.anyMatch(require2));
     }
 
     /**
      * Test method for {@link javax.speech.EngineList#elementAt(int)}.
      */
-    public void testElementAt() {
+    @Test
+    void testElementAt() {
         EngineMode mode1 = list.elementAt(0);
         assertNotNull(mode1);
         EngineMode mode2 = list.elementAt(1);
@@ -94,8 +94,9 @@ public class EngineListTest extends TestCase {
     /**
      * Test method for {@link javax.speech.EngineList#elements()}.
      */
-    public void testElements() {
-        Enumeration enumeration = list.elements();
+    @Test
+    void testElements() {
+        Enumeration<?> enumeration = list.elements();
         assertNotNull(enumeration);
         assertTrue(enumeration.hasMoreElements());
         assertNotNull(enumeration.nextElement());
@@ -110,11 +111,12 @@ public class EngineListTest extends TestCase {
      * Test method for
      * {@link javax.speech.EngineList#orderByMatch(javax.speech.EngineMode)}.
      */
-    public void testOrderByMatch() {
-        final EngineMode require = new MockEngineMode("name1", "mode1",
-                Boolean.TRUE, Boolean.TRUE, Boolean.TRUE);
+    @Test
+    void testOrderByMatch() {
+        EngineMode require = new MockEngineMode("name1", "mode1",
+                true, true, true);
         list.orderByMatch(require);
-        final EngineMode mode = list.elementAt(0);
+        EngineMode mode = list.elementAt(0);
         assertEquals(3, list.size());
         assertEquals(require, mode);
     }
@@ -123,10 +125,11 @@ public class EngineListTest extends TestCase {
      * Test method for
      * {@link javax.speech.EngineList#rejectMatch(javax.speech.EngineMode)}.
      */
-    public void testRejectMatch() {
+    @Test
+    void testRejectMatch() {
         assertEquals(3, list.size());
-        final EngineMode reject = new MockEngineMode("name1", "mode1",
-                Boolean.TRUE, Boolean.TRUE, Boolean.TRUE);
+        EngineMode reject = new MockEngineMode("name1", "mode1",
+                true, true, true);
         list.rejectMatch(reject);
         assertEquals(2, list.size());
         list.rejectMatch(null);
@@ -136,7 +139,8 @@ public class EngineListTest extends TestCase {
     /**
      * Test method for {@link javax.speech.EngineList#removeElementAt(int)}.
      */
-    public void testRemoveElementAt() {
+    @Test
+    void testRemoveElementAt() {
         assertEquals(3, list.size());
         list.removeElementAt(2);
         assertEquals(2, list.size());
@@ -154,10 +158,11 @@ public class EngineListTest extends TestCase {
      * Test method for
      * {@link javax.speech.EngineList#requireMatch(javax.speech.EngineMode)}.
      */
-    public void testRequireMatch() {
+    @Test
+    void testRequireMatch() {
         assertEquals(3, list.size());
-        final EngineMode require = new MockEngineMode("name1", "mode1",
-                Boolean.TRUE, Boolean.TRUE, Boolean.TRUE);
+        EngineMode require = new MockEngineMode("name1", "mode1",
+                true, true, true);
         list.requireMatch(require);
         assertEquals(1, list.size());
         list.requireMatch(null);
@@ -167,8 +172,8 @@ public class EngineListTest extends TestCase {
     /**
      * Test method for {@link javax.speech.EngineList#size()}.
      */
-    public void testSize() {
+    @Test
+    void testSize() {
         assertEquals(3, list.size());
     }
-
 }

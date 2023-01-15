@@ -3,18 +3,21 @@
  */
 package javax.speech.recognition;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Test case for {@link javax.speech.recognition.RuleSpecial}.
  * 
  * @author Dirk Schnelle
  */
-public class RuleSpecialTest extends TestCase {
+public class RuleSpecialTest {
     /**
      * Test method for {@link javax.speech.recognition.RuleSpecial#toString()}.
      */
-    public void testToString() {
+    @Test
+    void testToString() {
         assertEquals("<ruleref special=\"GARBAGE\"/>", RuleSpecial.GARBAGE
                 .toString());
 

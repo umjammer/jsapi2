@@ -343,9 +343,6 @@ public class BaseRuleGrammar extends BaseGrammar implements RuleGrammar {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void addRule(final String ruleText) throws GrammarException {
         final SrgsRuleGrammarParser srgsParser = new SrgsRuleGrammarParser();
@@ -354,9 +351,6 @@ public class BaseRuleGrammar extends BaseGrammar implements RuleGrammar {
         addRules(loadedRules);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void addRules(final Rule[] rulesToAdd) {
         for (Rule rule : rulesToAdd) {
@@ -364,9 +358,6 @@ public class BaseRuleGrammar extends BaseGrammar implements RuleGrammar {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getRoot() {
         if (root == null) {
@@ -375,9 +366,6 @@ public class BaseRuleGrammar extends BaseGrammar implements RuleGrammar {
         return root;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setRoot(final String rulename) {
         final RootSetterOperation rsgo = new RootSetterOperation(rulename);
@@ -459,27 +447,18 @@ public class BaseRuleGrammar extends BaseGrammar implements RuleGrammar {
             throw new IllegalArgumentException("Unknow atribute: " + attribute);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void addElement(final String element)
             throws IllegalArgumentException {
         throw new RuntimeException("NOT IMPLEMENTED");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeElement(final String element)
             throws IllegalArgumentException {
         throw new RuntimeException("NOT IMPLEMENTED");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String[] getElements() {
         throw new RuntimeException("NOT IMPLEMENTED");
@@ -519,26 +498,17 @@ public class BaseRuleGrammar extends BaseGrammar implements RuleGrammar {
         return rule != null ? rule.getRule() : null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String[] listRuleNames() {
         return rules.keySet().toArray(new String[] {});
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeRule(final String ruleName) {
         RemoveRuleOperation rro = new RemoveRuleOperation(ruleName);
         uncommitedChanges.add(rro);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setActivatable(final String ruleName, final boolean enabled) {
         RuleEnablerOperation operation =
@@ -546,18 +516,12 @@ public class BaseRuleGrammar extends BaseGrammar implements RuleGrammar {
         uncommitedChanges.add(operation);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isActivatable(final String ruleName) {
         final InternalRule rule = rules.get(ruleName);
         return (rule != null ? rule.isActivable() : false);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public RuleReference resolve(final RuleReference name)
             throws GrammarException {
@@ -673,9 +637,6 @@ public class BaseRuleGrammar extends BaseGrammar implements RuleGrammar {
         // }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public RuleParse parse(final String text, final String ruleName)
             throws GrammarException {
@@ -685,9 +646,6 @@ public class BaseRuleGrammar extends BaseGrammar implements RuleGrammar {
         return RuleParser.parse(text, manager, reference, ruleName);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public RuleParse parse(final String[] tokens, final String ruleName)
             throws GrammarException {
@@ -745,9 +703,6 @@ public class BaseRuleGrammar extends BaseGrammar implements RuleGrammar {
         return str.toString();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
         return toString(true);

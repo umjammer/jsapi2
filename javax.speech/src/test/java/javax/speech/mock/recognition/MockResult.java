@@ -38,57 +38,41 @@ import javax.speech.recognition.ResultToken;
  */
 public class MockResult implements Result {
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void addResultListener(ResultListener listener) {
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public ResultToken getBestToken(int tokNum) {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public ResultToken[] getBestTokens() {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public Grammar getGrammar() {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public int getNumTokens() {
         return 0;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public int getResultState() {
         return 0;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public ResultToken[] getUnfinalizedTokens() {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void removeResultListener(ResultListener listener) {
     }
 }

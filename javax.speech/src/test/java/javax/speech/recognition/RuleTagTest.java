@@ -3,19 +3,24 @@
  */
 package javax.speech.recognition;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Test case for {@link javax.speech.recognition.RuleTag}.
  * 
  * @author Dirk Schnelle
  */
-public class RuleTagTest extends TestCase {
+public class RuleTagTest {
     /**
      * Test method for
      * {@link javax.speech.recognition.RuleToken#RuleToken(String)}.
      */
-    public void testNewRuleToken() {
+    @Test
+    void testNewRuleToken() {
         final RuleTag tag1 = new RuleTag("test");
         assertEquals("test", tag1.getTag());
 
@@ -26,7 +31,8 @@ public class RuleTagTest extends TestCase {
     /**
      * Test method for {@link javax.speech.recognition.RuleTag#toString()}.
      */
-    public void testToString() {
+    @Test
+    void testToString() {
         final RuleTag tag = new RuleTag("CL");
         assertEquals("<tag>CL</tag>", tag.toString());
 
@@ -43,7 +49,8 @@ public class RuleTagTest extends TestCase {
     /**
      * Test method for {@link javax.speech.recognition.RuleTag#getTag()}.
      */
-    public void testGetTag() {
+    @Test
+    void testGetTag() {
         final RuleTag tag = new RuleTag("CL");
         assertEquals("CL", tag.getTag());
 

@@ -30,19 +30,26 @@ import javax.speech.EngineMode;
 import javax.speech.SpeechLocale;
 import javax.speech.mock.MockEngineMode;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Test case for {@link javax.speech.synthesis.SynthesizerMode}.
  * 
  * @author Dirk Schnelle
  */
-public class SynthesizerModeTest extends TestCase {
+public class SynthesizerModeTest {
 
     /**
      * Test method for {@link javax.speech.synthesis.SynthesizerMode#hashCode()}.
      */
-    public void testHashCode() {
+    @Test
+    void testHashCode() {
         SynthesizerMode mode1 = new SynthesizerMode();
         SynthesizerMode mode2 = new SynthesizerMode();
         assertEquals(mode1.hashCode(), mode2.hashCode());
@@ -52,7 +59,8 @@ public class SynthesizerModeTest extends TestCase {
      * Test method for
      * {@link javax.speech.synthesis.SynthesizerMode#getMarkupSupport()}.
      */
-    public void testGetMarkupSupport() {
+    @Test
+    void testGetMarkupSupport() {
         SynthesizerMode mode1 = new SynthesizerMode();
         assertNull(mode1.getMarkupSupport());
 
@@ -94,7 +102,8 @@ public class SynthesizerModeTest extends TestCase {
      * Test method for
      * {@link javax.speech.synthesis.SynthesizerMode#match(javax.speech.EngineMode)}.
      */
-    public void testMatch() {
+    @Test
+    void testMatch() {
         final SynthesizerMode mode1 = new SynthesizerMode();
         assertTrue(mode1.match((SynthesizerMode) null));
 
@@ -131,7 +140,8 @@ public class SynthesizerModeTest extends TestCase {
      * Test method for
      * {@link javax.speech.synthesis.SynthesizerMode#equals(java.lang.Object)}.
      */
-    public void testEqualsObject() {
+    @Test
+    void testEqualsObject() {
         final SynthesizerMode mode1 = new SynthesizerMode();
         assertFalse(mode1.equals("test"));
 
@@ -174,7 +184,8 @@ public class SynthesizerModeTest extends TestCase {
     /**
      * Test method for {@link javax.speech.synthesis.SynthesizerMode#toString()}.
      */
-    public void testToString() {
+    @Test
+    void testToString() {
         final SynthesizerMode mode1 = new SynthesizerMode();
         assertNotNull(mode1.toString());
 
@@ -198,7 +209,8 @@ public class SynthesizerModeTest extends TestCase {
      * Test method for
      * {@link javax.speech.synthesis.SynthesizerMode#getVoices()}.
      */
-    public void testGetVoices() {
+    @Test
+    void testGetVoices() {
         SynthesizerMode mode1 = new SynthesizerMode();
         assertNull(mode1.getVoices());
 

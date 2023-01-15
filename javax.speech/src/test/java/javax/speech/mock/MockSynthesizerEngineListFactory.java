@@ -15,9 +15,7 @@ import javax.speech.synthesis.SynthesizerMode;
  * @author Dirk Schnelle
  */
 public class MockSynthesizerEngineListFactory implements EngineListFactory {
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public EngineList createEngineList(EngineMode require)
             throws SecurityException {
         if ((require == null) || (require instanceof SynthesizerMode)) {

@@ -10,17 +10,17 @@ import javax.speech.recognition.RecognizerMode;
 import javax.speech.spi.EngineListFactory;
 import javax.speech.synthesis.SynthesizerMode;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test case for {@link javax.speech.recognition.RuleAlternatives}.
  * 
  * @author Dirk Schnelle-Walka
  */
-public class EngineManagerTest extends TestCase {
-    /**
-     * {@inheritDoc}
-     */
+public class EngineManagerTest {
+    @BeforeEach
     protected void setUp() throws Exception {
         EngineManager.registerEngineListFactory(
                 MockRecognizerEngineListFactory.class.getCanonicalName());
@@ -32,7 +32,8 @@ public class EngineManagerTest extends TestCase {
      * Test method for
      * {@link javax.speech.EngineManager#availableEngines(javax.speech.EngineMode)}.
      */
-    public void testAvailableEngines() {
+    @Test
+    void testAvailableEngines() {
         final EngineMode require1 = null;
         final EngineList engines1 = EngineManager.availableEngines(require1);
         assertEquals(2, engines1.size());
@@ -50,7 +51,8 @@ public class EngineManagerTest extends TestCase {
      * Test method for
      * {@link javax.speech.EngineManager#createEngine(javax.speech.EngineMode)}.
      */
-    public void testCreateEngine() throws Exception {
+    @Test
+    void testCreateEngine() throws Exception {
         final EngineMode require1 = new SynthesizerMode();
         final Engine engine1 = EngineManager.createEngine(require1);
         assertNotNull(engine1);
@@ -73,7 +75,8 @@ public class EngineManagerTest extends TestCase {
      * Test method for
      * {@link javax.speech.EngineManager#getSpeechEventExecutor()}.
      */
-    public void testGetSpeechEventExecutor() {
+    @Test
+    void testGetSpeechEventExecutor() {
         final SpeechEventExecutor executor =
                 EngineManager.getSpeechEventExecutor();
         assertNotNull(executor);
@@ -83,7 +86,8 @@ public class EngineManagerTest extends TestCase {
      * Test method for
      * {@link javax.speech.EngineManager#setSpeechEventExecutor(javax.speech.SpeechEventExecutor)}.
      */
-    public void testSetSpeechEventExecutor() {
+    @Test
+    void testSetSpeechEventExecutor() {
         assertNull(EngineManager.getSpeechEventExecutor());
         final SpeechEventExecutor executor = new MockSpeechEventExecutor();
         EngineManager.setSpeechEventExecutor(executor);
@@ -93,7 +97,8 @@ public class EngineManagerTest extends TestCase {
     /**
      * Test method for {@link javax.speech.EngineManager#getVersion()}.
      */
-    public void testGetVersion() {
+    @Test
+    void testGetVersion() {
         assertEquals("2.0.6.0", EngineManager.getVersion());
     }
 
@@ -101,7 +106,8 @@ public class EngineManagerTest extends TestCase {
      * Test method for
      * {@link javax.speech.EngineManager#registerEngineListFactory(java.lang.String)}.
      */
-    public void testRegisterEngineListFactory() throws Exception {
+    @Test
+    void testRegisterEngineListFactory() throws Exception {
         final EngineList engines1 = EngineManager.availableEngines(null);
         assertEquals(2, engines1.size());
 

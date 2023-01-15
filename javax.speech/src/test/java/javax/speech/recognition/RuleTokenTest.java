@@ -26,19 +26,23 @@
 
 package javax.speech.recognition;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Test case for {@link javax.speech.recognition.RuleToken}.
  * 
  * @author Dirk Schnelle-Walka
  */
-public class RuleTokenTest extends TestCase {
+public class RuleTokenTest {
     /**
      * Test method for
      * {@link javax.speech.recognition.RuleToken#RuleToken(String)}.
      */
-    public void testNewRuleToken() {
+    @Test
+    void testNewRuleToken() {
         final RuleToken token1 = new RuleToken("test");
         assertEquals("test", token1.getText());
 
@@ -68,7 +72,8 @@ public class RuleTokenTest extends TestCase {
     /**
      * Test method for {@link javax.speech.recognition.RuleToken#getText()}.
      */
-    public void testGetText() {
+    @Test
+    void testGetText() {
         final RuleToken token = new RuleToken("test");
         assertEquals("test", token.getText());
     }
@@ -76,7 +81,8 @@ public class RuleTokenTest extends TestCase {
     /**
      * Test method for {@link javax.speech.recognition.RuleToken#toString()}.
      */
-    public void testToString() {
+    @Test
+    void testToString() {
         final RuleToken token = new RuleToken("test");
         assertEquals("test", token.getText());
     }

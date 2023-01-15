@@ -30,6 +30,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -65,7 +67,7 @@ class PlayQueue implements Runnable {
      */
     public PlayQueue(final QueueManager manager) {
         queueManager = manager;
-        queue = new java.util.ArrayList<QueueItem>();
+        queue = new CopyOnWriteArrayList<>();
     }
 
     /**
@@ -90,9 +92,7 @@ class PlayQueue implements Runnable {
         return AudioSystem.getAudioInputStream(targetFormat, in);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void run() {
         int playIndex = 0;
         int wordIndex = 0;
@@ -240,12 +240,12 @@ class PlayQueue implements Runnable {
 
     /**
      * Delays until the synthesizer moved into the
-     * {@link Synthesizer.RESUMED} state.
+     * {@link Synthesizer#RESUMED} state.
      * <p>
-     * If the {@link Synthesizer} is in the {@link Synthesizer.PAUSED}
-     * state, first a {@link SpeakableEvent.SPEAKABLE_PAUSED} is issued.
+     * If the {@link Synthesizer} is in the {@link Synthesizer#PAUSED}
+     * state, first a {@link SpeakableEvent#SPEAKABLE_PAUSED} is issued.
      * Once the {@link Synthesizer} is resumed, a
-     * {@link SpeakableEvent.SPEAKABLE_RESUMED} is issued.
+     * {@link SpeakableEvent#SPEAKABLE_RESUMED} is issued.
      * </p>
      * @param item the next queue item to play
      * @throws InterruptedException
@@ -273,8 +273,8 @@ class PlayQueue implements Runnable {
 
     /**
      * Posts an update event after a play has been performed. This is
-     * either a {@link Synthesizer.QUEUE_EMPTIED} event if the
-     * queue is empty or {@link Synthesizer.QUEUE_UPDATED} if there
+     * either a {@link SynthesizerEvent#QUEUE_EMPTIED} event if the
+     * queue is empty or {@link SynthesizerEvent#QUEUE_UPDATED} if there
      * are more speakables to process,
      */
     private void postEventsAfterPlay() {

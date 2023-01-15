@@ -28,22 +28,20 @@ package javax.speech.synthesis;
 
 import javax.speech.SpeechLocale;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test case for {@link javax.speech.synthesis.SpeakableEvent}.
  * 
  * @author Dirk Schnelle-Walka
  */
-public class SpeakableEventTest extends TestCase {
+public class SpeakableEventTest {
     private Object source;
 
-    /**
-     * {@inheritDoc}
-     */
+    @BeforeEach
     protected void setUp() throws Exception {
-        super.setUp();
-
         source = new Object();
     }
 
@@ -51,7 +49,8 @@ public class SpeakableEventTest extends TestCase {
      * Test method for
      * {@link javax.speech.synthesis.SpeakableEvent#getAttributes()}.
      */
-    public void testGetAttributes() {
+    @Test
+    void testGetAttributes() {
         final SpeakableEvent event1 = new SpeakableEvent(source,
                 SpeakableEvent.TOP_OF_QUEUE, 42);
         assertEquals(0, event1.getAttributes().length);
@@ -106,7 +105,8 @@ public class SpeakableEventTest extends TestCase {
      * Test method for
      * {@link javax.speech.synthesis.SpeakableEvent#getAudioPosition()}.
      */
-    public void testGetAudioPosition() {
+    @Test
+    void testGetAudioPosition() {
         final SpeakableEvent event1 = new SpeakableEvent(source,
                 SpeakableEvent.TOP_OF_QUEUE, 42);
         assertEquals(SpeakableEvent.UNKNOWN_AUDIO_POSITION,
@@ -166,7 +166,8 @@ public class SpeakableEventTest extends TestCase {
     /**
      * Test method for {@link javax.speech.synthesis.SpeakableEvent#getIndex()}.
      */
-    public void testGetIndex() {
+    @Test
+    void testGetIndex() {
         final SpeakableEvent event1 = new SpeakableEvent(source,
                 SpeakableEvent.TOP_OF_QUEUE, 42);
 
@@ -224,7 +225,8 @@ public class SpeakableEventTest extends TestCase {
      * Test method for
      * {@link javax.speech.synthesis.SpeakableEvent#getNewVoice()}.
      */
-    public void testGetNewVoice() {
+    @Test
+    void testGetNewVoice() {
         final SpeakableEvent event1 = new SpeakableEvent(source,
                 SpeakableEvent.TOP_OF_QUEUE, 42);
 
@@ -282,7 +284,8 @@ public class SpeakableEventTest extends TestCase {
      * Test method for
      * {@link javax.speech.synthesis.SpeakableEvent#getOldVoice()}.
      */
-    public void testGetOldVoice() {
+    @Test
+    void testGetOldVoice() {
         final SpeakableEvent event1 = new SpeakableEvent(source,
                 SpeakableEvent.TOP_OF_QUEUE, 42);
         assertNull(event1.getOldVoice());
@@ -336,7 +339,8 @@ public class SpeakableEventTest extends TestCase {
     /**
      * Test method for {@link javax.speech.synthesis.SpeakableEvent#getPhones()}.
      */
-    public void testGetPhones() {
+    @Test
+    void testGetPhones() {
         final SpeakableEvent event1 = new SpeakableEvent(source,
                 SpeakableEvent.TOP_OF_QUEUE, 42);
 
@@ -394,7 +398,8 @@ public class SpeakableEventTest extends TestCase {
      * Test method for
      * {@link javax.speech.synthesis.SpeakableEvent#getRealizedValue()}.
      */
-    public void testGetRealizedValue() {
+    @Test
+    void testGetRealizedValue() {
         final SpeakableEvent event1 = new SpeakableEvent(source,
                 SpeakableEvent.TOP_OF_QUEUE, 42);
         assertEquals(SpeakableEvent.UNKNOWN_VALUE, event1.getRealizedValue());
@@ -450,7 +455,8 @@ public class SpeakableEventTest extends TestCase {
      * Test method for
      * {@link javax.speech.synthesis.SpeakableEvent#getRequestedValue()}.
      */
-    public void testGetRequestedValue() {
+    @Test
+    void testGetRequestedValue() {
         final SpeakableEvent event1 = new SpeakableEvent(source,
                 SpeakableEvent.TOP_OF_QUEUE, 42);
         assertEquals(SpeakableEvent.UNKNOWN_VALUE,
@@ -512,7 +518,8 @@ public class SpeakableEventTest extends TestCase {
      * Test method for
      * {@link javax.speech.synthesis.SpeakableEvent#getRequestId()}.
      */
-    public void testGetRequestId() {
+    @Test
+    void testGetRequestId() {
         final SpeakableEvent event1 = new SpeakableEvent(source,
                 SpeakableEvent.TOP_OF_QUEUE, 42);
         assertEquals(42, event1.getRequestId());
@@ -567,7 +574,8 @@ public class SpeakableEventTest extends TestCase {
      * Test method for
      * {@link javax.speech.synthesis.SpeakableEvent#getTextInfo()}.
      */
-    public void testGetTextInfo() {
+    @Test
+    void testGetTextInfo() {
         final SpeakableEvent event1 = new SpeakableEvent(source,
                 SpeakableEvent.TOP_OF_QUEUE, 42);
 
@@ -632,7 +640,8 @@ public class SpeakableEventTest extends TestCase {
     /**
      * Test method for {@link javax.speech.synthesis.SpeakableEvent#getType()}.
      */
-    public void testGetType() {
+    @Test
+    void testGetType() {
         final SpeakableEvent event1 = new SpeakableEvent(source,
                 SpeakableEvent.TOP_OF_QUEUE, 42);
         assertEquals(SpeakableEvent.UNKNOWN_TYPE, event1.getType());
@@ -688,27 +697,28 @@ public class SpeakableEventTest extends TestCase {
     /**
      * Test method for {@link javax.speech.SpeechEvent#paramString()}.
      */
-    public void testParamString() {
+    @Test
+    void testParamString() {
         final SpeakableEvent event1 = new SpeakableEvent(source,
                 SpeakableEvent.TOP_OF_QUEUE, 42);
         final String str1 = event1.paramString();
-        assertTrue("id not found in toString",
-                str1.indexOf("TOP_OF_QUEUE") >= 0);
+        assertTrue(str1.contains("TOP_OF_QUEUE"),
+                "id not found in toString");
 
         final String[] attrs = new String[] { "attribute1", "attribute2" };
         final SpeakableEvent event2 = new SpeakableEvent(source,
                 SpeakableEvent.ELEMENT_REACHED, 46, "textInfo",
                 SpeakableEvent.ELEMENT_OPEN, attrs);
         final String str2 = event2.paramString();
-        assertTrue("id not found in toString",
-                str2.indexOf("ELEMENT_REACHED") >= 0);
+        assertTrue(str2.contains("ELEMENT_REACHED"),
+                "id not found in toString");
 
         final int audioPosition = 46738;
         final SpeakableEvent event3 = new SpeakableEvent(source,
                 SpeakableEvent.MARKER_REACHED, 49, "textInfo2", audioPosition);
         final String str3 = event3.paramString();
-        assertTrue("id not found in toString",
-                str3.indexOf("MARKER_REACHED") >= 0);
+        assertTrue(str3.contains("MARKER_REACHED"),
+                "id not found in toString");
 
         final int requested = 100;
         final int realized = 99;
@@ -716,8 +726,8 @@ public class SpeakableEventTest extends TestCase {
                 SpeakableEvent.PROSODY_UPDATED, 51, "textInfo3",
                 SpeakableEvent.PROSODY_RATE, requested, realized);
         final String str4 = event4.paramString();
-        assertTrue("id not found in toString",
-                str4.indexOf("PROSODY_UPDATED") >= 0);
+        assertTrue(str4.contains("PROSODY_UPDATED"),
+                "id not found in toString");
 
         final int wordStart = 17;
         final int wordEnd = 23;
@@ -725,23 +735,23 @@ public class SpeakableEventTest extends TestCase {
                 SpeakableEvent.WORD_STARTED, 55, "textInfo4", wordStart,
                 wordEnd);
         final String str5 = event5.paramString();
-        assertTrue("id not found in toString",
-                str5.indexOf("WORD_STARTED") >= 0);
+        assertTrue(str5.contains("WORD_STARTED"),
+                "id not found in toString");
 
         final PhoneInfo[] phones = new PhoneInfo[] { new PhoneInfo("ph1", 1),
                 new PhoneInfo("ph2", 2) };
         final SpeakableEvent event6 = new SpeakableEvent(source,
                 SpeakableEvent.PHONEME_STARTED, 59, "textInfo5", phones, 1);
         final String str6 = event6.paramString();
-        assertTrue("id not found in toString",
-                str6.indexOf("PHONEME_STARTED") >= 0);
+        assertTrue(str6.contains("PHONEME_STARTED"),
+                "id not found in toString");
 
         final SpeakableEvent event7 = new SpeakableEvent(source,
                 SpeakableEvent.MARKER_REACHED, 60, "textInfo6",
                 SpeakableEvent.SPEAKABLE_FAILURE_RECOVERABLE);
         final String str7 = event7.paramString();
-        assertTrue("id not found in toString",
-                str7.indexOf("MARKER_REACHED") >= 0);
+        assertTrue(str7.contains("MARKER_REACHED"),
+                "id not found in toString");
 
         final Voice oldVoice = new Voice(SpeechLocale.US, "mary",
                 Voice.GENDER_FEMALE, 41, Voice.VARIANT_DEFAULT);
@@ -751,42 +761,43 @@ public class SpeakableEventTest extends TestCase {
                 SpeakableEvent.VOICE_CHANGED, 60, "textInfo7", oldVoice,
                 newVoice);
         final String str8 = event8.paramString();
-        assertTrue("id not found in toString",
-                str8.indexOf("VOICE_CHANGED") >= 0);
+        assertTrue(str8.contains("VOICE_CHANGED"),
+                "id not found in toString");
     }
 
     /**
      * Test method for {@link javax.speech.SpeechEvent#toString()}.
      */
-    public void testToString() {
+    @Test
+    void testToString() {
         final SpeakableEvent event1 = new SpeakableEvent(source,
                 SpeakableEvent.TOP_OF_QUEUE, 42);
         final String str1 = event1.toString();
-        assertTrue("id not found in toString", str1.indexOf("TOP_OF_QUEUE") >= 0);
+        assertTrue(str1.contains("TOP_OF_QUEUE"), "id not found in toString");
         String paramString = event1.paramString();
-        assertTrue("toString not longer than paramString",
-                str1.length() > paramString.length());
+        assertTrue(str1.length() > paramString.length(),
+                "toString not longer than paramString");
 
         final String[] attrs = new String[] { "attribute1", "attribute2" };
         final SpeakableEvent event2 = new SpeakableEvent(source,
                 SpeakableEvent.ELEMENT_REACHED, 46, "textInfo",
                 SpeakableEvent.ELEMENT_OPEN, attrs);
         final String str2 = event2.toString();
-        assertTrue("id not found in toString",
-                str2.indexOf("ELEMENT_REACHED") >= 0);
+        assertTrue(str2.contains("ELEMENT_REACHED"),
+                "id not found in toString");
         String paramString2 = event1.paramString();
-        assertTrue("toString not longer than paramString",
-                str2.length() > paramString2.length());
+        assertTrue(str2.length() > paramString2.length(),
+                "toString not longer than paramString");
 
         final int audioPosition = 46738;
         final SpeakableEvent event3 = new SpeakableEvent(source,
                 SpeakableEvent.MARKER_REACHED, 49, "textInfo2", audioPosition);
         final String str3 = event3.toString();
-        assertTrue("id not found in toString",
-                str3.indexOf("MARKER_REACHED") >= 0);
+        assertTrue(str3.contains("MARKER_REACHED"),
+                "id not found in toString");
         String paramString3 = event3.paramString();
-        assertTrue("toString not longer than paramString",
-                str3.length() > paramString3.length());
+        assertTrue(str3.length() > paramString3.length(),
+                "toString not longer than paramString");
 
         final int requested = 100;
         final int realized = 99;
@@ -794,11 +805,11 @@ public class SpeakableEventTest extends TestCase {
                 SpeakableEvent.PROSODY_UPDATED, 51, "textInfo3",
                 SpeakableEvent.PROSODY_RATE, requested, realized);
         final String str4 = event4.toString();
-        assertTrue("id not found in toString",
-                str4.indexOf("PROSODY_UPDATED") >= 0);
+        assertTrue(str4.contains("PROSODY_UPDATED"),
+                "id not found in toString");
         String paramString4 = event4.paramString();
-        assertTrue("toString not longer than paramString",
-                str4.length() > paramString4.length());
+        assertTrue(str4.length() > paramString4.length(),
+                "toString not longer than paramString");
 
         final int wordStart = 17;
         final int wordEnd = 23;
@@ -806,32 +817,32 @@ public class SpeakableEventTest extends TestCase {
                 SpeakableEvent.WORD_STARTED, 55, "textInfo4", wordStart,
                 wordEnd);
         final String str5 = event5.toString();
-        assertTrue("id not found in toString",
-                str5.indexOf("WORD_STARTED") >= 0);
+        assertTrue(str5.contains("WORD_STARTED"),
+                "id not found in toString");
         String paramString5 = event5.paramString();
-        assertTrue("toString not longer than paramString",
-                str5.length() > paramString5.length());
+        assertTrue(str5.length() > paramString5.length(),
+                "toString not longer than paramString");
 
         final PhoneInfo[] phones = new PhoneInfo[] { new PhoneInfo("ph1", 1),
                 new PhoneInfo("ph2", 2) };
         final SpeakableEvent event6 = new SpeakableEvent(source,
                 SpeakableEvent.PHONEME_STARTED, 59, "textInfo5", phones, 1);
         final String str6 = event6.toString();
-        assertTrue("id not found in toString",
-                str6.indexOf("PHONEME_STARTED") >= 0);
+        assertTrue(str6.contains("PHONEME_STARTED"),
+                "id not found in toString");
         String paramString6 = event6.paramString();
-        assertTrue("toString not longer than paramString",
-                str6.length() > paramString6.length());
+        assertTrue(str6.length() > paramString6.length(),
+                "toString not longer than paramString");
 
         final SpeakableEvent event7 = new SpeakableEvent(source,
                 SpeakableEvent.MARKER_REACHED, 60, "textInfo6",
                 SpeakableEvent.SPEAKABLE_FAILURE_RECOVERABLE);
         final String str7 = event7.toString();
-        assertTrue("id not found in toString",
-                str7.indexOf("MARKER_REACHED") >= 0);
+        assertTrue(str7.contains("MARKER_REACHED"),
+                "id not found in toString");
         String paramString7 = event7.paramString();
-        assertTrue("toString not longer than paramString",
-                str7.length() > paramString7.length());
+        assertTrue(str7.length() > paramString7.length(),
+                "toString not longer than paramString");
 
         final Voice oldVoice = new Voice(SpeechLocale.US, "mary",
                 Voice.GENDER_FEMALE, 41, Voice.VARIANT_DEFAULT);
@@ -841,10 +852,10 @@ public class SpeakableEventTest extends TestCase {
                 SpeakableEvent.VOICE_CHANGED, 60, "textInfo7", oldVoice,
                 newVoice);
         final String str8 = event8.toString();
-        assertTrue("id not found in toString",
-                str8.indexOf("VOICE_CHANGED") >= 0);
+        assertTrue(str8.contains("VOICE_CHANGED"),
+                "id not found in toString");
         String paramString8 = event8.paramString();
-        assertTrue("toString not longer than paramString",
-                str8.length() > paramString8.length());
+        assertTrue(str8.length() > paramString8.length(),
+                "toString not longer than paramString");
     }
 }

@@ -49,41 +49,26 @@ public class BaseSpeakerManager implements SpeakerManager {
         currentSpeaker = null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void createSpeaker(final SpeakerProfile speaker) {
         speakerProfiles.add(speaker);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void deleteSpeaker(final SpeakerProfile speaker) {
         speakerProfiles.remove(speaker);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public SpeakerProfile getCurrentSpeaker() {
         return currentSpeaker;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public SpeakerManagerUI getSpeakerManagerUI() {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public SpeakerProfile[] listKnownSpeakers() {
         final SpeakerProfile[] profiles =
@@ -92,31 +77,19 @@ public class BaseSpeakerManager implements SpeakerManager {
         return profiles;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void renameSpeaker(final SpeakerProfile oldSpeaker,
                               final SpeakerProfile newSpeaker) {
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void restoreCurrentSpeaker() throws EngineStateException {
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void saveCurrentSpeaker() throws EngineStateException {
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setCurrentSpeaker(final SpeakerProfile speaker) {
         if (!speakerProfiles.contains(speaker)) {

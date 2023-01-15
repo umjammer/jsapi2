@@ -369,9 +369,7 @@ public class SpeakableEvent extends SpeechEvent {
         return UNKNOWN_INDEX;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     protected void id2String(StringBuffer str) {
         maybeAddId(str, TOP_OF_QUEUE, "TOP_OF_QUEUE");
         maybeAddId(str, SPEAKABLE_STARTED, "SPEAKABLE_STARTED");
@@ -389,9 +387,7 @@ public class SpeakableEvent extends SpeechEvent {
         super.id2String(str);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     protected Vector getParameters() {
         final Vector parameters = super.getParameters();
 

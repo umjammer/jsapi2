@@ -93,25 +93,16 @@ public class BaseGrammarManager implements GrammarManager {
         this(null);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final void addGrammarListener(final GrammarListener listener) {
         grammarListeners.add(listener);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final void removeGrammarListener(final GrammarListener listener) {
         grammarListeners.remove(listener);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public RuleGrammar createRuleGrammar(final String grammarReference,
             final String rootName) throws IllegalArgumentException,
@@ -120,9 +111,6 @@ public class BaseGrammarManager implements GrammarManager {
         return createRuleGrammar(grammarReference, rootName, locale);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public RuleGrammar createRuleGrammar(final String grammarReference,
             final String rootName, final SpeechLocale locale)
@@ -235,9 +223,6 @@ public class BaseGrammarManager implements GrammarManager {
         return grammars.get(grammarReference);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Grammar loadGrammar(final String grammarReference,
             final String mediaType)
@@ -252,9 +237,6 @@ public class BaseGrammarManager implements GrammarManager {
         return loadGrammar(grammarReference, mediaType, true, false, null);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Grammar loadGrammar(final String grammarReference,
             final String mediaType, final boolean loadReferences,
@@ -394,9 +376,6 @@ public class BaseGrammarManager implements GrammarManager {
         return grammar;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Grammar loadGrammar(final String grammarReference,
             final String mediaType, final String grammarText)
@@ -406,9 +385,6 @@ public class BaseGrammarManager implements GrammarManager {
                 new StringReader(grammarText));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Grammar loadGrammar(final String grammarReference,
             final String mediaType, final InputStream byteStream,
@@ -423,17 +399,11 @@ public class BaseGrammarManager implements GrammarManager {
         return loadGrammar(grammarReference, mediaType, reader);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setGrammarMask(final int mask) {
         grammarMask = mask;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getGrammarMask() {
         return grammarMask;

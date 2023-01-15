@@ -27,24 +27,30 @@
 package javax.speech.recognition;
 
 import java.util.Locale;
-
 import javax.speech.EngineMode;
 import javax.speech.SpeechLocale;
 import javax.speech.mock.MockEngineMode;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Test case for {@link javax.speech.recognition.RecognizerMode}.
  * 
  * @author Dirk Schnelle
  */
-public class RecognizerModeTest extends TestCase {
+public class RecognizerModeTest {
     /**
      * Test method for
      * {@link javax.speech.recognition.RecognizerMode#getSupportsMarkup()}.
      */
-    public void testGetSupportsMarkup() {
+    @Test
+    void testGetSupportsMarkup() {
         final RecognizerMode mode1 = new RecognizerMode();
         assertNull(mode1.getSupportsMarkup());
 
@@ -70,7 +76,8 @@ public class RecognizerModeTest extends TestCase {
      * Test method for
      * {@link javax.speech.recognition.RecognizerMode#match(javax.speech.EngineMode)}.
      */
-    public void testMatch() {
+    @Test
+    void testMatch() {
         final RecognizerMode mode1 = new RecognizerMode();
         final RecognizerMode mode2 = new RecognizerMode();
         assertTrue(mode1.match(mode2));
@@ -135,7 +142,8 @@ public class RecognizerModeTest extends TestCase {
      * Test method for
      * {@link javax.speech.recognition.RecognizerMode#equals(java.lang.Object)}.
      */
-    public void testEqualsObject() {
+    @Test
+    void testEqualsObject() {
         final RecognizerMode mode1 = new RecognizerMode();
         assertFalse(mode1.equals("test"));
         assertTrue(mode1.equals(mode1));
@@ -204,7 +212,8 @@ public class RecognizerModeTest extends TestCase {
      * Test method for
      * {@link javax.speech.recognition.RecognizerMode#getSpeechLocales()}.
      */
-    public void testGetSpeechLocales() {
+    @Test
+    void testGetSpeechLocales() {
         final RecognizerMode mode1 = new RecognizerMode();
         assertNull(mode1.getSpeechLocales());
 
@@ -235,7 +244,8 @@ public class RecognizerModeTest extends TestCase {
      * Test method for
      * {@link javax.speech.recognition.RecognizerMode#getSpeakerProfiles()}.
      */
-    public void testGetSpeakerProfiles() {
+    @Test
+    void testGetSpeakerProfiles() {
         final RecognizerMode mode1 = new RecognizerMode();
         assertNull(mode1.getSpeakerProfiles());
 
@@ -262,7 +272,8 @@ public class RecognizerModeTest extends TestCase {
      * Test method for
      * {@link javax.speech.recognition.RecognizerMode#getVocabSupport()}.
      */
-    public void testGetVocabSupport() {
+    @Test
+    void testGetVocabSupport() {
         final RecognizerMode mode1 = new RecognizerMode();
         assertNull(mode1.getVocabSupport());
 
@@ -287,7 +298,8 @@ public class RecognizerModeTest extends TestCase {
     /**
      * Test method for {@link javax.speech.EngineMode#hashCode()}.
      */
-    public void testHashCode() {
+    @Test
+    void testHashCode() {
         final RecognizerMode mode1 = new RecognizerMode();
         final RecognizerMode mode2 = new RecognizerMode();
         assertEquals(mode1.hashCode(), mode2.hashCode());
@@ -296,7 +308,8 @@ public class RecognizerModeTest extends TestCase {
     /**
      * Test method for {@link javax.speech.EngineMode#toString()}.
      */
-    public void testToString() {
+    @Test
+    void testToString() {
         final RecognizerMode mode1 = new RecognizerMode();
         final String str1 = mode1.toString();
         assertNotNull(str1);

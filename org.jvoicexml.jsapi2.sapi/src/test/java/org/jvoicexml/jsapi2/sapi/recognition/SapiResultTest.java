@@ -11,9 +11,13 @@ import javax.speech.recognition.GrammarManager;
 import javax.speech.recognition.Result;
 import javax.speech.recognition.RuleGrammar;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 import org.jvoicexml.jsapi2.recognition.BaseGrammarManager;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 /**
  * Test methods for {@link SapiResult}.
@@ -21,6 +25,7 @@ import org.jvoicexml.jsapi2.recognition.BaseGrammarManager;
  * @author Dirk Schnelle-Walka
  * 
  */
+@EnabledOnOs(OS.WINDOWS)
 public class SapiResultTest {
 
     private String readSml(final String resource) throws IOException {
@@ -39,7 +44,7 @@ public class SapiResultTest {
     }
 
     @Test
-    public void testSetSmlNoTags() throws Exception {
+    void testSetSmlNoTags() throws Exception {
         final GrammarManager manager = new BaseGrammarManager();
         final RuleGrammar grammar = manager.createRuleGrammar("grammar:test",
                 "root");
@@ -48,11 +53,11 @@ public class SapiResultTest {
         final String sml = readSml("sml-simple.xml");
         result.setSml(sml);
         final Object[] tags = result.getTags(0);
-        Assert.assertEquals(0, tags.length);
+        assertEquals(0, tags.length);
     }
 
     @Test
-    public void testSetSmlTag() throws Exception {
+    void testSetSmlTag() throws Exception {
         final GrammarManager manager = new BaseGrammarManager();
         final RuleGrammar grammar = manager.createRuleGrammar("grammar:test",
                 "root");
@@ -61,12 +66,12 @@ public class SapiResultTest {
         final String sml = readSml("sml-tag.xml");
         result.setSml(sml);
         final Object[] tags = result.getTags(0);
-        Assert.assertEquals(1, tags.length);
-        Assert.assertEquals("Projectmanager", tags[0]);
+        assertEquals(1, tags.length);
+        assertEquals("Projectmanager", tags[0]);
     }
 
     @Test
-    public void testSetSmlMultipleTags() throws Exception {
+    void testSetSmlMultipleTags() throws Exception {
         final GrammarManager manager = new BaseGrammarManager();
         final RuleGrammar grammar = manager.createRuleGrammar("grammar:test",
                 "root");
@@ -75,12 +80,12 @@ public class SapiResultTest {
         final String sml = readSml("sml-multiple-tags.xml");
         result.setSml(sml);
         final Object[] tags = result.getTags(0);
-        Assert.assertEquals(2, tags.length);
-        Assert.assertEquals("out.greet=\"general\";", tags[0]);
-        Assert.assertEquals("out.who=\"Projectmanager\";", tags[1]);
+        assertEquals(2, tags.length);
+        assertEquals("out.greet=\"general\";", tags[0]);
+        assertEquals("out.who=\"Projectmanager\";", tags[1]);
     }
     @Test
-    public void testSetSmlCompound() throws Exception {
+    void testSetSmlCompound() throws Exception {
         final GrammarManager manager = new BaseGrammarManager();
         final RuleGrammar grammar = manager.createRuleGrammar("grammar:test",
                 "root");
@@ -92,10 +97,10 @@ public class SapiResultTest {
         for (Object o : tags) {
             System.out.println(o);
         }
-        Assert.assertEquals(4, tags.length);
-        Assert.assertEquals("out = new Object();", tags[0]);
-        Assert.assertEquals("out.order = new Object();", tags[1]);
-        Assert.assertEquals("out.order.size=\"small\";", tags[2]);
-        Assert.assertEquals("out.order.topping=\"salami\";", tags[3]);
+        assertEquals(4, tags.length);
+        assertEquals("out = new Object();", tags[0]);
+        assertEquals("out.order = new Object();", tags[1]);
+        assertEquals("out.order.size=\"small\";", tags[2]);
+        assertEquals("out.order.topping=\"salami\";", tags[3]);
     }
 }

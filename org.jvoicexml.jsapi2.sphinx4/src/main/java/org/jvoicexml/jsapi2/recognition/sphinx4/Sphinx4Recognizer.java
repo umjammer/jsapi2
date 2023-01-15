@@ -208,9 +208,6 @@ final class Sphinx4Recognizer extends BaseRecognizer {
         setEngineState(CLEAR_ALL_STATE, ALLOCATED);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean handleResume(final InputStream in) {
         if (recognizer == null) {
@@ -360,9 +357,6 @@ final class Sphinx4Recognizer extends BaseRecognizer {
         return recognizer.setGrammars(grammarDefinitions);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Collection<javax.speech.recognition.Grammar> getBuiltInGrammars() {
         return null;
@@ -394,23 +388,15 @@ final class Sphinx4Recognizer extends BaseRecognizer {
 
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public void postResultEvent(final ResultEvent resultEvent) {
         super.postResultEvent(resultEvent);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void handleRequestFocus() {
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void handleReleaseFocus() {
     }
@@ -421,9 +407,6 @@ final class Sphinx4Recognizer extends BaseRecognizer {
         // return new AudioFormat(16000, 16, 1, true, false);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void handlePropertyChangeRequest(
             final BaseEngineProperties properties, final String propName,

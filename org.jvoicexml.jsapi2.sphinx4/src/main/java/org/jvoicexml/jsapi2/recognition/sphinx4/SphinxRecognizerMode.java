@@ -46,9 +46,6 @@ public class SphinxRecognizerMode extends RecognizerMode
                 new SpeechLocale[] { locale }, null);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Engine createEngine() throws EngineException {
         return new Sphinx4Recognizer(this);

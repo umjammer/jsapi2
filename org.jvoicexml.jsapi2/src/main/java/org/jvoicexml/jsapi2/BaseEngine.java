@@ -169,17 +169,13 @@ public abstract class BaseEngine implements Engine {
         return engineState;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public final long waitEngineState(final long state)
             throws InterruptedException {
         return waitEngineState(state, 0);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public final long waitEngineState(final long state, final long timeout)
             throws InterruptedException {
         if (!isValid(state)) {
@@ -263,9 +259,6 @@ public abstract class BaseEngine implements Engine {
         return states;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final void allocate() throws AudioException, EngineException,
             EngineStateException, SecurityException {
@@ -317,9 +310,6 @@ public abstract class BaseEngine implements Engine {
     protected abstract void baseAllocate() throws AudioException,
             EngineException, EngineStateException, SecurityException;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final void allocate(final int mode)
             throws AudioException, EngineException, EngineStateException,
@@ -343,9 +333,7 @@ public abstract class BaseEngine implements Engine {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public final void deallocate()
             throws AudioException, EngineException, EngineStateException {
 
@@ -364,9 +352,7 @@ public abstract class BaseEngine implements Engine {
         baseDeallocate();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public final void deallocate(final int mode)
             throws AudioException, EngineException {
         if (mode == ASYNCHRONOUS_MODE) {
@@ -388,9 +374,6 @@ public abstract class BaseEngine implements Engine {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final void pause() {
         // Validate current state
@@ -426,9 +409,7 @@ public abstract class BaseEngine implements Engine {
                 EngineEvent.ENGINE_PAUSED);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public final boolean resume() throws EngineStateException {
         // Do nothing if we are already resumed
         if (testEngineState(RESUMED)) {
@@ -473,9 +454,6 @@ public abstract class BaseEngine implements Engine {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final AudioManager getAudioManager() {
         if (audioManager == null) {
@@ -491,9 +469,7 @@ public abstract class BaseEngine implements Engine {
      */
     protected abstract AudioManager createAudioManager();
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public final VocabularyManager getVocabularyManager() {
         if (vocabularyManager == null) {
             vocabularyManager = createVocabularyManager();
@@ -529,9 +505,7 @@ public abstract class BaseEngine implements Engine {
         engineMode = mode;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public final SpeechEventExecutor getSpeechEventExecutor() {
         if (speechEventExecutor == null) {
             speechEventExecutor = createSpeechEventExecutor();
@@ -546,9 +520,7 @@ public abstract class BaseEngine implements Engine {
      */
     protected abstract SpeechEventExecutor createSpeechEventExecutor();
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public final void setSpeechEventExecutor(
             final SpeechEventExecutor executor) {
         // Terminate a previously running executor.
@@ -588,17 +560,11 @@ public abstract class BaseEngine implements Engine {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final void setEngineMask(final int mask) {
         engineMask = mask;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final int getEngineMask() {
         return engineMask;

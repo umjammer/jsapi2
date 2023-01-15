@@ -15,9 +15,7 @@ import javax.speech.spi.EngineFactory;
  */
 public class MockRecognizerFactory extends RecognizerMode implements
         EngineFactory {
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public Engine createEngine() throws EngineException {
         return new MockRecognizer();
     }

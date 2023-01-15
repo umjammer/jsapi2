@@ -45,9 +45,6 @@ public final class SapiRecognizerAudioEventListener implements AudioListener {
         audioChanged = false;
     }
     
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void audioUpdate(final AudioEvent e) {
         switch(e.getId()) {

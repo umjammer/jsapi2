@@ -202,25 +202,16 @@ public class BaseResult
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Grammar getGrammar() {
         return grammar;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getNumTokens() {
         return nTokens;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public ResultToken getBestToken(final int nth)
             throws IllegalArgumentException {
@@ -230,17 +221,11 @@ public class BaseResult
         return tokens[nth];
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public ResultToken[] getBestTokens() {
         return tokens;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public ResultToken[] getUnfinalizedTokens() {
         if (getResultState() == Result.ACCEPTED
@@ -257,9 +242,6 @@ public class BaseResult
         return unfinalizedTokens;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void addResultListener(ResultListener listener) {
         if (!resultListeners.contains(listener)) {
@@ -267,9 +249,6 @@ public class BaseResult
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeResultListener(final ResultListener listener) {
         resultListeners.remove(listener);
@@ -282,26 +261,17 @@ public class BaseResult
     // ////////////////////
     // Begin FinalResult Methods
     // ////////////////////
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isTrainingInfoAvailable() throws ResultStateException {
         validateResultState(UNFINALIZED);
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void releaseTrainingInfo() throws ResultStateException {
         validateResultState(UNFINALIZED);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void tokenCorrection(final String[] correctTokens,
             final ResultToken fromToken, final ResultToken toToken,
@@ -316,35 +286,23 @@ public class BaseResult
         validateResultState(UNFINALIZED);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isAudioAvailable() throws ResultStateException {
         validateResultState(UNFINALIZED);
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void releaseAudio() throws ResultStateException {
         validateResultState(UNFINALIZED);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public AudioSegment getAudio() throws ResultStateException {
         validateResultState(UNFINALIZED);
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public AudioSegment getAudio(final ResultToken from, final ResultToken to)
             throws ResultStateException {
@@ -359,18 +317,12 @@ public class BaseResult
     // ////////////////////
     // Begin FinalRuleResult Methods
     // ////////////////////
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getNumberAlternatives() throws ResultStateException {
         validateResultState(UNFINALIZED);
         return 1;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public ResultToken[] getAlternativeTokens(final int nBest)
             throws ResultStateException {
@@ -385,9 +337,6 @@ public class BaseResult
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Grammar getGrammar(final int nBest) throws ResultStateException {
         validateResultState(UNFINALIZED);
@@ -401,9 +350,6 @@ public class BaseResult
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Object[] getTags(final int nBest)
             throws IllegalArgumentException, ResultStateException {
@@ -414,9 +360,6 @@ public class BaseResult
         return tags;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public RuleReference getRuleReference(final int nBest)
             throws ResultStateException, IllegalArgumentException,

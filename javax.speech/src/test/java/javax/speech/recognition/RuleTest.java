@@ -3,20 +3,24 @@
  */
 package javax.speech.recognition;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Test case for {@link javax.speech.recognition.Rule}.
  * 
  * @author Dirk Schnelle-Walka
  */
-public class RuleTest extends TestCase {
+public class RuleTest {
 
     /**
      * Test method for
      * {@link javax.speech.recognition.Rule#Rule(java.lang.String, javax.speech.recognition.RuleComponent)}.
      */
-    public void testRuleStringRuleComponent() {
+    @Test
+    void testRuleStringRuleComponent() {
         final RuleComponent component1 = new RuleToken("test1");
         final Rule rule1 = new Rule("rule1", component1);
 
@@ -46,7 +50,8 @@ public class RuleTest extends TestCase {
      * Test method for
      * {@link javax.speech.recognition.Rule#Rule(java.lang.String, javax.speech.recognition.RuleComponent, int)}.
      */
-    public void testRuleStringRuleComponentInt() {
+    @Test
+    void testRuleStringRuleComponentInt() {
         final RuleComponent component1 = new RuleToken("test1");
         final Rule rule1 = new Rule("rule1", component1, Rule.PUBLIC);
 
@@ -85,7 +90,8 @@ public class RuleTest extends TestCase {
     /**
      * Test method for {@link javax.speech.recognition.Rule#getRuleComponent()}.
      */
-    public void testGetRuleComponent() {
+    @Test
+    void testGetRuleComponent() {
         final RuleComponent component1 = new RuleToken("test1");
         final Rule rule1 = new Rule("rule1", component1);
         assertEquals(component1, rule1.getRuleComponent());
@@ -98,7 +104,8 @@ public class RuleTest extends TestCase {
     /**
      * Test method for {@link javax.speech.recognition.Rule#getRuleName()}.
      */
-    public void testGetRuleName() {
+    @Test
+    void testGetRuleName() {
         final RuleComponent component1 = new RuleToken("test1");
         final Rule rule1 = new Rule("rule1", component1);
         assertEquals("rule1", rule1.getRuleName());
@@ -111,7 +118,8 @@ public class RuleTest extends TestCase {
     /**
      * Test method for {@link javax.speech.recognition.Rule#getScope()}.
      */
-    public void testGetScope() {
+    @Test
+    void testGetScope() {
         final RuleComponent component1 = new RuleToken("test1");
         final Rule rule1 = new Rule("rule1", component1);
         assertEquals(Rule.PRIVATE, rule1.getScope());
@@ -124,7 +132,8 @@ public class RuleTest extends TestCase {
     /**
      * Test method for {@link javax.speech.recognition.Rule#toString()}.
      */
-    public void testToString() {
+    @Test
+    void testToString() {
         final RuleComponent component1 = new RuleToken("test1");
         final Rule rule1 = new Rule("rule1", component1);
         assertEquals(

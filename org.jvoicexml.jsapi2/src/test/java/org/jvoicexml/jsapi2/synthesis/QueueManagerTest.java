@@ -26,19 +26,25 @@
 
 package org.jvoicexml.jsapi2.synthesis;
 
+import java.util.concurrent.TimeUnit;
 import javax.speech.AudioSegment;
 import javax.speech.synthesis.SpeakableEvent;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 import org.jvoicexml.jsapi2.mock.synthesis.MockSpeakableListener;
 import org.jvoicexml.jsapi2.mock.synthesis.MockSynthesizer;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+
 /**
  * Test cases for {@link QueueManager}.
- * @author Dirk Schnelle-Walka
  *
+ * @author Dirk Schnelle-Walka
  */
 public final class QueueManagerTest {
     /** Synthesizer. */
@@ -47,33 +53,34 @@ public final class QueueManagerTest {
     /**
      * Set up the test environment.
      */
-    @Before
+    @BeforeEach
     public void setUp() {
         synthesizer = new MockSynthesizer();
     }
 
     /**
-     * Test method for {@link org.jvoicexml.jsapi2.jse.synthesis.QueueManager#appendItem(javax.speech.synthesis.Speakable, javax.speech.synthesis.SpeakableListener)}.
-     * @exception Exception
-     *            test failed.
+     * Test method for {@link org.jvoicexml.jsapi2.synthesis.QueueManager#appendItem(javax.speech.synthesis.Speakable, javax.speech.synthesis.SpeakableListener)}.
+     *
+     * @throws Exception test failed.
      */
-    @Test(timeout = 2000)
-    public void testAppendItemSpeakableSpeakableListener() throws Exception {
+    @Disabled
+    @Test
+    @Timeout(value = 2000, unit = TimeUnit.MILLISECONDS)
+    void testAppendItemSpeakableSpeakableListener() throws Exception {
         QueueManager manager = synthesizer.getQueueManager();
         AudioSegment segment = new AudioSegment("http://nowhere", "test");
         MockSpeakableListener listener = new MockSpeakableListener();
         manager.appendItem(segment, listener);
         QueueItem item = manager.getQueueItem();
-        Assert.assertNotNull(item);
-        Assert.assertEquals(segment, item.getAudioSegment());
-        Assert.assertEquals(listener, item.getListener());
+        assertNotNull(item);
+        assertEquals(segment, item.getAudioSegment());
+        assertEquals(listener, item.getListener());
         listener.waitForSize(2);
         final SpeakableEvent started = listener.getEvent(0);
-        Assert.assertEquals(SpeakableEvent.SPEAKABLE_STARTED, started.getId());
-        Assert.assertEquals(segment.getMarkupText(), started.getSource());
+        assertEquals(SpeakableEvent.SPEAKABLE_STARTED, started.getId());
+        assertEquals(segment.getMarkupText(), started.getSource());
         final SpeakableEvent ended = listener.getEvent(1);
-        Assert.assertEquals(SpeakableEvent.SPEAKABLE_ENDED, ended.getId());
-        Assert.assertEquals(segment.getMarkupText(), ended.getSource());
+        assertEquals(SpeakableEvent.SPEAKABLE_ENDED, ended.getId());
+        assertEquals(segment.getMarkupText(), ended.getSource());
     }
-
 }

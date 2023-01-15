@@ -82,9 +82,6 @@ public final class SapiRecognizer extends BaseRecognizer {
         super(mode);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Collection<Grammar> getBuiltInGrammars() {
         return sapiGetBuildInGrammars(recognizerHandle);
@@ -92,9 +89,6 @@ public final class SapiRecognizer extends BaseRecognizer {
 
     private native Collection<Grammar> sapiGetBuildInGrammars(long handle);
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void handleAllocate() throws EngineStateException, EngineException,
             AudioException, SecurityException {
@@ -156,9 +150,6 @@ public final class SapiRecognizer extends BaseRecognizer {
 
     private native void sapiDeallocate(long handle);
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void handlePause() {
         sapiPause(recognizerHandle);
@@ -170,9 +161,6 @@ public final class SapiRecognizer extends BaseRecognizer {
 
     private native void sapiPause(long handle);
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void handlePause(final int flags) {
         sapiPause(recognizerHandle, flags);
@@ -200,9 +188,6 @@ public final class SapiRecognizer extends BaseRecognizer {
         return recognizerHandle;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected boolean handleResume(final InputStream in)
             throws EngineStateException {
@@ -237,9 +222,6 @@ public final class SapiRecognizer extends BaseRecognizer {
     private native boolean sapiResume(long handle, String[] grammars,
             String[] references) throws EngineStateException;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected boolean setGrammars(
             Collection<GrammarDefinition> grammarDefinition) {
@@ -458,25 +440,16 @@ public final class SapiRecognizer extends BaseRecognizer {
         postEngineEvent(event);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void handleRequestFocus() {
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void handleReleaseFocus() {
     }
 
     native void sapiAbortRecognition(long handle);
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected AudioFormat getAudioFormat() {
         return sapiGetAudioFormat(recognizerHandle);
@@ -491,9 +464,6 @@ public final class SapiRecognizer extends BaseRecognizer {
      */
     private native AudioFormat sapiGetAudioFormat(final long handle);
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void handlePropertyChangeRequest(
             final BaseEngineProperties properties, final String propName,
