@@ -31,7 +31,7 @@ public final class BaseAudioManagerTest {
      */
     @Test
     void testSetMediaLocator() throws Exception {
-        final BaseAudioManager manager = new MockAudioManager();
+        BaseAudioManager manager = new MockAudioManager();
         final String locator = "file://test.wav";
         manager.setMediaLocator(locator);
         assertEquals(locator, manager.getMediaLocator());

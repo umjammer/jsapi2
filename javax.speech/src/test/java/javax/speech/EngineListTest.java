@@ -82,13 +82,7 @@ public class EngineListTest {
         assertNotNull(mode2);
         EngineMode mode3 = list.elementAt(2);
         assertNotNull(mode3);
-        Exception failure = null;
-        try {
-            list.elementAt(4);
-        } catch (ArrayIndexOutOfBoundsException e) {
-            failure = e;
-        }
-        assertNotNull(failure);
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> list.elementAt(4));
     }
 
     /**
@@ -145,13 +139,7 @@ public class EngineListTest {
         list.removeElementAt(2);
         assertEquals(2, list.size());
 
-        Exception failure = null;
-        try {
-            list.removeElementAt(2);
-        } catch (ArrayIndexOutOfBoundsException e) {
-            failure = e;
-        }
-        assertNotNull(failure);
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> list.removeElementAt(2));
     }
 
     /**

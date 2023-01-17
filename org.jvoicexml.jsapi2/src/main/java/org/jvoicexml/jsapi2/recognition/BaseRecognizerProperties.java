@@ -16,14 +16,15 @@ import javax.speech.recognition.RecognizerProperties;
 
 import org.jvoicexml.jsapi2.BaseEngineProperties;
 
+
 /**
  * Base implementation of {@link RecognizerProperties}.
- * 
+ *
  * <p>
  * Actual JSAPI2 implementations may want to override this class to apply other
  * settings to the recognizer.
  * </p>
- * 
+ *
  * @author Renato Cassaca
  * @author Dirk Schnelle-Walka
  * @version $Revision: $
@@ -129,11 +130,10 @@ public class BaseRecognizerProperties extends BaseEngineProperties
 
     /**
      * Constructs a new object.
-     * 
-     * @param recognizer
-     *            reference to the recognizer
+     *
+     * @param recognizer reference to the recognizer
      */
-    public BaseRecognizerProperties(final BaseRecognizer recognizer) {
+    public BaseRecognizerProperties(BaseRecognizer recognizer) {
         super(recognizer);
         adaptation = ADAPT_PAUSED | ADAPT_RESUMED;
         completeTimeout = 500;
@@ -214,17 +214,17 @@ public class BaseRecognizerProperties extends BaseEngineProperties
     }
 
     @Override
-    public final void setAdaptation(final int adapt) {
+    public final void setAdaptation(int adapt) {
         if (adaptation == adapt) {
             return;
         }
 
-        handlePropertyChangeRequest(ADAPTATION, new Integer(adaptation),
-                new Integer(adapt));
+        handlePropertyChangeRequest(ADAPTATION, adaptation,
+                adapt);
     }
 
     @Override
-    public final void setCompleteTimeout(final int value) {
+    public final void setCompleteTimeout(int value) {
         if (value < 0) {
             throw new IllegalArgumentException("Invalid completeTimeout: "
                     + value);
@@ -233,12 +233,11 @@ public class BaseRecognizerProperties extends BaseEngineProperties
         if (completeTimeout == value) {
             return;
         }
-        handlePropertyChangeRequest(COMPLETE_TIMEOUT, new Integer(
-                completeTimeout), new Integer(value));
+        handlePropertyChangeRequest(COMPLETE_TIMEOUT, completeTimeout, value);
     }
 
     @Override
-    public final void setConfidenceThreshold(final int threshold) {
+    public final void setConfidenceThreshold(int threshold) {
         if ((threshold > MAX_CONFIDENCE) || (threshold < MIN_CONFIDENCE)) {
             throw new IllegalArgumentException("Invalid confidenceThreshold: "
                     + threshold);
@@ -246,12 +245,11 @@ public class BaseRecognizerProperties extends BaseEngineProperties
         if (confidenceThreshold == threshold) {
             return;
         }
-        handlePropertyChangeRequest(CONFIDENCE_THRESHOLD, new Integer(
-                confidenceThreshold), new Integer(threshold));
+        handlePropertyChangeRequest(CONFIDENCE_THRESHOLD, confidenceThreshold, threshold);
     }
 
     @Override
-    public final void setEndpointStyle(final int style) {
+    public final void setEndpointStyle(int style) {
         if ((style != ENDPOINT_SPEECH_DETECTION)
                 && (style != ENDPOINT_PUSH_TO_START)
                 && (style != ENDPOINT_PUSH_TO_TALK)) {
@@ -261,12 +259,12 @@ public class BaseRecognizerProperties extends BaseEngineProperties
         if (endpointStyle == style) {
             return;
         }
-        handlePropertyChangeRequest(ENDPOINT_STYLE, new Integer(endpointStyle),
-                new Integer(style));
+        handlePropertyChangeRequest(ENDPOINT_STYLE, endpointStyle,
+                style);
     }
 
     @Override
-    public final void setIncompleteTimeout(final int timeout) {
+    public final void setIncompleteTimeout(int timeout) {
         if (timeout < 0) {
             throw new IllegalArgumentException("Invalid incompleteTimeout: "
                     + timeout);
@@ -274,105 +272,110 @@ public class BaseRecognizerProperties extends BaseEngineProperties
         if (incompleteTimeout == timeout) {
             return;
         }
-        handlePropertyChangeRequest(INCOMPLETE_TIMEOUT, new Integer(
-                incompleteTimeout), new Integer(timeout));
+        handlePropertyChangeRequest(INCOMPLETE_TIMEOUT, incompleteTimeout, timeout);
     }
 
     @Override
-    public final void setNumResultAlternatives(final int num) {
+    public final void setNumResultAlternatives(int num) {
         if (numResultAlternatives == num) {
             return;
         }
-        handlePropertyChangeRequest(NUM_RESULT_ALTERNATIVES, new Integer(
-                numResultAlternatives), new Integer(num));
+        handlePropertyChangeRequest(NUM_RESULT_ALTERNATIVES, numResultAlternatives, num);
     }
 
     @Override
-    public final void setSensitivity(final int value) {
+    public final void setSensitivity(int value) {
         if ((value > MAX_CONFIDENCE) || (value < MIN_CONFIDENCE)) {
             throw new IllegalArgumentException("Invalid sensitivity: " + value);
         }
         if (sensitivity == value) {
             return;
         }
-        handlePropertyChangeRequest(SENSITIVITY, new Integer(sensitivity),
-                new Integer(value));
+        handlePropertyChangeRequest(SENSITIVITY, sensitivity,
+                value);
     }
 
     @Override
-    public final void setSpeedVsAccuracy(final int value) {
-        if ((value != MAX_ACCURACY) && (value != NORM_ACCURACY)
-                && (value != MAX_ACCURACY)) {
+    public final void setSpeedVsAccuracy(int value) {
+        if (value != MAX_ACCURACY && value != NORM_ACCURACY) {
             throw new IllegalArgumentException("Invalid speedVsAccuracy: "
                     + value);
         }
         if (speedVsAccuracy == value) {
             return;
         }
-        handlePropertyChangeRequest(SPEED_VS_ACCURACY, new Integer(
-                speedVsAccuracy), new Integer(value));
+        handlePropertyChangeRequest(SPEED_VS_ACCURACY, speedVsAccuracy, value);
     }
 
     @Override
-    public final void setResultAudioProvided(final boolean value) {
+    public final void setResultAudioProvided(boolean value) {
         if (resultAudioProvided == value) {
             return;
         }
-        handlePropertyChangeRequest(RESULT_AUDIO_PROVIDED, new Boolean(
-                resultAudioProvided), new Boolean(value));
+        handlePropertyChangeRequest(RESULT_AUDIO_PROVIDED, resultAudioProvided, value);
     }
 
     @Override
-    public final void setTrainingProvided(final boolean value) {
+    public final void setTrainingProvided(boolean value) {
         if (trainingProvided == value) {
             return;
         }
-        handlePropertyChangeRequest(TRAINING_PROVIDED, new Boolean(
-                trainingProvided), new Boolean(value));
+        handlePropertyChangeRequest(TRAINING_PROVIDED, trainingProvided, value);
     }
 
     @Override
-    public final boolean setProperty(final String propName, final Object value) {
-        if (propName.equals(TRAINING_PROVIDED)) {
-            final Boolean boolVal = (Boolean) value;
-            trainingProvided = boolVal.booleanValue();
+    public final boolean setProperty(String propName, Object value) {
+        switch (propName) {
+        case TRAINING_PROVIDED: {
+            Boolean boolVal = (Boolean) value;
+            trainingProvided = boolVal;
             return true;
-        } else if (propName.equals(RESULT_AUDIO_PROVIDED)) {
-            final Boolean boolVal = (Boolean) value;
-            resultAudioProvided = boolVal.booleanValue();
+        }
+        case RESULT_AUDIO_PROVIDED: {
+            Boolean boolVal = (Boolean) value;
+            resultAudioProvided = boolVal;
             return true;
-        } else if (propName.equals(SPEED_VS_ACCURACY)) {
-            final Integer intVal = (Integer) value;
-            speedVsAccuracy = intVal.intValue();
+        }
+        case SPEED_VS_ACCURACY: {
+            Integer intVal = (Integer) value;
+            speedVsAccuracy = intVal;
             return true;
-        } else if (propName.equals(SENSITIVITY)) {
-            final Integer intVal = (Integer) value;
-            sensitivity = intVal.intValue();
+        }
+        case SENSITIVITY: {
+            Integer intVal = (Integer) value;
+            sensitivity = intVal;
             return true;
-        } else if (propName.equals(NUM_RESULT_ALTERNATIVES)) {
-            final Integer intVal = (Integer) value;
-            numResultAlternatives = intVal.intValue();
+        }
+        case NUM_RESULT_ALTERNATIVES: {
+            Integer intVal = (Integer) value;
+            numResultAlternatives = intVal;
             return true;
-        } else if (propName.equals(INCOMPLETE_TIMEOUT)) {
-            final Integer intVal = (Integer) value;
-            incompleteTimeout = intVal.intValue();
+        }
+        case INCOMPLETE_TIMEOUT: {
+            Integer intVal = (Integer) value;
+            incompleteTimeout = intVal;
             return true;
-        } else if (propName.equals(ENDPOINT_STYLE)) {
-            final Integer intVal = (Integer) value;
-            endpointStyle = intVal.intValue();
+        }
+        case ENDPOINT_STYLE: {
+            Integer intVal = (Integer) value;
+            endpointStyle = intVal;
             return true;
-        } else if (propName.equals(CONFIDENCE_THRESHOLD)) {
-            final Integer intVal = (Integer) value;
-            confidenceThreshold = intVal.intValue();
+        }
+        case CONFIDENCE_THRESHOLD: {
+            Integer intVal = (Integer) value;
+            confidenceThreshold = intVal;
             return true;
-        } else if (propName.equals(COMPLETE_TIMEOUT)) {
-            final Integer intVal = (Integer) value;
-            completeTimeout = intVal.intValue();
+        }
+        case COMPLETE_TIMEOUT: {
+            Integer intVal = (Integer) value;
+            completeTimeout = intVal;
             return true;
-        } else if (propName.equals(ADAPTATION)) {
-            final Integer intVal = (Integer) value;
-            adaptation = intVal.intValue();
+        }
+        case ADAPTATION: {
+            Integer intVal = (Integer) value;
+            adaptation = intVal;
             return true;
+        }
         }
         return false;
     }

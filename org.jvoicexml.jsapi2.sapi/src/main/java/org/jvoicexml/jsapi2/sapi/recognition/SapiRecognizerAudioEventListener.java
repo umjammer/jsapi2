@@ -40,13 +40,13 @@ public final class SapiRecognizerAudioEventListener implements AudioListener {
      * Constructs a new object.
      * @param rec the recognizer
      */
-    public SapiRecognizerAudioEventListener(final SapiRecognizer rec) {
+    public SapiRecognizerAudioEventListener(SapiRecognizer rec) {
         recognizer = rec;
         audioChanged = false;
     }
     
     @Override
-    public void audioUpdate(final AudioEvent e) {
+    public void audioUpdate(AudioEvent e) {
         switch(e.getId()) {
             case AudioEvent.AUDIO_CHANGED:
                 LOGGER.fine("AudioEvent: Audio Changed!");

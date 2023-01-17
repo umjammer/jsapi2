@@ -37,7 +37,7 @@ class SynthesizerStateTransitionTest {
      *
      * @param expected the expected state
      */
-    private void checkState(final long expected) {
+    private void checkState(long expected) {
         assertTrue(synthesizer.testEngineState(expected), "Expected " + synthesizer.stateToString(expected) + " but was " + synthesizer.stateToString(synthesizer.getEngineState()));
     }
 

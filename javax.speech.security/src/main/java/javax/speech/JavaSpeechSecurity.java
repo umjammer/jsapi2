@@ -37,7 +37,7 @@ public class JavaSpeechSecurity {
      * @throws SecurityException
      *         always
      */
-    public static void checkPermission(final String name) throws SecurityException {
+    public static void checkPermission(String name) throws SecurityException {
         throw new SecurityException("null implementation rejected '" + name
                 + "'");
     }

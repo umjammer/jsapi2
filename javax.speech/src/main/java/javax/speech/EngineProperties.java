@@ -52,5 +52,4 @@ public interface EngineProperties {
     void setBase(String uri) throws IllegalArgumentException;
 
     String getBase();
-
 }

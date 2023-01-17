@@ -27,7 +27,6 @@
 package org.jvoicexml.jsapi2.synthesis;
 
 import java.util.List;
-
 import javax.speech.AudioSegment;
 import javax.speech.synthesis.Speakable;
 import javax.speech.synthesis.SpeakableEvent;
@@ -36,12 +35,15 @@ import javax.speech.synthesis.SpeakableListener;
 import javax.speech.synthesis.Synthesizer;
 import javax.speech.synthesis.SynthesizerEvent;
 
+
 /**
  * Synthesis thread. Queues all speakable and calls the synthesizer to
  * synthesize them without actually playing back the audio.
+ *
  * @author Dirk Schnelle-Walka
  */
 final class SynthesisQueue implements Runnable {
+
     /** Reference to the queue manager. */
     private final QueueManager queueManager;
 
@@ -56,11 +58,12 @@ final class SynthesisQueue implements Runnable {
 
     /**
      * Constructs a new object.
+     *
      * @param manager reference to the queue manager
-     * @param pqueue reference to the play queue
+     * @param pqueue  reference to the play queue
      */
-    public SynthesisQueue(final QueueManager manager,
-            final PlayQueue pqueue) {
+    public SynthesisQueue(QueueManager manager,
+                          PlayQueue pqueue) {
         queueManager = manager;
         playQueue = pqueue;
         queue = new java.util.ArrayList<>();
@@ -83,18 +86,18 @@ final class SynthesisQueue implements Runnable {
      * appropriate queue events.
      *
      * @param speakable the speakable item to add
-     * @param listener a listener to notify about events of this item
-     * @param text the text to be spoken, maybe <code>null</code> if the
-     *             speakable contains markup text
+     * @param listener  a listener to notify about events of this item
+     * @param text      the text to be spoken, maybe <code>null</code> if the
+     *                  speakable contains markup text
      * @return queue id.
      */
-    public int appendItem(final Speakable speakable,
-            final SpeakableListener listener, final String text) {
-        final boolean topOfQueueChanged;
-        final int addedId;
+    public int appendItem(Speakable speakable,
+                          SpeakableListener listener, String text) {
+        boolean topOfQueueChanged;
+        int addedId;
         synchronized (queue) {
             addedId = ++queueId;
-            final QueueItem item;
+            QueueItem item;
             if (text == null) {
                 item = new QueueItem(addedId, speakable, listener);
             } else {
@@ -110,19 +113,17 @@ final class SynthesisQueue implements Runnable {
      * Add an audio segment to be spoken to the output queue.
      * Fires the appropriate queue events.
      *
-     * @param audioSegment
-     *                the audio segment to add
-     * @param listener
-     *                listeners of this audio segment
+     * @param audioSegment the audio segment to add
+     * @param listener     listeners of this audio segment
      * @return queue id.
      */
-    public int appendItem(final AudioSegment audioSegment,
-            final SpeakableListener listener) {
-        final boolean topOfQueueChanged;
+    public int appendItem(AudioSegment audioSegment,
+                          SpeakableListener listener) {
+        boolean topOfQueueChanged;
         synchronized (queue) {
             ++queueId;
-            final QueueItem item =
-                new QueueItem(queueId, audioSegment, listener);
+            QueueItem item =
+                    new QueueItem(queueId, audioSegment, listener);
             topOfQueueChanged = append(item);
         }
         adaptSynthesizerState(topOfQueueChanged);
@@ -131,12 +132,13 @@ final class SynthesisQueue implements Runnable {
 
     /**
      * Appends the given queue item to the end of the list.
+     *
      * @param item the item to append
      * @return <code>true</code> if the appended item is the only one
-     *      in the queue
+     * in the queue
      */
-    private boolean append(final QueueItem item) {
-        final boolean topOfQueueChanged = isQueueEmpty();
+    private boolean append(QueueItem item) {
+        boolean topOfQueueChanged = isQueueEmpty();
         queue.add(item);
         queue.notifyAll();
         return topOfQueueChanged;
@@ -144,12 +146,13 @@ final class SynthesisQueue implements Runnable {
 
     /**
      * Adapts the synthesizer state after a queue item has been added.
+     *
      * @param topOfQueueChanged <code>true</code> if the top of the
-     *      queue changed after the item has been appended
+     *                          queue changed after the item has been appended
      */
-    private void adaptSynthesizerState(final boolean topOfQueueChanged) {
-        final long[] states;
-        final BaseSynthesizer synthesizer = queueManager.getSynthesizer();
+    private void adaptSynthesizerState(boolean topOfQueueChanged) {
+        long[] states;
+        BaseSynthesizer synthesizer = queueManager.getSynthesizer();
         if (topOfQueueChanged) {
             states = synthesizer.setEngineState(
                     Synthesizer.QUEUE_EMPTY,
@@ -176,6 +179,7 @@ final class SynthesisQueue implements Runnable {
 
     /**
      * Cancels the first item in the queue.
+     *
      * @return <code>true</code> if an item was removed from the queue
      */
     boolean cancelFirstItem() {
@@ -184,7 +188,7 @@ final class SynthesisQueue implements Runnable {
                 return false;
             }
             // Get the data of the first item for the notification
-            final QueueItem item = queue.get(0);
+            QueueItem item = queue.get(0);
             cancelItem(item);
             return true;
         }
@@ -192,13 +196,14 @@ final class SynthesisQueue implements Runnable {
 
     /**
      * Cancels the item with the given id.
+     *
      * @param id the id of the item to cancel
      * @return <code>true</code> if the item was cancelled
      */
-    boolean cancelItem(final int id) {
+    boolean cancelItem(int id) {
         // search item in queue
         synchronized (queue) {
-            final QueueItem item = getQueueItem(id);
+            QueueItem item = getQueueItem(id);
             if (item == null) {
                 return false;
             }
@@ -209,29 +214,30 @@ final class SynthesisQueue implements Runnable {
 
     /**
      * Removes the given item from the queue and sends the corresponding event.
+     *
      * @param item the item to remove.
      */
-    private void cancelItem(final QueueItem item) {
-        final int id = item.getId();
-        final Object source = item.getSource();
-        final SpeakableListener listener = item.getListener();
-        final SpeakableEvent event = new SpeakableEvent(
+    private void cancelItem(QueueItem item) {
+        int id = item.getId();
+        Object source = item.getSource();
+        SpeakableListener listener = item.getListener();
+        SpeakableEvent event = new SpeakableEvent(
                 source, SpeakableEvent.SPEAKABLE_CANCELLED, id);
-        final BaseSynthesizer synthesizer = queueManager.getSynthesizer();
+        BaseSynthesizer synthesizer = queueManager.getSynthesizer();
         synthesizer.postSpeakableEvent(event, listener);
         queue.remove(item);
     }
 
     /**
      * Retrieves the queue item with the given id.
+     *
      * @param id the id of the queue item to look for
      * @return found queue item, or <code>null</code> if there is no
-     *      queue item with the given id
+     * queue item with the given id
      */
-    public QueueItem getQueueItem(final int id) {
+    public QueueItem getQueueItem(int id) {
         synchronized (queue) {
-            for (int i = 0; i < queue.size(); i++) {
-                final QueueItem item = queue.get(i);
+            for (QueueItem item : queue) {
                 if (item.getId() == id) {
                     return item;
                 }
@@ -246,7 +252,7 @@ final class SynthesisQueue implements Runnable {
      *
      * @return the first queue item
      */
-    protected QueueItem getNextQueueItem() {
+    QueueItem getNextQueueItem() {
         synchronized (queue) {
             while (queue.size() == 0 && !queueManager.isDone()) {
                 try {
@@ -267,10 +273,9 @@ final class SynthesisQueue implements Runnable {
      * Removes the given item, posting the appropriate events.
      * The item may have already been removed (due to a cancel).
      *
-     * @param item
-     *                the item to remove
+     * @param item the item to remove
      */
-    protected void removeQueueItem(final QueueItem item) {
+    void removeQueueItem(QueueItem item) {
         synchronized (queue) {
             boolean found = queue.remove(item);
             if (found) {
@@ -286,9 +291,9 @@ final class SynthesisQueue implements Runnable {
         long lastFocusEvent = Synthesizer.DEFOCUSED;
 
         while (!queueManager.isDone()) {
-            final QueueItem item = getNextQueueItem();
+            QueueItem item = getNextQueueItem();
             if (item != null) {
-                final BaseSynthesizer synthesizer =
+                BaseSynthesizer synthesizer =
                         queueManager.getSynthesizer();
                 if (lastFocusEvent == Synthesizer.DEFOCUSED) {
                     long[] states = synthesizer.setEngineState(
@@ -306,9 +311,9 @@ final class SynthesisQueue implements Runnable {
                     synthesize(item);
                 } catch (SpeakableException e) {
                     e.printStackTrace();
-                    final int id = item.getId();
-                    final Speakable speakable = item.getSpeakable();
-                    final String textInfo = speakable.getMarkupText();
+                    int id = item.getId();
+                    Speakable speakable = item.getSpeakable();
+                    String textInfo = speakable.getMarkupText();
                     SpeakableEvent event = new SpeakableEvent(this,
                             SpeakableEvent.SPEAKABLE_FAILED, id, textInfo,
                             SpeakableEvent.SPEAKABLE_FAILURE_UNRECOVERABLE, e);
@@ -322,26 +327,27 @@ final class SynthesisQueue implements Runnable {
 
     /**
      * Synthesizes the given queue item.
+     *
      * @param item the queue item to synthesize
      * @throws SpeakableException error processing the item
      */
-    private void synthesize(final QueueItem item) throws SpeakableException {
-        final Object itemSource = item.getSource();
-        final int id = item.getId();
-        final AudioSegment segment;
+    private void synthesize(QueueItem item) throws SpeakableException {
+        Object itemSource = item.getSource();
+        int id = item.getId();
+        AudioSegment segment;
         // TODO this won't work for queued audio segments
-        final BaseSynthesizer synthesizer = queueManager.getSynthesizer();
+        BaseSynthesizer synthesizer = queueManager.getSynthesizer();
         if (itemSource instanceof String) {
-            final String text = (String) itemSource;
+            String text = (String) itemSource;
             segment = synthesizer.handleSpeak(id, text);
         } else if (itemSource instanceof Speakable) {
-            final Speakable speakable = (Speakable) itemSource;
+            Speakable speakable = (Speakable) itemSource;
             segment = synthesizer.handleSpeak(id, speakable);
         } else {
             throw new RuntimeException(
-                 "WTF! It could only be text or speakable but was "
-                 + (itemSource == null ? "null" :
-                     item.getClass().getName()));
+                    "WTF! It could only be text or speakable but was "
+                            + (itemSource == null ? "null" :
+                            item.getClass().getName()));
         }
 
         item.setAudioSegment(segment);

@@ -170,22 +170,21 @@ public class Voice {
     }
 
     public String toString() {
-        StringBuffer str = new StringBuffer();
 
-        str.append(getClass().getName());
-        str.append("[");
-        str.append(locale);
-        str.append(",");
-        str.append(name);
-        str.append(",");
-        str.append(age);
-        str.append(",");
-        str.append(gender);
-        str.append(",");
-        str.append(variant);
-        str.append("]");
+        String str = getClass().getName() +
+                "[" +
+                locale +
+                "," +
+                name +
+                "," +
+                age +
+                "," +
+                gender +
+                "," +
+                variant +
+                "]";
 
-        return str.toString();
+        return str;
     }
 
     public boolean match(Voice require) {
@@ -193,40 +192,40 @@ public class Voice {
             return true;
         }
 
-        final boolean namesMatch;
-        final String requiredName = require.getName();
+        boolean namesMatch;
+        String requiredName = require.getName();
         if ((requiredName == null) || (requiredName.length() == 0)) {
             namesMatch = true;
         } else {
             namesMatch = requiredName.equals(name);
         }
 
-        final boolean genderMatch;
-        final int requiredGender = require.getGender();
+        boolean genderMatch;
+        int requiredGender = require.getGender();
         if (requiredGender == GENDER_DONT_CARE) {
           genderMatch = true;
         } else {
           genderMatch = (gender == requiredGender);
         }
-        final boolean localeMatch;
-        final SpeechLocale requiredLocale = require.getSpeechLocale();
+        boolean localeMatch;
+        SpeechLocale requiredLocale = require.getSpeechLocale();
         if (requiredLocale == null) {
             localeMatch = true;
         } else {
             localeMatch = requiredLocale.equals(locale);
         }
 
-        final boolean ageMatch;
-        final int requiredAge = require.getAge();
+        boolean ageMatch;
+        int requiredAge = require.getAge();
         if (requiredAge == AGE_DONT_CARE) {
             ageMatch = true;
         } else {
-            final int closestAge = getClosestAge(requiredAge);
+            int closestAge = getClosestAge(requiredAge);
             ageMatch = (age == closestAge);
         }
 
-        final boolean variantMatch;
-        final int requiredVariant = require.getVariant();
+        boolean variantMatch;
+        int requiredVariant = require.getVariant();
         if (requiredVariant == VARIANT_DONT_CARE) {
             variantMatch = true;
         } else {

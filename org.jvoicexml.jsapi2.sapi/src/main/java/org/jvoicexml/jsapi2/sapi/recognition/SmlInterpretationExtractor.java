@@ -72,13 +72,13 @@ public final class SmlInterpretationExtractor implements ContentHandler {
     private float confidence;
 
     @Override
-    public void setDocumentLocator(final Locator locator) {
+    public void setDocumentLocator(Locator locator) {
     }
 
     @Override
     public void startDocument() throws SAXException {
-        interpretations = new java.util.ArrayList<SmlInterpretation>();
-        tagprefixes = new java.util.Stack<String>();
+        interpretations = new java.util.ArrayList<>();
+        tagprefixes = new java.util.Stack<>();
     }
 
     @Override
@@ -86,28 +86,28 @@ public final class SmlInterpretationExtractor implements ContentHandler {
     }
 
     @Override
-    public void startPrefixMapping(final String prefix, final  String uri)
+    public void startPrefixMapping(String prefix, String uri)
             throws SAXException {
     }
 
     @Override
-    public void endPrefixMapping(final String prefix) throws SAXException {
+    public void endPrefixMapping(String prefix) throws SAXException {
     }
 
     @Override
-    public void startElement(final String uri, final String localName,
-            final String qName, final Attributes atts) throws SAXException {
+    public void startElement(String uri, String localName,
+                             String qName, Attributes atts) throws SAXException {
         if (localName.equalsIgnoreCase("SML")) {
             utterance = atts.getValue("text");
-            final String conf = atts.getValue("confidence");
+            String conf = atts.getValue("confidence");
             if (conf != null) {
                 confidence = Float.parseFloat(conf);
             }
             strTag = new StringBuilder();
         } else {
-            final StringBuilder tag = new StringBuilder();
+            StringBuilder tag = new StringBuilder();
             for (int i = 0; i < tagprefixes.size(); i++) {
-                final String tagprefix = tagprefixes.get(i);
+                String tagprefix = tagprefixes.get(i);
                 if (i != 0) {
                     tag.append('.');
                 }
@@ -118,7 +118,7 @@ public final class SmlInterpretationExtractor implements ContentHandler {
             }
             tag.append(localName);
             tagprefixes.push(localName);
-            final String conf = atts.getValue("confidence");
+            String conf = atts.getValue("confidence");
             float fconf = 0.0f;
             if (conf != null) {
                 fconf = Float.parseFloat(conf);
@@ -131,14 +131,14 @@ public final class SmlInterpretationExtractor implements ContentHandler {
     }
 
     @Override
-    public void endElement(final String uri, final String localName,
-            final String qName)
+    public void endElement(String uri, String localName,
+                           String qName)
             throws SAXException {
         if (localName.equalsIgnoreCase("SML")) {
             utteranceTag = strTag.toString().trim();
             strTag = null;
         } else  if (str != null) {
-            final SmlInterpretation interpretation =
+            SmlInterpretation interpretation =
                     findInterpretation(localName);
             if (interpretation != null) {
                 interpretation.setValue(str.toString());
@@ -155,11 +155,11 @@ public final class SmlInterpretationExtractor implements ContentHandler {
      * @param localName the local name to look for
      * @return found interpretation 
      */
-    private SmlInterpretation findInterpretation(final String localName) {
-        final String prefixedName = "." + localName;
+    private SmlInterpretation findInterpretation(String localName) {
+        String prefixedName = "." + localName;
         for (int i = interpretations.size() - 1; i >= 0; i--) {
-            final SmlInterpretation interpretation = interpretations.get(i);
-            final String tag = interpretation.getTag();
+            SmlInterpretation interpretation = interpretations.get(i);
+            String tag = interpretation.getTag();
             if (tag.endsWith(prefixedName) || tag.equals(localName)) {
                 return interpretation;
             }
@@ -168,7 +168,7 @@ public final class SmlInterpretationExtractor implements ContentHandler {
     }
 
     @Override
-    public void characters(final char[] ch, final int start, final int length)
+    public void characters(char[] ch, int start, int length)
             throws SAXException {
         if (str != null) {
             str.append(ch, start, length);
@@ -178,17 +178,17 @@ public final class SmlInterpretationExtractor implements ContentHandler {
     }
 
     @Override
-    public void ignorableWhitespace(final char[] ch, final int start,
-            final int length) throws SAXException {
+    public void ignorableWhitespace(char[] ch, int start,
+                                    int length) throws SAXException {
     }
 
     @Override
-    public void processingInstruction(final String target, final String data)
+    public void processingInstruction(String target, String data)
             throws SAXException {
     }
 
     @Override
-    public void skippedEntity(final String name) throws SAXException {
+    public void skippedEntity(String name) throws SAXException {
     }
 
     /**

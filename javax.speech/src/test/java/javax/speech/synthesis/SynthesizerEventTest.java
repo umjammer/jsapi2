@@ -35,12 +35,13 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Test case for {@link javax.speech.synthesizer.SynthesizerEvent}.
+ * Test case for {@link javax.speech.synthesis.SynthesizerEvent}.
  * 
  * @author Dirk Schnelle
  * 
  */
 public class SynthesizerEventTest {
+
     /** The test synthesizer. */
     private Synthesizer synthesizer;
 
@@ -55,9 +56,9 @@ public class SynthesizerEventTest {
      */
     @Test
     void testIsTopOfQueueChanged() {
-        final Throwable problem = new Exception();
+        Throwable problem = new Exception();
         boolean topOfQueueChanged = false;
-        final SynthesizerEvent event = new SynthesizerEvent(synthesizer,
+        SynthesizerEvent event = new SynthesizerEvent(synthesizer,
                 SynthesizerEvent.ENGINE_ERROR,
                 SynthesizerEvent.QUEUE_EMPTIED,
                 SynthesizerEvent.SYNTHESIZER_BUFFER_READY, problem,
@@ -65,14 +66,14 @@ public class SynthesizerEventTest {
         assertFalse(event.isTopOfQueueChanged());
 
         boolean topOfQueueChanged2 = false;
-        final SynthesizerEvent event2 = new SynthesizerEvent(synthesizer,
+        SynthesizerEvent event2 = new SynthesizerEvent(synthesizer,
                 SynthesizerEvent.QUEUE_UPDATED, SynthesizerEvent.QUEUE_EMPTIED,
                 SynthesizerEvent.SYNTHESIZER_BUFFER_READY, null,
                 topOfQueueChanged2);
         assertFalse(event2.isTopOfQueueChanged());
 
         boolean topOfQueueChanged3 = true;
-        final SynthesizerEvent event3 = new SynthesizerEvent(synthesizer,
+        SynthesizerEvent event3 = new SynthesizerEvent(synthesizer,
                 SynthesizerEvent.QUEUE_UPDATED, SynthesizerEvent.QUEUE_EMPTIED,
                 SynthesizerEvent.SYNTHESIZER_BUFFER_READY, null,
                 topOfQueueChanged3);
@@ -85,12 +86,12 @@ public class SynthesizerEventTest {
     @Test
     void testParamString() {
         boolean topOfQueueChanged = false;
-        final SynthesizerEvent event = new SynthesizerEvent(synthesizer,
+        SynthesizerEvent event = new SynthesizerEvent(synthesizer,
                 SynthesizerEvent.QUEUE_UPDATED,
                 SynthesizerEvent.QUEUE_EMPTIED,
                 SynthesizerEvent.SYNTHESIZER_BUFFER_READY, null,
                 topOfQueueChanged);
-        final String str = event.paramString();
+        String str = event.paramString();
         assertTrue(str.contains("QUEUE_UPDATED"));
     }
 
@@ -100,12 +101,12 @@ public class SynthesizerEventTest {
     @Test
     void testToString() {
         boolean topOfQueueChanged = false;
-        final SynthesizerEvent event = new SynthesizerEvent(synthesizer,
+        SynthesizerEvent event = new SynthesizerEvent(synthesizer,
                 SynthesizerEvent.QUEUE_UPDATED,
                 SynthesizerEvent.QUEUE_EMPTIED,
                 SynthesizerEvent.SYNTHESIZER_BUFFER_READY, null,
                 topOfQueueChanged);
-        final String str = event.toString();
+        String str = event.toString();
         assertTrue(str.contains("QUEUE_UPDATED"));
     }
 }

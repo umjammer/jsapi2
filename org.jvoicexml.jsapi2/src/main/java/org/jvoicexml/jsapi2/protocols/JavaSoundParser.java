@@ -69,7 +69,7 @@ public final class JavaSoundParser {
      * @throws URISyntaxException
      *         error parsing the URL
      */
-    public static AudioFormat parse(final URL url) throws URISyntaxException {
+    public static AudioFormat parse(URL url) throws URISyntaxException {
         URI uri = url.toURI();
         return parse(uri);
     }
@@ -83,8 +83,8 @@ public final class JavaSoundParser {
      * @throws URISyntaxException
      *         error parsing the URL
      */
-    public static AudioFormat parse(final URI uri) throws URISyntaxException {
-        final Map<String, String> parameters = new HashMap<String, String>();
+    public static AudioFormat parse(URI uri) throws URISyntaxException {
+        Map<String, String> parameters = new HashMap<>();
         if (uri.getQuery() != null) {
             String[] parametersString = uri.getQuery().split("\\&");
             for (String part : parametersString) {
@@ -104,53 +104,57 @@ public final class JavaSoundParser {
         boolean signed = true;
 
         // Change default values as specified
-        final String signedStr = parameters.get("signed");
+        String signedStr = parameters.get("signed");
         if (signedStr != null) {
             if (signedStr.equalsIgnoreCase(UNSIGNED)
                     || signedStr.equalsIgnoreCase(Boolean.FALSE.toString())) {
                 signed = false;
             } else {
                 if (signedStr.equalsIgnoreCase(SIGNED)
-                        || Boolean.valueOf(signedStr)) {
+                        || Boolean.parseBoolean(signedStr)) {
                     signed = true;
                 }
             }
         }
 
-        final String encodingStr = parameters.get("encoding");
+        String encodingStr = parameters.get("encoding");
         if (encodingStr != null) {
-            if (encodingStr.equals("pcm")) {
+            switch (encodingStr) {
+            case "pcm":
                 if (signed) {
                     encoding = AudioFormat.Encoding.PCM_SIGNED;
                 } else {
                     encoding = AudioFormat.Encoding.PCM_UNSIGNED;
                 }
-            } else if (encodingStr.equals("alaw")) {
+                break;
+            case "alaw":
                 encoding = AudioFormat.Encoding.ALAW;
-            } else if (encodingStr.equals("ulaw")) {
+                break;
+            case "ulaw":
                 encoding = AudioFormat.Encoding.ULAW;
-            } else if (encodingStr.equals("gsm")) {
+                break;
+            case "gsm":
                 throw new URISyntaxException(uri.toString(),
                         "gsm is currently not supported!");
             }
         }
 
-        final String rateStr = parameters.get("rate");
+        String rateStr = parameters.get("rate");
         if (rateStr != null) {
-            sampleRate = Float.valueOf(rateStr);
+            sampleRate = Float.parseFloat(rateStr);
         }
 
-        final String bitsStr = parameters.get("bits");
+        String bitsStr = parameters.get("bits");
         if (bitsStr != null) {
-            bits = Integer.valueOf(bitsStr);
+            bits = Integer.parseInt(bitsStr);
         }
 
-        final String channelsStr = parameters.get("channels");
+        String channelsStr = parameters.get("channels");
         if (channelsStr != null) {
-            channels = Integer.valueOf(channelsStr);
+            channels = Integer.parseInt(channelsStr);
         }
 
-        final String endianStr = parameters.get("endian");
+        String endianStr = parameters.get("endian");
         if (endianStr != null) {
             if (endianStr.equalsIgnoreCase(LITTLE_ENDIAN)) {
                 endian = false;

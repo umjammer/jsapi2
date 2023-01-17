@@ -67,7 +67,7 @@ public class Ssml2JsmlTransformer {
             ex.printStackTrace();
         }
 
-        /** create a template from a xsl file */
+        /* create a template from a xsl file */
         try {
         	InputStream in = Ssml2JsmlTransformer.class.getResourceAsStream(
         			"/ssml2jsml.xsl");
@@ -85,20 +85,18 @@ public class Ssml2JsmlTransformer {
 
     public Document transform(String ssml) {
         try {
-            final ByteArrayInputStream bais = new ByteArrayInputStream(ssml.
+            ByteArrayInputStream bais = new ByteArrayInputStream(ssml.
                     getBytes());
             xmlDomSource = new DOMSource(domBuilder.parse(bais));
 
-        } catch (IOException ex1) {
-            ex1.printStackTrace();
-        } catch (SAXException ex1) {
+        } catch (IOException | SAXException ex1) {
             ex1.printStackTrace();
         }
 
         Document resDocument = domBuilder.newDocument();
         xmlDomResult = new DOMResult(resDocument);
 
-        /** transform to a Document */
+        /* transform to a Document */
         try {
             serializer.transform(xmlDomSource, xmlDomResult);
         } catch (TransformerException ex4) {

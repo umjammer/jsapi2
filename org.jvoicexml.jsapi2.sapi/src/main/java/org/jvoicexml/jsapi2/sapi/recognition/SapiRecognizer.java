@@ -78,7 +78,7 @@ public final class SapiRecognizer extends BaseRecognizer {
      * @param mode
      *            the recognizer mode.
      */
-    public SapiRecognizer(final SapiRecognizerMode mode) {
+    public SapiRecognizer(SapiRecognizerMode mode) {
         super(mode);
     }
 
@@ -121,7 +121,7 @@ public final class SapiRecognizer extends BaseRecognizer {
      * @param in the input stream
      * @return {@code true} if the stream has been set
      */
-    private boolean setRecognizerInputStream(final InputStream in) {
+    private boolean setRecognizerInputStream(InputStream in) {
         /* problem: TypeMismatch JSAPI2-AudioFormat <-> JAVAX-AudioFormat */
         // AudioFormat audioFormat = audioManager.getAudioFormat();
         // => alternatively: hardcoded streamInfo
@@ -138,10 +138,10 @@ public final class SapiRecognizer extends BaseRecognizer {
 
     private native long sapiAllocate();
 
-    private native boolean sapiSetRecognizerInputStream(final long handle,
-            final InputStream in, final float sampleRate, final int bitsPerSec,
-            final int channels, final boolean endian, final boolean signed,
-            final String encoding);
+    private native boolean sapiSetRecognizerInputStream(long handle,
+                                                        InputStream in, float sampleRate, int bitsPerSec,
+                                                        int channels, boolean endian, boolean signed,
+                                                        String encoding);
 
     @Override
     public void handleDeallocate() {
@@ -162,7 +162,7 @@ public final class SapiRecognizer extends BaseRecognizer {
     private native void sapiPause(long handle);
 
     @Override
-    protected void handlePause(final int flags) {
+    protected void handlePause(int flags) {
         sapiPause(recognizerHandle, flags);
         if (recognitionThread != null) {
             recognitionThread.stopRecognition();
@@ -181,7 +181,7 @@ public final class SapiRecognizer extends BaseRecognizer {
      * @exception EngineException
      *                if there were errors during recognition
      */
-    native int sapiRecognize(final long handle, String[] result)
+    native int sapiRecognize(long handle, String[] result)
             throws EngineException;
 
     public long getRecognizerHandle() {
@@ -189,14 +189,14 @@ public final class SapiRecognizer extends BaseRecognizer {
     }
 
     @Override
-    protected boolean handleResume(final InputStream in)
+    protected boolean handleResume(InputStream in)
             throws EngineStateException {
         setRecognizerInputStream(in);
 
-        final GrammarManager manager = getGrammarManager();
-        final Grammar[] grammars = manager.listGrammars();
-        final String[] grammarSources = new String[grammars.length];
-        final String[] grammarReferences = new String[grammars.length];
+        GrammarManager manager = getGrammarManager();
+        Grammar[] grammars = manager.listGrammars();
+        String[] grammarSources = new String[grammars.length];
+        String[] grammarReferences = new String[grammars.length];
         int i = 0;
 
         if (LOGGER.isLoggable(Level.FINE)) {
@@ -228,15 +228,15 @@ public final class SapiRecognizer extends BaseRecognizer {
         return false;
     }
 
-    public boolean setGrammar(final String grammarPath, String reference) {
+    public boolean setGrammar(String grammarPath, String reference) {
         return sapiSetGrammar(recognizerHandle, grammarPath, reference);
     }
 
     private native boolean sapiSetGrammar(long handle, String grammarPath,
             String reference);
 
-    public boolean setGrammarContent(final String grammarContent,
-            String reference) {
+    public boolean setGrammarContent(String grammarContent,
+                                     String reference) {
         return sapiSetGrammarContent(recognizerHandle, grammarContent,
                 reference);
     }
@@ -257,7 +257,6 @@ public final class SapiRecognizer extends BaseRecognizer {
         }
         postResultRejected();
 
-        return;
     }
 
     /**
@@ -268,19 +267,19 @@ public final class SapiRecognizer extends BaseRecognizer {
      * @param utterance
      *            the utterance
      */
-    public void reportResult(final String ruleName, final String utterance) {
+    public void reportResult(String ruleName, String utterance) {
         postResultCreated();
-        final Grammar grammar = getGrammar(ruleName);
+        Grammar grammar = getGrammar(ruleName);
         if (grammar == null) {
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine("Could not find the RuleGrammar");
             }
-            final SapiResult result = new SapiResult();
+            SapiResult result = new SapiResult();
             postResultRejected(result);
 
             return;
         }
-        final SapiResult result = new SapiResult(grammar);
+        SapiResult result = new SapiResult(grammar);
         if (LOGGER.isLoggable(Level.FINE)) {
             LOGGER.log(Level.FINE, "reporting SML Result String : {0}",
                     utterance);
@@ -290,7 +289,7 @@ public final class SapiRecognizer extends BaseRecognizer {
             result.setSml(utterance);
         } catch (TransformerException ex) {
             LOGGER.log(Level.WARNING, "error parsing SML: {0}", ex.getMessage());
-            final EngineException ee = new EngineException(ex.getMessage());
+            EngineException ee = new EngineException(ex.getMessage());
             postEngineException(ee);
             return;
         }
@@ -311,11 +310,11 @@ public final class SapiRecognizer extends BaseRecognizer {
                     new Object[] { utterance, result.getConfidence() });
         }
 
-        final ResultEvent tokensUpdated = new ResultEvent(result,
+        ResultEvent tokensUpdated = new ResultEvent(result,
                 ResultEvent.RESULT_UPDATED, true, false);
         postResultEvent(tokensUpdated);
 
-        final ResultEvent grammarFinalized = new ResultEvent(result,
+        ResultEvent grammarFinalized = new ResultEvent(result,
                 ResultEvent.GRAMMAR_FINALIZED);
         postResultEvent(grammarFinalized);
 
@@ -350,12 +349,12 @@ public final class SapiRecognizer extends BaseRecognizer {
             }
         }
 
-        /** post the result */
+        /* post the result */
         if (result.getResultState() == Result.REJECTED) {
             postResultRejected(result);
         } else {
             result.setResultState(Result.ACCEPTED);
-            final ResultEvent accepted = new ResultEvent(result,
+            ResultEvent accepted = new ResultEvent(result,
                     ResultEvent.RESULT_ACCEPTED, false, false);
             postResultEvent(accepted);
         }
@@ -366,9 +365,9 @@ public final class SapiRecognizer extends BaseRecognizer {
      * @param ruleName name of the rule
      * @return determined grammar, maybe {@code null}
      */
-    private Grammar getGrammar(final String ruleName) {
-        final GrammarManager manager = getGrammarManager();
-        final Grammar grammar = manager.getGrammar("grammar:" + ruleName);
+    private Grammar getGrammar(String ruleName) {
+        GrammarManager manager = getGrammarManager();
+        Grammar grammar = manager.getGrammar("grammar:" + ruleName);
         if (grammar != null) {
             return grammar;
         }
@@ -384,14 +383,14 @@ public final class SapiRecognizer extends BaseRecognizer {
      * @throws TransformerException
      *             error parsing
      */
-    private SmlInterpretationExtractor parseSml(final String sml)
+    private SmlInterpretationExtractor parseSml(String sml)
             throws TransformerException {
-        final TransformerFactory factory = TransformerFactory.newInstance();
-        final Transformer transformer = factory.newTransformer();
-        final Reader reader = new StringReader(sml);
-        final Source source = new StreamSource(reader);
-        final SmlInterpretationExtractor extractor = new SmlInterpretationExtractor();
-        final javax.xml.transform.Result result = new SAXResult(extractor);
+        TransformerFactory factory = TransformerFactory.newInstance();
+        Transformer transformer = factory.newTransformer();
+        Reader reader = new StringReader(sml);
+        Source source = new StreamSource(reader);
+        SmlInterpretationExtractor extractor = new SmlInterpretationExtractor();
+        javax.xml.transform.Result result = new SAXResult(extractor);
         transformer.transform(source, result);
         return extractor;
     }
@@ -400,10 +399,10 @@ public final class SapiRecognizer extends BaseRecognizer {
      * Notifies all listeners that a recognition result has been created.
      */
     private void postResultCreated() {
-        final SapiResult result = new SapiResult();
+        SapiResult result = new SapiResult();
         result.setResultState(Result.UNFINALIZED);
         result.setConfidenceLevel(0);
-        final ResultEvent created = new ResultEvent(result,
+        ResultEvent created = new ResultEvent(result,
                 ResultEvent.RESULT_CREATED, false, false);
         postResultEvent(created);
     }
@@ -412,7 +411,7 @@ public final class SapiRecognizer extends BaseRecognizer {
      * Notifies all listeners that a recognition result has been created.
      */
     private void postResultRejected() {
-        final SapiResult result = new SapiResult();
+        SapiResult result = new SapiResult();
         postResultRejected(result);
     }
 
@@ -422,19 +421,19 @@ public final class SapiRecognizer extends BaseRecognizer {
      * @param result
      *            the current result.
      */
-    private void postResultRejected(final SapiResult result) {
+    private void postResultRejected(SapiResult result) {
         result.setResultState(Result.REJECTED);
-        final ResultEvent rejected = new ResultEvent(result,
+        ResultEvent rejected = new ResultEvent(result,
                 ResultEvent.RESULT_REJECTED, false, false);
         postResultEvent(rejected);
     }
 
-    protected void postEngineException(final EngineException exc) {
-        final long oldEngineState = getEngineState();
+    protected void postEngineException(EngineException exc) {
+        long oldEngineState = getEngineState();
         setEngineState(~CLEAR_ALL_STATE, ERROR_OCCURRED);
-        final long newEngineState = getEngineState();
+        long newEngineState = getEngineState();
 
-        final RecognizerEvent event = new RecognizerEvent(this,
+        RecognizerEvent event = new RecognizerEvent(this,
                 EngineEvent.ENGINE_ERROR, oldEngineState, newEngineState, exc,
                 null, RecognizerEvent.UNKNOWN_AUDIO_POSITION);
         postEngineEvent(event);
@@ -462,12 +461,12 @@ public final class SapiRecognizer extends BaseRecognizer {
      *            recognizer handle.
      * @return native audio format
      */
-    private native AudioFormat sapiGetAudioFormat(final long handle);
+    private native AudioFormat sapiGetAudioFormat(long handle);
 
     @Override
     protected void handlePropertyChangeRequest(
-            final BaseEngineProperties properties, final String propName,
-            final Object oldValue, final Object newValue) {
+            BaseEngineProperties properties, String propName,
+            Object oldValue, Object newValue) {
         LOGGER.warning("changing property '" + propName + "' to '" + newValue
                 + "' ignored");
     }

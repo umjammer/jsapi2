@@ -28,20 +28,20 @@ public final class SapiEngineListFactory implements EngineListFactory {
         }
             
         // Start the logging adapter
-        final Log4CPlus2JavaLoggingAdapter adapter =
+        Log4CPlus2JavaLoggingAdapter adapter =
             new Log4CPlus2JavaLoggingAdapter();
         adapter.start();
         adapter.waitStarted();
     }
 
     @Override
-    public EngineList createEngineList(final EngineMode require) {
+    public EngineList createEngineList(EngineMode require) {
         if (require instanceof SynthesizerMode) {
-            final SynthesizerMode mode = (SynthesizerMode) require;
+            SynthesizerMode mode = (SynthesizerMode) require;
             Voice[] voices = sapiGetVoices();
             if (mode.getVoices() != null) {
                 //If a voice preference was presented
-                final ArrayList<Voice> selectedVoices = new ArrayList<Voice>();
+                ArrayList<Voice> selectedVoices = new ArrayList<>();
                 for (Voice reqVoice: mode.getVoices()) {
                     for (Voice availVoice : voices) {
                         if (availVoice.match(reqVoice)) {
@@ -62,14 +62,14 @@ public final class SapiEngineListFactory implements EngineListFactory {
                 voices = selectedVoices.toArray(new Voice[] {});
             }
 
-            final SynthesizerMode[] features = new SynthesizerMode[] {
+            SynthesizerMode[] features = new SynthesizerMode[] {
                     new SapiSynthesizerMode(null, mode.getEngineName(),
                             mode.getRunning(), voices)
             };
             return new EngineList(features);
         }            
         if (require instanceof RecognizerMode) {
-                final RecognizerMode[] features = new RecognizerMode[] {
+                RecognizerMode[] features = new RecognizerMode[] {
                         new SapiRecognizerMode()
             };
             return new EngineList(features);

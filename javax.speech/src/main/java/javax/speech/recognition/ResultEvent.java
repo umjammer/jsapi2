@@ -26,8 +26,7 @@
 
 package javax.speech.recognition;
 
-import java.util.Vector;
-
+import java.util.List;
 import javax.speech.SpeechEvent;
 
 // Comp 2.0.6
@@ -67,7 +66,7 @@ public class ResultEvent extends SpeechEvent {
     }
 
     public boolean isFinalizedChanged() {
-        final int id = getId();
+        int id = getId();
         if ((id == RESULT_CREATED) || (id == RESULT_UPDATED)
                 || (id == RESULT_ACCEPTED) || (id == RESULT_REJECTED)) {
             return tokensFinalized;
@@ -77,7 +76,7 @@ public class ResultEvent extends SpeechEvent {
     }
 
     public boolean isUnfinalizedChanged() {
-        final int id = getId();
+        int id = getId();
         if ((id == RESULT_CREATED) || (id == RESULT_UPDATED)
                 || (id == RESULT_ACCEPTED) || (id == RESULT_REJECTED)) {
             return tokensFinalized;
@@ -87,14 +86,13 @@ public class ResultEvent extends SpeechEvent {
     }
 
     @Override
-    protected Vector getParameters() {
-        final Vector parameters = super.getParameters();
+    protected List<Object> getParameters() {
+        List<Object> parameters = super.getParameters();
 
-        final Boolean tokensFinalizedObject = new Boolean(tokensFinalized);
-        parameters.addElement(tokensFinalizedObject);
-        final Boolean unfinalizedTokensChangedObject = new Boolean(
-                unfinalizedTokensChanged);
-        parameters.addElement(unfinalizedTokensChangedObject);
+        Boolean tokensFinalizedObject = tokensFinalized;
+        parameters.add(tokensFinalizedObject);
+        Boolean unfinalizedTokensChangedObject = unfinalizedTokensChanged;
+        parameters.add(unfinalizedTokensChangedObject);
 
         return parameters;
     }

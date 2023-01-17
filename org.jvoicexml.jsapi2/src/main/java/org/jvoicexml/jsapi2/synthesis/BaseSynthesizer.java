@@ -22,7 +22,6 @@
 package org.jvoicexml.jsapi2.synthesis;
 
 import java.util.Collection;
-
 import javax.sound.sampled.AudioFormat;
 import javax.speech.AudioException;
 import javax.speech.AudioManager;
@@ -56,8 +55,8 @@ import org.jvoicexml.jsapi2.ThreadSpeechEventExecutor;
  * @author Renato Cassaca
  * @author Dirk Schnelle-Walka
  */
-public abstract class BaseSynthesizer extends BaseEngine
-    implements Synthesizer {
+public abstract class BaseSynthesizer extends BaseEngine implements Synthesizer {
+
     /** Registered listeners for this synthesizer. */
     private final Collection<SpeakableListener> speakableListeners;
     /** Current synthesizer properties. */
@@ -76,11 +75,12 @@ public abstract class BaseSynthesizer extends BaseEngine
 
     /**
      * Constructs a new object.
+     *
      * @param engineMode the engine mode for this synthesizer
      */
-    public BaseSynthesizer(final SynthesizerMode engineMode) {
+    public BaseSynthesizer(SynthesizerMode engineMode) {
         super(engineMode);
-        speakableListeners = new java.util.ArrayList<SpeakableListener>();
+        speakableListeners = new java.util.ArrayList<>();
         synthesizerProperties = createSynthesizerProperties();
         speakableMask = SpeakableEvent.DEFAULT_MASK;
         setEngineMask(getEngineMask() | SynthesizerEvent.DEFAULT_MASK);
@@ -88,35 +88,32 @@ public abstract class BaseSynthesizer extends BaseEngine
     }
 
     @Override
-    public final void fireEvent(final Collection<EngineListener> listeners,
-            final EngineEvent event) {
-        final SynthesizerEvent synthesizerEvent = (SynthesizerEvent) event;
+    public final void fireEvent(Collection<EngineListener> listeners, EngineEvent event) {
+        SynthesizerEvent synthesizerEvent = (SynthesizerEvent) event;
         for (EngineListener listener : listeners) {
-            SynthesizerListener synthesizerListener =
-                    (SynthesizerListener) listener;
+            SynthesizerListener synthesizerListener = (SynthesizerListener) listener;
             synthesizerListener.synthesizerUpdate(synthesizerEvent);
         }
     }
 
     @Override
-    public final EngineEvent createStateTransitionEngineEvent(
-            final long oldState, final long newState, final int eventType) {
-        return new SynthesizerEvent(this, eventType,
-                oldState, newState, null, false);
+    public final EngineEvent createStateTransitionEngineEvent(long oldState, long newState, int eventType) {
+        return new SynthesizerEvent(this, eventType, oldState, newState, null, false);
     }
 
     /**
      * Utility method to post a {@link SynthesizerEvent} using the current
      * {@link SpeechEventExecutor} created from the given parameters.
-     * @param oldState the old synthesizer state
-     * @param newState the new synthesizer state
-     * @param eventType the type of the event
+     *
+     * @param oldState          the old synthesizer state
+     * @param newState          the new synthesizer state
+     * @param eventType         the type of the event
      * @param changedTopOfQueue <code>true</code> if the top of the queue
-     *          was changed
+     *                          was changed
      */
-    protected final void postSynthesizerEvent(final long oldState,
-            final long newState, final int eventType,
-            final boolean changedTopOfQueue) {
+    protected final void postSynthesizerEvent(long oldState,
+                                              long newState, int eventType,
+                                              boolean changedTopOfQueue) {
         boolean topChanged = changedTopOfQueue;
         switch (eventType) {
         case SynthesizerEvent.QUEUE_UPDATED:
@@ -125,7 +122,7 @@ public abstract class BaseSynthesizer extends BaseEngine
         default:
             topChanged = false;
         }
-        final SynthesizerEvent event = new SynthesizerEvent(this,
+        SynthesizerEvent event = new SynthesizerEvent(this,
                 eventType, oldState, newState, null, topChanged);
 
         postEngineEvent(event);
@@ -134,62 +131,56 @@ public abstract class BaseSynthesizer extends BaseEngine
     /**
      * Posts the given {@link SpeakableEvent} to the given listener using the
      * current {@link SpeechEventExecutor}.
-     * @param event the event to send
+     *
+     * @param event                  the event to send
      * @param extraSpeakableListener the listener to notify, maybe
-     *          <code>null</code>
+     *                               <code>null</code>
      */
-    protected final void postSpeakableEvent(final SpeakableEvent event,
-            final SpeakableListener extraSpeakableListener) {
+    protected final void postSpeakableEvent(SpeakableEvent event, SpeakableListener extraSpeakableListener) {
         // First, check if the event is filtered by the mask
-        final int id = event.getId();
+        int id = event.getId();
         if ((speakableMask & id) != id) {
             return;
         }
         // Fire the event
-        final Runnable runnable = new Runnable() {
-            public void run() {
-                if (extraSpeakableListener != null) {
-                    extraSpeakableListener.speakableUpdate(event);
-                }
-                if (speakableListeners != null) {
-                    for (SpeakableListener listener : speakableListeners) {
-                        listener.speakableUpdate(event);
-                    }
+        Runnable runnable = () -> {
+            if (extraSpeakableListener != null) {
+                extraSpeakableListener.speakableUpdate(event);
+            }
+            if (speakableListeners != null) {
+                for (SpeakableListener listener : speakableListeners) {
+                    listener.speakableUpdate(event);
                 }
             }
         };
-        final SpeechEventExecutor executor = getSpeechEventExecutor();
+        SpeechEventExecutor executor = getSpeechEventExecutor();
         executor.execute(runnable);
     }
 
     @Override
     protected long getEngineStates() {
-        return super.getEngineStates() | Synthesizer.QUEUE_EMPTY
-                | Synthesizer.QUEUE_NOT_EMPTY;
+        return super.getEngineStates() | Synthesizer.QUEUE_EMPTY | Synthesizer.QUEUE_NOT_EMPTY;
     }
 
     @Override
-    public final void addSpeakableListener(final SpeakableListener listener) {
+    public final void addSpeakableListener(SpeakableListener listener) {
         if (!speakableListeners.contains(listener)) {
             speakableListeners.add(listener);
         }
     }
 
     @Override
-    public final void removeSpeakableListener(
-            final SpeakableListener listener) {
+    public final void removeSpeakableListener(SpeakableListener listener) {
         speakableListeners.remove(listener);
     }
 
     @Override
-    public final void addSynthesizerListener(
-            final SynthesizerListener listener) {
+    public final void addSynthesizerListener(SynthesizerListener listener) {
         addEngineListener(listener);
     }
 
     @Override
-    public final void removeSynthesizerListener(
-            final SynthesizerListener listener) {
+    public final void removeSynthesizerListener(SynthesizerListener listener) {
         removeEngineListener(listener);
     }
 
@@ -209,8 +200,7 @@ public abstract class BaseSynthesizer extends BaseEngine
     }
 
     @Override
-    public final boolean cancel(final int id) throws IllegalArgumentException,
-            EngineStateException {
+    public final boolean cancel(int id) throws IllegalArgumentException, EngineStateException {
         checkEngineState(DEALLOCATED | DEALLOCATING_RESOURCES);
 
         // Wait to finalize allocation
@@ -246,8 +236,9 @@ public abstract class BaseSynthesizer extends BaseEngine
     /**
      * Maybe be overwritten by the implementing synthesizer to provide specific
      * {@link SynthesizerProperties}.
+     *
      * @return created synthesizer properties. This implementation returns an
-     *          instance of {@link BaseSynthesizerProperties}.
+     * instance of {@link BaseSynthesizerProperties}.
      */
     protected SynthesizerProperties createSynthesizerProperties() {
         return new BaseSynthesizerProperties(this);
@@ -258,7 +249,7 @@ public abstract class BaseSynthesizer extends BaseEngine
         return synthesizerProperties;
     }
 
-    public void setSpeakableMask(final int mask) {
+    public void setSpeakableMask(int mask) {
         speakableMask = mask;
     }
 
@@ -267,14 +258,13 @@ public abstract class BaseSynthesizer extends BaseEngine
     }
 
     public int speak(AudioSegment audio, SpeakableListener listener)
-        throws EngineStateException, IllegalArgumentException {
+            throws EngineStateException, IllegalArgumentException {
         return queueManager.appendItem(audio, listener);
     }
 
 
     public int speak(Speakable speakable, SpeakableListener listener)
-            throws EngineStateException, SpeakableException,
-            IllegalArgumentException {
+            throws EngineStateException, SpeakableException, IllegalArgumentException {
 
         // Wait to finalize allocation
         while (testEngineState(ALLOCATING_RESOURCES)) {
@@ -289,8 +279,7 @@ public abstract class BaseSynthesizer extends BaseEngine
     }
 
     @Override
-    public int speak(final String text, final SpeakableListener listener)
-            throws EngineStateException {
+    public int speak(String text, SpeakableListener listener) throws EngineStateException {
         checkEngineState(DEALLOCATED | DEALLOCATING_RESOURCES);
 
         // Wait to finalize allocation
@@ -299,18 +288,16 @@ public abstract class BaseSynthesizer extends BaseEngine
                 final long delay = 300;
                 waitEngineState(ALLOCATED, delay);
             } catch (InterruptedException ex) {
-                throw new EngineStateException(
-                        "wait engine state interrupted: " + ex.getMessage());
+                throw new EngineStateException("wait engine state interrupted: " + ex.getMessage());
             }
         }
 
-        final Speakable speakable = new BaseSpeakable(text);
+        Speakable speakable = new BaseSpeakable(text);
         return queueManager.appendItem(speakable, listener, text);
     }
 
     @Override
-    public int speakMarkup(final String synthesisMarkup,
-            final SpeakableListener listener) throws EngineStateException,
+    public int speakMarkup(String synthesisMarkup, SpeakableListener listener) throws EngineStateException,
             SpeakableException, IllegalArgumentException {
 
         // Wait to finalize allocation
@@ -322,61 +309,52 @@ public abstract class BaseSynthesizer extends BaseEngine
             }
         }
 
-        final Speakable speakable = new BaseSpeakable(synthesisMarkup);
+        Speakable speakable = new BaseSpeakable(synthesisMarkup);
         return queueManager.appendItem(speakable, listener);
     }
 
     @Override
-    protected final void baseAllocate() throws EngineStateException,
-            EngineException, AudioException, SecurityException {
+    protected final void baseAllocate() throws EngineStateException, EngineException, AudioException, SecurityException {
 
         // Starts AudioManager
-        final AudioManager audioManager = getAudioManager();
+        AudioManager audioManager = getAudioManager();
         audioManager.audioStart();
-                
+
         // Proceed to real engine allocation
         handleAllocate();
-        long[] states = setEngineState(CLEAR_ALL_STATE, ALLOCATED
-                | DEFOCUSED | QUEUE_EMPTY | RESUMED);
+        long[] states = setEngineState(CLEAR_ALL_STATE, ALLOCATED | DEFOCUSED | QUEUE_EMPTY | RESUMED);
 
-        postStateTransitionEngineEvent(states[0], states[1],
-                EngineEvent.ENGINE_ALLOCATED);
+        postStateTransitionEngineEvent(states[0], states[1], EngineEvent.ENGINE_ALLOCATED);
     }
 
     /**
      * Perform the real allocation of the synthesizer.
-     * @throws AudioException
-     *          if any audio request fails 
-     * @throws EngineException
-     *          if an allocation error occurred or the Engine is not
-     *          operational. 
-     * @throws EngineStateException
-     *          if called for an Engine in the DEALLOCATING_RESOURCES state 
-     * @throws SecurityException
-     *          if the application does not have permission for this Engine
+     *
+     * @throws AudioException       if any audio request fails
+     * @throws EngineException      if an allocation error occurred or the Engine is not
+     *                              operational.
+     * @throws EngineStateException if called for an Engine in the DEALLOCATING_RESOURCES state
+     * @throws SecurityException    if the application does not have permission for this Engine
      */
     protected abstract void handleAllocate()
-            throws EngineStateException,
-        EngineException, AudioException, SecurityException;
+            throws EngineStateException, EngineException, AudioException, SecurityException;
 
 
     @Override
-    protected void baseDeallocate() throws EngineStateException,
-            EngineException, AudioException {
+    protected void baseDeallocate() throws EngineStateException, EngineException, AudioException {
 
         // Stops the AudioManager
-        final BaseAudioManager audioManager = (BaseAudioManager) getAudioManager();
+        BaseAudioManager audioManager = (BaseAudioManager) getAudioManager();
         if (audioManager.isAudioStarted()) {
             audioManager.audioStop();
         }
-        
+
         // Proceed to real engine deallocation
         handleDeallocate();
-        
+
         // Adapt the state
         long[] states = setEngineState(CLEAR_ALL_STATE, DEALLOCATED);
-        postStateTransitionEngineEvent(states[0], states[1],
-                EngineEvent.ENGINE_DEALLOCATED);
+        postStateTransitionEngineEvent(states[0], states[1], EngineEvent.ENGINE_DEALLOCATED);
     }
 
     @Override
@@ -386,9 +364,9 @@ public abstract class BaseSynthesizer extends BaseEngine
 
     /**
      * Called from the <code>resume</code> method. Override in subclasses.
-     *
+     * <p>
      * TODO Handle grammar updates
-     * 
+     *
      * @return {@code true} if the synthesizer was resumed
      */
     protected boolean baseResume() {
@@ -398,16 +376,13 @@ public abstract class BaseSynthesizer extends BaseEngine
     /**
      * Deallocates this {@link Synthesizer}. Methods must also make sure that
      * any audio is stopped.
-     * @throws EngineStateException
-     *          if the synthesizer state did not allow transitioning to the
-     *          deallocated state
-     * @throws EngineException
-     *          general problems with the synthesizer
-     * @throws AudioException
-     *          if audio output was currently in progress
+     *
+     * @throws EngineStateException if the synthesizer state did not allow transitioning to the
+     *                              deallocated state
+     * @throws EngineException      general problems with the synthesizer
+     * @throws AudioException       if audio output was currently in progress
      */
-    protected abstract void handleDeallocate() throws EngineStateException,
-        EngineException, AudioException;
+    protected abstract void handleDeallocate() throws EngineStateException, EngineException, AudioException;
 
     protected abstract void handlePause();
 
@@ -422,13 +397,13 @@ public abstract class BaseSynthesizer extends BaseEngine
      * {@link QueueManager} to be played back using the settings from the
      * {@link javax.speech.AudioManager}.
      * </p>
-     * @param id id of the text to speak
+     *
+     * @param id   id of the text to speak
      * @param item the text to speak
      * @return the audio segment that can be used to play back the audio
      * @throws SpeakableException error processing the speakable
      */
-    protected abstract AudioSegment handleSpeak(int id, String item)
-            throws SpeakableException;
+    protected abstract AudioSegment handleSpeak(int id, String item) throws SpeakableException;
 
     /**
      * Speaks the SSML item with the given id.
@@ -439,27 +414,25 @@ public abstract class BaseSynthesizer extends BaseEngine
      * {@link QueueManager} to be played back using the settings from the
      * {@link javax.speech.AudioManager}.
      * </p>
-     * @param id id of the SSML markup text to speak
+     *
+     * @param id   id of the SSML markup text to speak
      * @param item the SSML markup text to speak
      * @return the audio segment that can be used to play back the audio
      * @throws SpeakableException error processing the speakable
      */
-    protected abstract AudioSegment handleSpeak(int id, Speakable item)
-            throws SpeakableException;
+    protected abstract AudioSegment handleSpeak(int id, Speakable item) throws SpeakableException;
 
     /**
      * Returns a <code>String</code> of the names of all the
      * <code>Engine</code> states in the given <code>Engine</code> state.
      *
-     * @param state
-     *                the bitmask of states
-     *
+     * @param state the bitmask of states
      * @return a <code>String</code> containing the names of all the states
-     *         set in <code>state</code>
+     * set in <code>state</code>
      */
-    public String stateToString(final long state) {
-        final String stateString = super.stateToString(state);
-        final StringBuffer buf = new StringBuffer(stateString);
+    public String stateToString(long state) {
+        String stateString = super.stateToString(state);
+        StringBuilder buf = new StringBuilder(stateString);
         if ((state & Synthesizer.QUEUE_EMPTY) != 0) {
             buf.append(" QUEUE_EMPTY ");
         }
@@ -471,48 +444,46 @@ public abstract class BaseSynthesizer extends BaseEngine
 
     /**
      * Cancels the item that is currently being played back.
+     *
      * @return <code>true</code> if the item was canceled
-     * @exception EngineStateException
-     *            if the engine was in an invalid state
+     * @throws EngineStateException if the engine was in an invalid state
      */
     protected abstract boolean handleCancel() throws EngineStateException;
 
     /**
      * Cancels all items in the play queue.
+     *
      * @return <code>true</code> if at least one item was canceled
-     * @exception EngineStateException
-     *            if the engine was in an invalid state
+     * @throws EngineStateException if the engine was in an invalid state
      */
     protected abstract boolean handleCancelAll() throws EngineStateException;
 
     /**
      * Cancels the item with the given id.
+     *
      * @param id id of the item to cancel
      * @return <code>true</code> if the item with the given id was canceled.
-     * @exception EngineStateException
-     *            if the engine was in an invalid state
+     * @throws EngineStateException if the engine was in an invalid state
      */
-    protected abstract boolean handleCancel(int id)
-        throws EngineStateException;
+    protected abstract boolean handleCancel(int id) throws EngineStateException;
 
     /**
      * Utility method to set words in a queue item.
      *
      * @param itemId the id of the queued item
-     * @param words the words to set
+     * @param words  the words to set
      */
-    protected void setWords(final int itemId, final String[] words) {
+    protected void setWords(int itemId, String[] words) {
         queueManager.setWords(itemId, words);
     }
 
     /**
      * Set words times in a queueItem (Not JSAPI2).
      *
-     * @param itemId the id of the queued item
+     * @param itemId     the id of the queued item
      * @param starttimes the start times
      */
-    protected void setWordsStartTimes(final int itemId,
-            final float[] starttimes) {
+    protected void setWordsStartTimes(int itemId, float[] starttimes) {
         queueManager.setWordsStartTimes(itemId, starttimes);
     }
 
@@ -522,6 +493,7 @@ public abstract class BaseSynthesizer extends BaseEngine
 
     /**
      * Retrieves the queue manager.
+     *
      * @return the queue manager
      */
     protected QueueManager getQueueManager() {
@@ -535,13 +507,14 @@ public abstract class BaseSynthesizer extends BaseEngine
 
     /**
      * Retrieves the audio format that is used by this synthesizer.
+     *
      * @return used audio format
      */
     protected abstract AudioFormat getEngineAudioFormat();
 
     @Override
     protected AudioManager createAudioManager() {
-        final AudioFormat format = getEngineAudioFormat();
+        AudioFormat format = getEngineAudioFormat();
         return new BaseSynthesizerAudioManager(this, format);
     }
 

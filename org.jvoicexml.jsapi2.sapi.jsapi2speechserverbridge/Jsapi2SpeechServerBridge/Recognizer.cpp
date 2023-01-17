@@ -246,7 +246,7 @@ HRESULT Recognizer::DeleteGrammar(LPCWSTR ID)
 	std::map< std::wstring , CComPtr<ISpRecoGrammar> >::iterator it = gramHash.find(ID);
 	
 	CComPtr<ISpRecoGrammar>		cpGrammar = it->second;
-    /* Inactivate the Grammar so the recognizer won´t try to match the content any more */
+    /* Inactivate the Grammar so the recognizer wonÂ´t try to match the content any more */
 	cpGrammar->SetRuleState(NULL, NULL, SPRS_INACTIVE );
 
 	/* Disable the Grammar */

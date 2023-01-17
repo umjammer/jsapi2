@@ -19,7 +19,7 @@ public class MockRecognizerEngineListFactory implements EngineListFactory {
     public EngineList createEngineList(EngineMode require)
             throws SecurityException {
         if ((require == null) || (require instanceof RecognizerMode)) {
-            final EngineMode[] modes = new EngineMode[] { new MockRecognizerFactory() };
+            EngineMode[] modes = new EngineMode[] { new MockRecognizerFactory() };
 
             return new EngineList(modes);
         }

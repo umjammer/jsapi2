@@ -37,11 +37,12 @@ import org.jvoicexml.jsapi2.mock.MockSpeechEventExecutor;
 import org.jvoicexml.jsapi2.synthesis.BaseSynthesizer;
 
 /**
- * Dummy implementation of a {@link javax.spech.synthesis.Synthesizer}
+ * Dummy implementation of a {@link javax.speech.synthesis.Synthesizer}
  * for test purposes.
  * @author Dirk Schnelle-Walka
  */
 public final class MockSynthesizer extends BaseSynthesizer {
+
     @Override
     protected void handleAllocate() throws EngineStateException,
             EngineException, AudioException, SecurityException {
@@ -53,7 +54,7 @@ public final class MockSynthesizer extends BaseSynthesizer {
     }
 
     @Override
-    protected boolean handleCancel(final int id) {
+    protected boolean handleCancel(int id) {
         return true;
     }
 
@@ -76,15 +77,15 @@ public final class MockSynthesizer extends BaseSynthesizer {
     }
 
     @Override
-    protected AudioSegment handleSpeak(final int id, final String item) {
+    protected AudioSegment handleSpeak(int id, String item) {
         return new AudioSegment(
                 "stream://audio?encoding=pcm&rate=11025&bits=16&channels=1",
                 item);
     }
 
     @Override
-    protected AudioSegment handleSpeak(final int id, final Speakable item) {
-        final String text = item.getMarkupText();
+    protected AudioSegment handleSpeak(int id, Speakable item) {
+        String text = item.getMarkupText();
         return new AudioSegment(
                 "stream://audio?encoding=pcm&rate=11025&bits=16&channels=1",
                 text);

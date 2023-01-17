@@ -76,10 +76,10 @@ public final class QueueManagerTest {
         assertEquals(segment, item.getAudioSegment());
         assertEquals(listener, item.getListener());
         listener.waitForSize(2);
-        final SpeakableEvent started = listener.getEvent(0);
+        SpeakableEvent started = listener.getEvent(0);
         assertEquals(SpeakableEvent.SPEAKABLE_STARTED, started.getId());
         assertEquals(segment.getMarkupText(), started.getSource());
-        final SpeakableEvent ended = listener.getEvent(1);
+        SpeakableEvent ended = listener.getEvent(1);
         assertEquals(SpeakableEvent.SPEAKABLE_ENDED, ended.getId());
         assertEquals(segment.getMarkupText(), ended.getSource());
     }

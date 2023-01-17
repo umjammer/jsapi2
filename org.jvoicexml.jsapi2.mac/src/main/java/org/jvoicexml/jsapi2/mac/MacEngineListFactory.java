@@ -1,16 +1,15 @@
 package org.jvoicexml.jsapi2.mac;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Vector;
+import java.util.List;
 
 import javax.speech.EngineList;
 import javax.speech.EngineMode;
-import javax.speech.recognition.RecognizerMode;
 import javax.speech.spi.EngineListFactory;
 import javax.speech.synthesis.SynthesizerMode;
 import javax.speech.synthesis.Voice;
 
-import org.jvoicexml.jsapi2.mac.recognition.MacRecognizerMode;
 import org.jvoicexml.jsapi2.mac.synthesis.MacSynthesizerMode;
 
 /**
@@ -26,11 +25,11 @@ public class MacEngineListFactory implements EngineListFactory {
 	}
 
 	@Override
-	public EngineList createEngineList(final EngineMode require) {
+	public EngineList createEngineList(EngineMode require) {
 		if (require instanceof SynthesizerMode) {
-			final SynthesizerMode mode = (SynthesizerMode) require;
-			final Voice[] allVoices = macGetVoices();
-			Vector<Voice> voices = new Vector<>();
+			SynthesizerMode mode = (SynthesizerMode) require;
+			Voice[] allVoices = macGetVoices();
+			List<Voice> voices = new ArrayList<>();
 			if (mode.getVoices() == null) {
 				voices.addAll(Arrays.asList(allVoices));
 			} else {
@@ -42,7 +41,7 @@ public class MacEngineListFactory implements EngineListFactory {
 					}
 				}
 			}
-			final SynthesizerMode[] features = new SynthesizerMode[] { new MacSynthesizerMode(null, mode
+			SynthesizerMode[] features = new SynthesizerMode[] { new MacSynthesizerMode(null, mode
 					.getEngineName(), mode.getRunning(), mode.getSupportsLetterToSound(), mode.getMarkupSupport(),
 					voices.toArray(new Voice[0])) };
 			return new EngineList(features);

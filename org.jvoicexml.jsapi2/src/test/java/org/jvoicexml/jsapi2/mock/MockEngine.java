@@ -84,8 +84,8 @@ public class MockEngine extends BaseEngine {
     }
 
     @Override
-    public final void fireEvent(final Collection<EngineListener> listeners,
-            final EngineEvent event) {
+    public final void fireEvent(Collection<EngineListener> listeners,
+                                EngineEvent event) {
     }
 
     @Override

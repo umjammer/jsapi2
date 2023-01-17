@@ -73,7 +73,7 @@ public class Rule {
     }
 
     public String toString() {
-        StringBuffer str = new StringBuffer();
+        StringBuilder str = new StringBuilder();
 
         str.append("<rule id=\"");
         str.append(ruleName);

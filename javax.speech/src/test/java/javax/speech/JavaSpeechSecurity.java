@@ -26,11 +26,11 @@ public final class JavaSpeechSecurity {
      * @throws SecurityException
      *         if the named permission is not allowed to be executed 
      */
-    public static void checkPermission(final String name)
+    public static void checkPermission(String name)
             throws SecurityException {
-        final SecurityManager security = System.getSecurityManager();
+        SecurityManager security = System.getSecurityManager();
         if (security != null) {
-            final Permission permission = new SpeechPermission(name);
+            Permission permission = new SpeechPermission(name);
             security.checkPermission(permission);
         }
     }

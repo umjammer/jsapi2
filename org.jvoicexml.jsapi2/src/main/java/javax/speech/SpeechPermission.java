@@ -16,7 +16,7 @@ public final class SpeechPermission extends Permission {
     private static final Map<String, String> ACTIONS4PERMISSIONS;
     
     static {
-        ACTIONS4PERMISSIONS = new java.util.HashMap<String, String>();
+        ACTIONS4PERMISSIONS = new java.util.HashMap<>();
         ACTIONS4PERMISSIONS.put("javax.speech.AudioSegment.openInputStream",
                 "AudioSegment.openInputStream");
         ACTIONS4PERMISSIONS.put("javax.speech.AudioManager.control",
@@ -41,35 +41,35 @@ public final class SpeechPermission extends Permission {
      * Constructs a new object.
      * @param name name of the permission
      */
-    public SpeechPermission(final String name) {
+    public SpeechPermission(String name) {
         super(name);
     }
 
     @Override
-    public boolean equals(final Object object) {
+    public boolean equals(Object object) {
         if (!(object instanceof SpeechPermission)) {
             return false;
         }
-        final SpeechPermission permission = (SpeechPermission) object;
-        final String name = getName();
-        final String otherName = permission.getName();
+        SpeechPermission permission = (SpeechPermission) object;
+        String name = getName();
+        String otherName = permission.getName();
         return name.equals(otherName);
     }
 
     @Override
     public String getActions() {
-        final String name = getName();
+        String name = getName();
         return ACTIONS4PERMISSIONS.get(name);
     }
 
     @Override
     public int hashCode() {
-        final String name = getName();
+        String name = getName();
         return name.hashCode();
     }
 
     @Override
-    public boolean implies(final Permission permission) {
+    public boolean implies(Permission permission) {
         return false;
     }
 }

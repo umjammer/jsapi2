@@ -12,11 +12,12 @@
 
 package org.jvoicexml.jsapi2.demo.rtpdemo;
 
-import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -43,7 +44,7 @@ public final class RTPReceiver {
      * Starts this demo.
      * @param args command line arguments.
      */
-    public static void main(final String[] args) {
+    public static void main(String[] args) {
         // Enable logging at all levels.
         Handler handler = new ConsoleHandler();
         handler.setLevel(Level.ALL);
@@ -62,7 +63,7 @@ public final class RTPReceiver {
      */
     private void doIt() {
         try {
-            final AudioFormat receiveFormat =
+            AudioFormat receiveFormat =
                 new AudioFormat(AudioFormat.Encoding.ULAW,
                                         8000,
                                         8,
@@ -71,7 +72,7 @@ public final class RTPReceiver {
                                         8000,
                                         false);
 
-            final AudioFormat playFormat =
+            AudioFormat playFormat =
                 new AudioFormat(AudioFormat.Encoding.PCM_SIGNED,
                     8000,
                     16,
@@ -81,10 +82,10 @@ public final class RTPReceiver {
                     false);
 
 
-            final Info playbackLineInfo =
+            Info playbackLineInfo =
                 new Info(SourceDataLine.class, playFormat,
                         AudioSystem.NOT_SPECIFIED);
-            final SourceDataLine sourceLine =
+            SourceDataLine sourceLine =
                 (SourceDataLine) AudioSystem.getLine(playbackLineInfo);
             System.out.println("Playing to: " + playbackLineInfo);
             sourceLine.open();
@@ -99,7 +100,7 @@ public final class RTPReceiver {
 
             byte[] buffer = new byte[1024];
             int br;
-            OutputStream os = new FileOutputStream("rtp_received.raw");
+            OutputStream os = Files.newOutputStream(Paths.get("rtp_received.raw"));
 
             AudioInputStream receiveStream =
                 new AudioInputStream(in, receiveFormat,

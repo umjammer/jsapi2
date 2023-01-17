@@ -9,7 +9,6 @@ package org.jvoicexml.jsapi2.synthesis.freetts;
 import java.util.Locale;
 
 import javax.speech.SpeechLocale;
-import javax.speech.synthesis.Voice;
 
 /*
  * Copyright 2003 Sun Microsystems, Inc.
@@ -52,9 +51,9 @@ public class FreeTTSVoice extends javax.speech.synthesis.Voice {
         if (locale == null) {
             return null;
         }
-        final String language = locale.getLanguage();
-        final String country = locale.getCountry();
-        final String variant = locale.getVariant();
+        String language = locale.getLanguage();
+        String country = locale.getCountry();
+        String variant = locale.getVariant();
         return new SpeechLocale(language, country, variant);
     }
 

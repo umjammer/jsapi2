@@ -58,7 +58,7 @@ public class QueueManager {
      * Constructs a new object.
      * @param synth the synthesizer whose queue is managed here.
      */
-    public QueueManager(final BaseSynthesizer synth) {
+    public QueueManager(BaseSynthesizer synth) {
         synthesizer = synth;
         cancelFirstItem = false;
         cancelLock = new Object();
@@ -66,9 +66,9 @@ public class QueueManager {
         playQueue = new PlayQueue(this);
         synthQueue = new SynthesisQueue(this, playQueue);
 
-        final Thread synthThread = new Thread(null, synthQueue, "Synth Queue");
+        Thread synthThread = new Thread(null, synthQueue, "Synth Queue");
         synthThread.start();
-        final Thread playThread = new Thread(null, playQueue, "Play Queue");
+        Thread playThread = new Thread(null, playQueue, "Play Queue");
         playThread.start();
     }
 
@@ -128,8 +128,8 @@ public class QueueManager {
      * @param listener a listener to notify about events of this item
      * @return queue id.
      */
-    public final int appendItem(final Speakable speakable,
-            final SpeakableListener listener) {
+    public final int appendItem(Speakable speakable,
+                                SpeakableListener listener) {
         return synthQueue.appendItem(speakable, listener, null);
     }
 
@@ -142,8 +142,8 @@ public class QueueManager {
      * @param text the text to be spoken
      * @return queue id.
      */
-    public final int appendItem(final Speakable speakable,
-            final SpeakableListener listener, final String text) {
+    public final int appendItem(Speakable speakable,
+                                SpeakableListener listener, String text) {
         return synthQueue.appendItem(speakable, listener, text);
     }
 
@@ -158,20 +158,20 @@ public class QueueManager {
      * @return id of the audio segment
      *                
      */
-    public int appendItem(final AudioSegment audioSegment,
-            final SpeakableListener listener) {
+    public int appendItem(AudioSegment audioSegment,
+                          SpeakableListener listener) {
         return synthQueue.appendItem(audioSegment, listener);
     }
 
-    public void setWords(final int itemId, final String[] words) {
+    public void setWords(int itemId, String[] words) {
         playQueue.setWords(itemId, words);
     }
 
-    public void setWordsStartTimes(final int itemId, final float[] starttimes) {
+    public void setWordsStartTimes(int itemId, float[] starttimes) {
         playQueue.setWordsStartTimes(itemId, starttimes);
     }
 
-    public void setPhonesInfo(final int itemId, final PhoneInfo[] phonesinfo) {
+    public void setPhonesInfo(int itemId, PhoneInfo[] phonesinfo) {
         playQueue.setPhonesInfo(itemId, phonesinfo);
     }
 
@@ -192,9 +192,9 @@ public class QueueManager {
         if (playQueue.isQueueEmpty()) {
             return synthQueue.cancelFirstItem();
         } else {
-            final BaseAudioManager manager =
+            BaseAudioManager manager =
                 (BaseAudioManager) synthesizer.getAudioManager();
-            final OutputStream out = manager.getOutputStream();
+            OutputStream out = manager.getOutputStream();
             try {
                 out.close();
             } catch (IOException e) {
@@ -236,7 +236,7 @@ public class QueueManager {
      * @param source
      *                the item to cancel.
      */
-    protected void cancelItem(final Object source) {
+    protected void cancelItem(Object source) {
         /*
          * Speakable item = null; synchronized (queue) { int index =
          * queue.indexOf(source); if (index == 0) { cancelItem(); } else { item =
@@ -252,8 +252,8 @@ public class QueueManager {
      * @param id the id of the speakable to cancel
      * @return <code>true</code> if the speakable could be canceled.
      */
-    protected boolean cancelItem(final int id) {
-        final boolean found = playQueue.cancelItem(id);
+    protected boolean cancelItem(int id) {
+        boolean found = playQueue.cancelItem(id);
         return found || synthQueue.cancelItem(id);
     }
 
@@ -273,7 +273,7 @@ public class QueueManager {
      * @param item
      *                the item to remove
      */
-    protected void removeQueueItem(final QueueItem item) {
+    protected void removeQueueItem(QueueItem item) {
         synthQueue.removeQueueItem(item);
     }
 

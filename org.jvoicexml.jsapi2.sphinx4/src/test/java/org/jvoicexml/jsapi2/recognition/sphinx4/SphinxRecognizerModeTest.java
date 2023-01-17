@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Test cases for {@link SphinxRecognizerMode}.
- * 
+ *
  * @author Dirk Schnelle-Walka
  */
 @DisabledIfEnvironmentVariable(named = "GITHUB_WORKFLOW", matches = ".*")
@@ -25,9 +25,8 @@ public class SphinxRecognizerModeTest {
 
     /**
      * Test method to create an engine.
-     * 
-     * @throws Exception
-     *             test failed
+     *
+     * @throws Exception test failed
      */
     @Test
     void testCreateEngine() throws Exception {
@@ -46,7 +45,7 @@ public class SphinxRecognizerModeTest {
 
         StreamSpeechRecognizer recognizer = new StreamSpeechRecognizer(
                 configuration);
-        
+
 
         AudioFormat format = new AudioFormat(16000, 16, 2, true, false);
         System.out.println(format);
@@ -86,23 +85,20 @@ public class SphinxRecognizerModeTest {
 //        });
         // Start recognition process pruning previously cached data.
         recognizer.startRecognition(recinput);
-        Thread micThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                lineLocalMic.start();
-                System.out.println("say something");
-                try {
-                    Thread.sleep(5000);
-                    System.out.println("done");
-//                    recinput.close();
-//                    input.close();
-//                    lineLocalMic.stop();
-//                    lineLocalMic.close();
-                } catch (InterruptedException e) {
-//                } catch (IOException e) {
-//                    // TODO Auto-generated catch block
-//                    e.printStackTrace();
-                }
+        Thread micThread = new Thread(() -> {
+            lineLocalMic.start();
+            System.out.println("say something");
+            try {
+                Thread.sleep(5000);
+                System.out.println("done");
+//                recinput.close();
+//                input.close();
+//                lineLocalMic.stop();
+//                lineLocalMic.close();
+            } catch (InterruptedException e) {
+//            } catch (IOException e) {
+//                // TODO Auto-generated catch block
+//                e.printStackTrace();
             }
         });
         micThread.start();
@@ -114,7 +110,7 @@ public class SphinxRecognizerModeTest {
         recognizer.stopRecognition();
 
 //        fout.close();
-        final SphinxRecognizerMode mode = new SphinxRecognizerMode(
+        SphinxRecognizerMode mode = new SphinxRecognizerMode(
                 SpeechLocale.ENGLISH);
         assertEquals(Sphinx4Recognizer.class,
                 mode.createEngine().getClass());

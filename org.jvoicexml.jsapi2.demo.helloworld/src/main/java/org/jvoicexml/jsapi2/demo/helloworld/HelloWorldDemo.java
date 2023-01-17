@@ -25,7 +25,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.speech.Engine;
-import javax.speech.EngineList;
 import javax.speech.EngineManager;
 import javax.speech.synthesis.SpeakableEvent;
 import javax.speech.synthesis.SpeakableListener;
@@ -51,7 +50,7 @@ public final class HelloWorldDemo implements SpeakableListener, SynthesizerListe
      * Starts this demo.
      * @param args command line arguments.
      */
-    public static void main(final String[] args) {
+    public static void main(String[] args) {
         // Enable logging at all levels.
         Handler handler = new ConsoleHandler();
         handler.setLevel(Level.ALL);

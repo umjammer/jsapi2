@@ -21,7 +21,7 @@ import org.jvoicexml.jsapi2.recognition.BaseRecognizer;
 import org.jvoicexml.jsapi2.recognition.GrammarDefinition;
 
 /**
- * Dummy implementation of a {@link javax.spech.recognition.Recognizer}
+ * Dummy implementation of a {@link javax.speech.recognition.Recognizer}
  * for test purposes.
  * @author Dirk Schnelle-Walka
  */
@@ -57,11 +57,11 @@ public final class MockRecognizer extends BaseRecognizer {
     }
 
     @Override
-    protected void handlePause(final int flags) {
+    protected void handlePause(int flags) {
     }
 
     @Override
-    protected boolean handleResume(final InputStream in) throws EngineStateException {
+    protected boolean handleResume(InputStream in) throws EngineStateException {
         return true;
     }
 
@@ -92,7 +92,7 @@ public final class MockRecognizer extends BaseRecognizer {
     @Override
     protected void handlePropertyChangeRequest(
             BaseEngineProperties properties,
-            String propName, final Object oldValue,
+            String propName, Object oldValue,
             Object newValue) {
         properties.commitPropertyChange(propName, oldValue, newValue);
     }

@@ -2,7 +2,6 @@ package org.jvoicexml.jsapi2.sapi.synthesis;
 
 import javax.speech.Engine;
 import javax.speech.EngineManager;
-import javax.speech.synthesis.SpeakableEvent;
 import javax.speech.synthesis.SpeakableListener;
 import javax.speech.synthesis.Synthesizer;
 import javax.speech.synthesis.SynthesizerMode;
@@ -15,19 +14,21 @@ import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
 import org.jvoicexml.jsapi2.sapi.SapiEngineListFactory;
 
+
 /**
  * Test cases for {@link SapiSynthesizer}.
  * <p>
  * Run this unit test with the VM argument:
  * <code>-Djava.library.path=cpp/Jsapi2SapiBridge/Debug</code>.
  * </p>
+ *
  * @author Dirk Schnelle-Walka
  * @author Josua Arndt
- *
- *!!!!!!!!!!!!!!!!!!!!!!!Beware!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ * <p>
+ * !!!!!!!!!!!!!!!!!!!!!!!Beware!!!!!!!!!!!!!!!!!!!!!!!!!!!!
  * each Test allocate the Synthesizer so beware that
  * a test is run completely before the next Test starts.
- * 
+ * <p>
  * Disregard this will cause native code to crash
  * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
  */
@@ -38,8 +39,8 @@ public final class TestSynthesizer {
 
     /**
      * Prepare the test environment for all tests.
-     * @throws Exception
-     *         prepare failed
+     *
+     * @throws Exception prepare failed
      */
     @BeforeAll
     public static void init() throws Exception {
@@ -49,13 +50,13 @@ public final class TestSynthesizer {
 
     /**
      * Set up the test .
-     * @throws Exception
-     *         set up failed
+     *
+     * @throws Exception set up failed
      */
     @BeforeEach
     public void setUp() throws Exception {
-        synthesizer =  (Synthesizer) EngineManager
-            .createEngine(SynthesizerMode.DEFAULT);
+        synthesizer = (Synthesizer) EngineManager
+                .createEngine(SynthesizerMode.DEFAULT);
         synthesizer.allocate();
         synthesizer.waitEngineState(Engine.ALLOCATED);
         synthesizer.resume();
@@ -63,21 +64,21 @@ public final class TestSynthesizer {
 
     /**
      * Tear down the test .
-     * @throws Exception
-     *         tear down failed
+     *
+     * @throws Exception tear down failed
      */
     @AfterEach
     public void tearDown() throws Exception {
-       if (synthesizer != null) {
-           synthesizer.deallocate();
-           synthesizer.waitEngineState(Engine.DEALLOCATED);
-       }
+        if (synthesizer != null) {
+            synthesizer.deallocate();
+            synthesizer.waitEngineState(Engine.DEALLOCATED);
+        }
     }
 
     /**
      * Test case for {@link SapiSynthesizer#handleSpeak(int, String)}.
-     * @throws Exception
-     *         test failed
+     *
+     * @throws Exception test failed
      */
     @Test
     void testSpeak() throws Exception {
@@ -94,12 +95,12 @@ public final class TestSynthesizer {
     /**
      * Test case for {@link SapiSynthesizer#handlePause()}.
      * Test case for {@link SapiSynthesizer#handleResume()}.
-     * @throws Exception
-     *         test failed
+     *
+     * @throws Exception test failed
      */
     @Test
     void testPause() throws Exception {
-        synthesizer.speak("this is a test output with a pause and resume test", null);     
+        synthesizer.speak("this is a test output with a pause and resume test", null);
         System.out.println("this is a test output with a pause and resume test");
         Thread.sleep(1800);
         synthesizer.pause();
@@ -114,18 +115,15 @@ public final class TestSynthesizer {
 
     /**
      * Test case for {@link SapiSynthesizer#handleCancel()}.
-     * @throws Exception
-     *         test failed
+     *
+     * @throws Exception test failed
      */
     @Test
     void testCancel() throws Exception {
-        final Object lock = new Object();
-        final SpeakableListener listener = new SpeakableListener() {
-            @Override
-            public void speakableUpdate(final SpeakableEvent e) {
-                synchronized (lock) {
-                    lock.notifyAll();
-                }
+        Object lock = new Object();
+        SpeakableListener listener = e -> {
+            synchronized (lock) {
+                lock.notifyAll();
             }
         };
         synthesizer.speak("this is a test output for the cancel test", listener);
@@ -141,8 +139,8 @@ public final class TestSynthesizer {
 
     /**
      * Test case for {@link SapiSynthesizer#handleSpeak(int, javax.speech.synthesis.Speakable)}.
-     * @throws Exception
-     *         test failed
+     *
+     * @throws Exception test failed
      */
     @Test
     void testSpeakSsml() throws Exception {

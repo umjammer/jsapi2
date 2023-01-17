@@ -26,30 +26,30 @@
 
 package javax.speech;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Enumeration;
-import java.util.Vector;
+import java.util.List;
+import java.util.stream.Collectors;
 
 //Comp. 2.0.6
 
 public class EngineList {
+
     /**
      * The features in this list.
      */
-    private Vector features;
+    private List<EngineMode> features;
 
     public EngineList(EngineMode[] features) {
-        this.features = new Vector(features.length);
-        for (int i = 0; i < features.length; i++) {
-            this.features.addElement(features[i]);
-        }
+        this.features = new ArrayList<>(features.length);
+        Collections.addAll(this.features, features);
     }
 
     public boolean anyMatch(EngineMode require) {
-        final Enumeration enumeration = features.elements();
-
         // A match for require==null is handled by the match methods
-        while (enumeration.hasMoreElements()) {
-            final EngineMode mode = (EngineMode) enumeration.nextElement();
+        for (EngineMode mode : features) {
             if (mode.match(require)) {
                 return true;
             }
@@ -58,50 +58,52 @@ public class EngineList {
         return false;
     }
 
-    public EngineMode elementAt(int index)
-        throws ArrayIndexOutOfBoundsException {
-        return (EngineMode) features.elementAt(index);
+    public EngineMode elementAt(int index) throws ArrayIndexOutOfBoundsException {
+        try {
+            return features.get(index);
+        } catch (IndexOutOfBoundsException e) {
+            throw new ArrayIndexOutOfBoundsException(e.getMessage());
+        }
     }
 
-    public Enumeration elements() {
-        return features.elements();
+    public Enumeration<EngineMode> elements() {
+        return Collections.enumeration(features);
     }
 
     public void orderByMatch(EngineMode require) {
         if (require == null) {
             return;
         }
-        final Comparator comparator = new EngineListComparator(require);
+        Comparator<EngineMode> comparator = new EngineListComparator(require);
         Sorter.sort(features, comparator);
     }
 
     public void rejectMatch(EngineMode reject) {
-        Vector cleaned = new Vector();
+        List<EngineMode> cleaned = new ArrayList<>();
         
-        final Enumeration enumeration = features.elements();
-        while (enumeration.hasMoreElements()) {
-            final EngineMode mode = (EngineMode) enumeration.nextElement();
+        for (EngineMode mode : features) {
             if (!mode.match(reject)) {
-                cleaned.addElement(mode);
+                cleaned.add(mode);
             }
         }
         
         features = cleaned;
     }
 
-    public void removeElementAt(int index)
-        throws ArrayIndexOutOfBoundsException {
-        features.removeElementAt(index);
+    public void removeElementAt(int index) throws ArrayIndexOutOfBoundsException {
+        try {
+            features.remove(index);
+        } catch (IndexOutOfBoundsException e) {
+            throw new ArrayIndexOutOfBoundsException(e.getMessage());
+        }
     }
 
     public void requireMatch(EngineMode require) {
-        Vector cleaned = new Vector();
+        List<EngineMode> cleaned = new ArrayList<>();
         
-        final Enumeration enumeration = features.elements();
-        while (enumeration.hasMoreElements()) {
-            final EngineMode mode = (EngineMode) enumeration.nextElement();
+        for (EngineMode mode : features) {
             if (mode.match(require)) {
-                cleaned.addElement(mode);
+                cleaned.add(mode);
             }
         }
         
@@ -117,19 +119,16 @@ public class EngineList {
      * @author Dirk Schnelle Note: this comparator imposes orderings that are
      *         inconsistent with equals.
      */
-    private class EngineListComparator implements Comparator {
+    private static class EngineListComparator implements Comparator<EngineMode> {
         final EngineMode require;
 
         public EngineListComparator(EngineMode require) {
             this.require = require;
         }
 
-        public int compare(Object object1, Object object2) {
-            final EngineMode mode1 = (EngineMode) object1;
-            final EngineMode mode2 = (EngineMode) object2;
-
-            final boolean object1Matches = mode1.match(require);
-            final boolean object2Matches = mode2.match(require);
+        public int compare(EngineMode mode1, EngineMode mode2) {
+            boolean object1Matches = mode1.match(require);
+            boolean object2Matches = mode2.match(require);
 
             if (object1Matches == object2Matches) {
                 return 0;
@@ -141,27 +140,9 @@ public class EngineList {
 
             return 1;
         }
-
     }
 
     public String toString() {
-        final StringBuffer str = new StringBuffer();
-
-        str.append(getClass());
-        str.append("[");
-
-        final Enumeration enumeration = features.elements();
-        while (enumeration.hasMoreElements()) {
-            final EngineMode mode = (EngineMode) enumeration.nextElement();
-            str.append(mode);
-            if (enumeration.hasMoreElements()) {
-                str.append(",");
-            }
-        }
-
-        str.append("]");
-
-        return str.toString();
+        return getClass() + "[" + features.stream().map(Object::toString).collect(Collectors.joining(",")) + "]";
     }
-
 }

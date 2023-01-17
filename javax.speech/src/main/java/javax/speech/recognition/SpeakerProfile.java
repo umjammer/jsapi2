@@ -92,16 +92,15 @@ public class SpeakerProfile {
     }
 
     public String toString() {
-        StringBuffer str = new StringBuffer();
 
-        str.append(getClass().getName());
-        str.append("[");
-        str.append(name);
-        str.append(",");
-        str.append(variant);
-        str.append("]");
+        String str = getClass().getName() +
+                "[" +
+                name +
+                "," +
+                variant +
+                "]";
 
-        return str.toString();
+        return str;
     }
 
     public boolean match(SpeakerProfile require) {
@@ -109,16 +108,16 @@ public class SpeakerProfile {
             return true;
         }
 
-        final String otherName = require.getName();
-        final boolean nameMatch;
+        String otherName = require.getName();
+        boolean nameMatch;
         if (otherName == null) {
             nameMatch = true;
         } else {
             nameMatch = otherName.equals(name);
         }
 
-        final String otherVariant = require.getVariant();
-        final boolean variantMatch;
+        String otherVariant = require.getVariant();
+        boolean variantMatch;
         if (otherVariant == null) {
             variantMatch = true;
         } else {

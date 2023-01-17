@@ -26,7 +26,8 @@
 
 package javax.speech.recognition;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 //Comp. 2.0.6
 
@@ -45,40 +46,35 @@ public class RuleParse extends RuleComponent {
             return null;
         }
 
-        final Vector parseTags = new Vector();
+        List<Object> parseTags = new ArrayList<>();
         addTags(parseTags, parse);
 
-        final Object[] tags = new Object[parseTags.size()];
-        parseTags.copyInto(tags);
-
-        return tags;
+        return parseTags.toArray(new Object[0]);
     }
 
-    private void addTags(Vector tags, RuleComponent component) {
+    private void addTags(List<Object> tags, RuleComponent component) {
         if (component instanceof RuleTag) {
-            final RuleTag tag = (RuleTag) component;
-            final Object tagName = tag.getTag();
-            tags.addElement(tagName);
+            RuleTag tag = (RuleTag) component;
+            Object tagName = tag.getTag();
+            tags.add(tagName);
         } else if (component instanceof RuleAlternatives) {
-            final RuleAlternatives alternatives = (RuleAlternatives) component;
+            RuleAlternatives alternatives = (RuleAlternatives) component;
             RuleComponent[] components = alternatives.getRuleComponents();
-            for (int i = 0; i < components.length; i++) {
-                final RuleComponent actComponent = components[i];
+            for (RuleComponent actComponent : components) {
                 addTags(tags, actComponent);
             }
         } else if (component instanceof RuleCount) {
-            final RuleCount count = (RuleCount) component;
-            final RuleComponent actComponent = count.getRuleComponent();
+            RuleCount count = (RuleCount) component;
+            RuleComponent actComponent = count.getRuleComponent();
             addTags(tags, actComponent);
         } else if (component instanceof RuleParse) {
-            final RuleParse parse = (RuleParse) component;
-            final RuleComponent actComponent = parse.getParse();
+            RuleParse parse = (RuleParse) component;
+            RuleComponent actComponent = parse.getParse();
             addTags(tags, actComponent);
         } else if (component instanceof RuleSequence) {
-            final RuleSequence sequence = (RuleSequence) component;
+            RuleSequence sequence = (RuleSequence) component;
             RuleComponent[] components = sequence.getRuleComponents();
-            for (int i = 0; i < components.length; i++) {
-                final RuleComponent actComponent = components[i];
+            for (RuleComponent actComponent : components) {
                 addTags(tags, actComponent);
             }
         }
@@ -112,5 +108,4 @@ public class RuleParse extends RuleComponent {
 
         return str.toString();
     }
-
 }

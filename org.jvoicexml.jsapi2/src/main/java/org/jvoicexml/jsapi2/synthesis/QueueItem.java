@@ -73,8 +73,8 @@ public class QueueItem {
      * @param queuedSpeakable the speakable
      * @param itemListener a listener to notify about events of this item
      */
-    public QueueItem(final int itemId, final Speakable queuedSpeakable,
-            final SpeakableListener itemListener) {
+    public QueueItem(int itemId, Speakable queuedSpeakable,
+                     SpeakableListener itemListener) {
         this.id = itemId;
         this.speakable = queuedSpeakable;
         this.listener = itemListener;
@@ -93,9 +93,9 @@ public class QueueItem {
      * @param text the text to be spoken, maybe <code>null</code> if the
      *             speakable contains markup text
      */
-    public QueueItem(final int itemId, final Speakable queuedSpeakable,
-            final SpeakableListener itemListener,
-            final String text) {
+    public QueueItem(int itemId, Speakable queuedSpeakable,
+                     SpeakableListener itemListener,
+                     String text) {
         this(itemId, queuedSpeakable, itemListener);
         source = text;
     }
@@ -106,8 +106,8 @@ public class QueueItem {
      * @param audioSegment the audio segment to be synthesized
      * @param listener a listener to notify about events of this item
      */
-    public QueueItem(final int itemId, AudioSegment audioSegment,
-            SpeakableListener listener) {
+    public QueueItem(int itemId, AudioSegment audioSegment,
+                     SpeakableListener listener) {
         this.id = itemId;
         this.speakable = null;
         this.listener = listener;
@@ -179,7 +179,7 @@ public class QueueItem {
      * Sets the audio segment.
      * @param audiosegment new value for the audio segment.
      */
-    public void setAudioSegment(final AudioSegment audiosegment) {
+    public void setAudioSegment(AudioSegment audiosegment) {
         segment = audiosegment;
     }
 
@@ -195,7 +195,7 @@ public class QueueItem {
      * Sets the words in the text or markup to be synthesized.
      * @param w words in the text or markup to be synthesized
      */
-    public void setWords(final String[] w) {
+    public void setWords(String[] w) {
         words = w;
     }
 

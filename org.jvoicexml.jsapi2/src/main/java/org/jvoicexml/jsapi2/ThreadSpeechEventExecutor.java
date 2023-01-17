@@ -19,6 +19,7 @@ import java.util.List;
  */
 public final class ThreadSpeechEventExecutor
     implements TerminatableSpeechEventExecutor, Runnable {
+
     /** Number of msec to wait before inspecting the command queue. */
     private static final int COMMAND_POLL_INTERVALL = 1000;
 
@@ -35,7 +36,7 @@ public final class ThreadSpeechEventExecutor
      * Constructs a new object.
      */
     public ThreadSpeechEventExecutor() {
-        commands = new java.util.ArrayList<Runnable>();
+        commands = new java.util.ArrayList<>();
         thread = new Thread(this);
         shouldRun = true;
         thread.start();
@@ -65,7 +66,7 @@ public final class ThreadSpeechEventExecutor
      *
      * @param command the command to execute.
      */
-    public void execute(final Runnable command) {
+    public void execute(Runnable command) {
         if (command == null) {
             throw new NullPointerException("Command must not be null!");
         }
@@ -96,7 +97,7 @@ public final class ThreadSpeechEventExecutor
             }
 
             //Use this thread to run the command
-            final Runnable command = (Runnable) commands.get(0);
+            Runnable command = commands.get(0);
             commands.remove(0);
             command.run();
         }

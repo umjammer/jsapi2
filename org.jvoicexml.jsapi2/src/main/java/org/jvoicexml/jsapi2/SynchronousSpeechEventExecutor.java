@@ -18,7 +18,7 @@ import javax.speech.SpeechEventExecutor;
 public final class SynchronousSpeechEventExecutor implements SpeechEventExecutor {
 
     @Override
-    public void execute(final Runnable command) throws IllegalStateException, NullPointerException {
+    public void execute(Runnable command) throws IllegalStateException, NullPointerException {
         command.run();
     }
 }

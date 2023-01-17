@@ -79,7 +79,7 @@ HRESULT ErrorLog::AddError(const long lLineNumber,
 {
 	//std::string errorContent = FormattedString("Error %d at line %d of %s: %s",
 	//	hr, lLineNumber, (pszHelpFile !=NULL) ? ConvertFromWide((WCHAR*)pszHelpFile).c_str() : "UNKNOWN",
-	//	(pszDescription!=NULL)?ConvertFromWide((WCHAR*)pszDescription).c_str():"EMP­TY");
+	//	(pszDescription!=NULL)?ConvertFromWide((WCHAR*)pszDescription).c_str():"EMPÂ­TY");
 
 	//m_errors.push_back(errorContent);
 	const size_t sizeDescription = wcslen(pszDescription) + 1;

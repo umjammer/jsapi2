@@ -48,7 +48,7 @@ public class RuleSequence extends RuleComponent {
         ruleComponents = new RuleComponent[tokens.length];
 
         for (int i = 0; i < tokens.length; i++) {
-            final String token = tokens[i];
+            String token = tokens[i];
             ruleComponents[i] = new RuleToken(token);
         }
     }
@@ -62,13 +62,12 @@ public class RuleSequence extends RuleComponent {
             return "";
         }
 
-        final StringBuffer str = new StringBuffer();
-        for (int i = 0; i < ruleComponents.length; i++) {
-            final RuleComponent component = ruleComponents[i];
+        StringBuilder str = new StringBuilder();
+        for (RuleComponent component : ruleComponents) {
             if (component == null) {
                 str.append(RuleSpecial.NULL.toString());
             } else {
-                str.append(component.toString());
+                str.append(component);
             }
         }
 

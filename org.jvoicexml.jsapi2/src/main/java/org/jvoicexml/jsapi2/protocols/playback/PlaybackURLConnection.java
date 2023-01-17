@@ -56,7 +56,7 @@ public final class PlaybackURLConnection extends URLConnection {
      * @param url
      *            URL
      */
-    public PlaybackURLConnection(final URL url) {
+    public PlaybackURLConnection(URL url) {
         super(url);
 
         // Validate the kind of input supported
@@ -106,7 +106,7 @@ public final class PlaybackURLConnection extends URLConnection {
         // Checks if line is supported
         if (!AudioSystem.isLineSupported(info)) {
             throw new IOException("Cannot open the requested line: "
-                    + info.toString());
+                    + info);
         }
 
         // Obtain, open and start the line.
@@ -134,7 +134,7 @@ public final class PlaybackURLConnection extends URLConnection {
      */
     public AudioFormat getAudioFormat() throws IOException {
         if (audioFormat == null) {
-            final URL url = getURL();
+            URL url = getURL();
             try {
                 audioFormat = JavaSoundParser.parse(url);
             } catch (URISyntaxException e) {

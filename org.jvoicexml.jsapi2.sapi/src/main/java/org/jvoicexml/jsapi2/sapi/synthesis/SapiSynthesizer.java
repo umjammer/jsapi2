@@ -62,7 +62,7 @@ public final class SapiSynthesizer extends BaseSynthesizer {
      * Constructs a new synthesizer object.
      * @param mode the synthesizer mode
      */
-    SapiSynthesizer(final SapiSynthesizerMode mode) {
+    SapiSynthesizer(SapiSynthesizerMode mode) {
         super(mode);
     }
 
@@ -72,7 +72,7 @@ public final class SapiSynthesizer extends BaseSynthesizer {
      *         error finalizing
      */
     @Override
-    public void finalize() throws Throwable {
+    protected void finalize() throws Throwable {
         if (synthesizerHandle != 0) {
             sapiHandlDeallocate(synthesizerHandle);
             synthesizerHandle = 0;
@@ -83,12 +83,12 @@ public final class SapiSynthesizer extends BaseSynthesizer {
     @Override
     protected void handleAllocate() throws EngineStateException,
         EngineException, AudioException, SecurityException {
-        final Voice voice;
-        final SapiSynthesizerMode mode = (SapiSynthesizerMode) getEngineMode();
+        Voice voice;
+        SapiSynthesizerMode mode = (SapiSynthesizerMode) getEngineMode();
         if (mode == null) {
             voice = null;
         } else {
-            final Voice[] voices = mode.getVoices();
+            Voice[] voices = mode.getVoices();
             if (voices == null) {
                 voice = null;
             } else {
@@ -103,7 +103,7 @@ public final class SapiSynthesizer extends BaseSynthesizer {
      * @param voice the voice to use
      * @return synthesizer handle
      */
-    private native long sapiHandleAllocate(final Voice voice);
+    private native long sapiHandleAllocate(Voice voice);
 
     @Override
     public boolean handleCancel() {
@@ -115,10 +115,10 @@ public final class SapiSynthesizer extends BaseSynthesizer {
      * @param handle the synthesizer handle
      * @return <code>true</code> if the current output has been canceled
      */
-    private native boolean sapiHandleCancel(final long handle);
+    private native boolean sapiHandleCancel(long handle);
 
     @Override
-    protected boolean handleCancel(final int id) {
+    protected boolean handleCancel(int id) {
         return sapiHandleCancel(synthesizerHandle, id);
     }
 
@@ -129,7 +129,7 @@ public final class SapiSynthesizer extends BaseSynthesizer {
      * @return <code>true</code> if the output with the given id has been
      * canceled
      */
-    private native boolean sapiHandleCancel(final long handle, final int id);
+    private native boolean sapiHandleCancel(long handle, int id);
 
     @Override
     protected boolean handleCancelAll() {
@@ -143,7 +143,7 @@ public final class SapiSynthesizer extends BaseSynthesizer {
      *            the synthesizer handle
      * @return <code>true</code> if at least one output has been canceled
      */
-    private native boolean sapiHandleCancelAll(final long handle);
+    private native boolean sapiHandleCancelAll(long handle);
 
     @Override
     public void handleDeallocate() {
@@ -162,7 +162,7 @@ public final class SapiSynthesizer extends BaseSynthesizer {
      * @param handle
      *            the synthesizer handle
      */
-    private native void sapiHandlDeallocate(final long handle);
+    private native void sapiHandlDeallocate(long handle);
 
     @Override
     public void handlePause() {
@@ -174,7 +174,7 @@ public final class SapiSynthesizer extends BaseSynthesizer {
      * @param handle the synthesizer handle
      *            the synthesizer handle
      */
-    private native void sapiHandlPause(final long handle);
+    private native void sapiHandlPause(long handle);
 
     @Override
     public boolean handleResume() {
@@ -187,19 +187,19 @@ public final class SapiSynthesizer extends BaseSynthesizer {
      *            the synthesizer handle
      * @return <code>true</code> if the synthesizer is resumed
      */
-    private native boolean sapiHandlResume(final long handle);
+    private native boolean sapiHandlResume(long handle);
 
     @Override
-    public AudioSegment handleSpeak(final int id, final String item) {
-        final byte[] bytes = sapiHandleSpeak(synthesizerHandle, id, item);
-        final BaseAudioManager manager =
+    public AudioSegment handleSpeak(int id, String item) {
+        byte[] bytes = sapiHandleSpeak(synthesizerHandle, id, item);
+        BaseAudioManager manager =
                 (BaseAudioManager) getAudioManager();
-        final String locator = manager.getMediaLocator();
-        final ByteArrayInputStream bin = new ByteArrayInputStream(bytes);
-        final AudioFormat engineFormat = getEngineAudioFormat();
-        final AudioInputStream in = new AudioInputStream(bin, engineFormat,
+        String locator = manager.getMediaLocator();
+        ByteArrayInputStream bin = new ByteArrayInputStream(bytes);
+        AudioFormat engineFormat = getEngineAudioFormat();
+        AudioInputStream in = new AudioInputStream(bin, engineFormat,
                 bin.available());
-        final AudioSegment segment;
+        AudioSegment segment;
         if (locator == null) {
             segment = new BaseAudioSegment(item, in);
         } else {
@@ -219,22 +219,22 @@ public final class SapiSynthesizer extends BaseSynthesizer {
      *            the item to speak
      * @return byte array of the synthesized speech
      */
-    private native byte[] sapiHandleSpeak(final long handle, final int id,
-            final String item);
+    private native byte[] sapiHandleSpeak(long handle, int id,
+                                          String item);
 
     @Override
-    protected AudioSegment handleSpeak(final int id, final Speakable item)
+    protected AudioSegment handleSpeak(int id, Speakable item)
             throws SpeakableException {
-        final String markup = item.getMarkupText();
-        final byte[] bytes = sapiHandleSpeakSsml(synthesizerHandle, id, markup);
-        final BaseAudioManager manager =
+        String markup = item.getMarkupText();
+        byte[] bytes = sapiHandleSpeakSsml(synthesizerHandle, id, markup);
+        BaseAudioManager manager =
                 (BaseAudioManager) getAudioManager();
-        final String locator = manager.getMediaLocator();
-        final ByteArrayInputStream bin = new ByteArrayInputStream(bytes);
-        final AudioFormat engineFormat = getEngineAudioFormat();
-        final AudioInputStream in = new AudioInputStream(bin, engineFormat,
+        String locator = manager.getMediaLocator();
+        ByteArrayInputStream bin = new ByteArrayInputStream(bytes);
+        AudioFormat engineFormat = getEngineAudioFormat();
+        AudioInputStream in = new AudioInputStream(bin, engineFormat,
                 bin.available());
-        final AudioSegment segment;
+        AudioSegment segment;
         if (locator == null) {
             segment = new BaseAudioSegment(markup, in);
         } else {
@@ -255,8 +255,8 @@ public final class SapiSynthesizer extends BaseSynthesizer {
      * @return byte array of the synthesized speech
      * @throws SpeakableException error processing the SSML 
      */
-    private native byte[] sapiHandleSpeakSsml(final long handle, final int id,
-            final String ssml) throws SpeakableException;
+    private native byte[] sapiHandleSpeakSsml(long handle, int id,
+                                              String ssml) throws SpeakableException;
 
     @Override
     protected AudioFormat getEngineAudioFormat() {
@@ -268,13 +268,13 @@ public final class SapiSynthesizer extends BaseSynthesizer {
      * @param handle synthesizer handle.
      * @return native audio format
      */
-    private native AudioFormat sapiGetAudioFormat(final long handle);
+    private native AudioFormat sapiGetAudioFormat(long handle);
 
     @Override
     protected void handlePropertyChangeRequest(
-            final BaseEngineProperties properties,
-            final String propName, final Object oldValue,
-            final Object newValue) {
+            BaseEngineProperties properties,
+            String propName, Object oldValue,
+            Object newValue) {
         LOGGER.warning("changing property '" + propName
                 + "' to '" + newValue + "' ignored");
     }

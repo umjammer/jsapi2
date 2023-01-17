@@ -1,21 +1,21 @@
-package org.jvoicexml.jsapi2.synthesis.freetts;
-
-import java.util.Vector;
-
-import javax.speech.EngineList;
-import javax.speech.EngineMode;
-import javax.speech.spi.EngineListFactory;
-import javax.speech.synthesis.SynthesizerMode;
-
-import com.sun.speech.freetts.VoiceManager;
-
-/**
+/*
  * Copyright 2003 Sun Microsystems, Inc.
  *
  * See the file "license.terms" for information on usage and
  * redistribution of this file, and for a DISCLAIMER OF ALL
  * WARRANTIES.
  */
+
+package org.jvoicexml.jsapi2.synthesis.freetts;
+
+import java.util.ArrayList;
+import java.util.List;
+import javax.speech.EngineList;
+import javax.speech.EngineMode;
+import javax.speech.spi.EngineListFactory;
+import javax.speech.synthesis.SynthesizerMode;
+
+import com.sun.speech.freetts.VoiceManager;
 
 
 /**
@@ -28,8 +28,8 @@ import com.sun.speech.freetts.VoiceManager;
  * </pre>
  *
  */
-
 public class FreeTTSEngineListFactory implements EngineListFactory {
+
     /**
      * Creates a FreeTTSEngineCentral.
      */
@@ -73,60 +73,59 @@ public class FreeTTSEngineListFactory implements EngineListFactory {
      * @return an engineList containing matching engines, or null if
      *          no matching engines are found
      */
-    public EngineList createEngineList(final EngineMode require) {
+    public EngineList createEngineList(EngineMode require) {
         // Must be a synthesizer.
         if (!(require instanceof SynthesizerMode)) {
             return null;
         }
 
-        //Instatiate FreeTTS VoiceManager to get all voices available
+        // Instantiate FreeTTS VoiceManager to get all voices available
         VoiceManager voiceManager = VoiceManager.getInstance();
         com.sun.speech.freetts.Voice[] voices = voiceManager.getVoices();
 
         // We want to get all combinations of domains and locales
-        Vector<DomainLocale> domainLocaleVector = new Vector<DomainLocale>();
-        for (int i = 0; i < voices.length; i++) {
+        List<DomainLocale> domainLocaleList = new ArrayList<>();
+        for (com.sun.speech.freetts.Voice value : voices) {
             DomainLocale dl =
-                new DomainLocale(voices[i].getDomain(), voices[i].getLocale());
+                    new DomainLocale(value.getDomain(), value.getLocale());
             // If we find the domain locale in the set, add the existing one
             // otherwise add the template
-            DomainLocale dlentry = getItem(domainLocaleVector, dl);
+            DomainLocale dlentry = getItem(domainLocaleList, dl);
             if (dlentry == null) {
-                domainLocaleVector.add(dl);
+                domainLocaleList.add(dl);
                 dlentry = dl;
             }
-            dlentry.addVoice(voices[i]);
+            dlentry.addVoice(value);
         }
 
-        // SynthesizerModes that will be create from combining domain/locale
+        // SynthesizerModes that will be created from combining domain/locale
         // with voice names
-        Vector<FreeTTSSynthesizerMode> synthesizerModes =
-            new Vector<FreeTTSSynthesizerMode>();
+        List<FreeTTSSynthesizerMode> synthesizerModes =
+                new ArrayList<>();
 
         // build list of SynthesizerModeDesc's for each domain/locale
         // combination
-        for (int i = 0; i < domainLocaleVector.size(); i++) {
-            DomainLocale dl = (DomainLocale) domainLocaleVector.get(i);
-            Vector<FreeTTSVoice> modeVoices = new Vector<FreeTTSVoice>();
+        for (DomainLocale domainLocale : domainLocaleList) {
+            List<FreeTTSVoice> modeVoices = new ArrayList<>();
 
             // iterate through the voices in a different order
-            voices = dl.getVoices();
-            for (int j = 0; j < voices.length; j++) {
-                FreeTTSVoice jsapiVoice = new FreeTTSVoice(voices[j]);
+            voices = domainLocale.getVoices();
+            for (com.sun.speech.freetts.Voice voice : voices) {
+                FreeTTSVoice jsapiVoice = new FreeTTSVoice(voice);
                 modeVoices.add(jsapiVoice);
             }
 
             FreeTTSSynthesizerMode mode = new FreeTTSSynthesizerMode("FreeTTS "
-                    + dl.getLocale().toString() + " " + dl.getDomain()
-                    + " synthesizer", dl.getDomain(), dl.getLocale(),
+                    + domainLocale.getLocale().toString() + " " + domainLocale.getDomain()
+                    + " synthesizer", domainLocale.getDomain(), domainLocale.getLocale(),
                     modeVoices.toArray(new FreeTTSVoice[] {}));
 
             if (require == null || mode.match(require)) {
-                synthesizerModes.addElement(mode);
+                synthesizerModes.add(mode);
             }
         }
 
-        final EngineList el;
+        EngineList el;
         if (synthesizerModes.size() == 0) {
             el = null;
         } else {
@@ -143,13 +142,12 @@ public class FreeTTSEngineListFactory implements EngineListFactory {
      *
      * @return the item if it exists in the vector, else null
      */
-    private DomainLocale getItem(final Vector<DomainLocale> vector,
-        final Object o) {
-        final int index = vector.indexOf(o);
+    private DomainLocale getItem(List<DomainLocale> vector, DomainLocale o) {
+        int index = vector.indexOf(o);
         if (index < 0) {
             return null;
         }
-        return vector.elementAt(index);
+        return vector.get(index);
     }
 }
 

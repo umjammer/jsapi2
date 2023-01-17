@@ -37,7 +37,7 @@ public final class RecognizerStateTransitionTest {
      *
      * @param expected the expected state
      */
-    private void checkState(final long expected) {
+    private void checkState(long expected) {
         assertTrue(recognizer.testEngineState(expected),
                 "Expected " + recognizer.stateToString(expected)
                         + " but was "

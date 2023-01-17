@@ -36,12 +36,12 @@ import javax.speech.SpeechEventExecutor;
 public class MockSpeechEventExecutor implements SpeechEventExecutor {
 
     @Override
-    public void execute(final Runnable command) throws IllegalStateException,
+    public void execute(Runnable command) throws IllegalStateException,
             NullPointerException {
         if (command == null) {
             throw new NullPointerException("command must not be null!");
         }
-        final Thread thread = new Thread(command);
+        Thread thread = new Thread(command);
         thread.start();
     }
 

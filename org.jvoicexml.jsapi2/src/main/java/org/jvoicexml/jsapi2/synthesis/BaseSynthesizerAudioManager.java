@@ -33,7 +33,7 @@ public class BaseSynthesizerAudioManager extends BaseAudioManager {
     /** The output stream from the synthesizer. */
     private OutputStream outputStream;
 
-    /** */
+    /** @since 0.6.1 */
     private SynthesizerProperties synthesizerProperties;
 
     /**
@@ -77,7 +77,7 @@ public class BaseSynthesizerAudioManager extends BaseAudioManager {
         }
     }
 
-    /** */
+    /** @since 0.6.1 */
     public float getVolume() {
         return synthesizerProperties.getVolume() / (float) SynthesizerProperties.MAX_VOLUME;
     }
@@ -105,7 +105,7 @@ public class BaseSynthesizerAudioManager extends BaseAudioManager {
     }
 
     @Override
-    public void setMediaLocator(final String locator, final OutputStream stream) throws AudioException {
+    public void setMediaLocator(String locator, OutputStream stream) throws AudioException {
         super.setMediaLocator(locator);
         this.outputStream = stream;
     }
@@ -117,7 +117,7 @@ public class BaseSynthesizerAudioManager extends BaseAudioManager {
      * supported.
      */
     @Override
-    public final void setMediaLocator(final String locator, final InputStream stream) throws AudioException, EngineStateException, IllegalArgumentException, SecurityException {
+    public final void setMediaLocator(String locator, InputStream stream) throws AudioException, EngineStateException, IllegalArgumentException, SecurityException {
         throw new IllegalArgumentException("input streams are not supported");
     }
 

@@ -10,7 +10,6 @@ import java.net.URL;
 import java.net.UnknownServiceException;
 import javax.sound.sampled.AudioSystem;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

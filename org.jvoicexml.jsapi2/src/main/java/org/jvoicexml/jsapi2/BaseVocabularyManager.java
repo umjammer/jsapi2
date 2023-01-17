@@ -42,59 +42,59 @@ import javax.speech.Word;
  */
 public class BaseVocabularyManager implements VocabularyManager {
     @Override
-    public void addWord(final Word word) throws EngineStateException,
+    public void addWord(Word word) throws EngineStateException,
             SecurityException {
-        final SecurityManager security = System.getSecurityManager();
+        SecurityManager security = System.getSecurityManager();
         if (security != null) {
-            final Permission permission = new SpeechPermission(
+            Permission permission = new SpeechPermission(
                     "javax.speech.VocabularyManager.update");
             security.checkPermission(permission);
         }
     }
 
     @Override
-    public void addWords(final Word[] words) throws EngineStateException,
+    public void addWords(Word[] words) throws EngineStateException,
             SecurityException {
-        final SecurityManager security = System.getSecurityManager();
+        SecurityManager security = System.getSecurityManager();
         if (security != null) {
-            final Permission permission = new SpeechPermission(
+            Permission permission = new SpeechPermission(
                     "javax.speech.VocabularyManager.update");
             security.checkPermission(permission);
         }
     }
 
     @Override
-    public String[] getPronounciations(final String text,
-            final SpeechLocale locale)
+    public String[] getPronounciations(String text,
+                                       SpeechLocale locale)
             throws EngineStateException {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Word[] getWords(final String text, final SpeechLocale locale)
+    public Word[] getWords(String text, SpeechLocale locale)
             throws EngineStateException {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public void removeWord(final Word word) throws EngineStateException,
+    public void removeWord(Word word) throws EngineStateException,
             IllegalArgumentException, SecurityException {
-        final SecurityManager security = System.getSecurityManager();
+        SecurityManager security = System.getSecurityManager();
         if (security != null) {
-            final Permission permission = new SpeechPermission(
+            Permission permission = new SpeechPermission(
                     "javax.speech.VocabularyManager.update");
             security.checkPermission(permission);
         }
     }
 
     @Override
-    public void removeWords(final Word[] words) throws EngineStateException,
+    public void removeWords(Word[] words) throws EngineStateException,
             IllegalArgumentException, SecurityException {
-        final SecurityManager security = System.getSecurityManager();
+        SecurityManager security = System.getSecurityManager();
         if (security != null) {
-            final Permission permission = new SpeechPermission(
+            Permission permission = new SpeechPermission(
                     "javax.speech.VocabularyManager.update");
             security.checkPermission(permission);
         }

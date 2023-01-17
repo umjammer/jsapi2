@@ -23,9 +23,9 @@ public class GrammarNode {
     public static final int END_SEQUENCE = 4;
     /** Represent an start alternative node. */
     public static final int START_ALTERNATIVE = 5;
-    /** Represent an start count node. */
+    /** Represent a start count node. */
     public static final int START_COUNT = 6;
-    /** Represent an start reference node. */
+    /** Represent a start reference node. */
     public static final int START_REFERENCE = 7;
     /** Represent an start sequence node. */
     public static final int START_SEQUENCE = 8;
@@ -55,12 +55,12 @@ public class GrammarNode {
      * @param nodeType the node type
      * @param rc RuleComponent the associated rule component
      */
-    protected GrammarNode(final boolean isFinalNode, final int nodeType,
-                          final RuleComponent rc) {
+    protected GrammarNode(boolean isFinalNode, int nodeType,
+                          RuleComponent rc) {
         this.isFinal = isFinalNode;
         this.type = nodeType;
         this.component = rc;
-        arcs = new java.util.ArrayList<GrammarArc>();
+        arcs = new java.util.ArrayList<>();
     }
 
     /**
@@ -68,11 +68,11 @@ public class GrammarNode {
      * @param isFinalNode boolean
      * @param nodeType int
      */
-    protected GrammarNode(final boolean isFinalNode, final int nodeType) {
+    protected GrammarNode(boolean isFinalNode, int nodeType) {
         this.isFinal = isFinalNode;
         this.type = nodeType;
         this.component = null;
-        arcs = new java.util.ArrayList<GrammarArc>();
+        arcs = new java.util.ArrayList<>();
     }
 
     /**
@@ -87,7 +87,7 @@ public class GrammarNode {
      * Adds an arc, from this node to the destinationNode.
      * @param destinationNode the destination node
      */
-    public final void addArc(final GrammarNode destinationNode) {
+    public final void addArc(GrammarNode destinationNode) {
         arcs.add(new GrammarArc(destinationNode));
     }
 
@@ -117,7 +117,7 @@ public class GrammarNode {
 
     @Override
     public String toString() {
-        final StringBuilder str = new StringBuilder();
+        StringBuilder str = new StringBuilder();
         str.append(getClass().getCanonicalName());
         str.append('[');
         switch (type) {

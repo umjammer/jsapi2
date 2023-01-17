@@ -61,21 +61,21 @@ public final class SmlInterpretationExtractorTest {
      */
     @Test
     void testSimple() throws Exception {
-        final TransformerFactory factory = TransformerFactory.newInstance();
-        final Transformer transformer = factory.newTransformer();
-        final InputStream in =
+        TransformerFactory factory = TransformerFactory.newInstance();
+        Transformer transformer = factory.newTransformer();
+        InputStream in =
                 SmlInterpretationExtractorTest.class.getResourceAsStream(
                         "sml-simple.xml");
-        final Source source = new StreamSource(in);
-        final SmlInterpretationExtractor extractor =
+        Source source = new StreamSource(in);
+        SmlInterpretationExtractor extractor =
                 new SmlInterpretationExtractor();
-        final Result result = new SAXResult(extractor);
+        Result result = new SAXResult(extractor);
         transformer.transform(source, result);
         assertEquals("Hello Dirk",
                 extractor.getUtterance());
         assertEquals(0.5100203, extractor.getConfidence(),
                 MAX_CONFIDENCE_DIFF);
-        final List<SmlInterpretation> interpretations =
+        List<SmlInterpretation> interpretations =
                 extractor.getInterpretations();
         assertEquals(0, interpretations.size());
         assertEquals("Hello Dirk", extractor.getUtteranceTag());
@@ -88,21 +88,21 @@ public final class SmlInterpretationExtractorTest {
      */
     @Test
     void testTag() throws Exception {
-        final TransformerFactory factory = TransformerFactory.newInstance();
-        final Transformer transformer = factory.newTransformer();
-        final InputStream in =
+        TransformerFactory factory = TransformerFactory.newInstance();
+        Transformer transformer = factory.newTransformer();
+        InputStream in =
                 SmlInterpretationExtractorTest.class.getResourceAsStream(
                         "sml-tag.xml");
-        final Source source = new StreamSource(in);
-        final SmlInterpretationExtractor extractor =
+        Source source = new StreamSource(in);
+        SmlInterpretationExtractor extractor =
                 new SmlInterpretationExtractor();
-        final Result result = new SAXResult(extractor);
+        Result result = new SAXResult(extractor);
         transformer.transform(source, result);
         assertEquals("Good morning Dirk",
                 extractor.getUtterance());
         assertEquals(0.7378733, extractor.getConfidence(),
                 MAX_CONFIDENCE_DIFF);
-        final List<SmlInterpretation> interpretations =
+        List<SmlInterpretation> interpretations =
                 extractor.getInterpretations();
         assertEquals(0, interpretations.size());
         assertEquals("Projectmanager", extractor.getUtteranceTag());
@@ -115,29 +115,29 @@ public final class SmlInterpretationExtractorTest {
      */
     @Test
     void testMultipleTags() throws Exception {
-        final TransformerFactory factory = TransformerFactory.newInstance();
-        final Transformer transformer = factory.newTransformer();
-        final InputStream in =
+        TransformerFactory factory = TransformerFactory.newInstance();
+        Transformer transformer = factory.newTransformer();
+        InputStream in =
                 SmlInterpretationExtractorTest.class.getResourceAsStream(
                         "sml-multiple-tags.xml");
-        final Source source = new StreamSource(in);
-        final SmlInterpretationExtractor extractor =
+        Source source = new StreamSource(in);
+        SmlInterpretationExtractor extractor =
                 new SmlInterpretationExtractor();
-        final Result result = new SAXResult(extractor);
+        Result result = new SAXResult(extractor);
         transformer.transform(source, result);
         assertEquals("Hello Dirk",
                 extractor.getUtterance());
         assertEquals(0.6734907, extractor.getConfidence(),
                 MAX_CONFIDENCE_DIFF);
-        final List<SmlInterpretation> interpretations =
+        List<SmlInterpretation> interpretations =
                 extractor.getInterpretations();
         assertEquals(2, interpretations.size());
-        final SmlInterpretation greet = interpretations.get(0);
+        SmlInterpretation greet = interpretations.get(0);
         assertEquals("greet", greet.getTag());
         assertEquals("\"general\"", greet.getValue());
         assertEquals(2.069468E-02f, greet.getConfidence(),
                 MAX_CONFIDENCE_DIFF);
-        final SmlInterpretation who = interpretations.get(1);
+        SmlInterpretation who = interpretations.get(1);
         assertEquals("who", who.getTag());
         assertEquals("\"Projectmanager\"", who.getValue());
         assertEquals(2.069468E-02f, who.getConfidence(),
@@ -152,34 +152,34 @@ public final class SmlInterpretationExtractorTest {
      */
     @Test
     void testCompundObject() throws Exception {
-        final TransformerFactory factory = TransformerFactory.newInstance();
-        final Transformer transformer = factory.newTransformer();
-        final InputStream in =
+        TransformerFactory factory = TransformerFactory.newInstance();
+        Transformer transformer = factory.newTransformer();
+        InputStream in =
                 SmlInterpretationExtractorTest.class.getResourceAsStream(
                         "sml-compound.xml");
-        final Source source = new StreamSource(in);
-        final SmlInterpretationExtractor extractor =
+        Source source = new StreamSource(in);
+        SmlInterpretationExtractor extractor =
                 new SmlInterpretationExtractor();
-        final Result result = new SAXResult(extractor);
+        Result result = new SAXResult(extractor);
         transformer.transform(source, result);
         assertEquals("a small pizza with salami",
                 extractor.getUtterance());
         assertEquals(0.8081474f, extractor.getConfidence(),
                 MAX_CONFIDENCE_DIFF);
-        final List<SmlInterpretation> interpretations =
+        List<SmlInterpretation> interpretations =
                 extractor.getInterpretations();
         assertEquals(3, interpretations.size());
-        final SmlInterpretation order = interpretations.get(0);
+        SmlInterpretation order = interpretations.get(0);
         assertEquals("order", order.getTag());
         assertNull(order.getValue());
         assertEquals(0.8131593f, order.getConfidence(),
                 MAX_CONFIDENCE_DIFF);
-        final SmlInterpretation size = interpretations.get(1);
+        SmlInterpretation size = interpretations.get(1);
         assertEquals("order.size", size.getTag());
         assertEquals("\"small\"", size.getValue());
         assertEquals(0.8131593f, size.getConfidence(),
                 MAX_CONFIDENCE_DIFF);
-        final SmlInterpretation topping = interpretations.get(2);
+        SmlInterpretation topping = interpretations.get(2);
         assertEquals("order.topping", topping.getTag());
         assertEquals("\"salami\"", topping.getValue());
         assertEquals(0.8131593f, topping.getConfidence(),

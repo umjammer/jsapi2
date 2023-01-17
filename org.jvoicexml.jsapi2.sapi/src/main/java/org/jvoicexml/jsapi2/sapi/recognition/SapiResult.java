@@ -30,7 +30,6 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.util.List;
 import java.util.StringTokenizer;
-
 import javax.speech.recognition.Grammar;
 import javax.speech.recognition.ResultToken;
 import javax.xml.transform.Source;
@@ -43,13 +42,14 @@ import javax.xml.transform.stream.StreamSource;
 import org.jvoicexml.jsapi2.recognition.BaseResult;
 import org.jvoicexml.jsapi2.recognition.BaseResultToken;
 
+
 /**
  * A recognition result from the SAPI engine.
- * 
+ *
  * @author Dirk Schnelle-Walka
  */
-@SuppressWarnings("serial")
 public final class SapiResult extends BaseResult {
+
     /** The extractor for the SML values. */
     private SmlInterpretationExtractor extractor;
 
@@ -64,17 +64,16 @@ public final class SapiResult extends BaseResult {
 
     /**
      * Constructs a new object.
-     * 
-     * @param grammar
-     *            the grammar
+     *
+     * @param grammar the grammar
      */
-    public SapiResult(final Grammar grammar) {
+    public SapiResult(Grammar grammar) {
         super(grammar);
     }
 
     /**
      * Retrieves the confidence of the result.
-     * 
+     *
      * @return confidence
      */
     public float getConfidence() {
@@ -86,7 +85,7 @@ public final class SapiResult extends BaseResult {
 
     /**
      * Retrieves the utterance.
-     * 
+     *
      * @return the utterance
      */
     public String getUtterance() {
@@ -98,23 +97,21 @@ public final class SapiResult extends BaseResult {
 
     /**
      * Sets the retrieved SML string.
-     * 
-     * @param value
-     *            the SML string
-     * @throws TransformerException
-     *             error transforming the obtained result
+     *
+     * @param value the SML string
+     * @throws TransformerException error transforming the obtained result
      */
-    public void setSml(final String value) throws TransformerException {
+    public void setSml(String value) throws TransformerException {
         sml = value;
         extractor = parseSml(sml);
 
         // iterate through tags and set resultTags
-        final List<SmlInterpretation> interpretations = extractor
+        List<SmlInterpretation> interpretations = extractor
                 .getInterpretations();
-        final List<String> smltags = new java.util.ArrayList<String>();
+        List<String> smltags = new java.util.ArrayList<>();
         if (interpretations.isEmpty()) {
-            final String utterance = extractor.getUtterance();
-            final String tag = extractor.getUtteranceTag();
+            String utterance = extractor.getUtterance();
+            String tag = extractor.getUtteranceTag();
             // Hmpf this way we will not be able to process things like
             // <item>yes<tag>yes</tag></item>
             if (!utterance.equals(tag)) {
@@ -122,21 +119,21 @@ public final class SapiResult extends BaseResult {
             }
         } else {
             for (int k = 0; k < interpretations.size(); k++) {
-                final SmlInterpretation interpretation = interpretations.get(k);
-                final String tag = interpretation.getTag();
-                final String val = interpretation.getValue();
+                SmlInterpretation interpretation = interpretations.get(k);
+                String tag = interpretation.getTag();
+                String val = interpretation.getValue();
                 boolean addedObject = false;
                 if (k < interpretations.size() - 1) {
-                    final int currentLevel = interpretation
+                    int currentLevel = interpretation
                             .getObjectHierachyLevel();
-                    final SmlInterpretation next = interpretations.get(k + 1);
-                    final int nextLevel = next.getObjectHierachyLevel();
+                    SmlInterpretation next = interpretations.get(k + 1);
+                    int nextLevel = next.getObjectHierachyLevel();
                     if (currentLevel < nextLevel) {
                         if (currentLevel == 0) {
                             final String out = "out = new Object();";
                             smltags.add(out);
                         }
-                        final String str = "out." + tag + " = new Object();";
+                        String str = "out." + tag + " = new Object();";
                         smltags.add(str);
                         addedObject = true;
                     }
@@ -148,10 +145,10 @@ public final class SapiResult extends BaseResult {
                 boolean specialTag = (tag.equalsIgnoreCase("help")
                         && val.equalsIgnoreCase("help"))
                         || (tag.equalsIgnoreCase("cancel")
-                                && val.equalsIgnoreCase("cancel"));
+                        && val.equalsIgnoreCase("cancel"));
                 // SRGS-tags like <tag>FOO="bar"</tag>
                 if (!specialTag && (val != null) && !val.isEmpty()) {
-                    final String str = "out." + tag + "=" + val + ";";
+                    String str = "out." + tag + "=" + val + ";";
                     smltags.add(str);
                 } else {
                     if (!addedObject) {
@@ -164,51 +161,45 @@ public final class SapiResult extends BaseResult {
         // Copy everything to tags.
         tags = new Object[smltags.size()];
         tags = smltags.toArray(tags);
-        final String utt = getUtterance();
-        final ResultToken[] tokens = resultToResultToken(utt);
+        String utt = getUtterance();
+        ResultToken[] tokens = resultToResultToken(utt);
         setTokens(tokens);
     }
 
     /**
      * Parses the given SML string.
-     * 
-     * @param sml
-     *            the SML to parse
+     *
+     * @param sml the SML to parse
      * @return the parsed information
-     * @throws TransformerException
-     *             error parsing
+     * @throws TransformerException error parsing
      */
-    private SmlInterpretationExtractor parseSml(final String sml)
+    private SmlInterpretationExtractor parseSml(String sml)
             throws TransformerException {
-        final TransformerFactory factory = TransformerFactory.newInstance();
-        final Transformer transformer = factory.newTransformer();
-        final Reader reader = new StringReader(sml);
-        final Source source = new StreamSource(reader);
-        final SmlInterpretationExtractor extractor = new SmlInterpretationExtractor();
-        final javax.xml.transform.Result result = new SAXResult(extractor);
+        TransformerFactory factory = TransformerFactory.newInstance();
+        Transformer transformer = factory.newTransformer();
+        Reader reader = new StringReader(sml);
+        Source source = new StreamSource(reader);
+        SmlInterpretationExtractor extractor = new SmlInterpretationExtractor();
+        javax.xml.transform.Result result = new SAXResult(extractor);
         transformer.transform(source, result);
         return extractor;
     }
 
     /**
      * Creates a vector of ResultToken (jsapi) from a sphinx result.
-     * 
-     * @param result
-     *            The Sphinx4 result
-     * @param current
-     *            The current BaseResult (jsapi)
-     * @return ResultToken[]
+     *
+     * @param utterance  The Sphinx4 result
+     * @return The current BaseResult (jsapi)
      */
-    private ResultToken[] resultToResultToken(final String utterance) {
-        final StringTokenizer st = new StringTokenizer(utterance);
-        final int nTokens = st.countTokens();
-        final ResultToken[] res = new ResultToken[nTokens];
+    private ResultToken[] resultToResultToken(String utterance) {
+        StringTokenizer st = new StringTokenizer(utterance);
+        int nTokens = st.countTokens();
+        ResultToken[] res = new ResultToken[nTokens];
         for (int i = 0; i < nTokens; ++i) {
-            final String text = st.nextToken();
-            final BaseResultToken brt = new BaseResultToken(this, text);
+            String text = st.nextToken();
+            BaseResultToken brt = new BaseResultToken(this, text);
             if (getResultState() == BaseResult.ACCEPTED) {
-                // @todo set confidenceLevel, startTime and end time,
-                // of each token
+                // TODO set confidenceLevel, startTime and end time, of each token
             }
             res[i] = brt;
         }
@@ -217,7 +208,7 @@ public final class SapiResult extends BaseResult {
 
     /**
      * Retrieves the SML string.
-     * 
+     *
      * @return the SML string
      */
     public String getSml() {
@@ -226,7 +217,7 @@ public final class SapiResult extends BaseResult {
 
     @Override
     public String toString() {
-        final StringBuilder str = new StringBuilder();
+        StringBuilder str = new StringBuilder();
         str.append(SapiResult.class.getCanonicalName());
         str.append('[');
         str.append(getUtterance());
@@ -238,7 +229,7 @@ public final class SapiResult extends BaseResult {
             str.append(',');
             str.append('[');
             for (int i = 0; i < tags.length; i++) {
-                final String tag = tags[i].toString();
+                String tag = tags[i].toString();
                 str.append(tag);
                 if (i < tags.length - 1) {
                     str.append(',');

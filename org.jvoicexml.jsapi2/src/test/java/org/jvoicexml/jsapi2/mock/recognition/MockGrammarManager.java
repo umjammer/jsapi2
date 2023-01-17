@@ -6,7 +6,7 @@ package org.jvoicexml.jsapi2.mock.recognition;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
-import java.util.Vector;
+import java.util.List;
 
 import javax.speech.EngineException;
 import javax.speech.EngineStateException;
@@ -82,7 +82,7 @@ public class MockGrammarManager implements GrammarManager {
     @Override
     public Grammar loadGrammar(String grammarReference, String mediaType,
             boolean loadReferences, boolean reloadReferences,
-            Vector loadedGrammars) throws GrammarException,
+            @SuppressWarnings("rawtypes") List loadedGrammars) throws GrammarException,
             IllegalArgumentException, IOException, EngineStateException,
             EngineException {
         return null;

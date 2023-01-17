@@ -32,24 +32,24 @@ public final class LineOutputStream extends OutputStream
      * Constructs a new object.
      * @param source the line to write to.
      */
-    public LineOutputStream(final SourceDataLine source) {
+    public LineOutputStream(SourceDataLine source) {
         line = source;
     }
 
     @Override
-    public void write(final int b) throws IOException {
+    public void write(int b) throws IOException {
         byte[] bytes = new byte[1];
         write(bytes, 0, bytes.length);
     }
 
     @Override
-    public void write(final byte[] b, final int off, final int len)
+    public void write(byte[] b, int off, int len)
         throws IOException {
         line.write(b, off, len);
     }
 
     @Override
-    public void write(final byte[] b) throws IOException {
+    public void write(byte[] b) throws IOException {
         write(b, 0, b.length);
     }
 

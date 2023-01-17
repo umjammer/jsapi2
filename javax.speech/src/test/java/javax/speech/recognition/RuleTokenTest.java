@@ -43,13 +43,13 @@ public class RuleTokenTest {
      */
     @Test
     void testNewRuleToken() {
-        final RuleToken token1 = new RuleToken("test");
+        RuleToken token1 = new RuleToken("test");
         assertEquals("test", token1.getText());
 
-        final RuleToken token2 = new RuleToken("  New    York   ");
+        RuleToken token2 = new RuleToken("  New    York   ");
         assertEquals("New York", token2.getText());
 
-        final RuleToken token3 = new RuleToken("möaüAÖÜß?!");
+        RuleToken token3 = new RuleToken("möaüAÖÜß?!");
         assertEquals("möaüAÖÜß?!", token3.getText());
         
         Exception failure = null;
@@ -74,7 +74,7 @@ public class RuleTokenTest {
      */
     @Test
     void testGetText() {
-        final RuleToken token = new RuleToken("test");
+        RuleToken token = new RuleToken("test");
         assertEquals("test", token.getText());
     }
 
@@ -83,7 +83,7 @@ public class RuleTokenTest {
      */
     @Test
     void testToString() {
-        final RuleToken token = new RuleToken("test");
+        RuleToken token = new RuleToken("test");
         assertEquals("test", token.getText());
     }
 

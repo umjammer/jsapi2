@@ -58,13 +58,13 @@ public final class BaseGrammarManagerTest {
     @Test
     void testCreateRuleGrammarStringString() throws Exception {
         final String name = "test";
-        final RuleGrammar grammar =
+        RuleGrammar grammar =
                 manager.createRuleGrammar(name, name);
-        final RuleToken token = new RuleToken("hello world");
-        final Rule rule = new Rule("test", token, Rule.PUBLIC);
+        RuleToken token = new RuleToken("hello world");
+        Rule rule = new Rule("test", token, Rule.PUBLIC);
         grammar.addRule(rule);
         recognizer.processGrammars();
-        final Grammar retrievedGrammar = manager.getGrammar(name);
+        Grammar retrievedGrammar = manager.getGrammar(name);
         assertNotNull(retrievedGrammar);
         assertEquals(grammar.toString(), retrievedGrammar.toString());
     }
@@ -76,11 +76,11 @@ public final class BaseGrammarManagerTest {
      */
     @Test
     void testCreateRuleGrammarReader() throws Exception {
-        final InputStream in =
+        InputStream in =
                 BaseGrammarManagerTest.class.getResourceAsStream(
                         "pizza-de.xml");
-        final Reader reader = new InputStreamReader(in);
-        final Grammar grammar = manager.loadGrammar("test",
+        Reader reader = new InputStreamReader(in);
+        Grammar grammar = manager.loadGrammar("test",
                 "application/srgs+xml", reader);
         assertTrue(grammar instanceof RuleGrammar);
     }

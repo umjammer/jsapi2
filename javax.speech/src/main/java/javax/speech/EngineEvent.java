@@ -26,7 +26,7 @@
 
 package javax.speech;
 
-import java.util.Vector;
+import java.util.List;
 
 //Comp. 2.0.6
 
@@ -87,7 +87,7 @@ public class EngineEvent extends SpeechEvent {
     }
 
     public Throwable getEngineError() {
-        final int id = getId();
+        int id = getId();
         if (id == ENGINE_ERROR) {
             return problem;
         }
@@ -112,14 +112,14 @@ public class EngineEvent extends SpeechEvent {
     }
 
     @Override
-    protected Vector getParameters() {
-        final Vector parameters = super.getParameters();
+    protected List<Object> getParameters() {
+        List<Object> parameters = super.getParameters();
 
-        final Long oldEngineStateObject = new Long(oldEngineState);
-        parameters.addElement(oldEngineStateObject);
-        final Long newEngineStateObject = new Long(newEngineState);
-        parameters.addElement(newEngineStateObject);
-        parameters.addElement(problem);
+        Long oldEngineStateObject = oldEngineState;
+        parameters.add(oldEngineStateObject);
+        Long newEngineStateObject = newEngineState;
+        parameters.add(newEngineStateObject);
+        parameters.add(problem);
 
         return parameters;
     }

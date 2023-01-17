@@ -13,7 +13,7 @@ public class GrammarArc {
      * Constructs a new grammar arc.
      * @param node the destination node
      */
-    public GrammarArc(final GrammarNode node) {
+    public GrammarArc(GrammarNode node) {
         this.grammarNode = node;
     }
 

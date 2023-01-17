@@ -46,8 +46,8 @@ public class VoiceTest {
      */
     @Test
     void testHashCode() {
-        final Voice voice1 = new Voice();
-        final Voice voice2 = new Voice();
+        Voice voice1 = new Voice();
+        Voice voice2 = new Voice();
         assertEquals(voice1.hashCode(), voice2.hashCode());
     }
 
@@ -56,14 +56,14 @@ public class VoiceTest {
      */
     @Test
     void testGetAge() {
-        final Voice voice1 = new Voice();
+        Voice voice1 = new Voice();
         assertEquals(Voice.AGE_DONT_CARE, voice1.getAge());
 
-        final Voice voice2 = new Voice(SpeechLocale.US, "john", Voice.GENDER_MALE,
+        Voice voice2 = new Voice(SpeechLocale.US, "john", Voice.GENDER_MALE,
                 Voice.AGE_DONT_CARE, Voice.VARIANT_DEFAULT);
         assertEquals(Voice.AGE_DONT_CARE, voice2.getAge());
 
-        final Voice voice3 = new Voice(SpeechLocale.US, "john", Voice.GENDER_MALE,
+        Voice voice3 = new Voice(SpeechLocale.US, "john", Voice.GENDER_MALE,
                 42, Voice.VARIANT_DEFAULT);
         assertEquals(42, voice3.getAge());
     }
@@ -73,14 +73,14 @@ public class VoiceTest {
      */
     @Test
     void testGetGender() {
-        final Voice voice1 = new Voice();
+        Voice voice1 = new Voice();
         assertEquals(Voice.GENDER_DONT_CARE, voice1.getGender());
 
-        final Voice voice2 = new Voice(SpeechLocale.US, "john", Voice.GENDER_MALE,
+        Voice voice2 = new Voice(SpeechLocale.US, "john", Voice.GENDER_MALE,
                 Voice.AGE_DONT_CARE, Voice.VARIANT_DEFAULT);
         assertEquals(Voice.GENDER_MALE, voice2.getGender());
 
-        final Voice voice3 = new Voice(SpeechLocale.US, "mary", Voice.GENDER_FEMALE,
+        Voice voice3 = new Voice(SpeechLocale.US, "mary", Voice.GENDER_FEMALE,
                 41, Voice.VARIANT_DEFAULT);
         assertEquals(Voice.GENDER_FEMALE, voice3.getGender());
     }
@@ -90,14 +90,14 @@ public class VoiceTest {
      */
     @Test
     void testGetSpeechLocale() {
-        final Voice voice1 = new Voice();
+        Voice voice1 = new Voice();
         assertNull(voice1.getSpeechLocale());
 
-        final Voice voice2 = new Voice(SpeechLocale.US, "john", Voice.GENDER_MALE,
+        Voice voice2 = new Voice(SpeechLocale.US, "john", Voice.GENDER_MALE,
                 Voice.AGE_DONT_CARE, Voice.VARIANT_DEFAULT);
         assertEquals(SpeechLocale.US, voice2.getSpeechLocale());
 
-        final Voice voice3 = new Voice(null, "john", Voice.GENDER_MALE,
+        Voice voice3 = new Voice(null, "john", Voice.GENDER_MALE,
                 Voice.AGE_DONT_CARE, Voice.VARIANT_DEFAULT);
         assertNull(voice3.getSpeechLocale());
     }
@@ -107,18 +107,18 @@ public class VoiceTest {
      */
     @Test
     void testGetName() {
-        final Voice voice1 = new Voice();
+        Voice voice1 = new Voice();
         assertNull(voice1.getName());
 
-        final Voice voice2 = new Voice(SpeechLocale.US, "john", Voice.GENDER_MALE,
+        Voice voice2 = new Voice(SpeechLocale.US, "john", Voice.GENDER_MALE,
                 Voice.AGE_DONT_CARE, Voice.VARIANT_DEFAULT);
         assertEquals("john", voice2.getName());
 
-        final Voice voice3 = new Voice(SpeechLocale.US, "", Voice.GENDER_MALE,
+        Voice voice3 = new Voice(SpeechLocale.US, "", Voice.GENDER_MALE,
                 Voice.AGE_DONT_CARE, Voice.VARIANT_DEFAULT);
         assertEquals("", voice3.getName());
 
-        final Voice voice4 = new Voice(SpeechLocale.US, null, Voice.GENDER_MALE,
+        Voice voice4 = new Voice(SpeechLocale.US, null, Voice.GENDER_MALE,
                 Voice.AGE_DONT_CARE, Voice.VARIANT_DEFAULT);
         assertNull(voice4.getName());
     }
@@ -128,14 +128,14 @@ public class VoiceTest {
      */
     @Test
     void testGetVariant() {
-        final Voice voice1 = new Voice();
+        Voice voice1 = new Voice();
         assertEquals(Voice.VARIANT_DONT_CARE, voice1.getVariant());
 
-        final Voice voice2 = new Voice(SpeechLocale.US, "john", Voice.GENDER_MALE,
+        Voice voice2 = new Voice(SpeechLocale.US, "john", Voice.GENDER_MALE,
                 Voice.AGE_DONT_CARE, Voice.VARIANT_DEFAULT);
         assertEquals(Voice.VARIANT_DEFAULT, voice2.getVariant());
 
-        final Voice voice3 = new Voice(SpeechLocale.US, "john", Voice.GENDER_MALE,
+        Voice voice3 = new Voice(SpeechLocale.US, "john", Voice.GENDER_MALE,
                 Voice.AGE_DONT_CARE, Voice.VARIANT_DONT_CARE);
         assertEquals(Voice.VARIANT_DONT_CARE, voice3.getVariant());
     }
@@ -156,16 +156,16 @@ public class VoiceTest {
                 Voice.AGE_DONT_CARE, Voice.VARIANT_DONT_CARE);
         assertEquals(voice1, voice3);
 
-        final Voice voice4 = new Voice(SpeechLocale.US, "john", Voice.GENDER_MALE,
+        Voice voice4 = new Voice(SpeechLocale.US, "john", Voice.GENDER_MALE,
                 Voice.AGE_DONT_CARE, Voice.VARIANT_DEFAULT);
         assertNotEquals(voice1, voice4);
 
-        final Voice voice5 = new Voice(SpeechLocale.US, "mary", Voice.GENDER_FEMALE,
+        Voice voice5 = new Voice(SpeechLocale.US, "mary", Voice.GENDER_FEMALE,
                 41, Voice.VARIANT_DEFAULT);
         assertNotEquals(voice1, voice5);
         assertNotEquals(voice4, voice5);
 
-        final Voice voice6 = new Voice(SpeechLocale.US, "john", Voice.GENDER_MALE,
+        Voice voice6 = new Voice(SpeechLocale.US, "john", Voice.GENDER_MALE,
                 Voice.AGE_DONT_CARE, Voice.VARIANT_DEFAULT);
         assertEquals(voice4, voice6);
     }
@@ -175,9 +175,9 @@ public class VoiceTest {
      */
     @Test
     void testToString() {
-        final Voice voice = new Voice(SpeechLocale.US, "john", Voice.GENDER_MALE,
+        Voice voice = new Voice(SpeechLocale.US, "john", Voice.GENDER_MALE,
                 Voice.AGE_DONT_CARE, Voice.VARIANT_DEFAULT);
-        final String str = voice.toString();
+        String str = voice.toString();
         assertTrue(str.indexOf("john") > 0);
         assertTrue(str.indexOf(Locale.US.toString()) > 0);
     }
@@ -189,7 +189,7 @@ public class VoiceTest {
     @Test
     void testMatch() {
         Voice voice1 = new Voice();
-        assertTrue(voice1.match((Voice) null));
+        assertTrue(voice1.match(null));
 
         Voice voice2 = new Voice();
         assertTrue(voice1.match(voice2));
@@ -198,23 +198,23 @@ public class VoiceTest {
                 Voice.AGE_DONT_CARE, Voice.VARIANT_DONT_CARE);
         assertTrue(voice1.match(voice3));
 
-        final Voice voice4 = new Voice(SpeechLocale.US, "john", Voice.GENDER_MALE,
+        Voice voice4 = new Voice(SpeechLocale.US, "john", Voice.GENDER_MALE,
                 Voice.AGE_DONT_CARE, Voice.VARIANT_DEFAULT);
         assertTrue(voice4.match(voice1));
         assertFalse(voice1.match(voice4));
 
-        final Voice voice5 = new Voice(SpeechLocale.US, "mary", Voice.GENDER_FEMALE,
+        Voice voice5 = new Voice(SpeechLocale.US, "mary", Voice.GENDER_FEMALE,
                 41, Voice.VARIANT_DEFAULT);
         assertTrue(voice5.match(voice1));
         assertFalse(voice4.match(voice5));
 
-        final Voice voice6 = new Voice(SpeechLocale.US, "john", Voice.GENDER_MALE,
+        Voice voice6 = new Voice(SpeechLocale.US, "john", Voice.GENDER_MALE,
                 Voice.AGE_DONT_CARE, Voice.VARIANT_DEFAULT);
         assertTrue(voice4.match(voice6));
 
-        final Voice voice7 = new Voice(SpeechLocale.US, "john", Voice.GENDER_MALE,
+        Voice voice7 = new Voice(SpeechLocale.US, "john", Voice.GENDER_MALE,
                 Voice.AGE_MIDDLE_ADULT, Voice.VARIANT_DEFAULT);
-        final Voice voice8 = new Voice(SpeechLocale.US, "john", Voice.GENDER_MALE,
+        Voice voice8 = new Voice(SpeechLocale.US, "john", Voice.GENDER_MALE,
                 Voice.AGE_MIDDLE_ADULT, Voice.VARIANT_DEFAULT);
         assertTrue(voice7.match(voice8));
     }

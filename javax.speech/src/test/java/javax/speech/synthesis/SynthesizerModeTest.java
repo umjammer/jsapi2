@@ -34,6 +34,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -69,28 +70,28 @@ public class SynthesizerModeTest {
 
         String engineName1 = "name1";
         String modeName1 = "mode1";
-        Boolean running1 = Boolean.TRUE;
-        Boolean supportsLetterToSound1 = Boolean.FALSE;
-        Boolean markupSupport1 = Boolean.TRUE;
+        boolean running1 = true;
+        boolean supportsLetterToSound1 = false;
+        boolean markupSupport1 = true;
         Voice[] voices1 = new Voice[] { new Voice(), new Voice() };
         SynthesizerMode mode3 = new SynthesizerMode(engineName1, modeName1,
                 running1, supportsLetterToSound1, markupSupport1, voices1);
-        assertEquals(Boolean.TRUE, mode3.getMarkupSupport());
+        assertTrue(mode3.getMarkupSupport());
 
         String engineName2 = "name2";
         String modeName2 = "mode2";
-        Boolean running2 = Boolean.TRUE;
-        Boolean supportsLetterToSound2 = Boolean.FALSE;
-        Boolean markupSupport2 = Boolean.FALSE;
+        boolean running2 = true;
+        boolean supportsLetterToSound2 = false;
+        boolean markupSupport2 = false;
         Voice[] voices2 = new Voice[] { new Voice(), new Voice() };
         SynthesizerMode mode4 = new SynthesizerMode(engineName2, modeName2,
                 running2, supportsLetterToSound2, markupSupport2, voices2);
-        assertEquals(Boolean.FALSE, mode4.getMarkupSupport());
+        assertFalse(mode4.getMarkupSupport());
 
         String engineName3 = "name3";
         String modeName3 = "mode3";
-        Boolean running3 = Boolean.TRUE;
-        Boolean supportsLetterToSound3 = Boolean.FALSE;
+        boolean running3 = true;
+        boolean supportsLetterToSound3 = false;
         Boolean markupSupport3 = null;
         Voice[] voices3 = new Voice[] { new Voice(), new Voice() };
         SynthesizerMode mode5 = new SynthesizerMode(engineName3, modeName3,
@@ -104,20 +105,20 @@ public class SynthesizerModeTest {
      */
     @Test
     void testMatch() {
-        final SynthesizerMode mode1 = new SynthesizerMode();
-        assertTrue(mode1.match((SynthesizerMode) null));
+        SynthesizerMode mode1 = new SynthesizerMode();
+        assertTrue(mode1.match(null));
 
-        final SynthesizerMode mode2 = new SynthesizerMode();
+        SynthesizerMode mode2 = new SynthesizerMode();
         assertTrue(mode1.match(mode2));
 
-        final EngineMode engineMode = new MockEngineMode();
+        EngineMode engineMode = new MockEngineMode();
         assertTrue(mode1.match(engineMode));
 
         String engineName1 = "name1";
         String modeName1 = "mode1";
-        Boolean running1 = Boolean.TRUE;
-        Boolean supportsLetterToSound1 = Boolean.FALSE;
-        Boolean markupSupport1 = Boolean.TRUE;
+        boolean running1 = true;
+        boolean supportsLetterToSound1 = false;
+        boolean markupSupport1 = true;
         Voice[] voices1 = new Voice[] { new Voice(), new Voice() };
         SynthesizerMode mode3 = new SynthesizerMode(engineName1, modeName1,
                 running1, supportsLetterToSound1, markupSupport1, voices1);
@@ -126,9 +127,9 @@ public class SynthesizerModeTest {
 
         String engineName2 = "name1";
         String modeName2 = "mode1";
-        Boolean running2 = Boolean.TRUE;
-        Boolean supportsLetterToSound2 = Boolean.FALSE;
-        Boolean markupSupport2 = Boolean.TRUE;
+        boolean running2 = true;
+        boolean supportsLetterToSound2 = false;
+        boolean markupSupport2 = true;
         Voice[] voices2 = new Voice[] { new Voice(), new Voice() };
         SynthesizerMode mode4 = new SynthesizerMode(engineName2, modeName2,
                 running2, supportsLetterToSound2, markupSupport2, voices2);
@@ -142,43 +143,43 @@ public class SynthesizerModeTest {
      */
     @Test
     void testEqualsObject() {
-        final SynthesizerMode mode1 = new SynthesizerMode();
-        assertFalse(mode1.equals("test"));
+        SynthesizerMode mode1 = new SynthesizerMode();
+        assertNotEquals("test", mode1);
 
-        final SynthesizerMode mode2 = new SynthesizerMode();
-        assertTrue(mode1.equals(mode2));
+        SynthesizerMode mode2 = new SynthesizerMode();
+        assertEquals(mode1, mode2);
 
         String engineName1 = "name1";
         String modeName1 = "mode1";
-        Boolean running1 = Boolean.TRUE;
-        Boolean supportsLetterToSound1 = Boolean.FALSE;
-        Boolean markupSupport1 = Boolean.TRUE;
+        boolean running1 = true;
+        boolean supportsLetterToSound1 = false;
+        boolean markupSupport1 = true;
         Voice[] voices1 = new Voice[] { new Voice(), new Voice() };
         SynthesizerMode mode3 = new SynthesizerMode(engineName1, modeName1,
                 running1, supportsLetterToSound1, markupSupport1, voices1);
-        assertFalse(mode1.equals(mode3));
+        assertNotEquals(mode1, mode3);
 
         String engineName2 = "name1";
         String modeName2 = "mode1";
-        Boolean running2 = Boolean.TRUE;
-        Boolean supportsLetterToSound2 = Boolean.FALSE;
-        Boolean markupSupport2 = Boolean.TRUE;
+        boolean running2 = true;
+        boolean supportsLetterToSound2 = false;
+        boolean markupSupport2 = true;
         Voice[] voices2 = new Voice[] { new Voice(), new Voice() };
         SynthesizerMode mode4 = new SynthesizerMode(engineName2, modeName2,
                 running2, supportsLetterToSound2, markupSupport2, voices2);
-        assertTrue(mode3.equals(mode4));
-        assertTrue(mode4.equals(mode3));
+        assertEquals(mode3, mode4);
+        assertEquals(mode4, mode3);
 
         String engineName3 = "name1";
         String modeName3 = "mode1";
-        Boolean running3 = Boolean.TRUE;
-        Boolean supportsLetterToSound3 = Boolean.FALSE;
-        Boolean markupSupport3 = Boolean.TRUE;
+        boolean running3 = true;
+        boolean supportsLetterToSound3 = false;
+        boolean markupSupport3 = true;
         Voice[] voices3 = new Voice[] { new Voice() };
         SynthesizerMode mode5 = new SynthesizerMode(engineName3, modeName3,
                 running3, supportsLetterToSound3, markupSupport3, voices3);
-        assertFalse(mode3.equals(mode5));
-        assertFalse(mode5.equals(mode3));
+        assertNotEquals(mode3, mode5);
+        assertNotEquals(mode5, mode3);
     }
 
     /**
@@ -186,21 +187,21 @@ public class SynthesizerModeTest {
      */
     @Test
     void testToString() {
-        final SynthesizerMode mode1 = new SynthesizerMode();
+        SynthesizerMode mode1 = new SynthesizerMode();
         assertNotNull(mode1.toString());
 
-        final SynthesizerMode mode2 = new SynthesizerMode(SpeechLocale.US);
+        SynthesizerMode mode2 = new SynthesizerMode(SpeechLocale.US);
         assertNotNull(mode2.toString());
 
         String engineName1 = "name1";
         String modeName1 = "mode1";
-        Boolean running1 = Boolean.TRUE;
-        Boolean supportsLetterToSound1 = Boolean.FALSE;
-        Boolean markupSupport1 = Boolean.TRUE;
+        boolean running1 = true;
+        boolean supportsLetterToSound1 = false;
+        boolean markupSupport1 = true;
         Voice[] voices1 = new Voice[] { new Voice(), new Voice() };
         SynthesizerMode mode3 = new SynthesizerMode(engineName1, modeName1,
                 running1, supportsLetterToSound1, markupSupport1, voices1);
-        final String str3 = mode3.toString();
+        String str3 = mode3.toString();
         assertTrue(str3.indexOf(engineName1) > 0);
         assertTrue(str3.indexOf(modeName1) > 0);
     }
@@ -222,9 +223,9 @@ public class SynthesizerModeTest {
 
         String engineName1 = "name1";
         String modeName1 = "mode1";
-        Boolean running1 = Boolean.TRUE;
-        Boolean supportsLetterToSound1 = Boolean.FALSE;
-        Boolean markupSupport1 = Boolean.TRUE;
+        boolean running1 = true;
+        boolean supportsLetterToSound1 = false;
+        boolean markupSupport1 = true;
         Voice[] voices1 = new Voice[] { new Voice(), new Voice() };
         SynthesizerMode mode3 = new SynthesizerMode(engineName1, modeName1,
                 running1, supportsLetterToSound1, markupSupport1, voices1);

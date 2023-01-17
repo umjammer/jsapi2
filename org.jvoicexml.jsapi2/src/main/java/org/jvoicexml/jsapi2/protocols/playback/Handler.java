@@ -34,7 +34,7 @@ public final class Handler extends URLStreamHandler {
     }
 
     @Override
-    protected URLConnection openConnection(final URL url) throws IOException {
+    protected URLConnection openConnection(URL url) throws IOException {
         return new PlaybackURLConnection(url);
     }
 
@@ -44,7 +44,7 @@ public final class Handler extends URLStreamHandler {
     }
 
     @Override
-    protected synchronized InetAddress getHostAddress(final URL url) {
+    protected synchronized InetAddress getHostAddress(URL url) {
         try {
             return InetAddress.getLocalHost();
         } catch (UnknownHostException ex) {

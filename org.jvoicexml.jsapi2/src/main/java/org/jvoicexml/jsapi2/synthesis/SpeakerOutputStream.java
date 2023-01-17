@@ -28,7 +28,6 @@ package org.jvoicexml.jsapi2.synthesis;
 
 import java.io.IOException;
 import java.io.OutputStream;
-
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
@@ -40,14 +39,14 @@ import javax.sound.sampled.SourceDataLine;
 
 import org.jvoicexml.jsapi2.BaseAudioManager;
 
+
 /**
  * A simple {@link OutputStream} that writes the data to the local speaker.
  *
  * @author Dirk Schnelle-Walka
- *
  */
-public final class SpeakerOutputStream extends OutputStream
-    implements LineListener {
+public final class SpeakerOutputStream extends OutputStream implements LineListener {
+
     /** The audio manager to use. */
     private final BaseAudioManager manager;
 
@@ -56,23 +55,24 @@ public final class SpeakerOutputStream extends OutputStream
 
     /**
      * Constructs a new object.
+     *
      * @param audioManager the audio manger
      */
-    public SpeakerOutputStream(final BaseAudioManager audioManager) {
+    public SpeakerOutputStream(BaseAudioManager audioManager) {
         manager = audioManager;
     }
 
     /**
      * Opens the line that can be used to stream the audio to the speaker.
-     * @throws IOException
-     *         error opening the line with the current format
+     *
+     * @throws IOException error opening the line with the current format
      */
     private void openLine() throws IOException {
         if (line != null) {
             return;
         }
-        final AudioFormat format = manager.getTargetAudioFormat();
-        final DataLine.Info info = new DataLine.Info(SourceDataLine.class,
+        AudioFormat format = manager.getTargetAudioFormat();
+        DataLine.Info info = new DataLine.Info(SourceDataLine.class,
                 format);
         try {
             line = (SourceDataLine) AudioSystem.getLine(info);
@@ -84,30 +84,28 @@ public final class SpeakerOutputStream extends OutputStream
         line.start();
 
         FloatControl gainControl = (FloatControl) line.getControl(FloatControl.Type.MASTER_GAIN);
-        double gain = BaseSynthesizerAudioManager.class.cast(manager).getVolume(); // number between 0 and 1 (loudest)
+        double gain = ((BaseSynthesizerAudioManager) manager).getVolume(); // number between 0 and 1 (loudest)
 //System.err.println("volume: " + gain);
         float dB = (float) (Math.log(gain) / Math.log(10.0) * 20.0);
         gainControl.setValue(dB);
     }
 
     @Override
-    public void write(final int b) throws IOException {
+    public void write(int b) throws IOException {
         openLine();
-        final byte[] bytes = new byte[1];
+        byte[] bytes = new byte[1];
         bytes[0] = (byte) b;
         line.write(bytes, 0, bytes.length);
     }
 
-
     @Override
-    public void write(final byte[] bytes, final int offset, final int len)
-        throws IOException {
+    public void write(byte[] bytes, int offset, int len) throws IOException {
         openLine();
         line.write(bytes, offset, len);
     }
 
     @Override
-    public void write(final byte[] bytes) throws IOException {
+    public void write(byte[] bytes) throws IOException {
         openLine();
         line.write(bytes, 0, bytes.length);
     }
@@ -126,9 +124,8 @@ public final class SpeakerOutputStream extends OutputStream
     }
 
     @Override
-    public void update(final LineEvent event) {
-        if ((event.getType() == LineEvent.Type.CLOSE)
-                || (event.getType() == LineEvent.Type.STOP)) {
+    public void update(LineEvent event) {
+        if ((event.getType() == LineEvent.Type.CLOSE) || (event.getType() == LineEvent.Type.STOP)) {
             // TODO evaluate the events
         }
     }

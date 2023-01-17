@@ -14,6 +14,7 @@ import javax.speech.synthesis.Voice;
 
 import org.jvoicexml.jsapi2.BaseEngineProperties;
 
+
 /**
  * Base implementation of {@link SynthesizerProperties}.
  *
@@ -27,7 +28,8 @@ import org.jvoicexml.jsapi2.BaseEngineProperties;
  * @version $Revision$
  */
 public class BaseSynthesizerProperties extends BaseEngineProperties
-    implements SynthesizerProperties {
+        implements SynthesizerProperties {
+
     /** Name of the interruptibility property in events. */
     public static final String INTERRUPTIBILITY = "interruptibility";
 
@@ -66,9 +68,10 @@ public class BaseSynthesizerProperties extends BaseEngineProperties
 
     /**
      * Constructs a new Object.
+     *
      * @param synthesizer reference to the synthesizer.
      */
-    public BaseSynthesizerProperties(final BaseSynthesizer synthesizer) {
+    public BaseSynthesizerProperties(BaseSynthesizer synthesizer) {
         super(synthesizer);
 
         interruptibility = OBJECT_LEVEL;
@@ -77,8 +80,8 @@ public class BaseSynthesizerProperties extends BaseEngineProperties
         speakingRate = DEFAULT_RATE;
         volume = MEDIUM_VOLUME;
         //Set default voice
-        final Engine engine = getEngine();
-        final SynthesizerMode mode = (SynthesizerMode) engine.getEngineMode();
+        Engine engine = getEngine();
+        SynthesizerMode mode = (SynthesizerMode) engine.getEngineMode();
         if (mode == null) {
             voice = null;
         } else {
@@ -97,18 +100,14 @@ public class BaseSynthesizerProperties extends BaseEngineProperties
     }
 
     @Override
-    public final void setInterruptibility(final int level) {
-        if ((level != WORD_LEVEL) && (level != OBJECT_LEVEL)
-                && (level != QUEUE_LEVEL)) {
-            throw new IllegalArgumentException("Invalid interruptibiliy level :"
-                    + level);
+    public final void setInterruptibility(int level) {
+        if ((level != WORD_LEVEL) && (level != OBJECT_LEVEL) && (level != QUEUE_LEVEL)) {
+            throw new IllegalArgumentException("Invalid interruptibility level :" + level);
         }
         if (level == interruptibility) {
             return;
         }
-        handlePropertyChangeRequest(INTERRUPTIBILITY,
-                new Integer(interruptibility),
-                new Integer(level));
+        handlePropertyChangeRequest(INTERRUPTIBILITY, interruptibility, level);
     }
 
     @Override
@@ -117,16 +116,14 @@ public class BaseSynthesizerProperties extends BaseEngineProperties
     }
 
     @Override
-    public final void setPitch(final int hertz) {
+    public final void setPitch(int hertz) {
         if (hertz <= 0) {
-            throw new IllegalArgumentException(
-                    "Pitch is not a positive integer:"  + hertz);
+            throw new IllegalArgumentException("Pitch is not a positive integer:" + hertz);
         }
         if (pitch == hertz) {
             return;
         }
-        handlePropertyChangeRequest(PITCH,
-                new Integer(pitch), new Integer(hertz));
+        handlePropertyChangeRequest(PITCH, pitch, hertz);
     }
 
     @Override
@@ -135,16 +132,14 @@ public class BaseSynthesizerProperties extends BaseEngineProperties
     }
 
     @Override
-    public final void setPitchRange(final int hertz) {
+    public final void setPitchRange(int hertz) {
         if (hertz < 0) {
-            throw new IllegalArgumentException(
-                    "Pitch is a negative integer:"  + hertz);
+            throw new IllegalArgumentException("Pitch is a negative integer:" + hertz);
         }
         if (pitchRange == hertz) {
             return;
         }
-        handlePropertyChangeRequest(PITCH_RANGE,
-                new Integer(pitchRange), new Integer(hertz));
+        handlePropertyChangeRequest(PITCH_RANGE, pitchRange, hertz);
     }
 
     @Override
@@ -153,16 +148,14 @@ public class BaseSynthesizerProperties extends BaseEngineProperties
     }
 
     @Override
-    public final void setSpeakingRate(final int wpm) {
+    public final void setSpeakingRate(int wpm) {
         if (wpm < 0) {
-            throw new IllegalArgumentException(
-                    "Speaking rate is not a postivie integer:"  + wpm);
+            throw new IllegalArgumentException("Speaking rate is not a positive integer:" + wpm);
         }
         if (speakingRate == wpm) {
             return;
         }
-        handlePropertyChangeRequest(SPEAKING_RATE,
-                new Integer(speakingRate), new Integer(wpm));
+        handlePropertyChangeRequest(SPEAKING_RATE, speakingRate, wpm);
     }
 
     @Override
@@ -171,19 +164,16 @@ public class BaseSynthesizerProperties extends BaseEngineProperties
     }
 
     @Override
-    public void setVoice(final Voice voice) {
-        final Engine synthesizer = getEngine();
-        final SynthesizerMode mode =
-            (SynthesizerMode) synthesizer.getEngineMode();
+    public void setVoice(Voice voice) {
+        Engine synthesizer = getEngine();
+        SynthesizerMode mode = (SynthesizerMode) synthesizer.getEngineMode();
         if (mode == null) {
             return;
         }
-        final Voice[] voices = mode.getVoices();
-        for (int i = 0; i < voices.length; i++) {
-            final Voice current = voices[i];
+        Voice[] voices = mode.getVoices();
+        for (Voice current : voices) {
             if (current.match(voice)) {
-                handlePropertyChangeRequest(VOICE,
-                        this.voice, current);
+                handlePropertyChangeRequest(VOICE, this.voice, current);
                 return;
             }
         }
@@ -195,28 +185,26 @@ public class BaseSynthesizerProperties extends BaseEngineProperties
     }
 
     @Override
-    public final void setVolume(final int vol) {
+    public final void setVolume(int vol) {
         if ((vol < MIN_VOLUME) || (vol > MAX_VOLUME)) {
-            throw new IllegalArgumentException("Volume is out of range: "
-                    + vol);
+            throw new IllegalArgumentException("Volume is out of range: " + vol);
         }
         if (volume == vol) {
             return;
         }
-        handlePropertyChangeRequest(VOLUME,
-                new Integer(volume), new Integer(vol));
+        handlePropertyChangeRequest(VOLUME, volume, vol);
     }
 
     @Override
     public void reset() {
         setInterruptibility(OBJECT_LEVEL);
         setPitch(160);
-        setPitchRange((int)(160 * 0.60));
+        setPitchRange((int) (160 * 0.60));
         setSpeakingRate(DEFAULT_RATE);
         setVolume(MEDIUM_VOLUME);
-        //Set default voice
-        final Engine engine = getEngine();
-        final SynthesizerMode mode = (SynthesizerMode) engine.getEngineMode();
+        // Set default voice
+        Engine engine = getEngine();
+        SynthesizerMode mode = (SynthesizerMode) engine.getEngineMode();
         if (mode == null) {
             setVoice(null);
         } else {
@@ -232,31 +220,33 @@ public class BaseSynthesizerProperties extends BaseEngineProperties
     }
 
     @Override
-    protected boolean setProperty(final String propName, final Object value) {
-        if (propName.equals(INTERRUPTIBILITY)) {
-            final Integer intVal = (Integer) value;
-            interruptibility = intVal.intValue();
-            return true;
-        } else if (propName.equals(PITCH)) {
-            final Integer intVal = (Integer) value;
-            pitch = intVal.intValue();
-            return true;
-        } else if (propName.equals(PITCH_RANGE)) {
-            final Integer intVal = (Integer) value;
-            pitchRange = intVal.intValue();
-            return true;
-        } else if (propName.equals(SPEAKING_RATE)) {
-            final Integer intVal = (Integer) value;
-            speakingRate = intVal.intValue();
-            return true;
-        } else if (propName.equals(VOICE)) {
-            voice = (Voice) value;
-            return true;
-        } else if (propName.equals(VOLUME)) {
-            final Integer intVal = (Integer) value;
-            volume = intVal.intValue();
+    protected boolean setProperty(String propName, Object value) {
+        switch (propName) {
+        case INTERRUPTIBILITY: {
+            interruptibility = (Integer) value;
             return true;
         }
-        return false;
+        case PITCH: {
+            pitch = (Integer) value;
+            return true;
+        }
+        case PITCH_RANGE: {
+            pitchRange = (Integer) value;
+            return true;
+        }
+        case SPEAKING_RATE: {
+            speakingRate = (Integer) value;
+            return true;
+        }
+        case VOICE:
+            voice = (Voice) value;
+            return true;
+        case VOLUME: {
+            volume = (Integer) value;
+            return true;
+        }
+        default:
+            return false;
+        }
     }
 }

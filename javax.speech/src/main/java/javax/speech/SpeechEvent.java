@@ -26,8 +26,9 @@
 
 package javax.speech;
 
-import java.util.Enumeration;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 //Comp. 2.0.6
 
@@ -85,45 +86,26 @@ public abstract class SpeechEvent {
      * 
      * @return collection of all parameters.
      */
-    protected Vector getParameters() {
-        final Vector parameters = new Vector();
+    protected List<Object> getParameters() {
+        List<Object> parameters = new ArrayList<>();
 
-        final Object source = getSource();
-        parameters.addElement(source);
-        final StringBuffer str = new StringBuffer();
+        Object source = getSource();
+        parameters.add(source);
+        StringBuffer str = new StringBuffer();
         id2String(str);
-        final String identifier = str.toString();
-        parameters.addElement(identifier);
+        String identifier = str.toString();
+        parameters.add(identifier);
 
         return parameters;
     }
 
     public String paramString() {
         // TODO this method should be abstract
-        final StringBuffer str = new StringBuffer();
-
-        final Vector parameters = getParameters();
-        Enumeration enumeration = parameters.elements();
-        while (enumeration.hasMoreElements()) {
-            final Object parameter = enumeration.nextElement();
-            str.append(parameter);
-            if (enumeration.hasMoreElements()) {
-                str.append(",");
-            }
-        }
-
-        return str.toString();
+        return getParameters().stream().map(String::valueOf).collect(Collectors.joining(","));
     }
 
+    @Override
     public String toString() {
-        // TODO this method should be abstract
-        StringBuffer str = new StringBuffer();
-
-        str.append(getClass().getName());
-        str.append("[");
-        str.append(paramString());
-        str.append("]");
-
-        return str.toString();
+        return getClass().getName() + "[" + paramString() + "]";
     }
 }

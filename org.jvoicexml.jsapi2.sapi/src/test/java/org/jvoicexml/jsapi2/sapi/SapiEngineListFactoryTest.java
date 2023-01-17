@@ -29,15 +29,15 @@ public final class SapiEngineListFactoryTest {
      */
     @Test
     void testCreateEngineList() {
-        final SapiEngineListFactory factory = new SapiEngineListFactory();
-        final EngineList list =
+        SapiEngineListFactory factory = new SapiEngineListFactory();
+        EngineList list =
             factory.createEngineList(SynthesizerMode.DEFAULT);
-        final Enumeration<?> e = list.elements();
+        Enumeration<?> e = list.elements();
         assertTrue(e.hasMoreElements());
-        final SynthesizerMode mode = (SynthesizerMode) e.nextElement();
-        final Voice[] voices = mode.getVoices();
+        SynthesizerMode mode = (SynthesizerMode) e.nextElement();
+        Voice[] voices = mode.getVoices();
         assertTrue(voices.length > 0);
-        final Voice voice = voices[0];
+        Voice voice = voices[0];
         assertEquals("Microsoft Anna", voice.getName());
     }
 }

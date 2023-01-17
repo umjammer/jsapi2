@@ -24,7 +24,6 @@ package org.jvoicexml.jsapi2.synthesis.freetts;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.Logger;
-
 import javax.sound.sampled.AudioFormat;
 import javax.speech.AudioException;
 import javax.speech.AudioManager;
@@ -35,25 +34,25 @@ import javax.speech.synthesis.Speakable;
 import javax.speech.synthesis.SynthesizerMode;
 import javax.speech.synthesis.SynthesizerProperties;
 
+import com.sun.speech.freetts.FreeTTSSpeakableImpl;
+import com.sun.speech.freetts.audio.AudioPlayer;
 import org.jvoicexml.jsapi2.BaseAudioManager;
 import org.jvoicexml.jsapi2.BaseAudioSegment;
 import org.jvoicexml.jsapi2.BaseEngineProperties;
 import org.jvoicexml.jsapi2.synthesis.BaseSynthesizer;
 import org.w3c.dom.Document;
 
-import com.sun.speech.freetts.FreeTTSSpeakableImpl;
-import com.sun.speech.freetts.audio.AudioPlayer;
 
 /**
  * Provides partial support for a JSAPI 2.0 synthesizer for the FreeTTS speech
  * synthesis system.
- * 
+ *
  * @author Dirk Schnelle-Walka
  */
 public class FreeTTSSynthesizer extends BaseSynthesizer {
+
     /** Logger for this class. */
-    private static final Logger LOGGER = Logger
-            .getLogger(FreeTTSSynthesizer.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(FreeTTSSynthesizer.class.getName());
 
     /**
      * The currently active voice for this synthesizer.
@@ -69,10 +68,9 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
     /**
      * Creates a new Synthesizer in the DEALLOCATED state.
      *
-     * @param desc
-     *            describes the allowed mode of operations for this synthesizer.
+     * @param desc describes the allowed mode of operations for this synthesizer.
      */
-    public FreeTTSSynthesizer(final FreeTTSSynthesizerMode desc) {
+    public FreeTTSSynthesizer(FreeTTSSynthesizerMode desc) {
         super(desc);
         audioPlayer = null;
     }
@@ -83,14 +81,12 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
     }
 
     @Override
-    public void handleAllocate() throws EngineStateException, EngineException,
-            AudioException, SecurityException {
+    public void handleAllocate() throws EngineStateException, EngineException, AudioException, SecurityException {
         boolean ok = false;
         SynthesizerMode synthesizerMode = (SynthesizerMode) getEngineMode();
 
         if (synthesizerMode.getVoices().length > 0) {
-            final FreeTTSVoice freettsVoice = (FreeTTSVoice) synthesizerMode
-                    .getVoices()[0];
+            FreeTTSVoice freettsVoice = (FreeTTSVoice) synthesizerMode.getVoices()[0];
             ok = setCurrentVoice(freettsVoice);
         }
 
@@ -98,8 +94,7 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
             BaseAudioManager manager = (BaseAudioManager) getAudioManager();
             audioPlayer = new FreeTTSAudioPlayer(manager);
             long newState = ALLOCATED | RESUMED;
-            newState |= (getQueueManager().isQueueEmpty() ? QUEUE_EMPTY
-                    : QUEUE_NOT_EMPTY);
+            newState |= (getQueueManager().isQueueEmpty() ? QUEUE_EMPTY : QUEUE_NOT_EMPTY);
             setEngineState(CLEAR_ALL_STATE, newState);
         } else {
             throw new AudioException("Can't allocate FreeTTS synthesizer");
@@ -110,11 +105,10 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
      * Sets the given voice to be the current voice. If the voice cannot be
      * loaded, this call has no affect.
      *
-     * @param voice
-     *            the new voice.
+     * @param voice the new voice.
      * @return {@code true} if the voice was loaded
      */
-    protected boolean setCurrentVoice(final FreeTTSVoice voice) {
+    protected boolean setCurrentVoice(FreeTTSVoice voice) {
         com.sun.speech.freetts.Voice freettsVoice = voice.getVoice();
         boolean ok = false;
 
@@ -136,8 +130,7 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
      * output handler, and posts the state changes.
      */
     @Override
-    public void handleDeallocate()
-            throws EngineStateException, EngineException, AudioException {
+    public void handleDeallocate() throws EngineStateException, EngineException, AudioException {
         setEngineState(CLEAR_ALL_STATE, DEALLOCATED);
         getQueueManager().cancelAllItems();
         getQueueManager().terminate();
@@ -176,11 +169,9 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
     /**
      * Outputs the given queue item to the current voice
      *
-     * @param id
-     *            the item to output
+     * @param id the item to output
      */
-    private AudioSegment handleSpeak(final int id,
-            final FreeTTSSpeakableImpl speakElement) {
+    private AudioSegment handleSpeak(int id, FreeTTSSpeakableImpl speakElement) {
         com.sun.speech.freetts.Voice voice = curVoice.getVoice();
         voice.setAudioPlayer(audioPlayer);
 
@@ -188,7 +179,7 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
 
         if (audioPlayer instanceof FreeTTSAudioPlayer) {
             FreeTTSAudioPlayer player = (FreeTTSAudioPlayer) audioPlayer;
-            final InputStream in;
+            InputStream in;
             try {
                 in = player.getAudioBytes();
             } catch (IOException e) {
@@ -197,10 +188,10 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
             } finally {
                 player.reset();
             }
-            final AudioManager manager = getAudioManager();
-            final String locator = manager.getMediaLocator();
-            final String markupText = speakElement.getText();
-            final AudioSegment segment;
+            AudioManager manager = getAudioManager();
+            String locator = manager.getMediaLocator();
+            String markupText = speakElement.getText();
+            AudioSegment segment;
             if (locator == null) {
                 segment = new BaseAudioSegment(markupText, in);
             } else {
@@ -213,16 +204,15 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
 
     @Override
     public AudioSegment handleSpeak(int id, Speakable item) {
-        final String markup = item.getMarkupText();
-        final Document document = transformer.transform(markup);
-        final FreeTTSSpeakableImpl speakable = new FreeTTSSpeakableImpl(
-                document);
+        String markup = item.getMarkupText();
+        Document document = transformer.transform(markup);
+        FreeTTSSpeakableImpl speakable = new FreeTTSSpeakableImpl(document);
         return handleSpeak(id, speakable);
     }
 
     @Override
     public AudioSegment handleSpeak(int id, String text) {
-        final FreeTTSSpeakableImpl speakable = new FreeTTSSpeakableImpl(text);
+        FreeTTSSpeakableImpl speakable = new FreeTTSSpeakableImpl(text);
         return handleSpeak(id, speakable);
     }
 
@@ -248,8 +238,8 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
 
     @Override
     protected void handlePropertyChangeRequest(
-            final BaseEngineProperties properties, final String propName,
-            final Object oldValue, final Object newValue) {
+            BaseEngineProperties properties, String propName,
+            Object oldValue, Object newValue) {
         if (curVoice == null) {
             return;
         }

@@ -55,8 +55,8 @@ public class EngineEventTest {
      */
     @Test
     void testGetNewEngineState() {
-        final Throwable problem = new Exception();
-        final EngineEvent event = new EngineEvent(engine,
+        Throwable problem = new Exception();
+        EngineEvent event = new EngineEvent(engine,
                 EngineEvent.ENGINE_ERROR,
                 EngineEvent.ENGINE_DEALLOCATED,
                 EngineEvent.ENGINE_ALLOCATING_RESOURCES, problem);
@@ -69,8 +69,8 @@ public class EngineEventTest {
      */
     @Test
     void testGetOldEngineState() {
-        final Throwable problem = new Exception();
-        final EngineEvent event = new EngineEvent(engine,
+        Throwable problem = new Exception();
+        EngineEvent event = new EngineEvent(engine,
                 EngineEvent.ENGINE_ERROR,
                 EngineEvent.ENGINE_DEALLOCATED,
                 EngineEvent.ENGINE_ALLOCATING_RESOURCES, problem);
@@ -82,14 +82,14 @@ public class EngineEventTest {
      */
     @Test
     void testGetEngineError() {
-        final Throwable problem = new Exception();
-        final EngineEvent event = new EngineEvent(engine,
+        Throwable problem = new Exception();
+        EngineEvent event = new EngineEvent(engine,
                 EngineEvent.ENGINE_ALLOCATED,
                 EngineEvent.ENGINE_DEALLOCATED,
                 EngineEvent.ENGINE_ALLOCATING_RESOURCES, null);
         assertNull(event.getEngineError());
 
-        final EngineEvent event2 = new EngineEvent(engine,
+        EngineEvent event2 = new EngineEvent(engine,
                 EngineEvent.ENGINE_ERROR, EngineEvent.ENGINE_DEALLOCATED,
                 EngineEvent.ENGINE_ALLOCATING_RESOURCES, problem);
         assertEquals(problem, event2.getEngineError());
@@ -100,10 +100,10 @@ public class EngineEventTest {
      */
     @Test
     void testParamString() {
-        final EngineEvent event = new EngineEvent(engine, 43,
+        EngineEvent event = new EngineEvent(engine, 43,
                 EngineEvent.ENGINE_DEALLOCATED,
                 EngineEvent.ENGINE_ALLOCATING_RESOURCES, null);
-        final String str = event.paramString();
+        String str = event.paramString();
         assertTrue(str.contains("43"));
     }
 
@@ -112,10 +112,10 @@ public class EngineEventTest {
      */
     @Test
     void testToString() {
-        final EngineEvent event = new EngineEvent(engine, 44,
+        EngineEvent event = new EngineEvent(engine, 44,
                 EngineEvent.ENGINE_DEALLOCATED,
                 EngineEvent.ENGINE_ALLOCATING_RESOURCES, null);
-        final String str = event.toString();
+        String str = event.toString();
         assertTrue(str.contains("44"));
     }
 }

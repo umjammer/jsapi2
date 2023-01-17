@@ -64,7 +64,7 @@ class Sphinx4ResultListener implements ResultListener {
      * @param rec
      *            The recognizer.
      */
-    public Sphinx4ResultListener(final Sphinx4Recognizer rec) {
+    public Sphinx4ResultListener(Sphinx4Recognizer rec) {
         recognizer = rec;
     }
 
@@ -75,7 +75,7 @@ class Sphinx4ResultListener implements ResultListener {
      *            The new result.
      */
     @Override
-    public void newResult(final Result result) {
+    public void newResult(Result result) {
         LOGGER.log(Level.INFO, "received result: {0}", result);
         LOGGER.log(Level.INFO, "isFinal: {0}", result.isFinal());
         if (!result.isFinal() || "<sil>".equalsIgnoreCase(result.toString())) {
@@ -89,40 +89,40 @@ class Sphinx4ResultListener implements ResultListener {
             return;
         }
 
-        /**
-         * For the current implementation with the SRGSGrammarContainer in
-         * Sphinx4, all active grammars are actually a single one. Call the
-         * recognizer with the best token and let him figure out, which grammar
-         * actually produced the result.
+        /*
+          For the current implementation with the SRGSGrammarContainer in
+          Sphinx4, all active grammars are actually a single one. Call the
+          recognizer with the best token and let him figure out, which grammar
+          actually produced the result.
          */
-        final RuleGrammar grammar = recognizer.getRuleGrammar(result
+        RuleGrammar grammar = recognizer.getRuleGrammar(result
                 .getBestFinalToken());
         currentResult = new BaseResult(grammar);
 
-        final ResultEvent created = new ResultEvent(currentResult,
+        ResultEvent created = new ResultEvent(currentResult,
                 ResultEvent.RESULT_CREATED, false, false);
         recognizer.postResultEvent(created);
 
-        final String utterance = result.getBestFinalResultNoFiller();
+        String utterance = result.getBestFinalResultNoFiller();
         try {
             currentResult.setResult(utterance);
         } catch (GrammarException e) {
-            final ResultEvent rejected = new ResultEvent(currentResult,
+            ResultEvent rejected = new ResultEvent(currentResult,
                     ResultEvent.RESULT_REJECTED, false, false);
             recognizer.postResultEvent(rejected);
         }
 
-        final ResultEvent grammarFinalized = new ResultEvent(currentResult,
+        ResultEvent grammarFinalized = new ResultEvent(currentResult,
                 ResultEvent.GRAMMAR_FINALIZED);
         recognizer.postResultEvent(grammarFinalized);
 
         if (currentResult.getResultState() == javax.speech.recognition.Result.REJECTED) {
             currentResult.setResultState(javax.speech.recognition.Result.REJECTED);
-            final ResultEvent rejected = new ResultEvent(currentResult,
+            ResultEvent rejected = new ResultEvent(currentResult,
                     ResultEvent.RESULT_REJECTED, false, false);
             recognizer.postResultEvent(rejected);
         } else {
-            final ResultEvent accepted = new ResultEvent(currentResult,
+            ResultEvent accepted = new ResultEvent(currentResult,
                     ResultEvent.RESULT_ACCEPTED, false, false);
             recognizer.postResultEvent(accepted);
         }
@@ -133,7 +133,7 @@ class Sphinx4ResultListener implements ResultListener {
      * unused.
      */
     @Override
-    public void newProperties(final PropertySheet sheet)
+    public void newProperties(PropertySheet sheet)
             throws PropertyException {
     }
 }

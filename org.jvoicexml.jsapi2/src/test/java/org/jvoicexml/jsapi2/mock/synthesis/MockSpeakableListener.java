@@ -26,7 +26,8 @@
 
 package org.jvoicexml.jsapi2.mock.synthesis;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.speech.synthesis.SpeakableEvent;
 import javax.speech.synthesis.SpeakableListener;
@@ -37,8 +38,9 @@ import javax.speech.synthesis.SpeakableListener;
  *
  */
 public class MockSpeakableListener implements SpeakableListener {
+
     /** Received speakable events. */
-    private final Vector events;
+    private final List<SpeakableEvent> events;
 
     /** Snchronization lock. */
     private final Object lock;
@@ -47,7 +49,7 @@ public class MockSpeakableListener implements SpeakableListener {
      * Constructs a new object.
      */
     public MockSpeakableListener() {
-        events = new Vector();
+        events = new ArrayList<>();
         lock = new Object();
     }
 
@@ -57,7 +59,7 @@ public class MockSpeakableListener implements SpeakableListener {
      * @throws InterruptedException
      *         if waiting was interrupted
      */
-    public void waitForSize(final int size) throws InterruptedException {
+    public void waitForSize(int size) throws InterruptedException {
         while (events.size() != size) {
             synchronized (lock) {
                 lock.wait();
@@ -70,8 +72,8 @@ public class MockSpeakableListener implements SpeakableListener {
      * @param pos position of the event to return
      * @return the event at the given position
      */
-    public SpeakableEvent getEvent(final int pos) {
-        return (SpeakableEvent) events.elementAt(pos);
+    public SpeakableEvent getEvent(int pos) {
+        return events.get(pos);
     }
 
     @Override
@@ -82,5 +84,4 @@ public class MockSpeakableListener implements SpeakableListener {
             lock.notifyAll();
         }
     }
-
 }

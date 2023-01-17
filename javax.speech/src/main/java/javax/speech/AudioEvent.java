@@ -26,11 +26,12 @@
 
 package javax.speech;
 
-import java.util.Vector;
+import java.util.List;
 
 // Comp. 2.0.6
 
 public class AudioEvent extends SpeechEvent {
+
     public static final int AUDIO_STARTED = 0x8000001;
 
     public static final int AUDIO_STOPPED = 0x8000002;
@@ -101,13 +102,11 @@ public class AudioEvent extends SpeechEvent {
         super.id2String(str);
     }
 
-    
     @Override
-    protected Vector getParameters() {
-        final Vector parameters = super.getParameters();
+    protected List<Object> getParameters() {
+        List<Object> parameters = super.getParameters();
 
-        final Integer level = new Integer(audioLevel);
-        parameters.addElement(level);
+        parameters.add(audioLevel);
 
         return parameters;
     }

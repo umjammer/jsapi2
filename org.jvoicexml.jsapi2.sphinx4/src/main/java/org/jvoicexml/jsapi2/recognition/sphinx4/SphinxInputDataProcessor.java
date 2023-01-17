@@ -95,11 +95,11 @@ public class SphinxInputDataProcessor extends BaseDataProcessor
 
     public void newProperties(PropertySheet ps) throws PropertyException {
         super.newProperties(ps);
-        final int samplingRate = ps.getInt(SAMPLING_RATE);
-        final int sampleSizeInBits = ps.getInt(SAMPLE_SIZE_IN_BITS);
-        final int channels = ps.getInt(CHANNELS);
-        final boolean signed = ps.getBoolean(SIGNED);
-        final boolean bigEndian = ps.getBoolean(BIG_ENDIAN);
+        int samplingRate = ps.getInt(SAMPLING_RATE);
+        int sampleSizeInBits = ps.getInt(SAMPLE_SIZE_IN_BITS);
+        int channels = ps.getInt(CHANNELS);
+        boolean signed = ps.getBoolean(SIGNED);
+        boolean bigEndian = ps.getBoolean(BIG_ENDIAN);
         format = new AudioFormat(samplingRate, sampleSizeInBits, channels,
                 signed, bigEndian);
     }
@@ -110,7 +110,7 @@ public class SphinxInputDataProcessor extends BaseDataProcessor
      * @param in
      *            the input stream.
      */
-    public void setInputStream(final InputStream in) {
+    public void setInputStream(InputStream in) {
         inputStream = in;
     }
 
@@ -128,7 +128,7 @@ public class SphinxInputDataProcessor extends BaseDataProcessor
      *            {@code true} if notifications about the status change should
      *            be sent
      */
-    public synchronized void isRunning(final boolean running) {
+    public synchronized void isRunning(boolean running) {
         if (this.running != running) {
             if (running) {
                 sentStarted = false;
@@ -151,13 +151,13 @@ public class SphinxInputDataProcessor extends BaseDataProcessor
     /**
      * Returns the processed Data output.
      * 
-     * @return an Data object that has been processed by this DataProcessor
+     * @return a Data object that has been processed by this DataProcessor
      * @throws DataProcessingException
      *             if a data processor error occurs
      */
     @Override
     public Data getData() throws DataProcessingException {
-        final AudioFormat format = getAudioFormat();
+        AudioFormat format = getAudioFormat();
         int channels = format.getChannels();
         boolean signed = true;
         int sampleRate = (int) format.getSampleRate();
@@ -165,7 +165,7 @@ public class SphinxInputDataProcessor extends BaseDataProcessor
         int frameSizeInBytes = sampleRate * sampleSizeInBytes * channels * 10
                 / 1000;
 
-        // we are not running anymore, but did not sent DataEnd yet
+        // we are not running anymore, but did not send DataEnd yet
         if (!running && !sentEnded && sentStarted) {
             sentEnded = true;
             long duration = (long) (((double) totalSamplesRead
@@ -223,10 +223,10 @@ public class SphinxInputDataProcessor extends BaseDataProcessor
         totalSamplesRead += (numBytesRead / sampleSizeInBytes);
 
         // Convert it to double
-        final double[] samples = DataUtil.littleEndianBytesToValues(data, 0,
+        double[] samples = DataUtil.littleEndianBytesToValues(data, 0,
                 numBytesRead, sampleSizeInBytes, signed);
-        final long collectTime = System.currentTimeMillis();
-        return new DoubleData(samples, (int) sampleRate, collectTime,
+        long collectTime = System.currentTimeMillis();
+        return new DoubleData(samples, sampleRate, collectTime,
                 firstSampleNumber);
     }
 }

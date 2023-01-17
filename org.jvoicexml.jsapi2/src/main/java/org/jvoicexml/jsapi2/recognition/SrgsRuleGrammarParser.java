@@ -77,25 +77,25 @@ public class SrgsRuleGrammarParser {
     }
 
     public SrgsRuleGrammarParser() {
-        attributes = new java.util.HashMap<String, String>();
+        attributes = new java.util.HashMap<>();
     }
 
-    public Rule[] load(final Reader reader) {
-        final InputSource source = new InputSource(reader);
+    public Rule[] load(Reader reader) {
+        InputSource source = new InputSource(reader);
         return load(source);
     }
 
-    public Rule[] load(final InputStream stream) {
-        final InputSource source = new InputSource(stream);
+    public Rule[] load(InputStream stream) {
+        InputSource source = new InputSource(stream);
         return load(source);
     }
 
-    public Rule[] loadRule(final Reader reader) {
+    public Rule[] loadRule(Reader reader) {
         try {
-            final DocumentBuilder builder = DocumentBuilderFactory
+            DocumentBuilder builder = DocumentBuilderFactory
                     .newInstance().newDocumentBuilder();
             builder.setEntityResolver(entityResolver);
-            final InputSource source = new InputSource(reader);
+            InputSource source = new InputSource(reader);
             return parseGrammar(builder.parse(source));
         } catch (Exception e) {
             e.printStackTrace();
@@ -105,9 +105,9 @@ public class SrgsRuleGrammarParser {
 
     public Rule[] loadRule(InputStream stream) {
         try {
-            final DocumentBuilderFactory factory = DocumentBuilderFactory
+            DocumentBuilderFactory factory = DocumentBuilderFactory
                     .newInstance();
-            final DocumentBuilder builder = factory.newDocumentBuilder();
+            DocumentBuilder builder = factory.newDocumentBuilder();
             builder.setEntityResolver(entityResolver);
             return parseGrammar(builder.parse(new InputSource(stream)));
         } catch (Exception e) {
@@ -116,64 +116,58 @@ public class SrgsRuleGrammarParser {
         }
     }
 
-    private Rule[] load(final InputSource inputSource) {
+    private Rule[] load(InputSource inputSource) {
         try {
-            final DocumentBuilderFactory factory = DocumentBuilderFactory
+            DocumentBuilderFactory factory = DocumentBuilderFactory
                     .newInstance();
-            final DocumentBuilder builder = factory.newDocumentBuilder();
+            DocumentBuilder builder = factory.newDocumentBuilder();
             builder.setEntityResolver(entityResolver);
 
-            final Document document = builder.parse(inputSource);
-            final Node grammarNode = document.getFirstChild();
+            Document document = builder.parse(inputSource);
+            Node grammarNode = document.getFirstChild();
 
-            final Rule[] rules = parseGrammar(grammarNode);
+            Rule[] rules = parseGrammar(grammarNode);
 
             // Extract header from grammar
-            final NamedNodeMap docAttributes = grammarNode.getAttributes();
+            NamedNodeMap docAttributes = grammarNode.getAttributes();
             if (docAttributes != null) {
                 for (int i = 0; i < docAttributes.getLength(); i++) {
-                    final Node node = docAttributes.item(i);
+                    Node node = docAttributes.item(i);
                     attributes.put(node.getNodeName(), node.getNodeValue());
                 }
             }
             return rules;
-        } catch (ParserConfigurationException ex) {
-            ex.printStackTrace();
-            return null;
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            return null;
-        } catch (SAXException ex) {
+        } catch (ParserConfigurationException | SAXException | IOException ex) {
             ex.printStackTrace();
             return null;
         }
     }
 
     private Rule[] parseGrammar(Node grammarNode) {
-        List<Rule> rules = new ArrayList<Rule>();
+        List<Rule> rules = new ArrayList<>();
         NodeList childNodes = grammarNode.getChildNodes();
         for (int i = 0; i < childNodes.getLength(); i++) {
-            final Node child = childNodes.item(i);
-            final String nodeName = child.getNodeName();
+            Node child = childNodes.item(i);
+            String nodeName = child.getNodeName();
             if (!nodeName.equalsIgnoreCase("rule")) {
                 continue;
             }
-            final NamedNodeMap attributes = child.getAttributes();
-            final String ruleId = getAttribute(attributes, "id");
+            NamedNodeMap attributes = child.getAttributes();
+            String ruleId = getAttribute(attributes, "id");
             int scope = Rule.PRIVATE;
-            final String scopeStr = getAttribute(attributes, "scope");
+            String scopeStr = getAttribute(attributes, "scope");
             if (scopeStr != null) {
                 if (scopeStr.equalsIgnoreCase("public")) {
                     scope = Rule.PUBLIC;
                 }
             }
 
-            final List<RuleComponent> components = evalChildNodes(child);
+            List<RuleComponent> components = evalChildNodes(child);
             if (components.size() == 1) {
-                final Rule rule = new Rule(ruleId, components.get(0), scope);
+                Rule rule = new Rule(ruleId, components.get(0), scope);
                 rules.add(rule);
             } else if (components.size() > 1) {
-                final RuleSequence rs = new RuleSequence(
+                RuleSequence rs = new RuleSequence(
                         components.toArray(new RuleComponent[] {}));
                 Rule rule = new Rule(ruleId, rs, scope);
                 rules.add(rule);
@@ -190,12 +184,12 @@ public class SrgsRuleGrammarParser {
         return attribute.getNodeValue();
     }
 
-    private List<RuleComponent> evalNode(final Node node) {
-        final List<RuleComponent> ruleComponents = new ArrayList<RuleComponent>();
-        final String nodeName = node.getNodeName();
+    private List<RuleComponent> evalNode(Node node) {
+        List<RuleComponent> ruleComponents = new ArrayList<>();
+        String nodeName = node.getNodeName();
         if (nodeName.equalsIgnoreCase("#text")) {
-            final Text textNode = (Text) node;
-            final String text = textNode.getWholeText().trim();
+            Text textNode = (Text) node;
+            String text = textNode.getWholeText().trim();
             if (text.length() > 0) {
                 RuleToken ruleToken = new RuleToken(text);
                 ruleComponents.add(ruleToken);
@@ -209,7 +203,7 @@ public class SrgsRuleGrammarParser {
             int repeatMin = -1;
             int repeatMax = -1;
             double repeatProb = -1;
-            final NamedNodeMap attributes = node.getAttributes();
+            NamedNodeMap attributes = node.getAttributes();
             String repeatStr = getAttribute(attributes, "repeat");
             String repeatProbStr = getAttribute(attributes, "repeat-prob");
 
@@ -234,7 +228,7 @@ public class SrgsRuleGrammarParser {
                 repeatProb = Double.parseDouble(repeatProbStr);
             }
 
-            final List<RuleComponent> components = evalChildNodes(node);
+            List<RuleComponent> components = evalChildNodes(node);
             RuleSequence sequence = new RuleSequence(
                     components.toArray(new RuleComponent[] {}));
             if ((repeatMin != -1) && (repeatMax != -1) && (repeatProb != -1)) {
@@ -259,7 +253,7 @@ public class SrgsRuleGrammarParser {
             }
 
         } else if (nodeName.equalsIgnoreCase("ruleref")) {
-            final NamedNodeMap attributes = node.getAttributes();
+            NamedNodeMap attributes = node.getAttributes();
             String specialStr = getAttribute(attributes, "special");
             if (specialStr != null) {
                 if (specialStr.equalsIgnoreCase("NULL")) {
@@ -270,27 +264,26 @@ public class SrgsRuleGrammarParser {
                     ruleComponents.add(RuleSpecial.GARBAGE);
                 }
             } else {
-                final String uriStr = getAttribute(attributes, "uri");
-                if (uriStr != null && uriStr.indexOf("#") == -1) {
-                    final RuleReference reference = new RuleReference(uriStr);
+                String uriStr = getAttribute(attributes, "uri");
+                if (uriStr != null && !uriStr.contains("#")) {
+                    RuleReference reference = new RuleReference(uriStr);
                     ruleComponents.add(reference);
                 } else if (uriStr != null) {
-                    final String ruleName = uriStr.substring(
+                    String ruleName = uriStr.substring(
                             uriStr.indexOf("#") + 1).trim();
-                    ;
-                    final String grammarName = uriStr.substring(0,
+                    String grammarName = uriStr.substring(0,
                             uriStr.indexOf("#"));
-                    final String typeStr = getAttribute(attributes, "type");
+                    String typeStr = getAttribute(attributes, "type");
                     if (grammarName.isEmpty()) {
-                        final RuleReference reference = new RuleReference(
+                        RuleReference reference = new RuleReference(
                                 ruleName);
                         ruleComponents.add(reference);
                     } else if (typeStr == null) {
-                        final RuleReference reference = new RuleReference(
+                        RuleReference reference = new RuleReference(
                                 grammarName, ruleName);
                         ruleComponents.add(reference);
                     } else {
-                        final RuleReference reference = new RuleReference(
+                        RuleReference reference = new RuleReference(
                                 grammarName, typeStr.trim());
                         ruleComponents.add(reference);
                     }
@@ -312,11 +305,11 @@ public class SrgsRuleGrammarParser {
     }
 
     private List<RuleComponent> evalChildNodes(Node node) {
-        final List<RuleComponent> ruleComponents = new ArrayList<RuleComponent>();
-        final NodeList children = node.getChildNodes();
+        List<RuleComponent> ruleComponents = new ArrayList<>();
+        NodeList children = node.getChildNodes();
         for (int i = 0; i < children.getLength(); i++) {
-            final Node child = children.item(i);
-            final List<RuleComponent> components = evalNode(child);
+            Node child = children.item(i);
+            List<RuleComponent> components = evalNode(child);
             ruleComponents.addAll(components);
         }
 

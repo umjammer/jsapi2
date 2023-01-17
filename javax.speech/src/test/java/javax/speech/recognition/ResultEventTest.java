@@ -55,47 +55,47 @@ public class ResultEventTest {
      */
     @Test
     void testIsFinalizedChanged() {
-        final ResultEvent event = new ResultEvent(result,
+        ResultEvent event = new ResultEvent(result,
                 ResultEvent.GRAMMAR_FINALIZED);
         assertFalse(event.isFinalizedChanged());
 
-        final ResultEvent event2 = new ResultEvent(result,
+        ResultEvent event2 = new ResultEvent(result,
                 ResultEvent.GRAMMAR_FINALIZED, false, true);
         assertFalse(event2.isFinalizedChanged());
 
-        final ResultEvent event3 = new ResultEvent(result,
+        ResultEvent event3 = new ResultEvent(result,
                 ResultEvent.GRAMMAR_FINALIZED, true, true);
         assertFalse(event3.isFinalizedChanged());
 
-        final ResultEvent event4 = new ResultEvent(result,
+        ResultEvent event4 = new ResultEvent(result,
                 ResultEvent.RESULT_CREATED, true, true);
         assertTrue(event4.isFinalizedChanged());
 
-        final ResultEvent event5 = new ResultEvent(result,
+        ResultEvent event5 = new ResultEvent(result,
                 ResultEvent.RESULT_CREATED, false, true);
         assertFalse(event5.isFinalizedChanged());
 
-        final ResultEvent event6 = new ResultEvent(result,
+        ResultEvent event6 = new ResultEvent(result,
                 ResultEvent.RESULT_UPDATED, true, true);
         assertTrue(event6.isFinalizedChanged());
 
-        final ResultEvent event7 = new ResultEvent(result,
+        ResultEvent event7 = new ResultEvent(result,
                 ResultEvent.RESULT_UPDATED, false, true);
         assertFalse(event7.isFinalizedChanged());
 
-        final ResultEvent event8 = new ResultEvent(result,
+        ResultEvent event8 = new ResultEvent(result,
                 ResultEvent.RESULT_ACCEPTED, true, true);
         assertTrue(event8.isFinalizedChanged());
 
-        final ResultEvent event9 = new ResultEvent(result,
+        ResultEvent event9 = new ResultEvent(result,
                 ResultEvent.RESULT_ACCEPTED, false, true);
         assertFalse(event9.isFinalizedChanged());
 
-        final ResultEvent event10 = new ResultEvent(result,
+        ResultEvent event10 = new ResultEvent(result,
                 ResultEvent.RESULT_REJECTED, true, true);
         assertTrue(event10.isFinalizedChanged());
 
-        final ResultEvent event11 = new ResultEvent(result,
+        ResultEvent event11 = new ResultEvent(result,
                 ResultEvent.RESULT_REJECTED, false, true);
         assertFalse(event11.isFinalizedChanged());
     }
@@ -106,47 +106,47 @@ public class ResultEventTest {
      */
     @Test
     void testIsUnfinalizedChanged() {
-        final ResultEvent event = new ResultEvent(result,
+        ResultEvent event = new ResultEvent(result,
                 ResultEvent.GRAMMAR_FINALIZED);
         assertFalse(event.isUnfinalizedChanged());
 
-        final ResultEvent event2 = new ResultEvent(result,
+        ResultEvent event2 = new ResultEvent(result,
                 ResultEvent.GRAMMAR_FINALIZED, false, true);
         assertFalse(event2.isUnfinalizedChanged());
 
-        final ResultEvent event3 = new ResultEvent(result,
+        ResultEvent event3 = new ResultEvent(result,
                 ResultEvent.GRAMMAR_FINALIZED, true, true);
         assertFalse(event3.isUnfinalizedChanged());
 
-        final ResultEvent event4 = new ResultEvent(result,
+        ResultEvent event4 = new ResultEvent(result,
                 ResultEvent.RESULT_CREATED, true, true);
         assertTrue(event4.isUnfinalizedChanged());
 
-        final ResultEvent event5 = new ResultEvent(result,
+        ResultEvent event5 = new ResultEvent(result,
                 ResultEvent.RESULT_CREATED, false, true);
         assertFalse(event5.isUnfinalizedChanged());
 
-        final ResultEvent event6 = new ResultEvent(result,
+        ResultEvent event6 = new ResultEvent(result,
                 ResultEvent.RESULT_UPDATED, true, true);
         assertTrue(event6.isUnfinalizedChanged());
 
-        final ResultEvent event7 = new ResultEvent(result,
+        ResultEvent event7 = new ResultEvent(result,
                 ResultEvent.RESULT_UPDATED, false, true);
         assertFalse(event7.isUnfinalizedChanged());
 
-        final ResultEvent event8 = new ResultEvent(result,
+        ResultEvent event8 = new ResultEvent(result,
                 ResultEvent.RESULT_ACCEPTED, true, true);
         assertTrue(event8.isUnfinalizedChanged());
 
-        final ResultEvent event9 = new ResultEvent(result,
+        ResultEvent event9 = new ResultEvent(result,
                 ResultEvent.RESULT_ACCEPTED, false, true);
         assertFalse(event9.isUnfinalizedChanged());
 
-        final ResultEvent event10 = new ResultEvent(result,
+        ResultEvent event10 = new ResultEvent(result,
                 ResultEvent.RESULT_REJECTED, true, true);
         assertTrue(event10.isUnfinalizedChanged());
 
-        final ResultEvent event11 = new ResultEvent(result,
+        ResultEvent event11 = new ResultEvent(result,
                 ResultEvent.RESULT_REJECTED, false, true);
         assertFalse(event11.isUnfinalizedChanged());
     }
@@ -156,12 +156,12 @@ public class ResultEventTest {
      */
     @Test
     void testParamString() {
-        final ResultEvent event = new ResultEvent(result, 43);
-        final String str = event.paramString();
+        ResultEvent event = new ResultEvent(result, 43);
+        String str = event.paramString();
         assertTrue(str.contains("43"), "id not found in toString");
 
-        final ResultEvent event2 = new ResultEvent(result, 44, true, true);
-        final String str2 = event2.paramString();
+        ResultEvent event2 = new ResultEvent(result, 44, true, true);
+        String str2 = event2.paramString();
         assertTrue(str2.contains("44"), "id not found in toString");
     }
 
@@ -170,16 +170,16 @@ public class ResultEventTest {
      */
     @Test
     void testToString() {
-        final ResultEvent event = new ResultEvent(result, 43);
-        final String str = event.toString();
+        ResultEvent event = new ResultEvent(result, 43);
+        String str = event.toString();
         assertTrue(str.contains("43"), "id not found in toString");
 
         String paramString = event.paramString();
         assertTrue(str.length() > paramString.length(),
                 "toString not longer than paramString");
 
-        final ResultEvent event2 = new ResultEvent(result, 44, true, true);
-        final String str2 = event2.toString();
+        ResultEvent event2 = new ResultEvent(result, 44, true, true);
+        String str2 = event2.toString();
         assertTrue(str2.contains("44"), "id not found in toString");
 
         String paramString2 = event.paramString();
