@@ -12,7 +12,6 @@
   <packaging>pom</packaging>
 
   <modules>
-    <module>javax.speech.security</module>
     <module>javax.speech</module>
     <module>org.jvoicexml.jsapi2</module>
     <module>org.jvoicexml.jsapi2.freetts</module>
