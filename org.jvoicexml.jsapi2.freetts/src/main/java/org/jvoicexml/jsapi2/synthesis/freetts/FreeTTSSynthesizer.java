@@ -40,6 +40,7 @@ import org.jvoicexml.jsapi2.BaseAudioManager;
 import org.jvoicexml.jsapi2.BaseAudioSegment;
 import org.jvoicexml.jsapi2.BaseEngineProperties;
 import org.jvoicexml.jsapi2.synthesis.BaseSynthesizer;
+import org.jvoicexml.jsapi2.synthesis.BaseSynthesizerProperties;
 import org.w3c.dom.Document;
 
 
@@ -240,13 +241,13 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
     protected void handlePropertyChangeRequest(
             BaseEngineProperties properties, String propName,
             Object oldValue, Object newValue) {
-        if (curVoice == null) {
-            return;
-        }
-        com.sun.speech.freetts.Voice freettsVoice = curVoice.getVoice();
-        if (propName.equals(SynthesizerProperties.DEFAULT_RATE)) {
-        }
-        LOGGER.warning("changing property '" + propName + "' to '" + newValue
-                + "' ignored");
+//        if (propName.equals(BaseSynthesizerProperties.VOICE)) {
+//            if (curVoice == null) {
+//                return;
+//            }
+//            com.sun.speech.freetts.Voice freettsVoice = curVoice.getVoice();
+//        }
+        properties.commitPropertyChange(propName, oldValue, newValue);
+//        LOGGER.warning("changing property '" + propName + "' to '" + newValue + "' ignored");
     }
 }

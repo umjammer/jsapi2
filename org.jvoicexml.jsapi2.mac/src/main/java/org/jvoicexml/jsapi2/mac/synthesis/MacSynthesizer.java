@@ -239,8 +239,8 @@ public final class MacSynthesizer extends BaseSynthesizer {
             BaseEngineProperties properties,
             String propName, Object oldValue,
             Object newValue) {
-        LOGGER.warning("changing property '" + propName
-                + "' to '" + newValue + "' ignored");
+        properties.commitPropertyChange(propName, oldValue, newValue);
+//        LOGGER.warning("changing property '" + propName + "' to '" + newValue + "' ignored");
     }
 }
 
