@@ -7,6 +7,10 @@
 package org.jvoicexml.jsapi2;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.logging.Logger;
+
 
 /**
  * A speech event executor that is based on a thread.
@@ -20,11 +24,13 @@ import java.util.List;
 public final class ThreadSpeechEventExecutor
     implements TerminatableSpeechEventExecutor, Runnable {
 
+    private static final Logger logger = Logger.getLogger(ThreadSpeechEventExecutor.class.getName());
+
     /** Number of msec to wait before inspecting the command queue. */
     private static final int COMMAND_POLL_INTERVALL = 1000;
 
     /** The thread that executes the commands. */
-    private final Thread thread;
+    private final ExecutorService thread = Executors.newSingleThreadExecutor();
 
     /** Commands to execute. */
     private final List<Runnable> commands;
@@ -37,9 +43,8 @@ public final class ThreadSpeechEventExecutor
      */
     public ThreadSpeechEventExecutor() {
         commands = new java.util.ArrayList<>();
-        thread = new Thread(this);
         shouldRun = true;
-        thread.start();
+        thread.submit(this);
     }
 
     /**
@@ -59,6 +64,8 @@ public final class ThreadSpeechEventExecutor
         synchronized (commands) {
             commands.notifyAll();
         }
+        thread.shutdown();
+logger.finer("shutdown services: " + thread.isShutdown());
     }
 
     /**

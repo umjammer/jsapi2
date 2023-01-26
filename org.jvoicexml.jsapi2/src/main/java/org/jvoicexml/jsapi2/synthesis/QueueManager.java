@@ -23,7 +23,9 @@ package org.jvoicexml.jsapi2.synthesis;
 
 import java.io.IOException;
 import java.io.OutputStream;
-
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.logging.Logger;
 import javax.speech.AudioSegment;
 import javax.speech.EngineStateException;
 import javax.speech.synthesis.PhoneInfo;
@@ -42,6 +44,9 @@ import org.jvoicexml.jsapi2.BaseAudioManager;
  * @author Dirk Schnelle-Walka
  */
 public class QueueManager {
+
+    private static final Logger logger = Logger.getLogger(QueueManager.class.getName());
+
     /** Reference to the synthesizer. */
     private BaseSynthesizer synthesizer;
     /** Queued play items. */
@@ -54,8 +59,13 @@ public class QueueManager {
     boolean cancelFirstItem;
     final Object cancelLock;
 
+    private ExecutorService synthThread = Executors.newSingleThreadExecutor();
+
+    private ExecutorService playThread = Executors.newSingleThreadExecutor();
+
     /**
      * Constructs a new object.
+     *
      * @param synth the synthesizer whose queue is managed here.
      */
     public QueueManager(BaseSynthesizer synth) {
@@ -66,10 +76,8 @@ public class QueueManager {
         playQueue = new PlayQueue(this);
         synthQueue = new SynthesisQueue(this, playQueue);
 
-        Thread synthThread = new Thread(null, synthQueue, "Synth Queue");
-        synthThread.start();
-        Thread playThread = new Thread(null, playQueue, "Play Queue");
-        playThread.start();
+        synthThread.submit(synthQueue);
+        playThread.submit(playQueue);
     }
 
     /**
@@ -103,6 +111,9 @@ public class QueueManager {
         synthQueue.terminate();
         // No need to terminate the play queue since this will terminate once
         // the synthQueue terminates
+        playThread.shutdownNow();
+        synthThread.shutdown();
+logger.finer("shutdown services: " + playThread.isShutdown() + ", " + synthThread.isShutdown());
     }
 
     /**

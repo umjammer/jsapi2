@@ -328,6 +328,8 @@ public abstract class BaseEngine implements Engine {
         long[] states = setEngineState(CLEAR_ALL_STATE, DEALLOCATING_RESOURCES);
         postStateTransitionEngineEvent(states[0], states[1], EngineEvent.ENGINE_DEALLOCATING_RESOURCES);
         baseDeallocate();
+
+        terminateSpeechEventExecutor();
     }
 
     @Override
@@ -495,11 +497,15 @@ public abstract class BaseEngine implements Engine {
     @Override
     public final void setSpeechEventExecutor(SpeechEventExecutor executor) {
         // Terminate a previously running executor.
+        terminateSpeechEventExecutor();
+        speechEventExecutor = executor;
+    }
+
+    private void terminateSpeechEventExecutor() {
         if (speechEventExecutor instanceof TerminatableSpeechEventExecutor) {
-            TerminatableSpeechEventExecutor baseExecutor = (TerminatableSpeechEventExecutor) this.speechEventExecutor;
+            TerminatableSpeechEventExecutor baseExecutor = (TerminatableSpeechEventExecutor) speechEventExecutor;
             baseExecutor.terminate();
         }
-        speechEventExecutor = executor;
     }
 
     /**
