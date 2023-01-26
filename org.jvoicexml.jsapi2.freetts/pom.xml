@@ -71,7 +71,7 @@
     <dependency>
       <groupId>org.jvoicexml</groupId>
       <artifactId>freetts</artifactId>
-      <version>1.2.3-SNAPSHOT</version>
+      <version>1.2.3</version>
       <exclusions>
         <exclusion>
           <groupId>org.jvoicexml</groupId>
