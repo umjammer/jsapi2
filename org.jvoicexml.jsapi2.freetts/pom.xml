@@ -52,7 +52,7 @@
     </repository>
     <repository>
       <id>umjammer-mvn-repo</id>
-      <url>https://raw.github.com/umjammer/umjammer/mvn-repo/</url>
+      <url>https://maven.pkg.github.com/umjammer/FreeTTS</url>
     </repository>
   </repositories>
 
