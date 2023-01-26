@@ -50,6 +50,10 @@
       <id>jitpack.io</id>
       <url>https://jitpack.io</url>
     </repository>
+    <repository>
+      <id>umjammer-mvn-repo</id>
+      <url>https://raw.github.com/umjammer/umjammer/mvn-repo/</url>
+    </repository>
   </repositories>
 
   <dependencies>
@@ -68,6 +72,12 @@
       <groupId>org.jvoicexml</groupId>
       <artifactId>freetts</artifactId>
       <version>1.2.3-SNAPSHOT</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.jvoicexml</groupId>
+          <artifactId>org.jvoicexml.jsapi2</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <dependency>
