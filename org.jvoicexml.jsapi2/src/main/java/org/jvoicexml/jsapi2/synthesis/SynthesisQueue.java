@@ -35,6 +35,8 @@ import javax.speech.synthesis.SpeakableListener;
 import javax.speech.synthesis.Synthesizer;
 import javax.speech.synthesis.SynthesizerEvent;
 
+import vavi.util.Debug;
+
 
 /**
  * Synthesis thread. Queues all speakable and calls the synthesizer to
@@ -62,8 +64,7 @@ final class SynthesisQueue implements Runnable {
      * @param manager reference to the queue manager
      * @param pqueue  reference to the play queue
      */
-    public SynthesisQueue(QueueManager manager,
-                          PlayQueue pqueue) {
+    public SynthesisQueue(QueueManager manager, PlayQueue pqueue) {
         queueManager = manager;
         playQueue = pqueue;
         queue = new java.util.ArrayList<>();
@@ -91,8 +92,7 @@ final class SynthesisQueue implements Runnable {
      *                  speakable contains markup text
      * @return queue id.
      */
-    public int appendItem(Speakable speakable,
-                          SpeakableListener listener, String text) {
+    public int appendItem(Speakable speakable, SpeakableListener listener, String text) {
         boolean topOfQueueChanged;
         int addedId;
         synchronized (queue) {
@@ -117,13 +117,11 @@ final class SynthesisQueue implements Runnable {
      * @param listener     listeners of this audio segment
      * @return queue id.
      */
-    public int appendItem(AudioSegment audioSegment,
-                          SpeakableListener listener) {
+    public int appendItem(AudioSegment audioSegment, SpeakableListener listener) {
         boolean topOfQueueChanged;
         synchronized (queue) {
             ++queueId;
-            QueueItem item =
-                    new QueueItem(queueId, audioSegment, listener);
+            QueueItem item = new QueueItem(queueId, audioSegment, listener);
             topOfQueueChanged = append(item);
         }
         adaptSynthesizerState(topOfQueueChanged);
@@ -221,8 +219,7 @@ final class SynthesisQueue implements Runnable {
         int id = item.getId();
         Object source = item.getSource();
         SpeakableListener listener = item.getListener();
-        SpeakableEvent event = new SpeakableEvent(
-                source, SpeakableEvent.SPEAKABLE_CANCELLED, id);
+        SpeakableEvent event = new SpeakableEvent(source, SpeakableEvent.SPEAKABLE_CANCELLED, id);
         BaseSynthesizer synthesizer = queueManager.getSynthesizer();
         synthesizer.postSpeakableEvent(event, listener);
         queue.remove(item);
@@ -254,6 +251,7 @@ final class SynthesisQueue implements Runnable {
      */
     QueueItem getNextQueueItem() {
         synchronized (queue) {
+Debug.println("queue.size(): " + queue.size() + ", queueManager.isDone(): " + queueManager.isDone());
             while (queue.size() == 0 && !queueManager.isDone()) {
                 try {
                     queue.wait();
@@ -293,8 +291,7 @@ final class SynthesisQueue implements Runnable {
         while (!queueManager.isDone()) {
             QueueItem item = getNextQueueItem();
             if (item != null) {
-                BaseSynthesizer synthesizer =
-                        queueManager.getSynthesizer();
+                BaseSynthesizer synthesizer = queueManager.getSynthesizer();
                 if (lastFocusEvent == Synthesizer.DEFOCUSED) {
                     long[] states = synthesizer.setEngineState(
                             Synthesizer.DEFOCUSED, Synthesizer.FOCUSED);

@@ -26,11 +26,13 @@
 
 package org.jvoicexml.jsapi2.mock.synthesis;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Vector;
 
 import javax.speech.synthesis.SpeakableEvent;
 import javax.speech.synthesis.SpeakableListener;
+
+import vavi.util.Debug;
+
 
 /**
  * An implementation of a {@link SpeakableListener} for test purposes.
@@ -40,7 +42,7 @@ import javax.speech.synthesis.SpeakableListener;
 public class MockSpeakableListener implements SpeakableListener {
 
     /** Received speakable events. */
-    private final List<SpeakableEvent> events;
+    private final Vector<SpeakableEvent> events;
 
     /** Snchronization lock. */
     private final Object lock;
@@ -49,7 +51,7 @@ public class MockSpeakableListener implements SpeakableListener {
      * Constructs a new object.
      */
     public MockSpeakableListener() {
-        events = new ArrayList<>();
+        events = new Vector<>();
         lock = new Object();
     }
 
@@ -61,6 +63,7 @@ public class MockSpeakableListener implements SpeakableListener {
      */
     public void waitForSize(int size) throws InterruptedException {
         while (events.size() != size) {
+            Debug.println("events.size(): " + events.size() + " / " + size);
             synchronized (lock) {
                 lock.wait();
             }
@@ -79,7 +82,7 @@ public class MockSpeakableListener implements SpeakableListener {
     @Override
     public void speakableUpdate(SpeakableEvent e) {
         events.add(e);
-        System.out.println(e);
+ Debug.println(e);
         synchronized (lock) {
             lock.notifyAll();
         }

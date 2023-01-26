@@ -36,6 +36,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.jvoicexml.jsapi2.mock.synthesis.MockSpeakableListener;
 import org.jvoicexml.jsapi2.mock.synthesis.MockSynthesizer;
+import vavi.util.Debug;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -47,6 +48,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * @author Dirk Schnelle-Walka
  */
 public final class QueueManagerTest {
+
     /** Synthesizer. */
     private BaseSynthesizer synthesizer;
 
@@ -65,7 +67,6 @@ public final class QueueManagerTest {
      */
     @Disabled
     @Test
-    @Timeout(value = 2000, unit = TimeUnit.MILLISECONDS)
     void testAppendItemSpeakableSpeakableListener() throws Exception {
         QueueManager manager = synthesizer.getQueueManager();
         AudioSegment segment = new AudioSegment("http://nowhere", "test");

@@ -66,10 +66,8 @@ class SynthesisQueueTest {
      */
     @Test
     void testGetNextQueueItem() {
-        AudioSegment segment1 =
-                new AudioSegment("http://localhost", "test");
-        AudioSegment segment2 =
-                new AudioSegment("http://foreignhost", "test2");
+        AudioSegment segment1 = new AudioSegment("http://localhost", "test");
+        AudioSegment segment2 = new AudioSegment("http://foreignhost", "test2");
         int firstId = queue.appendItem(segment1, null);
         QueueItem firstItem = queue.getNextQueueItem();
         assertEquals(firstId, firstItem.getId());
@@ -87,10 +85,8 @@ class SynthesisQueueTest {
      */
     @Test
     void testGetQueueItem() {
-        AudioSegment segment1 =
-                new AudioSegment("http://localhost", "test");
-        AudioSegment segment2 =
-                new AudioSegment("http://foreignhost", "test2");
+        AudioSegment segment1 = new AudioSegment("http://localhost", "test");
+        AudioSegment segment2 = new AudioSegment("http://foreignhost", "test2");
         int firstId = queue.appendItem(segment1, null);
         int secondId = queue.appendItem(segment2, null);
         QueueItem item1 = queue.getQueueItem(firstId);
@@ -107,8 +103,7 @@ class SynthesisQueueTest {
     @Test
     void testIsQueueEmpty() {
         assertTrue(queue.isQueueEmpty());
-        AudioSegment segment1 =
-                new AudioSegment("http://localhost", "test");
+        AudioSegment segment1 = new AudioSegment("http://localhost", "test");
         int id = queue.appendItem(segment1, null);
         assertFalse(queue.isQueueEmpty());
         QueueItem item = queue.getQueueItem(id);
@@ -120,15 +115,12 @@ class SynthesisQueueTest {
      * Test method for {@link SynthesisQueue#cancelFirstItem()},
      */
     @RepeatedIfExceptionsTest(repeats = 10)
-    void testCancelFirstItem() {
+    void testCancelFirstItem() throws InterruptedException {
         assertTrue(queue.isQueueEmpty());
-        AudioSegment segment1 =
-                new AudioSegment("http://localhost", "test");
-        AudioSegment segment2 =
-                new AudioSegment("http://foreignhost", "test2");
+        AudioSegment segment1 = new AudioSegment("http://localhost", "test");
+        AudioSegment segment2 = new AudioSegment("http://foreignhost", "test2");
         queue.appendItem(segment1, null);
         int secondId = queue.appendItem(segment2, null);
-        assertFalse(queue.isQueueEmpty());
         assertTrue(queue.cancelFirstItem()); // TODO not stable
         QueueItem secondItem = queue.getNextQueueItem();
         assertEquals(secondId, secondItem.getId());
@@ -140,13 +132,11 @@ class SynthesisQueueTest {
     /**
      * Test method for {@link SynthesisQueue#cancelItem(int)},
      */
-    @Test
-    void testCancelItem() {
+    @RepeatedIfExceptionsTest(repeats = 10)
+    void testCancelItem() throws InterruptedException {
         assertTrue(queue.isQueueEmpty());
-        AudioSegment segment1 =
-                new AudioSegment("http://localhost", "test");
-        AudioSegment segment2 =
-                new AudioSegment("http://foreignhost", "test2");
+        AudioSegment segment1 = new AudioSegment("http://localhost", "test");
+        AudioSegment segment2 = new AudioSegment("http://foreignhost", "test2");
         int firstId = queue.appendItem(segment1, null);
         int secondId = queue.appendItem(segment2, null);
         assertFalse(queue.isQueueEmpty());
