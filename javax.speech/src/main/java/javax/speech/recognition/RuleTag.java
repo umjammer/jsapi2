@@ -44,11 +44,10 @@ public class RuleTag extends RuleComponent {
             throw new IllegalArgumentException(
                     "null can not be represented in XML");
         }
-        final StringBuffer str = new StringBuffer();
-        str.append("<tag>");
-        str.append(tag);
-        str.append("</tag>");
+        String str = "<tag>" +
+                tag +
+                "</tag>";
 
-        return str.toString();
+        return str;
     }
 }

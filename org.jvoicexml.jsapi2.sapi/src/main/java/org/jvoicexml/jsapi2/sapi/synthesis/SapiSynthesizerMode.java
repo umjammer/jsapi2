@@ -51,7 +51,7 @@ public final class SapiSynthesizerMode extends SynthesizerMode
      * Constructs a new object.
      * @param locale  the locale associated with this mode
      */
-    public SapiSynthesizerMode(final SpeechLocale locale) {
+    public SapiSynthesizerMode(SpeechLocale locale) {
         super(locale);
     }
 
@@ -63,9 +63,9 @@ public final class SapiSynthesizerMode extends SynthesizerMode
      * @param voices known voices
      * 
      */
-    public SapiSynthesizerMode(final String engineName,
-            final String modeName,
-            final Boolean running, final Voice[] voices) {
+    public SapiSynthesizerMode(String engineName,
+                               String modeName,
+                               Boolean running, Voice[] voices) {
         super(engineName, modeName, running, Boolean.TRUE,
                 Boolean.TRUE, voices);
     }

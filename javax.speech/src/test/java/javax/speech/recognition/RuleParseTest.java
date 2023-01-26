@@ -22,11 +22,11 @@ public class RuleParseTest {
 
     @BeforeEach
     protected void setUp() throws Exception {
-        final RuleComponent component1 = new RuleParse(new RuleReference(
+        RuleComponent component1 = new RuleParse(new RuleReference(
                 "action"), new RuleAlternatives(
                 new RuleComponent[] { new RuleSequence(new RuleComponent[] {
                         new RuleToken("close"), new RuleTag("CL") }) }));
-        final RuleComponent component2 = new RuleParse(new RuleReference(
+        RuleComponent component2 = new RuleParse(new RuleReference(
                 "object"), new RuleSequence(new RuleComponent[] {
                 new RuleCount(
                         new RuleSequence(new RuleComponent[] { new RuleParse(
@@ -36,7 +36,7 @@ public class RuleParseTest {
                                                 "the") })) }), 1, 1),
                 new RuleAlternatives(
                         new RuleComponent[] { new RuleToken("door") }) }));
-        final RuleComponent component3 = new RuleCount(
+        RuleComponent component3 = new RuleCount(
                 new RuleSequence(
                         new RuleComponent[] { new RuleParse(new RuleReference(
                                 "polite"),
@@ -55,7 +55,7 @@ public class RuleParseTest {
      */
     @Test
     void testToString() {
-        final String str = ruleParse.toString();
+        String str = ruleParse.toString();
         assertEquals("<ruleref uri=\"#command\"><ruleref uri=\"#action\">"
                 + "<one-of><item>close<tag>CL</tag></item></one-of></ruleref>"
                 + "<ruleref uri=\"#object\"><item repeat=\"1\">"
@@ -71,12 +71,12 @@ public class RuleParseTest {
      */
     @Test
     void testGetTags() {
-        final Object[] tags = ruleParse.getTags();
-        final Object[] expected = new String[] { "CL" };
+        Object[] tags = ruleParse.getTags();
+        Object[] expected = new String[] { "CL" };
         assertEquals(expected.length, tags.length);
         for (int i = 0; i < tags.length; i++) {
-            final Object tag = tags[i];
-            final Object exp = expected[i];
+            Object tag = tags[i];
+            Object exp = expected[i];
             assertEquals(exp, tag);
         }
     }

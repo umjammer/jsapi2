@@ -105,7 +105,7 @@ public class RuleCount extends RuleComponent {
     }
 
     public String toString() {
-        StringBuffer str = new StringBuffer();
+        StringBuilder str = new StringBuilder();
 
         str.append("<item repeat=\"");
         str.append(repeatMin);

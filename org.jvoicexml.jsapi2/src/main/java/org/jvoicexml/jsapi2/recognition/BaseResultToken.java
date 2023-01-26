@@ -48,7 +48,7 @@ public class BaseResultToken implements ResultToken {
      * @param tok
      *            the token
      */
-    public BaseResultToken(final Result res, final String tok) {
+    public BaseResultToken(Result res, String tok) {
         this(res, tok, RecognizerProperties.NORM_CONFIDENCE);
     }
 
@@ -62,7 +62,7 @@ public class BaseResultToken implements ResultToken {
      * @param conf
      *            the confidence
      */
-    public BaseResultToken(final Result res, final String tok, final int conf) {
+    public BaseResultToken(Result res, String tok, int conf) {
         result = res;
         confidenceLevel = conf;
         startTime = -1;
@@ -91,7 +91,7 @@ public class BaseResultToken implements ResultToken {
      * @param level
      *            the confidence level
      */
-    public void setConfidenceLevel(final int level) {
+    public void setConfidenceLevel(int level) {
         if (level < RecognizerProperties.MIN_CONFIDENCE
                 || level > RecognizerProperties.MAX_CONFIDENCE) {
             throw new IllegalArgumentException("Confidence must be between"
@@ -106,7 +106,7 @@ public class BaseResultToken implements ResultToken {
      * @param time
      *            the start time
      */
-    public void setStartTime(final long time) {
+    public void setStartTime(long time) {
         startTime = time;
     }
 
@@ -125,7 +125,7 @@ public class BaseResultToken implements ResultToken {
      * @param time
      *            the end time
      */
-    public void setEndTime(final long time) {
+    public void setEndTime(long time) {
         endTime = time;
     }
 

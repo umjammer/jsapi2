@@ -38,10 +38,10 @@ public class SrgsRuleGrammarParserTest {
 
     @Test
     void testLoadInputStream() {
-        final InputStream in = SrgsRuleGrammarParserTest.class
+        InputStream in = SrgsRuleGrammarParserTest.class
                 .getResourceAsStream("pizza-de.xml");
         SrgsRuleGrammarParser parser = new SrgsRuleGrammarParser();
-        final Rule[] rules = parser.load(in);
+        Rule[] rules = parser.load(in);
         assertEquals(5, rules.length);
     }
 }

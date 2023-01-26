@@ -21,7 +21,7 @@ public class GrammarGraph {
      * @param start the staring node of the graph
      * @param end the ending node of the graph
      */
-    GrammarGraph(final GrammarNode start, final GrammarNode end) {
+    GrammarGraph(GrammarNode start, GrammarNode end) {
         this.startNode = start;
         this.endNode = end;
     }
@@ -47,7 +47,7 @@ public class GrammarGraph {
      * Sets the ending node.
      * @param node GrammarNode the new end node
      */
-    public final void setEndNode(final GrammarNode node) {
+    public final void setEndNode(GrammarNode node) {
         endNode = node;
     }
 }

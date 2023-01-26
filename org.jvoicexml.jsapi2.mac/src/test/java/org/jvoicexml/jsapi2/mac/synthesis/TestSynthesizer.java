@@ -9,7 +9,6 @@ import javax.speech.synthesis.Voice;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
@@ -62,6 +61,7 @@ public final class TestSynthesizer {
         synthesizer = (Synthesizer) EngineManager.createEngine(msm);
         synthesizer.allocate();
         synthesizer.waitEngineState(Engine.ALLOCATED);
+        synthesizer.getSynthesizerProperties().setVolume(10);
     }
 
     /**
@@ -84,8 +84,8 @@ public final class TestSynthesizer {
     void testSpeak() throws Exception {
         synthesizer.resume();
         synthesizer.speak("I'll be artificial intelligence complete!", null);
-//		synthesizer.speak("Half past 8", null);
-        // synthesizer.speak("Ups!", null);
+//        synthesizer.speak("Half past 8", null);
+//        synthesizer.speak("Ups!", null);
         System.out.println("this is a test output");
         synthesizer.waitEngineState(Synthesizer.QUEUE_EMPTY);
     }
@@ -96,7 +96,7 @@ public final class TestSynthesizer {
      */
     @Test
     void testPause() throws Exception {
-        // synthesizer.speak("this is a test output with a pause and resume test", null);
+//        synthesizer.speak("this is a test output with a pause and resume test", null);
         System.out.println("this is a test output with a pause and resume test");
         Thread.sleep(1800);
         synthesizer.pause();

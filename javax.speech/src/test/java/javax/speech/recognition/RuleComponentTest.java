@@ -19,7 +19,7 @@ public class RuleComponentTest {
      */
     @Test
     void testToString() {
-        final RuleComponent component = new RuleComponent();
+        RuleComponent component = new RuleComponent();
         assertNull(component.toString());
     }
 

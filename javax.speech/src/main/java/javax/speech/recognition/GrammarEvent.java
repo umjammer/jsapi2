@@ -26,7 +26,7 @@
 
 package javax.speech.recognition;
 
-import java.util.Vector;
+import java.util.List;
 
 import javax.speech.SpeechEvent;
 
@@ -70,7 +70,7 @@ public class GrammarEvent extends SpeechEvent {
     }
 
     public GrammarException getGrammarException() {
-        final int id = getId();
+        int id = getId();
         if (id == GRAMMAR_CHANGES_REJECTED) {
             return grammarException;
         }
@@ -96,14 +96,14 @@ public class GrammarEvent extends SpeechEvent {
     }
 
     @Override
-    protected Vector getParameters() {
-        final Vector parameters = super.getParameters();
+    protected List<Object> getParameters() {
+        List<Object> parameters = super.getParameters();
 
-        final Boolean definitionChangedObject = new Boolean(definitionChanged);
-        parameters.addElement(definitionChangedObject);
-        final Boolean enabledChangedObject = new Boolean(activableChanged);
-        parameters.addElement(enabledChangedObject);
-        parameters.addElement(grammarException);
+        Boolean definitionChangedObject = definitionChanged;
+        parameters.add(definitionChangedObject);
+        Boolean enabledChangedObject = activableChanged;
+        parameters.add(enabledChangedObject);
+        parameters.add(grammarException);
 
         return parameters;
     }

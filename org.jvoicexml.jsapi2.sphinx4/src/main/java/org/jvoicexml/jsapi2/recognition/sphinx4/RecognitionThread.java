@@ -47,7 +47,7 @@ final class RecognitionThread extends Thread {
      * @param rec
      *            The wrapper for the sphinx4 recognizer.
      */
-    public RecognitionThread(final Sphinx4Recognizer rec) {
+    public RecognitionThread(Sphinx4Recognizer rec) {
         super("RecognitionThread");
         recognizer = rec;
         setDaemon(true);
@@ -63,7 +63,7 @@ final class RecognitionThread extends Thread {
         }
 
         // Start the Sphinx recognizer
-        final Jsapi2Recognizer rec = recognizer.getRecognizer();
+        Jsapi2Recognizer rec = recognizer.getRecognizer();
         started = true;
 
         // send start of speech and processing event
@@ -74,8 +74,8 @@ final class RecognitionThread extends Thread {
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine("obtaining a result ..");
             }
-            final SpeechResult speechResult = rec.getResult();
-            final String hypothesis = speechResult.getHypothesis();
+            SpeechResult speechResult = rec.getResult();
+            String hypothesis = speechResult.getHypothesis();
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine("received result " + hypothesis);
             }

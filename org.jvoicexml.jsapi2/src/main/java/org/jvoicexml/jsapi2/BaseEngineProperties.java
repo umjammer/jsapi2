@@ -22,32 +22,33 @@
 package org.jvoicexml.jsapi2;
 
 import java.util.Collection;
-
 import javax.speech.Engine;
 import javax.speech.EngineProperties;
 import javax.speech.EnginePropertyEvent;
 import javax.speech.EnginePropertyListener;
 import javax.speech.SpeechEventExecutor;
 
+
 /**
  * Supports the JSAPI 2.0 {@link EngineProperties} interface.
- * 
+ *
  * <p>
  * Actual JSAPI 2 implementations may want to override this class to apply the
  * settings to the engine.
  * </p>
- * 
+ *
  * <p>
  * Properties are pending when the corresponding <code>set...</code> method is
  * called. Notifications are delegated to the engine. They may apply the changes
  * at any time and remove the pending status by calling
  * {@link #commitPropertyChange(String, Object, Object)}. This also triggers the
  * posts of the property change request.
- * 
+ *
  * @author Renato Cassaca
  * @author Dirk Schnelle-Walka
  */
 public abstract class BaseEngineProperties implements EngineProperties {
+
     /** Name of the base property in events. */
     public static final String BASE = "base";
 
@@ -74,13 +75,12 @@ public abstract class BaseEngineProperties implements EngineProperties {
 
     /**
      * Constructs a new object.
-     * 
-     * @param eng
-     *            the engine for which these properties apply.
+     *
+     * @param eng the engine for which these properties apply.
      */
-    protected BaseEngineProperties(final BaseEngine eng) {
+    protected BaseEngineProperties(BaseEngine eng) {
         propertyChangeListeners =
-                new java.util.ArrayList<EnginePropertyListener>();
+                new java.util.ArrayList<>();
         engine = eng;
         priority = EngineProperties.NORM_TRUSTED_PRIORITY;
         base = "";
@@ -88,7 +88,7 @@ public abstract class BaseEngineProperties implements EngineProperties {
 
     /**
      * Retrieves the engine.
-     * 
+     *
      * @return the engine
      */
     protected final Engine getEngine() {
@@ -96,8 +96,8 @@ public abstract class BaseEngineProperties implements EngineProperties {
     }
 
     /**
-     * Returns all properties to reasonable defaults for the <code>Engine</code>
-     * . An {@link EnginePropertyEvent} is issued for each property that changes
+     * Returns all properties to reasonable defaults for the <code>Engine</code>.
+     * An {@link EnginePropertyEvent} is issued for each property that changes
      * as the reset takes effect.
      */
     public void reset() {
@@ -111,16 +111,16 @@ public abstract class BaseEngineProperties implements EngineProperties {
     }
 
     @Override
-    public final void setPriority(final int prio) {
+    public final void setPriority(int prio) {
         if (prio == priority) {
             return;
         }
         engine.handlePropertyChangeRequest(this, PRIORITY,
-                new Integer(priority), new Integer(prio));
+                priority, prio);
     }
 
     @Override
-    public final void setBase(final String uri) {
+    public final void setBase(String uri) {
         if (base == null) {
             if (uri == null) {
                 return;
@@ -139,16 +139,14 @@ public abstract class BaseEngineProperties implements EngineProperties {
     }
 
     @Override
-    public final void addEnginePropertyListener(
-            final EnginePropertyListener listener) {
+    public final void addEnginePropertyListener(EnginePropertyListener listener) {
         if (!propertyChangeListeners.contains(listener)) {
             propertyChangeListeners.add(listener);
         }
     }
 
     @Override
-    public final void removeEnginePropertyListener(
-            final EnginePropertyListener listener) {
+    public final void removeEnginePropertyListener(EnginePropertyListener listener) {
         propertyChangeListeners.remove(listener);
     }
 
@@ -160,33 +158,25 @@ public abstract class BaseEngineProperties implements EngineProperties {
      * {@link #setProperty(String, Object)}. If successful, all listeners are
      * informed about the change.
      * </p>
-     * 
-     * @param propName
-     *            name of the property
-     * @param oldValue
-     *            old value
-     * @param newValue
-     *            new value
-     * @exception IllegalArgumentException
-     *                if the property name is not known
+     *
+     * @param propName name of the property
+     * @param oldValue old value
+     * @param newValue new value
+     * @throws IllegalArgumentException if the property name is not known
      */
-    public final void commitPropertyChange(final String propName,
-            final Object oldValue, final Object newValue)
+    public final void commitPropertyChange(String propName, Object oldValue, Object newValue)
             throws IllegalArgumentException {
         if (propName == null) {
-            throw new IllegalArgumentException(
-                    "Property name must not be null!");
+            throw new IllegalArgumentException("Property name must not be null!");
         }
         if (propName.equals(PRIORITY)) {
-            final Integer value = (Integer) newValue;
-            priority = value.intValue();
+            priority = (Integer) newValue;
         } else if (propName.equals("base")) {
             base = (String) newValue;
         } else {
-            final boolean set = setProperty(propName, newValue);
+            boolean set = setProperty(propName, newValue);
             if (!set) {
-                throw new IllegalArgumentException("Unknown property '"
-                        + propName + "'");
+                throw new IllegalArgumentException("Unknown property '" + propName + "'");
             }
         }
         postPropertyChangeEvent(propName, oldValue, newValue);
@@ -195,27 +185,21 @@ public abstract class BaseEngineProperties implements EngineProperties {
     /**
      * Must be overwritten to set engine specific properties which are not
      * covered by the standard after the values are applied to the engine.
-     * 
-     * @param propName
-     *            name of the property
-     * @param value
-     *            value to set
+     *
+     * @param propName name of the property
+     * @param value    value to set
      * @return <code>true</code> if the value has been set.
      */
     protected abstract boolean setProperty(String propName, Object value);
 
     /**
-     * Forwards the change request to the enine.
-     * 
-     * @param propName
-     *            the name of the property
-     * @param oldValue
-     *            the old value
-     * @param newValue
-     *            the requested new value
+     * Forwards the change request to the engine.
+     *
+     * @param propName the name of the property
+     * @param oldValue the old value
+     * @param newValue the requested new value
      */
-    protected final void handlePropertyChangeRequest(final String propName,
-            final Object oldValue, final Object newValue) {
+    protected final void handlePropertyChangeRequest(String propName, Object oldValue, Object newValue) {
         engine.handlePropertyChangeRequest(this, propName, oldValue, newValue);
     }
 
@@ -223,34 +207,26 @@ public abstract class BaseEngineProperties implements EngineProperties {
      * Generates a {@link EnginePropertyEvent} for an {@link Object} value and
      * posts it to the event queue using the configured
      * {@link SpeechEventExecutor}.
-     * 
-     * @param propName
-     *            the name of the property
-     * @param oldValue
-     *            the old value
-     * @param newValue
-     *            the new value
+     *
+     * @param propName the name of the property
+     * @param oldValue the old value
+     * @param newValue the new value
      */
-    protected final void postPropertyChangeEvent(final String propName,
-            final Object oldValue, final Object newValue) {
+    protected final void postPropertyChangeEvent(String propName, Object oldValue, Object newValue) {
         if (propertyChangeListeners.isEmpty()) {
             return;
         }
 
         // Fire the event asynchronously
-        final EnginePropertyEvent event = new EnginePropertyEvent(this,
-                propName, oldValue, newValue);
-        final Runnable runnable = new Runnable() {
-            public void run() {
-                for (EnginePropertyListener listener
-                        : propertyChangeListeners) {
-                    listener.propertyUpdate(event);
-                }
+        EnginePropertyEvent event = new EnginePropertyEvent(this, propName, oldValue, newValue);
+        Runnable runnable = () -> {
+            for (EnginePropertyListener listener : propertyChangeListeners) {
+                listener.propertyUpdate(event);
             }
         };
 
         // Use the configured speech event executor...
-        final SpeechEventExecutor executor = engine.getSpeechEventExecutor();
+        SpeechEventExecutor executor = engine.getSpeechEventExecutor();
         executor.execute(runnable);
     }
 }

@@ -30,13 +30,12 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 
+import com.sun.speech.freetts.audio.AudioPlayer;
 import org.jvoicexml.jsapi2.BaseAudioManager;
 
-import com.sun.speech.freetts.audio.AudioPlayer;
 
 /**
  * Audioplayer for the JSAPI 2 base implementation.
@@ -50,8 +49,9 @@ import com.sun.speech.freetts.audio.AudioPlayer;
  * @version 1.0
  */
 public final class FreeTTSAudioPlayer implements AudioPlayer {
+
     /** The collected audio data. */
-    private ByteArrayOutputStream buffer;
+    private final ByteArrayOutputStream buffer;
 
     /** Reference to the audio manager. */
     private BaseAudioManager baseAudioManager;
@@ -61,16 +61,17 @@ public final class FreeTTSAudioPlayer implements AudioPlayer {
 
     /**
      * Constructs a new object.
+     *
      * @param manager the audio manager.
      */
-    public FreeTTSAudioPlayer(final BaseAudioManager manager) {
+    public FreeTTSAudioPlayer(BaseAudioManager manager) {
         baseAudioManager = manager;
         buffer = new ByteArrayOutputStream();
         audioFormat = baseAudioManager.getEngineAudioFormat();
     }
 
     @Override
-    public void begin(final int size) {
+    public void begin(int size) {
     }
 
     @Override
@@ -126,12 +127,12 @@ public final class FreeTTSAudioPlayer implements AudioPlayer {
     }
 
     @Override
-    public void setAudioFormat(final AudioFormat format) {
+    public void setAudioFormat(AudioFormat format) {
         audioFormat = format;
     }
 
     @Override
-    public void setVolume(final float volume) {
+    public void setVolume(float volume) {
     }
 
     @Override
@@ -143,7 +144,7 @@ public final class FreeTTSAudioPlayer implements AudioPlayer {
     }
 
     @Override
-    public boolean write(final byte[] audioData) {
+    public boolean write(byte[] audioData) {
         try {
             synchronized (buffer) {
                 buffer.write(audioData);
@@ -155,8 +156,7 @@ public final class FreeTTSAudioPlayer implements AudioPlayer {
     }
 
     @Override
-    public boolean write(final byte[] audioData, final int offset,
-            final int size) {
+    public boolean write(byte[] audioData, int offset, int size) {
         synchronized (buffer) {
             buffer.write(audioData, offset, size);
         }
@@ -165,9 +165,9 @@ public final class FreeTTSAudioPlayer implements AudioPlayer {
 
     /**
      * Retrieves the collected audio data.
+     *
      * @return the collected audio data.
-     * @exception IOException
-     *            error reading the audio data
+     * @throws IOException error reading the audio data
      */
     public InputStream getAudioBytes() throws IOException {
         byte[] res;
@@ -175,8 +175,7 @@ public final class FreeTTSAudioPlayer implements AudioPlayer {
             res = buffer.toByteArray();
             buffer.reset();
         }
-        final ByteArrayInputStream in = new ByteArrayInputStream(res);
-        return new AudioInputStream(in, audioFormat,
-                in.available());
+        ByteArrayInputStream in = new ByteArrayInputStream(res);
+        return new AudioInputStream(in, audioFormat, in.available());
     }
 }

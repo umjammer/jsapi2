@@ -28,7 +28,7 @@ public final class MacSynthesizerMode extends SynthesizerMode
      * Constructs a new object.
      * @param locale  the locale associated with this mode
      */
-    public MacSynthesizerMode(final SpeechLocale locale) {
+    public MacSynthesizerMode(SpeechLocale locale) {
         super(locale);
     }
 
@@ -40,10 +40,10 @@ public final class MacSynthesizerMode extends SynthesizerMode
      * @param engineName the name of the engine
      * @param modeName the name of the mode
      */
-    public MacSynthesizerMode(final String engineName,
-            final String modeName,
-            final Boolean running, final Boolean supportsLetterToSound,
-            final Boolean supportsMarkup, final Voice[] voices) {
+    public MacSynthesizerMode(String engineName,
+                              String modeName,
+                              Boolean running, Boolean supportsLetterToSound,
+                              Boolean supportsMarkup, Voice[] voices) {
     	super(engineName, modeName, running, supportsLetterToSound,
                 false, voices);
     }

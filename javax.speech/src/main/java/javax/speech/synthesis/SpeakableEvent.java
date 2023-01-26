@@ -26,7 +26,7 @@
 
 package javax.speech.synthesis;
 
-import java.util.Vector;
+import java.util.List;
 
 import javax.speech.SpeechEvent;
 
@@ -132,7 +132,7 @@ public class SpeakableEvent extends SpeechEvent {
             StringBuffer str = new StringBuffer();
             id2String(str);
             throw new IllegalArgumentException("Invalid event identifier "
-                    + str.toString() + "!");
+                    + str + "!");
         }
         this.requestId = requestId;
     }
@@ -145,7 +145,7 @@ public class SpeakableEvent extends SpeechEvent {
             StringBuffer str = new StringBuffer();
             id2String(str);
             throw new IllegalArgumentException("Invalid event identifier "
-                    + str.toString() + "!");
+                    + str + "!");
         }
 
         this.textInfo = textInfo;
@@ -161,7 +161,7 @@ public class SpeakableEvent extends SpeechEvent {
             StringBuffer str = new StringBuffer();
             id2String(str);
             throw new IllegalArgumentException("Invalid event identifier "
-                    + str.toString() + "!");
+                    + str + "!");
         }
 
         this.textInfo = textInfo;
@@ -178,7 +178,7 @@ public class SpeakableEvent extends SpeechEvent {
             StringBuffer str = new StringBuffer();
             id2String(str);
             throw new IllegalArgumentException("Invalid event identifier "
-                    + str.toString() + "!");
+                    + str + "!");
         }
 
         this.textInfo = textInfo;
@@ -196,7 +196,7 @@ public class SpeakableEvent extends SpeechEvent {
             StringBuffer str = new StringBuffer();
             id2String(str);
             throw new IllegalArgumentException("Invalid event identifier "
-                    + str.toString() + "!");
+                    + str + "!");
         }
 
         this.textInfo = textInfo;
@@ -213,7 +213,7 @@ public class SpeakableEvent extends SpeechEvent {
             StringBuffer str = new StringBuffer();
             id2String(str);
             throw new IllegalArgumentException("Invalid event identifier "
-                    + str.toString() + "!");
+                    + str + "!");
         }
 
         this.textInfo = textInfo;
@@ -230,7 +230,7 @@ public class SpeakableEvent extends SpeechEvent {
             StringBuffer str = new StringBuffer();
             id2String(str);
             throw new IllegalArgumentException("Invalid event identifier "
-                    + str.toString() + "!");
+                    + str + "!");
         }
 
         this.textInfo = textInfo;
@@ -247,7 +247,7 @@ public class SpeakableEvent extends SpeechEvent {
             StringBuffer str = new StringBuffer();
             id2String(str);
             throw new IllegalArgumentException("Invalid event identifier "
-                    + str.toString() + "!");
+                    + str + "!");
         }
 
         this.textInfo = textInfo;
@@ -256,7 +256,7 @@ public class SpeakableEvent extends SpeechEvent {
     }
 
     public String[] getAttributes() {
-        final int id = getId();
+        int id = getId();
         if (id == ELEMENT_REACHED) {
             return attributes;
         }
@@ -265,7 +265,7 @@ public class SpeakableEvent extends SpeechEvent {
     }
 
     public int getAudioPosition() {
-        final int id = getId();
+        int id = getId();
         if (id == MARKER_REACHED) {
             return audioPosition;
         }
@@ -278,7 +278,7 @@ public class SpeakableEvent extends SpeechEvent {
     }
 
     public int getIndex() {
-        final int id = getId();
+        int id = getId();
         if (id == PHONEME_STARTED) {
             return index;
         }
@@ -287,7 +287,7 @@ public class SpeakableEvent extends SpeechEvent {
     }
 
     public Voice getNewVoice() {
-        final int id = getId();
+        int id = getId();
         if (id == VOICE_CHANGED) {
             return newVoice;
         }
@@ -296,7 +296,7 @@ public class SpeakableEvent extends SpeechEvent {
     }
 
     public Voice getOldVoice() {
-        final int id = getId();
+        int id = getId();
         if (id == VOICE_CHANGED) {
             return oldVoice;
         }
@@ -305,7 +305,7 @@ public class SpeakableEvent extends SpeechEvent {
     }
 
     public PhoneInfo[] getPhones() {
-        final int id = getId();
+        int id = getId();
         if (id == PHONEME_STARTED) {
             return phones;
         }
@@ -314,7 +314,7 @@ public class SpeakableEvent extends SpeechEvent {
     }
 
     public int getRealizedValue() {
-        final int id = getId();
+        int id = getId();
         if (id == PROSODY_UPDATED) {
             return realized;
         }
@@ -323,7 +323,7 @@ public class SpeakableEvent extends SpeechEvent {
     }
 
     public int getRequestedValue() {
-        final int id = getId();
+        int id = getId();
         if (id == PROSODY_UPDATED) {
             return requested;
         }
@@ -342,7 +342,7 @@ public class SpeakableEvent extends SpeechEvent {
     public int getType() {
         // TODO Check if there is an error in the specification.
         // The MARKER_REACHED does not provide a type.
-        final int id = getId();
+        int id = getId();
         if ((id == ELEMENT_REACHED) || (id == SPEAKABLE_FAILED)
                 || (id == PROSODY_UPDATED)) {
             return type;
@@ -352,7 +352,7 @@ public class SpeakableEvent extends SpeechEvent {
     }
 
     public int getTextEnd() {
-        final int id = getId();
+        int id = getId();
         if (id == WORD_STARTED) {
             return textEnd;
         }
@@ -361,7 +361,7 @@ public class SpeakableEvent extends SpeechEvent {
     }
 
     public int getTextBegin() {
-        final int id = getId();
+        int id = getId();
         if (id == WORD_STARTED) {
             return textBegin;
         }
@@ -388,40 +388,40 @@ public class SpeakableEvent extends SpeechEvent {
     }
 
     @Override
-    protected Vector getParameters() {
-        final Vector parameters = super.getParameters();
+    protected List<Object> getParameters() {
+        List<Object> parameters = super.getParameters();
 
-        final int id = getId();
+        int id = getId();
 
-        final Integer typeObject = new Integer(type);
-        parameters.addElement(typeObject);
-        final Integer requestIdObject = new Integer(requestId);
-        parameters.addElement(requestIdObject);
+        Integer typeObject = type;
+        parameters.add(typeObject);
+        Integer requestIdObject = requestId;
+        parameters.add(requestIdObject);
         if (id == PROSODY_UPDATED) {
-            final Integer requestedObject = new Integer(requested);
-            parameters.addElement(requestedObject);
+            Integer requestedObject = requested;
+            parameters.add(requestedObject);
         }
-        parameters.addElement(textInfo);
+        parameters.add(textInfo);
         if (id == MARKER_REACHED) {
-            final Integer audioPositionObject = new Integer(audioPosition);
-            parameters.addElement(audioPositionObject);
+            Integer audioPositionObject = audioPosition;
+            parameters.add(audioPositionObject);
         }
         if (id == WORD_STARTED) {
-            final Integer wordStartObject = new Integer(textBegin);
-            parameters.addElement(wordStartObject);
-            final Integer wordEndObject = new Integer(textEnd);
-            parameters.addElement(wordEndObject);
-            parameters.addElement(newVoice);
-            parameters.addElement(oldVoice);
+            Integer wordStartObject = textBegin;
+            parameters.add(wordStartObject);
+            Integer wordEndObject = textEnd;
+            parameters.add(wordEndObject);
+            parameters.add(newVoice);
+            parameters.add(oldVoice);
         }
-        parameters.addElement(exception);
+        parameters.add(exception);
         if (id == ELEMENT_REACHED) {
-            parameters.addElement(attributes);
+            parameters.add(attributes);
         }
         if (id == PHONEME_STARTED) {
-            parameters.addElement(phones);
-            final Integer indexObject = new Integer(index);
-            parameters.addElement(indexObject);
+            parameters.add(phones);
+            Integer indexObject = index;
+            parameters.add(indexObject);
         }
 
         return parameters;

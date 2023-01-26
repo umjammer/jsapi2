@@ -47,12 +47,12 @@ public class AudioSegmentTest {
     void testGetLocator() {
         final String locator1 = "file:///user/smith/hello.wav";
         final String markup1 = "<speak xml:lang='en-US' version='1.0'>Hello</speak>";
-        final AudioSegment segment1 = new AudioSegment(locator1, markup1);
+        AudioSegment segment1 = new AudioSegment(locator1, markup1);
         assertEquals(locator1, segment1.getMediaLocator());
 
         final String locator2 = "file:///user/smith/hello2.wav";
         final String markup2 = "<speak xml:lang='en-US' version='1.0'>Hello 2</speak>";
-        final AudioSegment segment2 = new AudioSegment(locator2, markup2);
+        AudioSegment segment2 = new AudioSegment(locator2, markup2);
         assertEquals(locator2, segment2.getMediaLocator());
     }
 
@@ -63,12 +63,12 @@ public class AudioSegmentTest {
     void testGetMarkupText() {
         final String locator1 = "file:///user/smith/hello.wav";
         final String markup1 = "<speak xml:lang='en-US' version='1.0'>Hello</speak>";
-        final AudioSegment segment1 = new AudioSegment(locator1, markup1);
+        AudioSegment segment1 = new AudioSegment(locator1, markup1);
         assertEquals(markup1, segment1.getMarkupText());
 
         final String locator2 = "file:///user/smith/hello2.wav";
         final String markup2 = "<speak xml:lang='en-US' version='1.0'>Hello 2</speak>";
-        final AudioSegment segment2 = new AudioSegment(locator2, markup2);
+        AudioSegment segment2 = new AudioSegment(locator2, markup2);
         assertEquals(markup2, segment2.getMarkupText());
     }
 
@@ -81,7 +81,7 @@ public class AudioSegmentTest {
     void testOpenInputStream() throws Exception {
         final String locator1 = "file:///user/smith/hello.wav";
         final String markup1 = "<speak xml:lang='en-US' version='1.0'>Hello</speak>";
-        final AudioSegment segment1 = new AudioSegment(locator1, markup1);
+        AudioSegment segment1 = new AudioSegment(locator1, markup1);
         assertNull(segment1.openInputStream());
     }
 
@@ -92,7 +92,7 @@ public class AudioSegmentTest {
     void testIsGettable() {
         final String locator1 = "file:///user/smith/hello.wav";
         final String markup1 = "<speak xml:lang='en-US' version='1.0'>Hello</speak>";
-        final AudioSegment segment1 = new AudioSegment(locator1, markup1);
+        AudioSegment segment1 = new AudioSegment(locator1, markup1);
         assertTrue(segment1.isGettable(), "segment should be gettable");
     }
 }

@@ -16,7 +16,6 @@ import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.speech.AudioManager;
 import javax.speech.EngineManager;
 import javax.speech.synthesis.Synthesizer;
@@ -24,8 +23,10 @@ import javax.speech.synthesis.SynthesizerMode;
 
 import org.jvoicexml.jsapi2.synthesis.freetts.FreeTTSEngineListFactory;
 
+
 /**
  * A demo to output a synthesized text to the speaker.
+ *
  * @author Dirk Schnelle-Walka
  */
 public final class RTPDemo {
@@ -37,9 +38,10 @@ public final class RTPDemo {
 
     /**
      * Starts this demo.
+     *
      * @param args command line arguments.
      */
-    public static void main(final String[] args) {
+    public static void main(String[] args) {
         // Enable logging at all levels.
         Handler handler = new ConsoleHandler();
         handler.setLevel(Level.ALL);

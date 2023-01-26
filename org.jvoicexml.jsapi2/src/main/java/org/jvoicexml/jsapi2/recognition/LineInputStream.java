@@ -34,23 +34,23 @@ public final class LineInputStream extends InputStream {
      * Constructs a new object.
      * @param audioFormat the audio format to read from the microphone.
      */
-    public LineInputStream(final AudioFormat audioFormat) {
+    public LineInputStream(AudioFormat audioFormat) {
         format = audioFormat;
     }
 
     @Override
     public int read() throws IOException {
-        final byte[] buffer = new byte[1];
+        byte[] buffer = new byte[1];
         return read(buffer, 0, buffer.length);
     }
 
     @Override
-    public int read(final byte[] buffer) throws IOException {
+    public int read(byte[] buffer) throws IOException {
         return read(buffer, 0, buffer.length);
     }
 
     @Override
-    public int read(final byte[] buffer, final int off, final int len)
+    public int read(byte[] buffer, int off, int len)
         throws IOException {
         if (buffer == null) {
             throw new NullPointerException("buffer must not be null");
@@ -74,7 +74,7 @@ public final class LineInputStream extends InputStream {
      */
     private void getLine() throws IOException {
         try {
-            final DataLine.Info info =
+            DataLine.Info info =
                 new DataLine.Info(TargetDataLine.class, format);
 
             line = (TargetDataLine) AudioSystem.getLine(info);

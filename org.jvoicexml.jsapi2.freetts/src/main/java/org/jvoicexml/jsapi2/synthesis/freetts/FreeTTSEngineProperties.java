@@ -28,16 +28,16 @@ public class FreeTTSEngineProperties extends BaseSynthesizerProperties {
      * Constructs a new object.
      * @param synthesizer the associated synthesizer
      */
-    public FreeTTSEngineProperties(final BaseSynthesizer synthesizer) {
+    public FreeTTSEngineProperties(BaseSynthesizer synthesizer) {
         super(synthesizer);
     }
 
 
     @Override
-    public void setVoice(final Voice voice) {
+    public void setVoice(Voice voice) {
         if (voice instanceof FreeTTSVoice) {
             FreeTTSVoice freettsVoice = (FreeTTSVoice) voice;
-            final FreeTTSSynthesizer engine = (FreeTTSSynthesizer) getEngine();
+            FreeTTSSynthesizer engine = (FreeTTSSynthesizer) getEngine();
             boolean ok = engine.setCurrentVoice(freettsVoice);
             if (!ok) {
                 return;

@@ -67,7 +67,7 @@ public final class InputDemo implements ResultListener {
         recognizer = (Recognizer) EngineManager
                 .createEngine(new RecognizerMode(SpeechLocale.ENGLISH));
 
-        final AudioManager manager = recognizer.getAudioManager();
+        AudioManager manager = recognizer.getAudioManager();
         manager.setMediaLocator(
                 "capture://audio?rate=16000&bits=16&channels=2&endian=big&encoding=pcm&signed=true");
         // Get it ready to speak
@@ -78,10 +78,10 @@ public final class InputDemo implements ResultListener {
         recognizer.allocate();
         recognizer.addResultListener(this);
 
-        final GrammarManager grammarManager = recognizer.getGrammarManager();
-        final InputStream in = InputDemo.class
+        GrammarManager grammarManager = recognizer.getGrammarManager();
+        InputStream in = InputDemo.class
                 .getResourceAsStream("/yesno.srgs");
-        final Grammar grammar = grammarManager.loadGrammar("grammar:greeting",
+        Grammar grammar = grammarManager.loadGrammar("grammar:greeting",
                 null, in, "UTF-8");
         grammar.setActivatable(true);
         recognizer.processGrammars();
@@ -99,8 +99,8 @@ public final class InputDemo implements ResultListener {
         System.out.print("Recognized: ");
         ResultToken[] tokens = result.getBestTokens();
 
-        for (int i = 0; i < tokens.length; i++) {
-            System.out.print(tokens[i].getText() + " ");
+        for (ResultToken token : tokens) {
+            System.out.print(token.getText() + " ");
         }
         System.out.println();
         recognizer.deallocate();
@@ -114,7 +114,7 @@ public final class InputDemo implements ResultListener {
      * @param args
      *            command line arguments.
      */
-    public static void main(final String[] args) {
+    public static void main(String[] args) {
         InputDemo demo = new InputDemo();
 
         // Enable logging at all levels.
@@ -139,7 +139,7 @@ public final class InputDemo implements ResultListener {
     }
 
     @Override
-    public void resultUpdate(final ResultEvent event) {
+    public void resultUpdate(ResultEvent event) {
         System.out.println(event);
         if (event.getId() == ResultEvent.RESULT_ACCEPTED) {
             result = (Result) (event.getSource());

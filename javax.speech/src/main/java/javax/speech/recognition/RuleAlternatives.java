@@ -73,7 +73,7 @@ public class RuleAlternatives extends RuleComponent {
         if (tokens != null) {
             ruleComponents = new RuleComponent[tokens.length];
             for (int i = 0; i < tokens.length; i++) {
-                final String token = tokens[i];
+                String token = tokens[i];
                 ruleComponents[i] = new RuleToken(token);
             }
         }
@@ -92,7 +92,7 @@ public class RuleAlternatives extends RuleComponent {
             return RuleSpecial.VOID.toString();
         }
 
-        final StringBuffer str = new StringBuffer();
+        StringBuilder str = new StringBuilder();
         str.append("<one-of>");
 
         for (int i = 0; i < ruleComponents.length; i++) {
@@ -107,11 +107,11 @@ public class RuleAlternatives extends RuleComponent {
                 }
             }
             str.append('>');
-            final RuleComponent component = ruleComponents[i];
+            RuleComponent component = ruleComponents[i];
             if (component == null) {
                 str.append(RuleSpecial.NULL.toString());
             } else {
-                str.append(component.toString());
+                str.append(component);
             }
             str.append("</item>");
         }

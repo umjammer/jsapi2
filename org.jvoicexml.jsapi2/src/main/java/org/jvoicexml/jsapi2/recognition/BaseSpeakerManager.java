@@ -45,17 +45,17 @@ public class BaseSpeakerManager implements SpeakerManager {
      * Constructs a new object.
      */
     public BaseSpeakerManager() {
-        speakerProfiles = new java.util.ArrayList<SpeakerProfile>();
+        speakerProfiles = new java.util.ArrayList<>();
         currentSpeaker = null;
     }
 
     @Override
-    public void createSpeaker(final SpeakerProfile speaker) {
+    public void createSpeaker(SpeakerProfile speaker) {
         speakerProfiles.add(speaker);
     }
 
     @Override
-    public void deleteSpeaker(final SpeakerProfile speaker) {
+    public void deleteSpeaker(SpeakerProfile speaker) {
         speakerProfiles.remove(speaker);
     }
 
@@ -71,15 +71,15 @@ public class BaseSpeakerManager implements SpeakerManager {
 
     @Override
     public SpeakerProfile[] listKnownSpeakers() {
-        final SpeakerProfile[] profiles =
+        SpeakerProfile[] profiles =
                 new SpeakerProfile[speakerProfiles.size()];
         speakerProfiles.toArray(profiles);
         return profiles;
     }
 
     @Override
-    public void renameSpeaker(final SpeakerProfile oldSpeaker,
-                              final SpeakerProfile newSpeaker) {
+    public void renameSpeaker(SpeakerProfile oldSpeaker,
+                              SpeakerProfile newSpeaker) {
     }
 
     @Override
@@ -91,7 +91,7 @@ public class BaseSpeakerManager implements SpeakerManager {
     }
 
     @Override
-    public void setCurrentSpeaker(final SpeakerProfile speaker) {
+    public void setCurrentSpeaker(SpeakerProfile speaker) {
         if (!speakerProfiles.contains(speaker)) {
             createSpeaker(speaker);
         }

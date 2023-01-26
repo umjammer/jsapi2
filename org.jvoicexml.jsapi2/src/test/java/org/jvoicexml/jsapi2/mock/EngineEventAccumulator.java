@@ -3,10 +3,10 @@
  */
 package org.jvoicexml.jsapi2.mock;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.speech.EngineEvent;
-import javax.speech.EngineListener;
 import javax.speech.recognition.RecognizerEvent;
 import javax.speech.recognition.RecognizerListener;
 import javax.speech.synthesis.SynthesizerEvent;
@@ -18,24 +18,25 @@ import javax.speech.synthesis.SynthesizerListener;
  */
 public class EngineEventAccumulator
     implements RecognizerListener, SynthesizerListener {
+
     /** Collected events. */
-    private final Vector events;
+    private final List<EngineEvent> events;
 
     /**
      * Constructs a new object.
      */
     public EngineEventAccumulator() {
-        events = new Vector();
+        events = new ArrayList<>();
     }
 
     @Override
-    public void synthesizerUpdate(final SynthesizerEvent e) {
-        events.addElement(e);
+    public void synthesizerUpdate(SynthesizerEvent e) {
+        events.add(e);
     }
 
     @Override
     public void recognizerUpdate(RecognizerEvent e) {
-        events.addElement(e);
+        events.add(e);
     }
 
     /**
@@ -43,8 +44,6 @@ public class EngineEventAccumulator
      * @return the collected events
      */
     public EngineEvent[] getEvents() {
-        final EngineEvent[] evs = new EngineEvent[events.size()];
-        events.copyInto(evs);
-        return evs;
+        return events.toArray(new EngineEvent[0]);
     }
 }

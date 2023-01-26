@@ -48,10 +48,10 @@ public class SRGSGrammarContainer extends Grammar {
      * The GrammarDefinitions as set through loadGrammars from the
      * GrammarManager
      */
-    private Map<String, GrammarDefinition> grammarDefs = new HashMap<String, GrammarDefinition>();
+    private Map<String, GrammarDefinition> grammarDefs = new HashMap<>();
 
     /** All active SRGSGrammars */
-    private Map<String, SRGSGrammar> grammars = new HashMap<String, SRGSGrammar>();
+    private Map<String, SRGSGrammar> grammars = new HashMap<>();
 
     /** The initial node for the searchGraph of the linguist */
     private GrammarNode firstNode = null;
@@ -60,7 +60,7 @@ public class SRGSGrammarContainer extends Grammar {
     private BaseRuleGrammar ruleGrammar = null;
 
     /** All GrammarNodes of contained grammars plus the firstNode */
-    private Set<GrammarNode> grammarNodes = new LinkedHashSet<GrammarNode>();
+    private Set<GrammarNode> grammarNodes = new LinkedHashSet<>();
 
     /** The JSAPI recognizer. */
     private BaseRecognizer recognizer;
@@ -71,12 +71,12 @@ public class SRGSGrammarContainer extends Grammar {
      * @param rec
      *            the recognizer
      */
-    public void setRecognizer(final BaseRecognizer rec) {
+    public void setRecognizer(BaseRecognizer rec) {
         recognizer = rec;
     }
 
     @Override
-    public void newProperties(final PropertySheet ps) throws PropertyException {
+    public void newProperties(PropertySheet ps) throws PropertyException {
         super.newProperties(ps);
     }
 
@@ -144,17 +144,17 @@ public class SRGSGrammarContainer extends Grammar {
      *            the processed token
      * @return the rule grammar used to produce the list of tokens
      */
-    public synchronized RuleGrammar getRuleGrammar(final Token token) {
+    public synchronized RuleGrammar getRuleGrammar(Token token) {
         if (token == null) {
             return ruleGrammar;
         }
         for (SRGSGrammar grammar : grammars.values()) {
-            final Collection<GrammarNode> nodes = grammar.getGrammarNodes();
+            Collection<GrammarNode> nodes = grammar.getGrammarNodes();
             if (nodes != null) {
-                final SearchState state = token.getSearchState();
+                SearchState state = token.getSearchState();
                 if (state instanceof GrammarState) {
-                    final GrammarState grammarState = (GrammarState) state;
-                    final GrammarNode node = grammarState.getGrammarNode();
+                    GrammarState grammarState = (GrammarState) state;
+                    GrammarNode node = grammarState.getGrammarNode();
                     if (nodes.contains(node)) {
                         return grammar.getRuleGrammar();
                     }
@@ -185,8 +185,7 @@ public class SRGSGrammarContainer extends Grammar {
         boolean existsChanges = false;
 
         // name of all active grammars
-        HashSet<String> activeGrammarNames = new HashSet<String>();
-        activeGrammarNames.addAll(grammarDefs.keySet());
+        HashSet<String> activeGrammarNames = new HashSet<>(grammarDefs.keySet());
 
         // is an active grammar to be removed?
         for (String name : grammars.keySet()) {
@@ -226,16 +225,16 @@ public class SRGSGrammarContainer extends Grammar {
 
             for (SRGSGrammar grammar : grammars.values()) {
                 GrammarNode srgsStart = grammar.getInitialNode();
-                /**
-                 * Every SRGS Grammar starts with <sil>, drop it and add
-                 * transitions from our firstNode.
+                /*
+                  Every SRGS Grammar starts with <sil>, drop it and add
+                  transitions from our firstNode.
                  */
                 for (GrammarArc transition : srgsStart.getSuccessors()) {
                     firstNode.add(transition.getGrammarNode(), LogMath.LOG_ONE);
                 }
 
-                /**
-                 * Add all the rules to the rule grammar for JSAPI2.
+                /*
+                  Add all the rules to the rule grammar for JSAPI2.
                  */
                 for (String name : grammar.getRuleGrammar().listRuleNames()) {
                     ruleGrammar.addRule(grammar.getRuleGrammar().getRule(name));
@@ -258,9 +257,9 @@ public class SRGSGrammarContainer extends Grammar {
         if (LOGGER.isLoggable(Level.INFO)) {
             StringBuilder sb = new StringBuilder();
             for (String activeGrammar : grammars.keySet()) {
-                sb.append(activeGrammar + " ");
+                sb.append(activeGrammar).append(" ");
             }
-            LOGGER.info("Activate grammars: " + sb.toString());
+            LOGGER.info("Activate grammars: " + sb);
         }
     }
 }

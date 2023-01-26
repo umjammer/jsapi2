@@ -22,8 +22,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Test cases for {@link ThreadSpeechEventExecutor}.
- * @author Dirk Schnelle-Walka
  *
+ * @author Dirk Schnelle-Walka
  */
 class ThreadSpeechEventExecutorTest {
 
@@ -32,8 +32,8 @@ class ThreadSpeechEventExecutorTest {
 
     /**
      * Setup the test environment.
-     * @throws java.lang.Exception
-     *         setup failed
+     *
+     * @throws java.lang.Exception setup failed
      */
     @BeforeEach
     public void setUp() throws Exception {
@@ -42,23 +42,23 @@ class ThreadSpeechEventExecutorTest {
 
     /**
      * Cleanup of the test environment.
-     * @throws java.lang.Exception
-     *         cleanup failed
+     *
+     * @throws java.lang.Exception cleanup failed
      */
     public void tearDown() throws Exception {
         executor.terminate();
     }
 
     /**
-     * Test method for {@link org.jvoicexml.jsapi2.ThreadSpeechEventExecutor.BaseSpeechEventExecutor#execute(java.lang.Runnable)}.
-     * @exception Exception
-     *            test failed
+     * Test method for {@link org.jvoicexml.jsapi2.ThreadSpeechEventExecutor#execute(java.lang.Runnable)}.
+     *
+     * @throws Exception test failed
      */
     @Test
     void testExecute() throws Exception {
-        final List<Integer> list = new java.util.ArrayList<>();
-        final Runnable runnable1 = () -> list.add(1);
-        final Runnable runnable2 = () -> {
+        List<Integer> list = new java.util.ArrayList<>();
+        Runnable runnable1 = () -> list.add(1);
+        Runnable runnable2 = () -> {
             list.add(2);
             synchronized (list) {
                 list.notifyAll();

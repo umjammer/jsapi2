@@ -1,22 +1,21 @@
 /**
  * JSAPI - An independent reference implementation of JSR 113.
- *
+ * <p>
  * Copyright (C) 2014-2017 JVoiceXML group - http://jvoicexml.sourceforge.net
- *
+ * <p>
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
  * License as published by the Free Software Foundation; either
  * version 2 of the License, or (at your option) any later version.
- *
+ * <p>
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Library General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
  */
 
 package org.jvoicexml.jsapi2.recognition;
@@ -27,7 +26,6 @@ import java.util.Collection;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.speech.AudioSegment;
 import javax.speech.SpeechEventExecutor;
 import javax.speech.SpeechPermission;
@@ -51,25 +49,24 @@ import javax.speech.recognition.RuleSequence;
 import javax.speech.recognition.RuleTag;
 import javax.speech.recognition.RuleToken;
 
+
 /**
  * Very simple implementation of JSAPI Result, FinalResult, FinalRuleResult, and
  * FinalDictationResult.
- * 
+ * <p>
  * Ignores many things like N-Best, partial-results, etc.
  */
-public class BaseResult
-        implements Result, FinalResult, FinalRuleResult, Serializable,
-        Cloneable {
+public class BaseResult implements Result, FinalResult, FinalRuleResult, Serializable, Cloneable {
+
     /** The serial version UID. */
     private static final long serialVersionUID = -7742652622067884474L;
 
     /** Logger for this class. */
-    private static final Logger LOGGER = Logger
-            .getLogger(BaseResult.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(BaseResult.class.getName());
 
     /** Registered result listeners. */
     private Collection<ResultListener> resultListeners;
-    private ResultToken tokens[];
+    private ResultToken[] tokens;
     private int nTokens;
     /** The rule grammar that matches this result. */
     private transient Grammar grammar;
@@ -91,12 +88,11 @@ public class BaseResult
 
     /**
      * Create an empty result.
-     * 
-     * @param gram
-     *            the grammar
+     *
+     * @param gram the grammar
      */
-    public BaseResult(final Grammar gram) {
-        resultListeners = new java.util.ArrayList<ResultListener>();
+    public BaseResult(Grammar gram) {
+        resultListeners = new java.util.ArrayList<>();
         grammar = gram;
         confidenceLevel = RecognizerProperties.UNKNOWN_CONFIDENCE;
         state = Result.UNFINALIZED;
@@ -104,17 +100,13 @@ public class BaseResult
 
     /**
      * Create a result with a result string.
-     * 
-     * @param gram
-     *            the grammar
-     * @param result
-     *            the result string
-     * @exception GrammarException
-     *                error evaluating the grammar
+     *
+     * @param gram   the grammar
+     * @param result the result string
+     * @throws GrammarException error evaluating the grammar
      */
-    public BaseResult(final Grammar gram, final String result)
-            throws GrammarException {
-        resultListeners = new java.util.ArrayList<ResultListener>();
+    public BaseResult(Grammar gram, String result) throws GrammarException {
+        resultListeners = new java.util.ArrayList<>();
         grammar = gram;
         confidenceLevel = RecognizerProperties.UNKNOWN_CONFIDENCE;
         setResult(result);
@@ -122,18 +114,16 @@ public class BaseResult
 
     /**
      * Simple method to set the result as a string.
-     * 
-     * @param result
-     *            the result
-     * @throws GrammarException
-     *             error parsing the result against the grammar
+     *
+     * @param result the result
+     * @throws GrammarException error parsing the result against the grammar
      */
-    public void setResult(final String result) throws GrammarException {
+    public void setResult(String result) throws GrammarException {
         if (result == null) {
             state = Result.UNFINALIZED;
         } else {
             state = Result.REJECTED;
-            final boolean success = tryTokens(grammar, result);
+            boolean success = tryTokens(grammar, result);
             if (success) {
                 state = Result.ACCEPTED;
             }
@@ -143,14 +133,12 @@ public class BaseResult
     /**
      * Copy a result. If the result to be copied is a BaseResult then clone it
      * otherwise create a BaseResult and copy the tokens onto it.
-     * 
-     * @param result
-     *            the result to copy to
+     *
+     * @param result the result to copy to
      * @return copied result
-     * @exception GrammarException
-     *                if the related grammar could not be evaluated
+     * @throws GrammarException if the related grammar could not be evaluated
      */
-    static BaseResult copyResult(final Result result) throws GrammarException {
+    static BaseResult copyResult(Result result) throws GrammarException {
         BaseResult copy = null;
         if (result instanceof BaseResult) {
             try {
@@ -164,11 +152,9 @@ public class BaseResult
             copy.nTokens = result.getNumTokens();
             copy.tokens = new ResultToken[copy.nTokens];
             for (int i = 0; i < result.getNumTokens(); i++) {
-                final ResultToken sourceToken = result.getBestToken(i);
-                final BaseResultToken destinationToken = new BaseResultToken(
-                        copy, sourceToken.getText());
-                destinationToken
-                        .setConfidenceLevel(sourceToken.getConfidenceLevel());
+                ResultToken sourceToken = result.getBestToken(i);
+                BaseResultToken destinationToken = new BaseResultToken(copy, sourceToken.getText());
+                destinationToken.setConfidenceLevel(sourceToken.getConfidenceLevel());
                 destinationToken.setStartTime(sourceToken.getStartTime());
                 destinationToken.setEndTime(sourceToken.getEndTime());
                 copy.tokens[i] = destinationToken;
@@ -187,7 +173,7 @@ public class BaseResult
 
     /**
      * Retrieves a human readable representation of the state.
-     * 
+     *
      * @return state as a string
      */
     private String getResultStateAsString() {
@@ -213,8 +199,7 @@ public class BaseResult
     }
 
     @Override
-    public ResultToken getBestToken(final int nth)
-            throws IllegalArgumentException {
+    public ResultToken getBestToken(int nth) throws IllegalArgumentException {
         if ((nth < 0) || (nth > (nTokens - 1))) {
             throw new IllegalArgumentException("Token index out of range.");
         }
@@ -228,8 +213,7 @@ public class BaseResult
 
     @Override
     public ResultToken[] getUnfinalizedTokens() {
-        if (getResultState() == Result.ACCEPTED
-                || getResultState() == Result.REJECTED) {
+        if (getResultState() == Result.ACCEPTED || getResultState() == Result.REJECTED) {
             return new ResultToken[0];
         }
         int numUnfinalizedTokens = getBestTokens().length - getNumTokens();
@@ -250,17 +234,18 @@ public class BaseResult
     }
 
     @Override
-    public void removeResultListener(final ResultListener listener) {
+    public void removeResultListener(ResultListener listener) {
         resultListeners.remove(listener);
     }
 
-    // ////////////////////
+    //
     // End Result Methods
-    // ////////////////////
+    //
 
-    // ////////////////////
+    //
     // Begin FinalResult Methods
-    // ////////////////////
+    //
+
     @Override
     public boolean isTrainingInfoAvailable() throws ResultStateException {
         validateResultState(UNFINALIZED);
@@ -273,14 +258,10 @@ public class BaseResult
     }
 
     @Override
-    public void tokenCorrection(final String[] correctTokens,
-            final ResultToken fromToken, final ResultToken toToken,
-            final int correctionType)
-            throws ResultStateException, IllegalArgumentException {
-        final SecurityManager security = System.getSecurityManager();
+    public void tokenCorrection(String[] correctTokens, ResultToken fromToken, ResultToken toToken, int correctionType) throws ResultStateException, IllegalArgumentException {
+        SecurityManager security = System.getSecurityManager();
         if (security != null) {
-            final Permission permission = new SpeechPermission(
-                    "javax.speech.recognition.FinalResult.tokenCorrection");
+            Permission permission = new SpeechPermission("javax.speech.recognition.FinalResult.tokenCorrection");
             security.checkPermission(permission);
         }
         validateResultState(UNFINALIZED);
@@ -304,19 +285,19 @@ public class BaseResult
     }
 
     @Override
-    public AudioSegment getAudio(final ResultToken from, final ResultToken to)
-            throws ResultStateException {
+    public AudioSegment getAudio(ResultToken from, ResultToken to) throws ResultStateException {
         validateResultState(UNFINALIZED);
         return null;
     }
 
-    // ////////////////////
+    //
     // End FinalResult Methods
-    // ////////////////////
+    //
 
-    // ////////////////////
+    //
     // Begin FinalRuleResult Methods
-    // ////////////////////
+    //
+
     @Override
     public int getNumberAlternatives() throws ResultStateException {
         validateResultState(UNFINALIZED);
@@ -324,8 +305,7 @@ public class BaseResult
     }
 
     @Override
-    public ResultToken[] getAlternativeTokens(final int nBest)
-            throws ResultStateException {
+    public ResultToken[] getAlternativeTokens(int nBest) throws ResultStateException {
         validateResultState(UNFINALIZED);
         if (!(grammar instanceof RuleGrammar)) {
             throw new ResultStateException("Result is not a FinalRuleResult");
@@ -338,21 +318,20 @@ public class BaseResult
     }
 
     @Override
-    public Grammar getGrammar(final int nBest) throws ResultStateException {
+    public Grammar getGrammar(int nBest) throws ResultStateException {
         validateResultState(UNFINALIZED);
         if (!(grammar instanceof RuleGrammar)) {
             throw new ResultStateException("Result is not a FinalRuleResult");
         }
         if (nBest == 0) {
-            return (RuleGrammar) grammar;
+            return grammar;
         }
         // [[[WDW - throw InvalidArgumentException?]]]
         return null;
     }
 
     @Override
-    public Object[] getTags(final int nBest)
-            throws IllegalArgumentException, ResultStateException {
+    public Object[] getTags(int nBest) throws IllegalArgumentException, ResultStateException {
         validateResultState(UNFINALIZED);
         if (!(grammar instanceof RuleGrammar)) {
             throw new ResultStateException("Result is not a FinalRuleResult");
@@ -361,37 +340,29 @@ public class BaseResult
     }
 
     @Override
-    public RuleReference getRuleReference(final int nBest)
-            throws ResultStateException, IllegalArgumentException,
-            IllegalStateException {
-        throw new RuntimeException(
-                "BaseResult.getRuleReference NOT IMPLEMENTED");
+    public RuleReference getRuleReference(int nBest) throws ResultStateException, IllegalArgumentException, IllegalStateException {
+        throw new RuntimeException("BaseResult.getRuleReference NOT IMPLEMENTED");
     }
 
-    // ////////////////////
+    //
     // End FinalRuleResult Methods
-    // ////////////////////
+    //
 
     /**
      * Utility function to generate result event and post it to the event queue.
      * Eventually fireAudioReleased will be called by dispatchSpeechEvent as a
      * result of this action.
-     * 
-     * @param speechEventExecutor
-     *            SpeechEventExecutor
-     * @param event
-     *            ResultEvent
+     *
+     * @param speechEventExecutor SpeechEventExecutor
+     * @param event               ResultEvent
      */
-    public void postResultEvent(final SpeechEventExecutor speechEventExecutor,
-            final ResultEvent event) {
+    public void postResultEvent(SpeechEventExecutor speechEventExecutor, ResultEvent event) {
         try {
-            speechEventExecutor.execute(new Runnable() {
-                public void run() {
-                    if (LOGGER.isLoggable(Level.FINE)) {
-                        LOGGER.fine("notifying event " + event);
-                    }
-                    fireResultEvent(event);
+            speechEventExecutor.execute(() -> {
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.fine("notifying event " + event);
                 }
+                fireResultEvent(event);
             });
         } catch (RuntimeException ex) {
             LOGGER.warning(ex.getLocalizedMessage());
@@ -400,9 +371,10 @@ public class BaseResult
 
     /**
      * Utility function to send a result event to all result listeners.
+     *
      * @param resultEvent the event to sned
      */
-    public void fireResultEvent(final ResultEvent resultEvent) {
+    public void fireResultEvent(ResultEvent resultEvent) {
         if (resultListeners != null) {
             for (ResultListener listener : resultListeners) {
                 listener.resultUpdate(resultEvent);
@@ -412,46 +384,38 @@ public class BaseResult
 
     /**
      * Utility function to set the number of finalized tokens in the Result.
-     * 
-     * @param n
-     *            int
+     *
+     * @param n int
      */
-    public void setNumTokens(final int n) {
+    public void setNumTokens(int n) {
         nTokens = n;
     }
 
     /**
      * Simple implementation of tags.
-     * 
+     * <p>
      * ATTENTION: This method changes the ResultToken content.
      * <p>
      * This implementation replaces each token text by tag information, if it
      * exists.
      * </p>
-     * 
-     * @todo the tag information can not be only text! It can be anything.
-     * 
-     * @param token
-     *            the result tokens
-     * @param component
-     *            the rule component that will be analyzed
-     * @param pos
-     *            the position in rt of next token that will be appear in the
-     *            graph
+     * <p>
+     * TODO the tag information can not be only text! It can be anything.
+     *
+     * @param token     the result tokens
+     * @param component the rule component that will be analyzed
+     * @param pos       the position in rt of next token that will be appeared in the graph
      * @return int
      */
-    private int applyTags(final ResultToken[] token,
-            final RuleComponent component, int pos) {
+    private int applyTags(ResultToken[] token, RuleComponent component, int pos) {
         if (component instanceof RuleReference) {
             return pos;
         } else if (component instanceof RuleToken) {
             return pos + 1;
         } else if (component instanceof RuleAlternatives) {
-            return applyTags(token,
-                    ((RuleAlternatives) component).getRuleComponents()[0], pos);
+            return applyTags(token, ((RuleAlternatives) component).getRuleComponents()[0], pos);
         } else if (component instanceof RuleSequence) {
-            for (RuleComponent r : ((RuleSequence) component)
-                    .getRuleComponents()) {
+            for (RuleComponent r : ((RuleSequence) component).getRuleComponents()) {
                 pos = applyTags(token, r, pos);
             }
             return pos;
@@ -459,12 +423,10 @@ public class BaseResult
             String tag = (String) ((RuleTag) component).getTag();
 
             // assumes that ruleTag component appears after RuleToken component
-            token[pos - 1] = new BaseResultToken(token[pos - 1].getResult(),
-                    tag);
+            token[pos - 1] = new BaseResultToken(token[pos - 1].getResult(), tag);
             return pos;
         } else if (component instanceof RuleCount) {
-            return applyTags(token, ((RuleCount) component).getRuleComponent(),
-                    pos);
+            return applyTags(token, ((RuleCount) component).getRuleComponent(), pos);
         }
 
         return pos;
@@ -472,28 +434,25 @@ public class BaseResult
 
     /**
      * Utility function to set the resultTokens.
-     * 
-     * @param rt
-     *            the tokens
+     *
+     * @param rt the tokens
      */
-    public void setTokens(final ResultToken[] rt) {
+    public void setTokens(ResultToken[] rt) {
         setTokens(rt, false);
     }
 
     /**
      * Utility function to set the resultTokens. Does nothing if no tokens are
      * provided.
-     * 
-     * @param rt
-     *            the tokens
-     * @param replaceTags
-     *            if true, tokens must be replaced by tags content.
+     *
+     * @param rt the tokens
+     * @param replaceTags if true, tokens must be replaced by tags content.
      */
-    public void setTokens(final ResultToken[] rt, final boolean replaceTags) {
+    public void setTokens(ResultToken[] rt, boolean replaceTags) {
         tokens = new ResultToken[rt.length];
         System.arraycopy(rt, 0, tokens, 0, rt.length);
         if (replaceTags) {
-            final RuleParse ruleParse = parse(0);
+            RuleParse ruleParse = parse(0);
             if (ruleParse != null) {
                 applyTags(tokens, ruleParse.getParse(), 0);
             }
@@ -502,78 +461,69 @@ public class BaseResult
 
     /**
      * Concatenate the best tokens in the Result.
-     * 
+     *
      * @return string representation
      */
     @Override
     public String toString() {
         if (nTokens == 0) {
-            /** @todo change this. Is it possible a result has 0 tokens?? */
+            // TODO change this. Is it possible a result has 0 tokens??
             return super.toString();
         }
 
-        final StringBuilder sb = new StringBuilder(getBestToken(0).getText());
+        StringBuilder sb = new StringBuilder(getBestToken(0).getText());
         for (int i = 1; i < getNumTokens(); i++) {
-            sb.append(" " + getBestToken(i).getText());
+            sb.append(" ").append(getBestToken(i).getText());
         }
         return sb.toString();
     }
 
     /**
      * Utility function to set the result state.
-     * 
-     * @param resultState
-     *            the new state
+     *
+     * @param resultState the new state
      */
-    public void setResultState(final int resultState) {
+    public void setResultState(int resultState) {
         this.state = resultState;
     }
 
     /**
      * Validates that the result is in the given state.
-     * 
-     * @param resultState
-     *            the state to check for
-     * @throws ResultStateException
-     *             if the result is not not in the given state.
+     *
+     * @param resultState the state to check for
+     * @throws ResultStateException if the result is not in the given state.
      */
-    protected void validateResultState(final int resultState)
-            throws ResultStateException {
+    protected void validateResultState(int resultState) throws ResultStateException {
         if (getResultState() == resultState) {
-            final String str = getResultStateAsString();
+            String str = getResultStateAsString();
             throw new ResultStateException("Invalid result state: " + str);
         }
     }
 
     /**
      * Set the grammar that goes with this Result. NOT JSAPI.
-     * 
-     * @param gram
-     *            the grammar
+     *
+     * @param gram the grammar
      */
-    public void setGrammar(final Grammar gram) {
+    public void setGrammar(Grammar gram) {
         grammar = gram;
     }
 
     /**
      * Try to set the Grammar and tokens of this result.
-     * 
-     * @param gram
-     *            the related grammar
-     * @param result
-     *            the retrieved recognition result
+     *
+     * @param gram   the related grammar
+     * @param result the retrieved recognition result
      * @return {@code true} if the grammar matches the tokens.
-     * @throws GrammarException
-     *             error parsing the grammar
+     * @throws GrammarException error parsing the grammar
      */
-    public boolean tryTokens(final Grammar gram, final String result)
-            throws GrammarException {
+    public boolean tryTokens(Grammar gram, String result) throws GrammarException {
         if ((result == null) || (gram == null)) {
             return false;
         }
 
         if (gram instanceof RuleGrammar) {
-            final RuleGrammar rule = (RuleGrammar) gram;
+            RuleGrammar rule = (RuleGrammar) gram;
             return tryTokens(rule, result);
         }
         return false;
@@ -581,18 +531,14 @@ public class BaseResult
 
     /**
      * Try to set the Grammar and tokens of this result.
-     * 
-     * @param ruleGrammar
-     *            the related grammar
-     * @param result
-     *            the retrieved recognition result
+     *
+     * @param ruleGrammar the related grammar
+     * @param result      the retrieved recognition result
      * @return {@code true} if the grammar matches the tokens.
-     * @throws GrammarException
-     *             error parsing the grammar
+     * @throws GrammarException error parsing the grammar
      */
-    private boolean tryTokens(final RuleGrammar ruleGrammar,
-            final String result) throws GrammarException {
-        final RuleParse parse = ruleGrammar.parse(result, null);
+    private boolean tryTokens(RuleGrammar ruleGrammar, String result) throws GrammarException {
+        RuleParse parse = ruleGrammar.parse(result, null);
         if (parse == null) {
             return false;
         }
@@ -602,7 +548,7 @@ public class BaseResult
         ruleName = parse.getRuleReference().getRuleName();
 
         // Copy the result tokens
-        final StringTokenizer tokenizer = new StringTokenizer(result);
+        StringTokenizer tokenizer = new StringTokenizer(result);
         nTokens = tokenizer.countTokens();
         int i = 0;
         tokens = new ResultToken[nTokens];
@@ -615,17 +561,15 @@ public class BaseResult
         return true;
     }
 
-    public RuleParse parse(int nBest)
-            throws IllegalArgumentException, ResultStateException {
-        final ResultToken[] rt = getAlternativeTokens(0);
-        final String tokens[] = new String[rt.length];
+    public RuleParse parse(int nBest) throws IllegalArgumentException, ResultStateException {
+        ResultToken[] rt = getAlternativeTokens(0);
+        String[] tokens = new String[rt.length];
         for (int i = 0; i < rt.length; ++i) {
             tokens[i] = rt[i].getText();
         }
 
         try {
-            return ((RuleGrammar) getGrammar()).parse(tokens,
-                    ((BaseRuleGrammar) getGrammar()).getRoot());
+            return ((RuleGrammar) getGrammar()).parse(tokens, ((BaseRuleGrammar) getGrammar()).getRoot());
         } catch (GrammarException e) {
             e.printStackTrace();
         }
@@ -633,10 +577,8 @@ public class BaseResult
     }
 
     public void setConfidenceLevel(int confidenceLevel) {
-        if (confidenceLevel < RecognizerProperties.MIN_CONFIDENCE
-                || confidenceLevel > RecognizerProperties.MAX_CONFIDENCE)
-            throw new IllegalArgumentException(
-                    "Invalid confidenceThreshold: " + confidenceLevel);
+        if (confidenceLevel < RecognizerProperties.MIN_CONFIDENCE || confidenceLevel > RecognizerProperties.MAX_CONFIDENCE)
+            throw new IllegalArgumentException("Invalid confidenceThreshold: " + confidenceLevel);
         this.confidenceLevel = confidenceLevel;
     }
 
@@ -644,16 +586,12 @@ public class BaseResult
         return getConfidenceLevel(0);
     }
 
-    public int getConfidenceLevel(int nBest)
-            throws IllegalArgumentException, ResultStateException {
+    public int getConfidenceLevel(int nBest) throws IllegalArgumentException, ResultStateException {
         // uncommented - see JSAPI2/FinalResult#getConfidenceLevel
         // quote: "For a REJECTED result, a useful confidence level
         // MAY be returned, but this is application
         // and platform dependent."
-        if (state != FinalResult.ACCEPTED && state != FinalResult.REJECTED
-                && state != FinalResult.DONT_KNOW
-                && state != FinalResult.MISRECOGNITION
-                && state != FinalResult.USER_CHANGE)
+        if (state != FinalResult.ACCEPTED && state != FinalResult.REJECTED && state != FinalResult.DONT_KNOW && state != FinalResult.MISRECOGNITION && state != FinalResult.USER_CHANGE)
             // above code could simply check for FinalResult.UNFINALIZED
             // but this would be more error prone
             // (e.g. if the ResultState was not correctly set to UNFINALIZED)

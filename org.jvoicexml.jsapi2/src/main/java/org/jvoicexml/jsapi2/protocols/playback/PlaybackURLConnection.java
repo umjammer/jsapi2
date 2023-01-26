@@ -21,7 +21,6 @@ import java.net.URLConnection;
 import java.net.UnknownServiceException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
@@ -30,16 +29,18 @@ import javax.sound.sampled.SourceDataLine;
 
 import org.jvoicexml.jsapi2.protocols.JavaSoundParser;
 
+
 /**
  * A {@link URLConnection} for the playback protocol.
+ *
  * @author Renato Cassaca
  * @author Dirk Schnelle-Walka
  * @version 1.0
  */
 public final class PlaybackURLConnection extends URLConnection {
+
     /** Logger for this class. */
-    private static final Logger LOGGER =
-            Logger.getLogger(PlaybackURLConnection.class.getName());
+    private static final Logger logger = Logger.getLogger(PlaybackURLConnection.class.getName());
 
     /** Microphone access point. */
     private SourceDataLine line;
@@ -53,39 +54,33 @@ public final class PlaybackURLConnection extends URLConnection {
     /**
      * Constructs a new object.
      *
-     * @param url
-     *            URL
+     * @param url URL
      */
-    public PlaybackURLConnection(final URL url) {
+    public PlaybackURLConnection(URL url) {
         super(url);
 
         // Validate the kind of input supported
         if (!url.getAuthority().equals("audio")) {
-            throw new UnsupportedOperationException(
-                    "Can only process 'audio'. " + url.getAuthority()
-                            + " is unsupported");
+            throw new UnsupportedOperationException("Can only process 'audio'. " + url.getAuthority() + " is unsupported");
         }
     }
 
     /**
-     * {@inheritDoc}
-     *
      * Closes any open line.
      */
-    protected void finalize() throws Throwable {
+    private void finalize_() {
         if (outputStream != null) {
             try {
                 outputStream.close();
             } catch (IOException e) {
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine(e.getMessage());
-                }
+                logger.fine(e.getMessage());
             }
             outputStream = null;
         }
         if (line != null) {
             if (line.isOpen()) {
                 line.close();
+logger.fine("line close: " + line.hashCode());
             }
             line = null;
         }
@@ -100,26 +95,26 @@ public final class PlaybackURLConnection extends URLConnection {
         AudioFormat format = getAudioFormat();
 
         // Representation of the line that will be opened
-        DataLine.Info info = new DataLine.Info(SourceDataLine.class,
-                format);
+        DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
 
         // Checks if line is supported
         if (!AudioSystem.isLineSupported(info)) {
-            throw new IOException("Cannot open the requested line: "
-                    + info.toString());
+            throw new IOException("Cannot open the requested line: " + info);
         }
 
         // Obtain, open and start the line.
         try {
             line = (SourceDataLine) AudioSystem.getLine(info);
             line.open(format, AudioSystem.NOT_SPECIFIED);
+logger.fine("line open: " + line.hashCode());
 
             // Starts the line
             line.start();
         } catch (LineUnavailableException ex) {
-            throw new IOException("Line is unavailable: "
-                    + ex.getMessage(), ex);
+            throw new IOException("Line is unavailable: " + ex.getMessage(), ex);
         }
+
+        Runtime.getRuntime().addShutdownHook(new Thread(this::finalize_));
 
         // Marks this URLConnection as connected
         connected = true;
@@ -129,12 +124,11 @@ public final class PlaybackURLConnection extends URLConnection {
      * Given URI parameters, constructs an AudioFormat.
      *
      * @return AudioFormat
-     * @exception IOException
-     *            error determining the audio format.
+     * @throws IOException error determining the audio format.
      */
     public AudioFormat getAudioFormat() throws IOException {
         if (audioFormat == null) {
-            final URL url = getURL();
+            URL url = getURL();
             try {
                 audioFormat = JavaSoundParser.parse(url);
             } catch (URISyntaxException e) {
@@ -149,11 +143,9 @@ public final class PlaybackURLConnection extends URLConnection {
      * {@inheritDoc}
      * Throws an {@link UnknownServiceException}.
      *
-     * @throws IOException
-     *         input streams are not supported by the capture protocol.
+     * @throws IOException input streams are not supported by the capture protocol.
      */
-    public InputStream getInputStream()
-        throws IOException {
+    public InputStream getInputStream() throws IOException {
         throw new UnknownServiceException("Cannot read from a playback device");
     }
 

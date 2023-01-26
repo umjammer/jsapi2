@@ -21,12 +21,12 @@ public class GrammarExceptionDetailTest {
      */
     @Test
     void testGetCharNumber() {
-        final GrammarExceptionDetail detail1 = new GrammarExceptionDetail(
+        GrammarExceptionDetail detail1 = new GrammarExceptionDetail(
                 GrammarExceptionDetail.UNKNOWN_TYPE, "info1", "reference1",
                 "ruleName1", 42, 43, "message1");
         assertEquals(43, detail1.getCharNumber());
 
-        final GrammarExceptionDetail detail2 = new GrammarExceptionDetail(
+        GrammarExceptionDetail detail2 = new GrammarExceptionDetail(
                 GrammarExceptionDetail.UNKNOWN_TYPE, null, null, null, 44, 45,
                 null);
         assertEquals(45, detail2.getCharNumber());
@@ -38,12 +38,12 @@ public class GrammarExceptionDetailTest {
      */
     @Test
     void testGetGrammarReference() {
-        final GrammarExceptionDetail detail1 = new GrammarExceptionDetail(
+        GrammarExceptionDetail detail1 = new GrammarExceptionDetail(
                 GrammarExceptionDetail.UNKNOWN_TYPE, "info1",
                 "reference1", "ruleName1", 42, 43, "message1");
         assertEquals("reference1", detail1.getGrammarReference());
 
-        final GrammarExceptionDetail detail2 = new GrammarExceptionDetail(
+        GrammarExceptionDetail detail2 = new GrammarExceptionDetail(
                 GrammarExceptionDetail.UNKNOWN_TYPE, "info1", null,
                 null, 44, 45, null);
         assertNull(detail2.getGrammarReference());
@@ -55,12 +55,12 @@ public class GrammarExceptionDetailTest {
      */
     @Test
     void testGetLineNumber() {
-        final GrammarExceptionDetail detail1 = new GrammarExceptionDetail(
+        GrammarExceptionDetail detail1 = new GrammarExceptionDetail(
                 GrammarExceptionDetail.UNKNOWN_TYPE, "info1",
                 "reference1", "ruleName1", 42, 43, "message1");
         assertEquals(42, detail1.getLineNumber());
 
-        final GrammarExceptionDetail detail2 = new GrammarExceptionDetail(
+        GrammarExceptionDetail detail2 = new GrammarExceptionDetail(
                 GrammarExceptionDetail.UNKNOWN_TYPE, "info1", null,
                 null, 44, 45, null);
         assertEquals(44, detail2.getLineNumber());
@@ -72,12 +72,12 @@ public class GrammarExceptionDetailTest {
      */
     @Test
     void testGetMessage() {
-        final GrammarExceptionDetail detail1 = new GrammarExceptionDetail(
+        GrammarExceptionDetail detail1 = new GrammarExceptionDetail(
                 GrammarExceptionDetail.UNKNOWN_TYPE, "info1",
                 "reference1", "ruleName1", 42, 43, "message1");
         assertEquals("message1", detail1.getMessage());
 
-        final GrammarExceptionDetail detail2 = new GrammarExceptionDetail(
+        GrammarExceptionDetail detail2 = new GrammarExceptionDetail(
                 GrammarExceptionDetail.UNKNOWN_TYPE, "info1", null,
                 null, 44, 45, null);
         assertNull(detail2.getMessage());
@@ -89,12 +89,12 @@ public class GrammarExceptionDetailTest {
      */
     @Test
     void testGetRuleName() {
-        final GrammarExceptionDetail detail1 = new GrammarExceptionDetail(
+        GrammarExceptionDetail detail1 = new GrammarExceptionDetail(
                 GrammarExceptionDetail.UNKNOWN_TYPE, "info1",
                 "reference1", "ruleName1", 42, 43, "message1");
         assertEquals("ruleName1", detail1.getRuleName());
 
-        final GrammarExceptionDetail detail2 = new GrammarExceptionDetail(
+        GrammarExceptionDetail detail2 = new GrammarExceptionDetail(
                 GrammarExceptionDetail.UNKNOWN_TYPE, "info1", null,
                 null, 44, 45, null);
         assertNull(detail2.getRuleName());

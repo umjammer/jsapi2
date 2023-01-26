@@ -26,7 +26,9 @@
 
 package javax.speech.synthesis;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import javax.speech.EngineMode;
 import javax.speech.SpeechLocale;
@@ -44,9 +46,9 @@ public class SynthesizerMode extends EngineMode {
         if (array == null)
             return 0;
         int result = 1;
-        for (int index = 0; index < array.length; index++) {
+        for (Object o : array) {
             result = prime * result
-                    + (array[index] == null ? 0 : array[index].hashCode());
+                    + (o == null ? 0 : o.hashCode());
         }
         return result;
     }
@@ -131,19 +133,17 @@ public class SynthesizerMode extends EngineMode {
         }
 
         if (require instanceof SynthesizerMode) {
-            final SynthesizerMode mode = (SynthesizerMode) require;
+            SynthesizerMode mode = (SynthesizerMode) require;
             Voice[] otherVoices = mode.getVoices();
             if (otherVoices != null) {
                 if (voices == null) {
                     return false;
                 }
 
-                for (int i = 0; i < otherVoices.length; i++) {
-                    Voice otherVoice = otherVoices[i];
-
+                for (Voice otherVoice : otherVoices) {
                     boolean voiceMatch = false;
                     for (int k = 0; (k < voices.length) && !voiceMatch; k++) {
-                        final Voice voice = voices[k];
+                        Voice voice = voices[k];
                         if (otherVoice.match(voice)) {
                             voiceMatch = true;
                         }
@@ -164,17 +164,15 @@ public class SynthesizerMode extends EngineMode {
      * 
      * @return collection of all parameters.
      */
-    protected Vector getParameters() {
-        final Vector parameters = super.getParameters();
+    protected List<Object> getParameters() {
+        List<Object> parameters = super.getParameters();
 
         if (voices == null) {
-            parameters.addElement(null);
+            parameters.add(null);
         } else {
-            final Vector col = new Vector();
-            for (int i = 0; i < voices.length; i++) {
-                col.addElement(voices[i]);
-            }
-            parameters.addElement(col);
+            List<Object> col = new ArrayList<>();
+            Collections.addAll(col, voices);
+            parameters.add(col);
         }
 
         return parameters;

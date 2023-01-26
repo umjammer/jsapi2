@@ -31,14 +31,14 @@ public final class MacEngineListFactoryTest {
      */
     @Test
     void testCreateEngineList() {
-        final MacEngineListFactory factory = new MacEngineListFactory();
-        final EngineList list = factory.createEngineList(SynthesizerMode.DEFAULT);
-        final Enumeration<?> e = list.elements();
+        MacEngineListFactory factory = new MacEngineListFactory();
+        EngineList list = factory.createEngineList(SynthesizerMode.DEFAULT);
+        Enumeration<?> e = list.elements();
         assertTrue(e.hasMoreElements());
-        final SynthesizerMode mode = (SynthesizerMode) e.nextElement();
-        final Voice[] voices = mode.getVoices();
+        SynthesizerMode mode = (SynthesizerMode) e.nextElement();
+        Voice[] voices = mode.getVoices();
         assertTrue(voices.length > 0);
-        final Voice voice = voices[0];
+        Voice voice = voices[0];
         assertEquals("Alex Compact", voice.getName());
     }
 }

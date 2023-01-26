@@ -28,6 +28,9 @@ package javax.speech;
 
 //Comp. 2.0.6
 
+import java.util.Arrays;
+
+
 public class Word {
     public static final long UNKNOWN = 0x00000;
 
@@ -123,7 +126,7 @@ public class Word {
     }
 
     public String toString() {
-        final StringBuffer str = new StringBuffer();
+        StringBuilder str = new StringBuilder();
 
         str.append(getClass());
         str.append("[");
@@ -131,7 +134,7 @@ public class Word {
         str.append(text);
 
         if (pronunciations == null) {
-            str.append(pronunciations);
+            str.append(Arrays.toString(pronunciations));
         } else {
             str.append("[");
             int max = pronunciations.length;

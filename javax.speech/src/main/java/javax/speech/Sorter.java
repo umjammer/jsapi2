@@ -26,13 +26,15 @@
 
 package javax.speech;
 
-import java.util.Vector;
+import java.util.Comparator;
+import java.util.List;
 
 class Sorter {
-    private static void quicksort(Comparator comparator, Vector vec, int lo0, int hi0) {
+
+    private static <T> void quicksort(Comparator<T> comparator, List<T> vec, int lo0, int hi0) {
         int lo = lo0;
         int hi = hi0;
-        Object mid;
+        T mid;
 
         // pause for redraw
         if (hi0 > lo0) {
@@ -41,7 +43,7 @@ class Sorter {
              * Arbitrarily establishing partition element as the midpoint of the
              * array.
              */
-            mid = vec.elementAt((lo0 + hi0) / 2);
+            mid = vec.get((lo0 + hi0) / 2);
 
             // loop through the array until indices cross
             while (lo <= hi) {
@@ -49,7 +51,7 @@ class Sorter {
                  * find the first element that is greater than or equal to the
                  * partition element starting from the left Index.
                  */
-                while ((lo < hi0) && (comparator.compare(vec.elementAt(lo), mid) < 0)) {
+                while ((lo < hi0) && (comparator.compare(vec.get(lo), mid) < 0)) {
                     ++lo;
                 }
 
@@ -57,7 +59,7 @@ class Sorter {
                  * find an element that is smaller than or equal to the
                  * partition element starting from the right Index.
                  */
-                while ((hi > lo0) && (comparator.compare(vec.elementAt(hi), mid) > 0)) {
+                while ((hi > lo0) && (comparator.compare(vec.get(hi), mid) > 0)) {
                     --hi;
                 }
 
@@ -90,15 +92,15 @@ class Sorter {
         }
     }
 
-    private static void swap(Vector vec, int i, int j) {
-        Object object1 = vec.elementAt(i);
-        Object object2 = vec.elementAt(j);
+    private static <T> void swap(List<T> vec, int i, int j) {
+        T object1 = vec.get(i);
+        T object2 = vec.get(j);
 
-        vec.setElementAt(object2, i);
-        vec.setElementAt(object1, j);
+        vec.set(i, object2);
+        vec.set(j, object1);
     }
 
-    public static void sort(Vector vec, Comparator comparator) {
+    public static <T> void sort(List<T> vec, Comparator<T> comparator) {
         quicksort(comparator, vec, 0, vec.size() - 1);
     }
 }

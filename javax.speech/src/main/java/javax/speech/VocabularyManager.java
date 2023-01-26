@@ -43,5 +43,5 @@ public interface VocabularyManager {
         IllegalArgumentException, SecurityException;
 
     void removeWords(Word[] words) throws EngineStateException,
-        IllegalArgumentException, SecurityException;;
+        IllegalArgumentException, SecurityException;
 }

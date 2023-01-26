@@ -39,8 +39,8 @@ public class RuleToken extends RuleComponent {
 
         // TODO Check causes for IllegalArgumentsException
 
-        final char[] chars = text.toCharArray();
-        StringBuffer str = new StringBuffer();
+        char[] chars = text.toCharArray();
+        StringBuilder str = new StringBuilder();
         int pos = 0;
         do {
             while ((pos < chars.length) && isWhitespace(chars[pos])) {

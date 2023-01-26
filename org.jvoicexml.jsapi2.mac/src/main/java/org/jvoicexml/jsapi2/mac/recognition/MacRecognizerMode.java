@@ -21,7 +21,7 @@ public final class MacRecognizerMode extends RecognizerMode
      * Constructs a new object.
      * @param locale  the locale associated with this mode
      */
-    public MacRecognizerMode(final SpeechLocale locale) {
+    public MacRecognizerMode(SpeechLocale locale) {
         super(locale);
     }
     

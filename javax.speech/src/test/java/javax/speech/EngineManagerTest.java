@@ -7,7 +7,6 @@ import javax.speech.mock.MockRecognizerEngineListFactory;
 import javax.speech.mock.MockSpeechEventExecutor;
 import javax.speech.mock.MockSynthesizerEngineListFactory;
 import javax.speech.recognition.RecognizerMode;
-import javax.speech.spi.EngineListFactory;
 import javax.speech.synthesis.SynthesizerMode;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -34,16 +33,16 @@ public class EngineManagerTest {
      */
     @Test
     void testAvailableEngines() {
-        final EngineMode require1 = null;
-        final EngineList engines1 = EngineManager.availableEngines(require1);
+        EngineMode require1 = null;
+        EngineList engines1 = EngineManager.availableEngines(require1);
         assertEquals(2, engines1.size());
 
-        final EngineMode require2 = new SynthesizerMode();
-        final EngineList engines2 = EngineManager.availableEngines(require2);
+        EngineMode require2 = new SynthesizerMode();
+        EngineList engines2 = EngineManager.availableEngines(require2);
         assertEquals(1, engines2.size());
 
-        final EngineMode require3 = new RecognizerMode();
-        final EngineList engines3 = EngineManager.availableEngines(require3);
+        EngineMode require3 = new RecognizerMode();
+        EngineList engines3 = EngineManager.availableEngines(require3);
         assertEquals(1, engines3.size());
     }
 
@@ -53,15 +52,15 @@ public class EngineManagerTest {
      */
     @Test
     void testCreateEngine() throws Exception {
-        final EngineMode require1 = new SynthesizerMode();
-        final Engine engine1 = EngineManager.createEngine(require1);
+        EngineMode require1 = new SynthesizerMode();
+        Engine engine1 = EngineManager.createEngine(require1);
         assertNotNull(engine1);
 
-        final EngineMode require2 = new RecognizerMode();
-        final Engine engine2 = EngineManager.createEngine(require2);
+        EngineMode require2 = new RecognizerMode();
+        Engine engine2 = EngineManager.createEngine(require2);
         assertNotNull(engine2);
 
-        final EngineMode require3 = null;
+        EngineMode require3 = null;
         Exception failure = null;
         try {
             EngineManager.createEngine(require3);
@@ -77,7 +76,7 @@ public class EngineManagerTest {
      */
     @Test
     void testGetSpeechEventExecutor() {
-        final SpeechEventExecutor executor =
+        SpeechEventExecutor executor =
                 EngineManager.getSpeechEventExecutor();
         assertNotNull(executor);
     }
@@ -89,7 +88,7 @@ public class EngineManagerTest {
     @Test
     void testSetSpeechEventExecutor() {
         assertNull(EngineManager.getSpeechEventExecutor());
-        final SpeechEventExecutor executor = new MockSpeechEventExecutor();
+        SpeechEventExecutor executor = new MockSpeechEventExecutor();
         EngineManager.setSpeechEventExecutor(executor);
         assertEquals(executor, EngineManager.getSpeechEventExecutor());
     }
@@ -108,21 +107,21 @@ public class EngineManagerTest {
      */
     @Test
     void testRegisterEngineListFactory() throws Exception {
-        final EngineList engines1 = EngineManager.availableEngines(null);
+        EngineList engines1 = EngineManager.availableEngines(null);
         assertEquals(2, engines1.size());
 
         EngineManager
                 .registerEngineListFactory(MockRecognizerEngineListFactory.class
                         .getName());
 
-        final EngineList engines2 = EngineManager.availableEngines(null);
+        EngineList engines2 = EngineManager.availableEngines(null);
         assertEquals(2, engines2.size());
 
         EngineManager
                 .registerEngineListFactory(MockRecognizerEngineListFactory.class
                         .getName());
 
-        final EngineList engines3 = EngineManager.availableEngines(null);
+        EngineList engines3 = EngineManager.availableEngines(null);
         assertEquals(2, engines3.size());
     }
 }

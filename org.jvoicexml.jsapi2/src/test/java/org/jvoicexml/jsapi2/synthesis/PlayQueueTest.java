@@ -32,8 +32,8 @@ public class PlayQueueTest {
      */
     @BeforeEach
     public void setUp() throws Exception {
-        final BaseSynthesizer synthesizer = new MockSynthesizer();
-        final QueueManager manager = new QueueManager(synthesizer);
+        BaseSynthesizer synthesizer = new MockSynthesizer();
+        QueueManager manager = new QueueManager(synthesizer);
         queue = manager.getPlayQueue();
     }
 
@@ -42,12 +42,12 @@ public class PlayQueueTest {
      */
     @Test
     void testGetNextQueueItem() {
-        final AudioSegment segment1 = new AudioSegment("http://localhost", "test");
-        final QueueItem item1 = new QueueItem(1, segment1, null);
+        AudioSegment segment1 = new AudioSegment("http://localhost", "test");
+        QueueItem item1 = new QueueItem(1, segment1, null);
         item1.setSynthesized(true);
         queue.addQueueItem(item1);
-        final AudioSegment segment2 = new AudioSegment("http://foreignhost", "test2");
-        final QueueItem item2 = new QueueItem(2, segment2, null);
+        AudioSegment segment2 = new AudioSegment("http://foreignhost", "test2");
+        QueueItem item2 = new QueueItem(2, segment2, null);
         item2.setSynthesized(true);
         queue.addQueueItem(item2);
         assertEquals(item1, queue.getNextQueueItem());
@@ -60,10 +60,10 @@ public class PlayQueueTest {
      */
     @Test
     void testGetNextQueueItemNotSynthesized() {
-        final AudioSegment segment1 = new AudioSegment("http://localhost", "test");
-        final QueueItem item1 = new QueueItem(1, segment1, null);
+        AudioSegment segment1 = new AudioSegment("http://localhost", "test");
+        QueueItem item1 = new QueueItem(1, segment1, null);
         queue.addQueueItem(item1);
-        final Thread thread = new Thread(() -> {
+        Thread thread = new Thread(null, () -> {
             try {
                 Thread.sleep(1000);
                 item1.setSynthesized(true);
@@ -71,9 +71,9 @@ public class PlayQueueTest {
             } catch (InterruptedException e) {
                 fail(e.getMessage());
             }
-        });
+        }, "Test Fire Event");
         thread.start();
-        final QueueItem fetchedItem = queue.getNextQueueItem();
+        QueueItem fetchedItem = queue.getNextQueueItem();
         assertTrue(fetchedItem.isSynthesized());
         assertEquals(item1, fetchedItem);
     }

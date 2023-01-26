@@ -15,17 +15,17 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class WordTest {
     @Test
     void testConstructor() {
-        final String[] pronounciations = new String[] { "one", "two", "three" };
+        String[] pronounciations = new String[] { "one", "two", "three" };
         final String locator = "file:///user/smith/hello.wav";
         final String markup = "<speak xml:lang='en-US' version='1.0'>Hello</speak>";
-        final AudioSegment segment = new AudioSegment(locator, markup);
-        final Word word1 = new Word("text", pronounciations, "spoken form",
+        AudioSegment segment = new AudioSegment(locator, markup);
+        Word word1 = new Word("text", pronounciations, "spoken form",
                 segment, Word.NOUN | Word.CARDINAL);
         assertNotNull(word1);
 
         Exception failure = null;
         try {
-            final Word word2 = new Word(null, pronounciations, "spoken form",
+            Word word2 = new Word(null, pronounciations, "spoken form",
                     segment, Word.NOUN | Word.CARDINAL);
             assertNotNull(word2);
         } catch (IllegalArgumentException e) {
@@ -39,11 +39,11 @@ public class WordTest {
      */
     @Test
     void testGetAudioSegment() {
-        final String[] pronounciations = new String[] { "one", "two", "three" };
+        String[] pronounciations = new String[] { "one", "two", "three" };
         final String locator = "file:///user/smith/hello.wav";
         final String markup = "<speak xml:lang='en-US' version='1.0'>Hello</speak>";
-        final AudioSegment segment = new AudioSegment(locator, markup);
-        final Word word = new Word("text", pronounciations, "spoken form",
+        AudioSegment segment = new AudioSegment(locator, markup);
+        Word word = new Word("text", pronounciations, "spoken form",
                 segment, Word.NOUN | Word.CARDINAL);
         assertEquals(segment, word.getAudioSegment());
     }
@@ -53,11 +53,11 @@ public class WordTest {
      */
     @Test
     void testGetCategories() {
-        final String[] pronounciations = new String[] { "one", "two", "three" };
+        String[] pronounciations = new String[] { "one", "two", "three" };
         final String locator = "file:///user/smith/hello.wav";
         final String markup = "<speak xml:lang='en-US' version='1.0'>Hello</speak>";
-        final AudioSegment segment = new AudioSegment(locator, markup);
-        final Word word = new Word("text", pronounciations, "spoken form",
+        AudioSegment segment = new AudioSegment(locator, markup);
+        Word word = new Word("text", pronounciations, "spoken form",
                 segment, Word.NOUN | Word.CARDINAL);
         assertEquals(Word.NOUN | Word.CARDINAL, word.getCategories());
     }
@@ -67,11 +67,11 @@ public class WordTest {
      */
     @Test
     void testGetPronunciations() {
-        final String[] pronounciations = new String[] { "one", "two", "three" };
+        String[] pronounciations = new String[] { "one", "two", "three" };
         final String locator = "file:///user/smith/hello.wav";
         final String markup = "<speak xml:lang='en-US' version='1.0'>Hello</speak>";
-        final AudioSegment segment = new AudioSegment(locator, markup);
-        final Word word = new Word("text", pronounciations, "spoken form",
+        AudioSegment segment = new AudioSegment(locator, markup);
+        Word word = new Word("text", pronounciations, "spoken form",
                 segment, Word.NOUN | Word.CARDINAL);
         assertEquals(pronounciations, word.getPronunciations());
     }
@@ -81,11 +81,11 @@ public class WordTest {
      */
     @Test
     void testGetSpokenForm() {
-        final String[] pronounciations = new String[] { "one", "two", "three" };
+        String[] pronounciations = new String[] { "one", "two", "three" };
         final String locator = "file:///user/smith/hello.wav";
         final String markup = "<speak xml:lang='en-US' version='1.0'>Hello</speak>";
-        final AudioSegment segment = new AudioSegment(locator, markup);
-        final Word word = new Word("text", pronounciations, "spoken form",
+        AudioSegment segment = new AudioSegment(locator, markup);
+        Word word = new Word("text", pronounciations, "spoken form",
                 segment, Word.NOUN | Word.CARDINAL);
         assertEquals("spoken form", word.getSpokenForm());
     }
@@ -95,11 +95,11 @@ public class WordTest {
      */
     @Test
     void testGetText() {
-        final String[] pronounciations = new String[] { "one", "two", "three" };
+        String[] pronounciations = new String[] { "one", "two", "three" };
         final String locator = "file:///user/smith/hello.wav";
         final String markup = "<speak xml:lang='en-US' version='1.0'>Hello</speak>";
-        final AudioSegment segment = new AudioSegment(locator, markup);
-        final Word word = new Word("text", pronounciations, "spoken form",
+        AudioSegment segment = new AudioSegment(locator, markup);
+        Word word = new Word("text", pronounciations, "spoken form",
                 segment, Word.NOUN | Word.CARDINAL);
         assertEquals("text", word.getText());
     }

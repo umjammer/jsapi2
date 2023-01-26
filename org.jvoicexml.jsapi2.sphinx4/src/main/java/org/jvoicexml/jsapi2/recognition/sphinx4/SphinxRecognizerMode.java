@@ -41,7 +41,7 @@ public class SphinxRecognizerMode extends RecognizerMode
      * @param locale
      *            the locale of this recognizer
      */
-    public SphinxRecognizerMode(final SpeechLocale locale) {
+    public SphinxRecognizerMode(SpeechLocale locale) {
         super("sphinx4", null, true, false, true, 10000,
                 new SpeechLocale[] { locale }, null);
     }

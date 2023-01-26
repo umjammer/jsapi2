@@ -35,14 +35,14 @@ class BaseEngineStateTransitionTest {
      */
     @BeforeEach
     void setUp() throws Exception {
-        final MockSynthesizer synthesizer = new MockSynthesizer();
+        MockSynthesizer synthesizer = new MockSynthesizer();
         synthesizer.setEngineMask(EngineEvent.DEFAULT_MASK
                 | EngineEvent.ENGINE_ALLOCATING_RESOURCES
                 | EngineEvent.ENGINE_DEALLOCATING_RESOURCES);
         eventAccu = new EngineEventAccumulator();
         synthesizer.addSynthesizerListener(eventAccu);
         engine = synthesizer;
-        final SpeechEventExecutor executor =
+        SpeechEventExecutor executor =
                 new SynchronousSpeechEventExecutor();
         engine.setSpeechEventExecutor(executor);
     }
@@ -55,7 +55,7 @@ class BaseEngineStateTransitionTest {
     void testAllocate() throws Exception {
         engine.allocate();
         engine.waitEngineState(Engine.ALLOCATED);
-        final EngineEvent[] events = eventAccu.getEvents();
+        EngineEvent[] events = eventAccu.getEvents();
         assertEquals(2, events.length);
         assertEquals(EngineEvent.ENGINE_ALLOCATING_RESOURCES,
                 events[0].getId());
@@ -72,7 +72,7 @@ class BaseEngineStateTransitionTest {
         engine.waitEngineState(Engine.ALLOCATED);
         engine.deallocate();
         engine.waitEngineState(Engine.DEALLOCATED);
-        final EngineEvent[] events = eventAccu.getEvents();
+        EngineEvent[] events = eventAccu.getEvents();
         assertEquals(4, events.length);
         assertEquals(EngineEvent.ENGINE_ALLOCATING_RESOURCES,
                 events[0].getId());

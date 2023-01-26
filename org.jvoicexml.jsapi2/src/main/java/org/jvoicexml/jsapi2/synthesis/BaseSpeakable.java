@@ -42,7 +42,7 @@ public class BaseSpeakable implements Speakable {
      * Constructs a new object.
      * @param text the markup.
      */
-    public BaseSpeakable(final String text) {
+    public BaseSpeakable(String text) {
         markup = text;
     }
 
@@ -53,7 +53,7 @@ public class BaseSpeakable implements Speakable {
 
     @Override
     public String toString() {
-        final StringBuilder str = new StringBuilder();
+        StringBuilder str = new StringBuilder();
         str.append(getClass().getName());
         str.append("[");
         if (markup != null) {

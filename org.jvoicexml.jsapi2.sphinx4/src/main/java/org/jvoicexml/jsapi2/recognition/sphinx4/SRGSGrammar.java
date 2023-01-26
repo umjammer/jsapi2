@@ -32,7 +32,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.speech.EngineStateException;
 import javax.speech.recognition.GrammarException;
 import javax.speech.recognition.GrammarExceptionDetail;
@@ -48,10 +47,6 @@ import javax.speech.recognition.RuleSpecial;
 import javax.speech.recognition.RuleTag;
 import javax.speech.recognition.RuleToken;
 
-import org.jvoicexml.jsapi2.recognition.BaseRecognizer;
-import org.jvoicexml.jsapi2.recognition.BaseRuleGrammar;
-import org.jvoicexml.jsapi2.recognition.SrgsRuleGrammarParser;
-
 import edu.cmu.sphinx.linguist.dictionary.Dictionary;
 import edu.cmu.sphinx.linguist.language.grammar.Grammar;
 import edu.cmu.sphinx.linguist.language.grammar.GrammarNode;
@@ -59,9 +54,13 @@ import edu.cmu.sphinx.util.props.ConfigurationManagerUtils;
 import edu.cmu.sphinx.util.props.PropertyException;
 import edu.cmu.sphinx.util.props.PropertySheet;
 import edu.cmu.sphinx.util.props.S4String;
+import org.jvoicexml.jsapi2.recognition.BaseRecognizer;
+import org.jvoicexml.jsapi2.recognition.BaseRuleGrammar;
+import org.jvoicexml.jsapi2.recognition.SrgsRuleGrammarParser;
+
 
 /**
- * Defines a XML-style grammar based on SRGS grammar rules in a file.
+ * Defines an XML-style grammar based on SRGS grammar rules in a file.
  * <p>
  * The Speech Recognition Grammar Specification (SRGS) is a XML-style,
  * platform-independent, and vendor-independent textual representation of
@@ -132,8 +131,8 @@ public class SRGSGrammar extends Grammar {
     }
 
     public SRGSGrammar(BaseRecognizer rec, boolean showGrammar,
-            boolean optimizeGrammar, boolean addSilenceWords,
-            boolean addFillerWords, Dictionary dictionary) {
+                       boolean optimizeGrammar, boolean addSilenceWords,
+                       boolean addFillerWords, Dictionary dictionary) {
         super(showGrammar, optimizeGrammar, addSilenceWords, addFillerWords,
                 dictionary);
         recognizer = rec;
@@ -141,7 +140,7 @@ public class SRGSGrammar extends Grammar {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * edu.cmu.sphinx.util.props.Configurable#newProperties(edu.cmu.sphinx.util
      * .props.PropertySheet)
@@ -160,13 +159,12 @@ public class SRGSGrammar extends Grammar {
                     ex.getMessage());
         } catch (IOException e) {
             // there is no grammar at the given location or no location is given
-            return;
         }
     }
 
     /**
      * Returns the RuleGrammar of this SRGSGrammar.
-     * 
+     *
      * @return the RuleGrammar
      */
     public RuleGrammar getRuleGrammar() {
@@ -175,9 +173,8 @@ public class SRGSGrammar extends Grammar {
 
     /**
      * Sets the URL context of the SRGS grammars.
-     * 
-     * @param url
-     *            the URL context of the grammars
+     *
+     * @param url the URL context of the grammars
      */
     public void setBaseURL(URL url) {
         baseURL = url;
@@ -189,7 +186,7 @@ public class SRGSGrammar extends Grammar {
 
     /**
      * Retrieves the name of this grammar.
-     * 
+     *
      * @return name of this grammar
      */
     public String getGrammarName() {
@@ -199,11 +196,9 @@ public class SRGSGrammar extends Grammar {
     /**
      * The SRGS grammar specified by grammarName will be loaded from the base
      * url (tossing out any previously loaded grammars)
-     * 
-     * @param grammarURL
-     *            URL of the grammar
-     * @throws IOException
-     *             if an error occurs while loading or compiling the grammar
+     *
+     * @param grammarURL URL of the grammar
+     * @throws IOException if an error occurs while loading or compiling the grammar
      */
     public void loadSRGS(URL grammarURL) throws IOException {
         this.grammarURL = grammarURL;
@@ -218,10 +213,9 @@ public class SRGSGrammar extends Grammar {
 
     /**
      * Creates the grammar.
-     * 
+     *
      * @return the initial node of the Grammar
-     * @throws IOException
-     *             error creating the grammar
+     * @throws IOException error creating the grammar
      */
     protected GrammarNode createGrammar() throws IOException {
         commitChanges();
@@ -230,7 +224,7 @@ public class SRGSGrammar extends Grammar {
 
     /**
      * Returns the initial node for the grammar
-     * 
+     *
      * @return the initial grammar node
      */
     public GrammarNode getInitialNode() {
@@ -239,9 +233,8 @@ public class SRGSGrammar extends Grammar {
 
     /**
      * Parses the given Rule into a network of GrammarNodes.
-     * 
-     * @param rule
-     *            the Rule to parse
+     *
+     * @param rule the Rule to parse
      * @return a grammar graph
      */
     private GrammarGraph parseRule(RuleComponent rule) throws GrammarException {
@@ -249,7 +242,7 @@ public class SRGSGrammar extends Grammar {
 
         if (rule != null) {
             if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine("parseRule: " + rule.toString());
+                LOGGER.fine("parseRule: " + rule);
             }
         }
 
@@ -269,7 +262,7 @@ public class SRGSGrammar extends Grammar {
             result = parseRuleSpecial((RuleSpecial) rule);
         } else if (rule instanceof RuleParse) {
             throw new IllegalArgumentException(
-                    "Unsupported Rule type: RuleParse: " + rule.toString());
+                    "Unsupported Rule type: RuleParse: " + rule);
         } else {
             throw new IllegalArgumentException(
                     "Unsupported Rule type: " + rule.toString());
@@ -290,13 +283,11 @@ public class SRGSGrammar extends Grammar {
                 url = new URL(baseURL + grammarReference);
             }
             grammarStream = url.openStream();
-        } catch (MalformedURLException ex) {
-            ex.printStackTrace();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
 
-        Rule rules[] = srgsRuleGrammarParser.load(grammarStream);
+        Rule[] rules = srgsRuleGrammarParser.load(grammarStream);
 
         for (Rule r : rules) {
             if (r.getRuleName().compareTo(ruleName) == 0) {
@@ -307,7 +298,7 @@ public class SRGSGrammar extends Grammar {
         return null;
     }
 
-    /** @todo change this by a proper solution */
+    /** TODO change this by a proper solution */
     private GrammarGraph parseRuleSpecial(RuleSpecial rule) {
         if (rule == RuleSpecial.NULL) {
             // no connection for null
@@ -323,9 +314,8 @@ public class SRGSGrammar extends Grammar {
 
     /**
      * Parses the given RuleName into a network of GrammarNodes.
-     * 
-     * @param initialRule
-     *            Rule to parse
+     *
+     * @param initialRule Rule to parse
      * @return a grammar graph
      */
     private GrammarGraph parseRuleReference(RuleReference initialRule)
@@ -333,10 +323,10 @@ public class SRGSGrammar extends Grammar {
         if (LOGGER.isLoggable(Level.FINE)) {
             LOGGER.fine("parseRuleName: " + initialRule.toString());
         }
-        GrammarGraph result = (GrammarGraph) ruleStack
+        GrammarGraph result = ruleStack
                 .contains(initialRule.getRuleName());
 
-        if (result != null) { // its a recursive call
+        if (result != null) { // it's a recursive call
             return result;
         } else {
             result = new GrammarGraph();
@@ -368,9 +358,8 @@ public class SRGSGrammar extends Grammar {
 
     /**
      * Parses the given RuleCount into a network of GrammarNodes.
-     * 
-     * @param ruleCount
-     *            the RuleCount object to parse
+     *
+     * @param ruleCount the RuleCount object to parse
      * @return a grammar graph
      */
     private GrammarGraph parseRuleCount(RuleCount ruleCount)
@@ -391,27 +380,27 @@ public class SRGSGrammar extends Grammar {
             while (countNodes < minRepeat) {
                 countNodes++;
                 tmpGraph = parseRule(ruleCount.getRuleComponent());
-                /** @todo how can i copy a graph */
+                /* @todo how can i copy a graph */
                 lastNode = tmpGraph;
                 newNodes.getEndNode().add(tmpGraph.getStartNode(), 0.0f);
                 newNodes.endNode = tmpGraph.getEndNode();
-                /** @todo review this */
+                /* @todo review this */
             }
         }
 
         if (maxRepeat != RuleCount.REPEAT_INDEFINITELY) {
             GrammarGraph tmpGraph;
-            ArrayList<GrammarNode> v = new java.util.ArrayList<GrammarNode>();
+            ArrayList<GrammarNode> v = new java.util.ArrayList<>();
             lastNode = newNodes;
             while (countNodes < maxRepeat) {
                 ++countNodes;
                 tmpGraph = parseRule(ruleCount.getRuleComponent());
-                /** @todo how can i copy a graph */
+                /* @todo how can i copy a graph */
                 v.add(lastNode.getEndNode());
                 newNodes.getEndNode().add(tmpGraph.getStartNode(), 0.0f);
                 newNodes.getEndNode().add(tmpGraph.getEndNode(), 0.0f);
                 newNodes.endNode = tmpGraph.getEndNode();
-                /** @todo review this */
+                /* @todo review this */
                 lastNode = tmpGraph;
             }
 
@@ -444,9 +433,8 @@ public class SRGSGrammar extends Grammar {
 
     /**
      * Parses the given RuleAlternatives into a network of GrammarNodes.
-     * 
-     * @param ruleAlternatives
-     *            the RuleAlternatives to parse
+     *
+     * @param ruleAlternatives the RuleAlternatives to parse
      * @return a grammar graph
      */
     private GrammarGraph parseRuleAlternatives(
@@ -459,7 +447,7 @@ public class SRGSGrammar extends Grammar {
 
         RuleComponent[] rules = ruleAlternatives.getRuleComponents();
         int[] weights = ruleAlternatives.getWeights();
-        /** @todo implement it in jsapi2/srgsrulegrammarparser */
+        /* @todo implement it in jsapi2/srgsrulegrammarparser */
         // normalizeWeights(weights);
 
         // end each alternative, and connect them in parallel
@@ -496,9 +484,8 @@ public class SRGSGrammar extends Grammar {
 
     /**
      * Parses the given RuleSequence into a network of GrammarNodes.
-     * 
-     * @param ruleSequence
-     *            the RuleSequence to parse
+     *
+     * @param ruleSequence the RuleSequence to parse
      * @return the first and last GrammarNodes of the network
      */
     private GrammarGraph parseRuleSequence(RuleSequence ruleSequence)
@@ -543,11 +530,10 @@ public class SRGSGrammar extends Grammar {
 
     /**
      * Parses the given RuleTag into a network GrammarNodes.
-     * 
-     * @todo change this by a proper solution.
-     * 
-     * @param ruleTag
-     *            the RuleTag to parse
+     * <p>
+     * TODO change this by a proper solution.
+     *
+     * @param ruleTag the RuleTag to parse
      * @return the first and last GrammarNodes of the network
      */
     private GrammarGraph parseRuleTag(RuleTag ruleTag) throws GrammarException {
@@ -560,9 +546,8 @@ public class SRGSGrammar extends Grammar {
 
     /**
      * Creates a GrammarNode with the word in the given RuleToken.
-     * 
-     * @param ruleToken
-     *            the RuleToken that contains the word
+     *
+     * @param ruleToken the RuleToken that contains the word
      * @return a GrammarNode with the word in the given RuleToken
      */
     private GrammarGraph parseRuleToken(RuleToken ruleToken) {
@@ -593,22 +578,21 @@ public class SRGSGrammar extends Grammar {
 
     /**
      * Dumps out a grammar exception
-     * 
-     * @param ge
-     *            the grammar exception
+     *
+     * @param ge the grammar exception
      */
     private void dumpGrammarException(GrammarException ge) {
         LOGGER.warning("Grammar exception " + ge);
         GrammarExceptionDetail[] gsd = ge.getDetails();
         if (gsd != null) {
-            for (int i = 0; i < gsd.length; i++) {
-                LOGGER.warning("Grammar Name: " + gsd[i].getGrammarReference());
-                LOGGER.warning("Line number : " + gsd[i].getLineNumber());
-                LOGGER.warning("char number : " + gsd[i].getCharNumber());
-                LOGGER.warning("Rule name   : " + gsd[i].getRuleName());
-                LOGGER.warning("Message     : " + gsd[i].getMessage());
-                LOGGER.warning("Text Info     : " + gsd[i].getTextInfo());
-                LOGGER.warning("Type        : " + gsd[i].getType());
+            for (GrammarExceptionDetail grammarExceptionDetail : gsd) {
+                LOGGER.warning("Grammar Name: " + grammarExceptionDetail.getGrammarReference());
+                LOGGER.warning("Line number : " + grammarExceptionDetail.getLineNumber());
+                LOGGER.warning("char number : " + grammarExceptionDetail.getCharNumber());
+                LOGGER.warning("Rule name   : " + grammarExceptionDetail.getRuleName());
+                LOGGER.warning("Message     : " + grammarExceptionDetail.getMessage());
+                LOGGER.warning("Text Info     : " + grammarExceptionDetail.getTextInfo());
+                LOGGER.warning("Type        : " + grammarExceptionDetail.getType());
             }
         }
     }
@@ -616,15 +600,14 @@ public class SRGSGrammar extends Grammar {
     /**
      * Commit changes to all loaded grammars and all changes of grammar since
      * the last commitChange
-     * 
-     * @throws IOException
-     *             error creating the grammar
+     *
+     * @throws IOException error creating the grammar
      */
     public void commitChanges() throws IOException {
         try {
             SrgsRuleGrammarParser srgsRuleGrammarParser = new SrgsRuleGrammarParser();
 
-            Rule rules[];
+            Rule[] rules;
 
             if (grammarURL != null) {
                 InputStream grammarStream = grammarURL.openStream();
@@ -636,10 +619,10 @@ public class SRGSGrammar extends Grammar {
 
             if (rules != null) {
                 ruleGrammar = new BaseRuleGrammar(recognizer, grammarName);
-                /** @todo dgmr cuidado com isto */
+                // TODO dgmr careful with this
                 ruleGrammar.addRules(rules);
                 // ruleGrammar.setAttributes(srgsRuleGrammarParser.getAttributes());
-                // /**@todo nao eh necessario ??? */
+                // TODO it is not necessary ???
             }
 
             ruleGrammar.commitChanges();
@@ -655,8 +638,7 @@ public class SRGSGrammar extends Grammar {
             // for each of them
 
             String[] ruleNames = ruleGrammar.listRuleNames();
-            for (int i = 0; i < ruleNames.length; i++) {
-                String ruleName = ruleNames[i];
+            for (String ruleName : ruleNames) {
                 if (ruleGrammar.getRule(ruleName).getScope() == Rule.PUBLIC) {
                     String fullName = getFullRuleName(ruleName);
                     GrammarGraph publicRuleGraph = new GrammarGraph();
@@ -683,20 +665,16 @@ public class SRGSGrammar extends Grammar {
 
     /**
      * Gets the fully resolved rule name
-     * 
-     * @param ruleName
-     *            the partial name
-     * @return the fully resovled name
+     *
+     * @param ruleName the partial name
+     * @return the fully resolved name
      * @throws GrammarException
      */
     private String getFullRuleName(String ruleName) throws GrammarException {
-        /*
-         * RuleReference rname = ruleGrammar.resolve(new
-         * RuleReference(ruleName)); return rname.getRuleName();
-         *//**
-           * @todo review this implementation; our implementation of base
-           *       engines not implementation resolve method
-           */
+//        RuleReference rname = ruleGrammar.resolve(newRuleReference(ruleName));
+//        return rname.getRuleName();
+        // TODO review this implementation; our implementation of base
+        //      engines not implementation resolve method
         return ruleName;
     }
 
@@ -711,11 +689,9 @@ public class SRGSGrammar extends Grammar {
 
         /**
          * Creates a grammar graph with the given nodes
-         * 
-         * @param startNode
-         *            the staring node of the graph
-         * @param endNode
-         *            the ending node of the graph
+         *
+         * @param startNode the staring node of the graph
+         * @param endNode   the ending node of the graph
          */
         GrammarGraph(GrammarNode startNode, GrammarNode endNode) {
             this.startNode = startNode;
@@ -732,7 +708,7 @@ public class SRGSGrammar extends Grammar {
 
         /**
          * Gets the starting node
-         * 
+         *
          * @return the starting node for the graph
          */
         GrammarNode getStartNode() {
@@ -741,7 +717,7 @@ public class SRGSGrammar extends Grammar {
 
         /**
          * Gets the ending node
-         * 
+         *
          * @return the ending node for the graph
          */
         GrammarNode getEndNode() {
@@ -774,15 +750,14 @@ public class SRGSGrammar extends Grammar {
 
         /**
          * Checks to see if the stack contains a graph with the given name
-         * 
-         * @param name
-         *            the graph name
+         *
+         * @param name the graph name
          * @return the grammar graph associated with the name if found,
-         *         otherwise null
+         * otherwise null
          */
         public GrammarGraph contains(String name) {
             if (stack.contains(name)) {
-                return (GrammarGraph) (GrammarGraph) map.get(name);
+                return map.get(name);
             } else {
                 return null;
             }
@@ -790,8 +765,8 @@ public class SRGSGrammar extends Grammar {
 
         /** Clears this name stack */
         public void clear() {
-            stack = new java.util.LinkedList<String>();
-            map = new java.util.HashMap<String, GrammarGraph>();
+            stack = new java.util.LinkedList<>();
+            map = new java.util.HashMap<>();
         }
     }
 }

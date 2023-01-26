@@ -21,11 +21,11 @@ public class RuleTagTest {
      */
     @Test
     void testNewRuleToken() {
-        final RuleTag tag1 = new RuleTag("test");
+        RuleTag tag1 = new RuleTag("test");
         assertEquals("test", tag1.getTag());
 
-        final RuleTag tag2 = new RuleTag(new Integer(42));
-        assertEquals(new Integer(42), tag2.getTag());
+        RuleTag tag2 = new RuleTag(42);
+        assertEquals(42, tag2.getTag());
     }
 
     /**
@@ -33,11 +33,11 @@ public class RuleTagTest {
      */
     @Test
     void testToString() {
-        final RuleTag tag = new RuleTag("CL");
+        RuleTag tag = new RuleTag("CL");
         assertEquals("<tag>CL</tag>", tag.toString());
 
         Exception failure = null;
-        final RuleTag tag2 = new RuleTag(null);
+        RuleTag tag2 = new RuleTag(null);
         try {
             tag2.toString();
         } catch (IllegalArgumentException e) {
@@ -51,10 +51,10 @@ public class RuleTagTest {
      */
     @Test
     void testGetTag() {
-        final RuleTag tag = new RuleTag("CL");
+        RuleTag tag = new RuleTag("CL");
         assertEquals("CL", tag.getTag());
 
-        final RuleTag tag2 = new RuleTag(null);
+        RuleTag tag2 = new RuleTag(null);
         assertNull(tag2.getTag());
     }
 }

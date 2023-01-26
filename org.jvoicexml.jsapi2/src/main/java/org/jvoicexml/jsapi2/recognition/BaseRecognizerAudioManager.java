@@ -25,14 +25,12 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -47,26 +45,27 @@ import javax.speech.EngineStateException;
 import org.jvoicexml.jsapi2.BaseAudioManager;
 import org.jvoicexml.jsapi2.protocols.JavaSoundParser;
 
+
 /**
  * Supports the JSAPI 2.0 {@link javax.speech.AudioManager} interface. Actual JSAPI
  * implementations might want to extend or modify this implementation
  * for {@link javax.speech.recognition.Recognizer}.
  */
 public class BaseRecognizerAudioManager extends BaseAudioManager {
+
     /** Logger instance. */
-    private static final Logger LOGGER =
-        Logger.getLogger(BaseRecognizerAudioManager.class.getCanonicalName());
+    private static final Logger LOGGER = Logger.getLogger(BaseRecognizerAudioManager.class.getCanonicalName());
 
     /** The input stream for the recognizer. */
     private InputStream inputStream;
 
     /**
      * Constructs a new object.
+     *
      * @param engine the associated engine
      * @param format native engine audio format
      */
-    public BaseRecognizerAudioManager(final Engine engine,
-            final AudioFormat format) {
+    public BaseRecognizerAudioManager(Engine engine, AudioFormat format) {
         super(engine, format);
     }
 
@@ -79,39 +78,34 @@ public class BaseRecognizerAudioManager extends BaseAudioManager {
      *   parsing the sound format encoded in the URL if the previous method
      *   fails.</li>
      * </ol>
+     *
      * @param locator the URL to open
      * @return opened connection to the URL
-     * @throws AudioException 
-     *         error opening the stream
+     * @throws AudioException error opening the stream
      */
-    private InputStream openUrl(final String locator) throws AudioException {
+    private InputStream openUrl(String locator) throws AudioException {
         // Clear a possible previous audio format
         setTargetAudioFormat(null);
-        
+
         if (LOGGER.isLoggable(Level.FINE)) {
             LOGGER.log(Level.FINE, "opening locator at: '" + locator + "'");
         }
-        
+
         // Determine the audio format
         AudioFormat targetFormat = null;
         try {
-            final URL url = new URL(locator);
-            final AudioFileFormat format =
-                AudioSystem.getAudioFileFormat(url);
+            URL url = new URL(locator);
+            AudioFileFormat format = AudioSystem.getAudioFileFormat(url);
             targetFormat = format.getFormat();
             setTargetAudioFormat(targetFormat);
-        } catch (MalformedURLException e) {
-            throw new AudioException(e.getMessage());
-        } catch (UnsupportedAudioFileException e) {
-            throw new AudioException(e.getMessage());
-        } catch (IOException e) {
+        } catch (IOException | UnsupportedAudioFileException e) {
             throw new AudioException(e.getMessage());
         }
-        
+
         // Open the connection to retrieve an input stream
         try {
-            final URLConnection urlConnection = openURLConnection(false);
-            final InputStream source = urlConnection.getInputStream();
+            URLConnection urlConnection = openURLConnection(false);
+            InputStream source = urlConnection.getInputStream();
             return new BufferedInputStream(source);
         } catch (IOException ex) {
             throw new AudioException("Cannot get InputStream from URL: "
@@ -123,40 +117,39 @@ public class BaseRecognizerAudioManager extends BaseAudioManager {
     public final void handleAudioStart() throws AudioException {
         // Just convert samples if we already have the correct stream
         if (inputStream instanceof AudioInputStream) {
-            final AudioInputStream stream = (AudioInputStream) inputStream;
+            AudioInputStream stream = (AudioInputStream) inputStream;
             inputStream = handleAudioStart(stream);
-            return;
         } else {
-            final String locator = getMediaLocator();
+            String locator = getMediaLocator();
             handleAudioStart(locator);
         }
     }
 
     /**
      * Starts audio for the given audio input stream.
+     *
      * @param stream the current stream
      * @return a converting stream
      */
     private AudioInputStream handleAudioStart(
-            final AudioInputStream stream) {
-        final AudioFormat format = stream.getFormat();
+            AudioInputStream stream) {
+        AudioFormat format = stream.getFormat();
         setTargetAudioFormat(format);
-        final AudioFormat engineFormat = getEngineAudioFormat();
+        AudioFormat engineFormat = getEngineAudioFormat();
         return AudioSystem.getAudioInputStream(engineFormat, stream);
     }
 
 
     /**
      * Starts audio processing for the given media locator.
+     *
      * @param locator the media locator to use
-     * @throws AudioException
-     *          error starting the audio
+     * @throws AudioException error starting the audio
      */
-    private void handleAudioStart(final String locator) throws AudioException {
-        final AudioFormat format;
+    private void handleAudioStart(String locator) throws AudioException {
+        AudioFormat format;
         // Open URL described in locator
-        if (locator == null || locator.isEmpty()
-                || locator.startsWith("capture")) {
+        if (locator == null || locator.isEmpty() || locator.startsWith("capture")) {
             if (locator != null && locator.startsWith("capture")) {
                 try {
                     format = parseAudioFormat(locator);
@@ -181,25 +174,21 @@ public class BaseRecognizerAudioManager extends BaseAudioManager {
             LOGGER.log(Level.FINE, "using target audio format {0}",
                     format);
         }
-        final AudioInputStream stream = new AudioInputStream(inputStream,
-                    format, AudioSystem.NOT_SPECIFIED);
-        final AudioFormat engineFormat = getEngineAudioFormat();
-        inputStream = AudioSystem.getAudioInputStream(engineFormat,
-                        stream);
+        AudioInputStream stream = new AudioInputStream(inputStream, format, AudioSystem.NOT_SPECIFIED);
+        AudioFormat engineFormat = getEngineAudioFormat();
+        inputStream = AudioSystem.getAudioInputStream(engineFormat, stream);
     }
 
     /**
      * Opens the microphone with the given audio format.
+     *
      * @param format the audio format to use.
      * @return opened input stream to the microphone
-     * @throws LineUnavailableException
-     *          error opening the microphone
+     * @throws LineUnavailableException error opening the microphone
      */
-    private InputStream openMicrophone(final AudioFormat format)
-            throws LineUnavailableException {
-        final TargetDataLine lineLocalMic =
-                AudioSystem.getTargetDataLine(format);
-        final InputStream source = new AudioInputStream(lineLocalMic);
+    private InputStream openMicrophone(AudioFormat format) throws LineUnavailableException {
+        TargetDataLine lineLocalMic = AudioSystem.getTargetDataLine(format);
+        InputStream source = new AudioInputStream(lineLocalMic);
         lineLocalMic.open();
         lineLocalMic.start();
         return new BufferedInputStream(source);
@@ -207,23 +196,21 @@ public class BaseRecognizerAudioManager extends BaseAudioManager {
 
     /**
      * Parses the audio format from the given media locator.
+     *
      * @param locator the media locator with the audio format
      * @return parsed audio format
-     * @throws URISyntaxException 
-     *           error converting the locator into a URI representation
+     * @throws URISyntaxException error converting the locator into a URI representation
      */
-    private AudioFormat parseAudioFormat(final String locator)
-            throws URISyntaxException {
-        final URI uri = new URI(locator);
-        final AudioFormat format = JavaSoundParser.parse(uri);
+    private AudioFormat parseAudioFormat(String locator) throws URISyntaxException {
+        URI uri = new URI(locator);
+        AudioFormat format = JavaSoundParser.parse(uri);
         setTargetAudioFormat(format);
         if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.log(Level.FINE, "Got AudioFormat: {0}",
-                    format.toString());
+            LOGGER.log(Level.FINE, "Got AudioFormat: {0}", format.toString());
         }
         return format;
     }
-    
+
     @Override
     public final void handleAudioStop() throws AudioException {
         if (inputStream == null) {
@@ -241,22 +228,19 @@ public class BaseRecognizerAudioManager extends BaseAudioManager {
     }
 
     @Override
-    public void setMediaLocator(final String locator, final InputStream stream)
-            throws AudioException {
+    public void setMediaLocator(String locator, InputStream stream) throws AudioException {
         super.setMediaLocator(locator);
         inputStream = stream;
     }
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * Throws an {@link IllegalArgumentException} since output streams are not
      * supported.
      */
-    public void setMediaLocator(final String locator,
-            final OutputStream stream)
-            throws AudioException, EngineStateException,
-            IllegalArgumentException, SecurityException {
+    public void setMediaLocator(String locator, OutputStream stream)
+            throws AudioException, EngineStateException, IllegalArgumentException, SecurityException {
         throw new IllegalArgumentException("output streams are not supported");
     }
 

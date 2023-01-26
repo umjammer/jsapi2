@@ -47,162 +47,112 @@ import javax.speech.recognition.SpeakerManager;
  */
 public class MockRecognizer implements Recognizer {
 
-    public void allocate() throws AudioException, EngineException,
+    @Override public void allocate() throws AudioException, EngineException,
             EngineStateException, SecurityException {
-        // TODO Auto-generated method stub
-        
     }
 
-    public void allocate(int mode) throws IllegalArgumentException,
-            AudioException, EngineException, EngineStateException,
-            SecurityException {
-        // TODO Auto-generated method stub
-        
+    @Override public void allocate(int mode) throws IllegalArgumentException,
+            AudioException, EngineException, EngineStateException, SecurityException {
     }
 
-    public void deallocate() throws AudioException, EngineException,
-            EngineStateException {
-        // TODO Auto-generated method stub
-        
+    @Override public void deallocate() throws AudioException, EngineException, EngineStateException {
     }
 
-    public void deallocate(int mode) throws IllegalArgumentException,
+    @Override public void deallocate(int mode) throws IllegalArgumentException,
             AudioException, EngineException, EngineStateException {
-        // TODO Auto-generated method stub
-        
     }
 
-    public void pause() throws EngineStateException {
-        // TODO Auto-generated method stub
-        
+    @Override public void pause() throws EngineStateException {
     }
 
-    public boolean testEngineState(long state) throws IllegalArgumentException {
-        // TODO Auto-generated method stub
+    @Override public boolean testEngineState(long state) throws IllegalArgumentException {
         return false;
     }
 
-    public long waitEngineState(long state) throws InterruptedException,
+    @Override public long waitEngineState(long state) throws InterruptedException,
             IllegalArgumentException, IllegalStateException {
-        // TODO Auto-generated method stub
         return 0;
     }
 
-    public long waitEngineState(long state, long timeout)
-            throws InterruptedException, IllegalArgumentException,
-            IllegalStateException {
-        // TODO Auto-generated method stub
+    @Override public long waitEngineState(long state, long timeout)
+            throws InterruptedException, IllegalArgumentException, IllegalStateException {
         return 0;
     }
 
-    public AudioManager getAudioManager() {
-        // TODO Auto-generated method stub
+    @Override public AudioManager getAudioManager() {
         return null;
     }
 
-    public EngineMode getEngineMode() {
-        // TODO Auto-generated method stub
+    @Override public EngineMode getEngineMode() {
         return null;
     }
 
-    public long getEngineState() {
-        // TODO Auto-generated method stub
+    @Override public long getEngineState() {
         return 0;
     }
 
-    public VocabularyManager getVocabularyManager() {
-        // TODO Auto-generated method stub
+    @Override public VocabularyManager getVocabularyManager() {
         return null;
     }
 
-    public void setEngineMask(int mask) {
-        // TODO Auto-generated method stub
-        
+    @Override public void setEngineMask(int mask) {
     }
 
-    public int getEngineMask() {
-        // TODO Auto-generated method stub
+    @Override public int getEngineMask() {
         return 0;
     }
 
-    public SpeechEventExecutor getSpeechEventExecutor() {
-        // TODO Auto-generated method stub
+    @Override public SpeechEventExecutor getSpeechEventExecutor() {
         return null;
     }
 
-    public void setSpeechEventExecutor(SpeechEventExecutor speechEventExecutor) {
-        // TODO Auto-generated method stub
-        
+    @Override public void setSpeechEventExecutor(SpeechEventExecutor speechEventExecutor) {
     }
 
-    public void addRecognizerListener(RecognizerListener listener) {
-        // TODO Auto-generated method stub
-        
+    @Override public void addRecognizerListener(RecognizerListener listener) {
     }
 
-    public void removeRecognizerListener(RecognizerListener listener) {
-        // TODO Auto-generated method stub
-        
+    @Override public void removeRecognizerListener(RecognizerListener listener) {
     }
 
-    public void addResultListener(ResultListener listener) {
-        // TODO Auto-generated method stub
-        
+    @Override public void addResultListener(ResultListener listener) {
     }
 
-    public void removeResultListener(ResultListener listener) {
-        // TODO Auto-generated method stub
-        
+    @Override public void removeResultListener(ResultListener listener) {
     }
 
-    public SpeakerManager getSpeakerManager() {
-        // TODO Auto-generated method stub
+    @Override public SpeakerManager getSpeakerManager() {
         return null;
     }
 
-    public RecognizerProperties getRecognizerProperties() {
-        // TODO Auto-generated method stub
+    @Override public RecognizerProperties getRecognizerProperties() {
         return null;
     }
 
-    public GrammarManager getGrammarManager() {
-        // TODO Auto-generated method stub
+    @Override public GrammarManager getGrammarManager() {
         return null;
     }
 
-    public void processGrammars() throws EngineStateException {
-        // TODO Auto-generated method stub
-        
+    @Override public void processGrammars() throws EngineStateException {
     }
 
-    public void pause(int flags) throws IllegalArgumentException,
-            EngineStateException {
-        // TODO Auto-generated method stub
-        
+    @Override public void pause(int flags) throws IllegalArgumentException, EngineStateException {
     }
 
-    public void releaseFocus() throws EngineStateException {
-        // TODO Auto-generated method stub
-        
+    @Override public void releaseFocus() throws EngineStateException {
     }
 
-    public void requestFocus() throws EngineStateException {
-        // TODO Auto-generated method stub
-        
+    @Override public void requestFocus() throws EngineStateException {
     }
 
-    public boolean resume() throws EngineStateException {
-        // TODO Auto-generated method stub
+    @Override public boolean resume() throws EngineStateException {
         return false;
     }
 
-    public void setResultMask(int mask) {
-        // TODO Auto-generated method stub
-        
+    @Override public void setResultMask(int mask) {
     }
 
-    public int getResultMask() {
-        // TODO Auto-generated method stub
+    @Override public int getResultMask() {
         return 0;
     }
 }

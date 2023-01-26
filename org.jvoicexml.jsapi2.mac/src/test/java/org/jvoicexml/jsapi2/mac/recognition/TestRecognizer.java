@@ -91,8 +91,8 @@ System.err.println(EngineManager.availableEngines(RecognizerMode.DEFAULT));
     void testRecognize() throws Exception {
         recognizer.addResultListener(this);
 
-        final GrammarManager grammarManager = recognizer.getGrammarManager();
-        final InputStream in = TestRecognizer.class.getResourceAsStream("Licht.xml");
+        GrammarManager grammarManager = recognizer.getGrammarManager();
+        InputStream in = TestRecognizer.class.getResourceAsStream("Licht.xml");
         grammarManager.loadGrammar("grammar:LIGHT", null, in, "iso-8859-1");
 
         recognizer.requestFocus();
@@ -105,7 +105,7 @@ System.err.println(EngineManager.availableEngines(RecognizerMode.DEFAULT));
         }
 
         System.out.print("Recognized: ");
-        final ResultToken[] tokens = result.getBestTokens();
+        ResultToken[] tokens = result.getBestTokens();
 
         for (ResultToken token : tokens) {
             System.out.print(token.getText() + " ");
@@ -131,7 +131,7 @@ System.err.println(EngineManager.availableEngines(RecognizerMode.DEFAULT));
 //    }
 
     @Override
-    public void resultUpdate(final ResultEvent event) {
+    public void resultUpdate(ResultEvent event) {
         System.out.println(event);
         if (event.getId() == ResultEvent.RESULT_ACCEPTED) {
             result = (Result) (event.getSource());

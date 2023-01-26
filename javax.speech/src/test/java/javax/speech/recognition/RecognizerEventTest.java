@@ -60,9 +60,9 @@ public class RecognizerEventTest {
      */
     @Test
     void testGetAudioPosition() {
-        final Throwable problem = new Exception();
+        Throwable problem = new Exception();
         long audioPosition = RecognizerEvent.UNKNOWN_AUDIO_POSITION;
-        final RecognizerEvent event = new RecognizerEvent(recognizer,
+        RecognizerEvent event = new RecognizerEvent(recognizer,
                 RecognizerEvent.ENGINE_ERROR,
                 RecognizerEvent.CHANGES_COMMITTED,
                 RecognizerEvent.ENGINE_ALLOCATING_RESOURCES, problem,
@@ -78,16 +78,16 @@ public class RecognizerEventTest {
     @Test
     void testGetGrammarException() {
         long audioPosition = RecognizerEvent.UNKNOWN_AUDIO_POSITION;
-        final RecognizerEvent event = new RecognizerEvent(recognizer, 42,
+        RecognizerEvent event = new RecognizerEvent(recognizer, 42,
                 RecognizerEvent.CHANGES_COMMITTED,
                 RecognizerEvent.ENGINE_ALLOCATING_RESOURCES, null,
                 null, audioPosition);
 
         assertNull(event.getGrammarException());
 
-        final GrammarException grammarException2 = new GrammarException();
+        GrammarException grammarException2 = new GrammarException();
         long audioPosition2 = RecognizerEvent.UNKNOWN_AUDIO_POSITION;
-        final RecognizerEvent event2 = new RecognizerEvent(recognizer,
+        RecognizerEvent event2 = new RecognizerEvent(recognizer,
                 RecognizerEvent.CHANGES_REJECTED,
                 RecognizerEvent.CHANGES_COMMITTED,
                 RecognizerEvent.ENGINE_ALLOCATING_RESOURCES, null,
@@ -102,11 +102,11 @@ public class RecognizerEventTest {
     @Test
     void testParamString() {
         long audioPosition = RecognizerEvent.UNKNOWN_AUDIO_POSITION;
-        final RecognizerEvent event = new RecognizerEvent(recognizer, 42,
+        RecognizerEvent event = new RecognizerEvent(recognizer, 42,
                 RecognizerEvent.CHANGES_COMMITTED,
                 RecognizerEvent.ENGINE_ALLOCATING_RESOURCES, null,
                 null, audioPosition);
-        final String str = event.paramString();
+        String str = event.paramString();
         assertTrue(str.contains("42"), "id not found in paramString");
     }
 
@@ -116,11 +116,11 @@ public class RecognizerEventTest {
     @Test
     void testToString() {
         long audioPosition = RecognizerEvent.UNKNOWN_AUDIO_POSITION;
-        final RecognizerEvent event = new RecognizerEvent(recognizer, 43,
+        RecognizerEvent event = new RecognizerEvent(recognizer, 43,
                 RecognizerEvent.CHANGES_COMMITTED,
                 RecognizerEvent.ENGINE_ALLOCATING_RESOURCES, null,
                 null, audioPosition);
-        final String str = event.toString();
+        String str = event.toString();
         assertTrue(str.contains("43"), "id not found in toString");
 
         String paramString = event.paramString();

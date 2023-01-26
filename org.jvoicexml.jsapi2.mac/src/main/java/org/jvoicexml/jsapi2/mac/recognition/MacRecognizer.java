@@ -47,7 +47,7 @@ public final class MacRecognizer extends BaseRecognizer {
      * @param mode
      *            the recognizer mode.
      */
-    public MacRecognizer(final MacRecognizerMode mode) {
+    public MacRecognizer(MacRecognizerMode mode) {
         super(mode);
     }
 
@@ -89,25 +89,25 @@ public final class MacRecognizer extends BaseRecognizer {
 
     @Override
     protected boolean handleResume(InputStream in) throws EngineStateException {
-        final GrammarManager manager = getGrammarManager();
-        final Grammar[] grammars = manager.listGrammars();
-        final String[] grammarSources = new String[grammars.length];
+        GrammarManager manager = getGrammarManager();
+        Grammar[] grammars = manager.listGrammars();
+        String[] grammarSources = new String[grammars.length];
         int i = 0;
         for (Grammar grammar : grammars) {
             try {
-                final File file = File.createTempFile("sapi", "xml");
+                File file = File.createTempFile("sapi", "xml");
                 file.deleteOnExit();
-                final FileOutputStream out = new FileOutputStream(file);
+                FileOutputStream out = new FileOutputStream(file);
 
-                StringBuffer xml = new StringBuffer();
+                StringBuilder xml = new StringBuilder();
                 xml.append(grammar.toString());
                 int index = xml.indexOf("06/grammar");
                 xml.insert(index + 11, " xml:lang=\"de-DE\" ");
                 out.write(xml.toString().getBytes());
                 out.close();
                 grammarSources[i] = file.getCanonicalPath();
-                // System.out.println(xml);
-                // System.out.println(grammarSources[i]);
+//                System.out.println(xml);
+//                System.out.println(grammarSources[i]);
 
             } catch (IOException e) {
                 // TODO Auto-generated catch block
@@ -127,7 +127,7 @@ public final class MacRecognizer extends BaseRecognizer {
         return false;
     }
 
-    public boolean setGrammar(final String grammarPath) {
+    public boolean setGrammar(String grammarPath) {
         return macSetGrammar(recognizerHandle, grammarPath);
     }
 
@@ -146,15 +146,15 @@ public final class MacRecognizer extends BaseRecognizer {
      *            the detected utterance
      */
     @SuppressWarnings("unused")
-    private void reportResult(final String utterance) {
+    private void reportResult(String utterance) {
 
         System.out.println("Java Code " + utterance);
 
-        final RuleGrammar grammar = currentGrammar; // current grammar is not
+        RuleGrammar grammar = currentGrammar; // current grammar is not
                                                     // available
         System.out.println(grammar);
 
-        final BaseResult result;
+        BaseResult result;
         try {
             result = new BaseResult(grammar, utterance);
         } catch (GrammarException e) {
@@ -162,20 +162,20 @@ public final class MacRecognizer extends BaseRecognizer {
             return;
         }
 
-        final ResultEvent created = new ResultEvent(result,
+        ResultEvent created = new ResultEvent(result,
                 ResultEvent.RESULT_CREATED, false, false);
         postResultEvent(created);
 
-        final ResultEvent grammarFinalized = new ResultEvent(result,
+        ResultEvent grammarFinalized = new ResultEvent(result,
                 ResultEvent.GRAMMAR_FINALIZED);
         postResultEvent(grammarFinalized);
 
         if (result.getResultState() == Result.REJECTED) {
-            final ResultEvent rejected = new ResultEvent(result,
+            ResultEvent rejected = new ResultEvent(result,
                     ResultEvent.RESULT_REJECTED, false, false);
             postResultEvent(rejected);
         } else {
-            final ResultEvent accepted = new ResultEvent(result,
+            ResultEvent accepted = new ResultEvent(result,
                     ResultEvent.RESULT_ACCEPTED, false, false);
             postResultEvent(accepted);
         }
@@ -200,9 +200,9 @@ public final class MacRecognizer extends BaseRecognizer {
 
     @Override
     protected void handlePropertyChangeRequest(
-            final BaseEngineProperties properties,
-            final String propName, final Object oldValue,
-            final Object newValue) {
+            BaseEngineProperties properties,
+            String propName, Object oldValue,
+            Object newValue) {
         LOGGER.warning("changing property '" + propName
                 + "' to '" + newValue + "' ignored");
     }

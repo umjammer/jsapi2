@@ -48,8 +48,8 @@ public class SpeakerProfileTest {
      */
     @Test
     void testHashCode() {
-        final SpeakerProfile profile1 = SpeakerProfile.DEFAULT;
-        final SpeakerProfile profile2 = SpeakerProfile.DEFAULT;
+        SpeakerProfile profile1 = SpeakerProfile.DEFAULT;
+        SpeakerProfile profile2 = SpeakerProfile.DEFAULT;
 
         assertEquals(profile1.hashCode(), profile2.hashCode());
     }
@@ -59,12 +59,12 @@ public class SpeakerProfileTest {
      */
     @Test
     void testGetName() {
-        final SpeakerProfile profile1 = SpeakerProfile.DEFAULT;
+        SpeakerProfile profile1 = SpeakerProfile.DEFAULT;
         assertNull(profile1.getName());
 
         final String name2 = "name2";
         final String variant2 = "variant2";
-        final SpeakerProfile profile2 = new SpeakerProfile(name2, variant2);
+        SpeakerProfile profile2 = new SpeakerProfile(name2, variant2);
         assertEquals(name2, profile2.getName());
     }
 
@@ -74,12 +74,12 @@ public class SpeakerProfileTest {
      */
     @Test
     void testGetVariant() {
-        final SpeakerProfile profile1 = SpeakerProfile.DEFAULT;
+        SpeakerProfile profile1 = SpeakerProfile.DEFAULT;
         assertNull(profile1.getVariant());
 
         final String name2 = "name2";
         final String variant2 = "variant2";
-        final SpeakerProfile profile2 = new SpeakerProfile(name2, variant2);
+        SpeakerProfile profile2 = new SpeakerProfile(name2, variant2);
         assertEquals(variant2, profile2.getVariant());
     }
 
@@ -89,28 +89,28 @@ public class SpeakerProfileTest {
      */
     @Test
     void testEqualsObject() {
-        final SpeakerProfile profile1 = SpeakerProfile.DEFAULT;
+        SpeakerProfile profile1 = SpeakerProfile.DEFAULT;
         assertNotEquals("test", profile1);
-        assertNotEquals(profile1, (SpeakerProfile) null);
+        assertNotEquals(profile1, null);
 
-        final SpeakerProfile profile2 = SpeakerProfile.DEFAULT;
+        SpeakerProfile profile2 = SpeakerProfile.DEFAULT;
         assertEquals(profile1, profile2);
 
         final String name3 = "name3";
         final String variant3 = "variant3";
-        final SpeakerProfile profile3 = new SpeakerProfile(name3, variant3);
+        SpeakerProfile profile3 = new SpeakerProfile(name3, variant3);
         assertNotEquals(profile1, profile3);
         assertEquals(profile3, profile3);
 
         final String name4 = "name3";
         final String variant4 = "variant3";
-        final SpeakerProfile profile4 = new SpeakerProfile(name4, variant4);
+        SpeakerProfile profile4 = new SpeakerProfile(name4, variant4);
         assertEquals(profile3, profile4);
         assertEquals(profile4, profile3);
 
         final String name5 = "name5";
         final String variant5 = "variant5";
-        final SpeakerProfile profile5 = new SpeakerProfile(name5, variant5);
+        SpeakerProfile profile5 = new SpeakerProfile(name5, variant5);
         assertNotEquals(profile3, profile5);
         assertNotEquals(profile5, profile3);
     }
@@ -121,14 +121,14 @@ public class SpeakerProfileTest {
      */
     @Test
     void testToString() {
-        final SpeakerProfile profile1 = SpeakerProfile.DEFAULT;
-        final String str1 = profile1.toString();
+        SpeakerProfile profile1 = SpeakerProfile.DEFAULT;
+        String str1 = profile1.toString();
         assertNotNull(str1);
 
         final String name2 = "name2";
         final String variant2 = "variant2";
-        final SpeakerProfile profile2 = new SpeakerProfile(name2, variant2);
-        final String str2 = profile2.toString();
+        SpeakerProfile profile2 = new SpeakerProfile(name2, variant2);
+        String str2 = profile2.toString();
         assertNotNull(str2);
         assertTrue(str2.indexOf(name2) > 0);
         assertTrue(str2.indexOf(variant2) > 0);
@@ -140,28 +140,28 @@ public class SpeakerProfileTest {
      */
     @Test
     void testMatch() {
-        final SpeakerProfile profile1 = SpeakerProfile.DEFAULT;
+        SpeakerProfile profile1 = SpeakerProfile.DEFAULT;
         assertTrue(profile1.match(null));
 
-        final SpeakerProfile profile2 = SpeakerProfile.DEFAULT;
+        SpeakerProfile profile2 = SpeakerProfile.DEFAULT;
         assertTrue(profile1.match(profile2));
 
         final String name3 = "name3";
         final String variant3 = "variant3";
-        final SpeakerProfile profile3 = new SpeakerProfile(name3, variant3);
+        SpeakerProfile profile3 = new SpeakerProfile(name3, variant3);
         assertFalse(profile1.match(profile3));
         assertTrue(profile3.match(profile3));
         assertTrue(profile3.match(profile1));
 
         final String name4 = "name3";
         final String variant4 = "variant3";
-        final SpeakerProfile profile4 = new SpeakerProfile(name4, variant4);
+        SpeakerProfile profile4 = new SpeakerProfile(name4, variant4);
         assertTrue(profile3.match(profile4));
         assertTrue(profile4.match(profile3));
 
         final String name5 = "name5";
         final String variant5 = "variant5";
-        final SpeakerProfile profile5 = new SpeakerProfile(name5, variant5);
+        SpeakerProfile profile5 = new SpeakerProfile(name5, variant5);
         assertFalse(profile3.match(profile5));
         assertFalse(profile5.match(profile3));
     }

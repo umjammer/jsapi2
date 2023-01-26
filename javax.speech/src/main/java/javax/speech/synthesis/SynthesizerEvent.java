@@ -26,7 +26,7 @@
 
 package javax.speech.synthesis;
 
-import java.util.Vector;
+import java.util.List;
 
 import javax.speech.EngineEvent;
 
@@ -64,7 +64,7 @@ public class SynthesizerEvent extends EngineEvent {
     }
 
     public boolean isTopOfQueueChanged() {
-        final int id = getId();
+        int id = getId();
         if (id == QUEUE_UPDATED) {
             return topOfQueueChanged;
         }
@@ -84,11 +84,11 @@ public class SynthesizerEvent extends EngineEvent {
     }
 
     @Override
-    protected Vector getParameters() {
-        final Vector parameters = super.getParameters();
+    protected List<Object> getParameters() {
+        List<Object> parameters = super.getParameters();
 
-        final Boolean topOfQueueChangedObject = new Boolean(topOfQueueChanged);
-        parameters.addElement(topOfQueueChangedObject);
+        Boolean topOfQueueChangedObject = topOfQueueChanged;
+        parameters.add(topOfQueueChangedObject);
 
         return parameters;
     }

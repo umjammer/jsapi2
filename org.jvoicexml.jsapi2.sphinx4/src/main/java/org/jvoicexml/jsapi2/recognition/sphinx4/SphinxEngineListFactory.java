@@ -52,7 +52,7 @@ public class SphinxEngineListFactory implements EngineListFactory {
     }
 
     @Override
-    public EngineList createEngineList(final EngineMode require) {
+    public EngineList createEngineList(EngineMode require) {
         // Must be a recognizer.
         if (!(require instanceof RecognizerMode)) {
             return null;

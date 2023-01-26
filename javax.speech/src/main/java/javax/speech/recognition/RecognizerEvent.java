@@ -26,7 +26,7 @@
 
 package javax.speech.recognition;
 
-import java.util.Vector;
+import java.util.List;
 
 import javax.speech.EngineEvent;
 
@@ -83,7 +83,7 @@ public class RecognizerEvent extends EngineEvent {
                 id2String(str);
                 throw new IllegalArgumentException(
                         "Audio position must be UNKNOWN_AUDIO_POSITION for"
-                        + " the given event id (" + str.toString() + ")!");
+                        + " the given event id (" + str + ")!");
             }
         }
         this.grammarException = grammarException;
@@ -95,7 +95,7 @@ public class RecognizerEvent extends EngineEvent {
     }
 
     public GrammarException getGrammarException() {
-        final int id = getId();
+        int id = getId();
         if (id == CHANGES_REJECTED) {
             return grammarException;
         }
@@ -104,12 +104,12 @@ public class RecognizerEvent extends EngineEvent {
     }
 
     @Override
-    protected Vector getParameters() {
-        final Vector parameters = super.getParameters();
+    protected List<Object> getParameters() {
+        List<Object> parameters = super.getParameters();
 
-        final Long audioPositionObject = new Long(audioPosition);
-        parameters.addElement(audioPositionObject);
-        parameters.addElement(grammarException);
+        Long audioPositionObject = audioPosition;
+        parameters.add(audioPositionObject);
+        parameters.add(grammarException);
 
         return parameters;
     }

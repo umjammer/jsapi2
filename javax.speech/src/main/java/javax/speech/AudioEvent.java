@@ -26,11 +26,12 @@
 
 package javax.speech;
 
-import java.util.Vector;
+import java.util.List;
 
 // Comp. 2.0.6
 
 public class AudioEvent extends SpeechEvent {
+
     public static final int AUDIO_STARTED = 0x8000001;
 
     public static final int AUDIO_STOPPED = 0x8000002;
@@ -56,8 +57,7 @@ public class AudioEvent extends SpeechEvent {
     public AudioEvent(Engine source, int id) {
         super(source, id);
         if ((id != AUDIO_STARTED) && (id != AUDIO_CHANGED) && (id != AUDIO_STOPPED)) {
-            throw new IllegalArgumentException(
-                    "Id must be AUDIO_STARTED, AUDIO_CHANGED or AUDIO_STOPPED!");
+            throw new IllegalArgumentException("Id must be AUDIO_STARTED, AUDIO_CHANGED or AUDIO_STOPPED!");
         }
         audioLevel = AUDIO_LEVEL_MIN;
     }
@@ -69,8 +69,7 @@ public class AudioEvent extends SpeechEvent {
         }
 
         if ((audioLevel < AUDIO_LEVEL_MIN) || (audioLevel > AUDIO_LEVEL_MAX)) {
-            throw new IllegalArgumentException("Audiolevel must be between "
-                    + "AUDIO_LEVEL_MIN and AUDIO_LEVEL_MAX");
+            throw new IllegalArgumentException("Audiolevel must be between AUDIO_LEVEL_MIN and AUDIO_LEVEL_MAX");
         }
 
         this.audioLevel = audioLevel;
@@ -101,13 +100,11 @@ public class AudioEvent extends SpeechEvent {
         super.id2String(str);
     }
 
-    
     @Override
-    protected Vector getParameters() {
-        final Vector parameters = super.getParameters();
+    protected List<Object> getParameters() {
+        List<Object> parameters = super.getParameters();
 
-        final Integer level = new Integer(audioLevel);
-        parameters.addElement(level);
+        parameters.add(audioLevel);
 
         return parameters;
     }

@@ -39,7 +39,7 @@ public class MockSpeechEvent extends SpeechEvent {
      * @param source the source of this event
      * @param id the event id
      */
-    public MockSpeechEvent(final Object source, final int id) {
+    public MockSpeechEvent(Object source, int id) {
         super(source, id);
     }
 

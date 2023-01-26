@@ -66,15 +66,14 @@ public class AudioSegment {
     }
 
     public String toString() {
-        StringBuffer str = new StringBuffer();
 
-        str.append(getClass().getName());
-        str.append("[");
-        str.append(locator);
-        str.append(',');
-        str.append(markupText);
-        str.append("]");
+        String str = getClass().getName() +
+                "[" +
+                locator +
+                ',' +
+                markupText +
+                "]";
 
-        return str.toString();
+        return str;
     }
 }

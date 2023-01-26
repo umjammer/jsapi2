@@ -62,7 +62,7 @@ public final class Log4CPlus2JavaLoggingAdapter extends Thread {
             lock.notifyAll();
         }
         while (!isInterrupted()) {
-            final LogRecord record = getNextLogRecord(handle);
+            LogRecord record = getNextLogRecord(handle);
             if (record != null) {
                 Logger logger = Logger.getAnonymousLogger();
                 logger.log(record);
@@ -94,5 +94,5 @@ public final class Log4CPlus2JavaLoggingAdapter extends Thread {
      * @param loggingHandle the native handle
      * @return the next log record.
      */
-    public native LogRecord getNextLogRecord(final long loggingHandle);
+    public native LogRecord getNextLogRecord(long loggingHandle);
 }

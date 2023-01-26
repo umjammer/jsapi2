@@ -19,7 +19,7 @@ public class MockSynthesizerEngineListFactory implements EngineListFactory {
     public EngineList createEngineList(EngineMode require)
             throws SecurityException {
         if ((require == null) || (require instanceof SynthesizerMode)) {
-            final EngineMode[] modes = new EngineMode[] { new MockSynthesizerFactory() };
+            EngineMode[] modes = new EngineMode[] { new MockSynthesizerFactory() };
 
             return new EngineList(modes);
         }

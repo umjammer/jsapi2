@@ -48,7 +48,7 @@ public final class SmlInterpretation {
      * @param tagValue the tag
      * @param conf confidence n the result
      */
-    SmlInterpretation(final String tagValue, final float conf) {
+    SmlInterpretation(String tagValue, float conf) {
         tag = tagValue;
         confidence = conf;
     }
@@ -59,8 +59,8 @@ public final class SmlInterpretation {
      * @param val the associated value
      * @param conf confidence n the result
      */
-    SmlInterpretation(final String tagValue, final String val,
-            final float conf) {
+    SmlInterpretation(String tagValue, String val,
+                      float conf) {
         tag = tagValue;
         value = val;
         confidence = conf;
@@ -71,7 +71,7 @@ public final class SmlInterpretation {
      * @return level
      */
     public int getObjectHierachyLevel() {
-        final StringTokenizer tokenizer = new StringTokenizer(tag, ".");
+        StringTokenizer tokenizer = new StringTokenizer(tag, ".");
         return tokenizer.countTokens() - 1;
     }
     
@@ -87,7 +87,7 @@ public final class SmlInterpretation {
      * Sets the associated value.
      * @param val the associated value.
      */
-    public void setValue(final String val) {
+    public void setValue(String val) {
         value = val;
     }
 
@@ -106,7 +106,7 @@ public final class SmlInterpretation {
      * Appends the given string to the value.
      * @param str the string to append
      */
-    public void appendValue(final String str) {
+    public void appendValue(String str) {
         if (value == null) {
             value = str;
         } else {
@@ -124,15 +124,14 @@ public final class SmlInterpretation {
 
     @Override
     public String toString() {
-        final StringBuilder str = new StringBuilder();
-        str.append(getClass().getCanonicalName());
-        str.append('[');
-        str.append(tag);
-        str.append(',');
-        str.append(getValue());
-        str.append(',');
-        str.append(confidence);
-        str.append(']');
-        return str.toString();
+        String str = getClass().getCanonicalName() +
+                '[' +
+                tag +
+                ',' +
+                getValue() +
+                ',' +
+                confidence +
+                ']';
+        return str;
     }
 }

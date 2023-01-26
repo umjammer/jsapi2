@@ -23,12 +23,11 @@ public class RuleLocale extends RuleComponent {
     }
 
     public String toString() {
-        StringBuffer str = new StringBuffer();
 
-        str.append("xml:lang=\"");
-        str.append(locale.toString());
-        str.append("\"");
+        String str = "xml:lang=\"" +
+                locale.toString() +
+                "\"";
 
-        return str.toString();
+        return str;
     }
 }

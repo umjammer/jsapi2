@@ -26,15 +26,17 @@
 
 package javax.speech;
 
-import java.util.Enumeration;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 //Comp. 2.0.6
 
 public abstract class EngineMode {
-    public static final Integer FULL = new Integer(Integer.MAX_VALUE);
 
-    public static final Integer NONE = new Integer(0);
+    public static final Integer FULL = Integer.MAX_VALUE;
+
+    public static final Integer NONE = 0;
 
     private String engineName;
 
@@ -83,33 +85,33 @@ public abstract class EngineMode {
             return true;
         }
 
-        final String otherEngineName = require.getEngineName();
-        final boolean namesMatch;
+        String otherEngineName = require.getEngineName();
+        boolean namesMatch;
         if (otherEngineName == null) {
             namesMatch = true;
         } else {
             namesMatch = otherEngineName.equals(engineName);
         }
 
-        final String otherModeName = require.getModeName();
-        final boolean modesMatch;
+        String otherModeName = require.getModeName();
+        boolean modesMatch;
         if (otherModeName == null) {
             modesMatch = true;
         } else {
             modesMatch = otherModeName.equals(modeName);
         }
 
-        final Boolean otherModeRunning = require.getRunning();
-        final boolean runningsMatch;
+        Boolean otherModeRunning = require.getRunning();
+        boolean runningsMatch;
         if (otherModeRunning == null) {
             runningsMatch = true;
         } else {
             runningsMatch = otherModeRunning.equals(running);
         }
 
-        final Boolean otherSupportsLetterToSound = require
+        Boolean otherSupportsLetterToSound = require
                 .getSupportsLetterToSound();
-        final boolean supportsLetterToSoundMatch;
+        boolean supportsLetterToSoundMatch;
         if (otherSupportsLetterToSound == null) {
             supportsLetterToSoundMatch = true;
         } else {
@@ -117,8 +119,8 @@ public abstract class EngineMode {
                     .equals(supportsLetterToSound);
         }
 
-        final Boolean otherMarkupSupport = require.getSupportsMarkup();
-        final boolean markupSupportMatch;
+        Boolean otherMarkupSupport = require.getSupportsMarkup();
+        boolean markupSupportMatch;
         if (otherMarkupSupport == null) {
             markupSupportMatch = true;
         } else {
@@ -129,7 +131,7 @@ public abstract class EngineMode {
                 && supportsLetterToSoundMatch && markupSupportMatch;
     }
 
-
+    @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
@@ -201,44 +203,32 @@ public abstract class EngineMode {
      * 
      * @return collection of all parameters.
      */
-    protected Vector getParameters() {
-        final Vector parameters = new Vector();
+    protected List<Object> getParameters() {
+        List<Object> parameters = new ArrayList<>();
 
-        parameters.addElement(engineName);
-        parameters.addElement(modeName);
-        parameters.addElement(running);
-        parameters.addElement(supportsLetterToSound);
-        parameters.addElement(supportsMarkup);
+        parameters.add(engineName);
+        parameters.add(modeName);
+        parameters.add(running);
+        parameters.add(supportsLetterToSound);
+        parameters.add(supportsMarkup);
 
         return parameters;
     }
 
-    private void appendVector(StringBuffer str, Vector col) {
-        str.append("[");
-        final Enumeration enumeration = col.elements();
-
-        while (enumeration.hasMoreElements()) {
-            final Object parameter = enumeration.nextElement();
-            if (parameter instanceof Vector) {
-                final Vector subVector = (Vector) parameter;
-                appendVector(str, subVector);
+    private static String toListString(List<Object> col) {
+        return col.stream().map(parameter -> {
+            if (parameter instanceof List) {
+                @SuppressWarnings("unchecked")
+                List<Object> subList = (List<Object>) parameter;
+                return "[" + toListString(subList) + "]";
             } else {
-                str.append(parameter);
+                return String.valueOf(parameter);
             }
-            if (enumeration.hasMoreElements()) {
-                str.append(",");
-            }
-        }
-        str.append("]");
+        }).collect(Collectors.joining(","));
     }
 
+    @Override
     public String toString() {
-        StringBuffer str = new StringBuffer();
-
-        str.append(getClass().getName());
-        final Vector parameters = getParameters();
-        appendVector(str, parameters);
-
-        return str.toString();
+        return getClass().getName() + "[" + toListString(getParameters()) + "]";
     }
 }

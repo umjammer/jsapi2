@@ -28,9 +28,7 @@ package org.jvoicexml.jsapi2.recognition;
 
 import java.util.List;
 import java.util.Stack;
-import java.util.Vector;
 import java.util.logging.Logger;
-
 import javax.speech.EngineStateException;
 import javax.speech.recognition.Grammar;
 import javax.speech.recognition.GrammarManager;
@@ -45,10 +43,11 @@ import javax.speech.recognition.RuleSequence;
 import javax.speech.recognition.RuleTag;
 import javax.speech.recognition.RuleToken;
 
+
 /**
  * Implementation of the parse method(s) on
  * {@link javax.speech.recognition.RuleGrammar}.
- * 
+ *
  * @version $Revision: 1370 $
  */
 public class RuleParser {
@@ -73,57 +72,47 @@ public class RuleParser {
 
     /**
      * Creates a Rule Parser.
-     * 
-     * @param manager
-     *            GrammarManager
-     * @param pos
-     *            int
+     *
+     * @param manager GrammarManager
+     * @param pos     int
      */
-    public RuleParser(final GrammarManager manager, final int pos) {
+    public RuleParser(GrammarManager manager, int pos) {
         grammarManager = manager;
         position = pos;
-        grammarElements = new Stack<Object>();
+        grammarElements = new Stack<>();
     }
 
     /**
      * Parse a text string against a particular rule from a particular grammar
      * returning a RuleParse data structure is successful and null otherwise.
-     * 
-     * @param text
-     *            text to search
-     * @param grammarManager
-     *            the grammar manager
-     * @param grammarReference
-     *            the grammar reference
-     * @param ruleName
-     *            the start rule name
+     *
+     * @param text             text to search
+     * @param grammarManager   the grammar manager
+     * @param grammarReference the grammar reference
+     * @param ruleName         the start rule name
      * @return RuleParse
      */
-    public static RuleParse parse(final String text,
-            final GrammarManager grammarManager, final String grammarReference,
-            final String ruleName) {
-        final String[] inputTokens = text.split(" ");
+    public static RuleParse parse(String text,
+                                  GrammarManager grammarManager, String grammarReference,
+                                  String ruleName) {
+        String[] inputTokens = text.split(" ");
         return parse(inputTokens, grammarManager, grammarReference, ruleName);
     }
 
     /**
      * Parse a set of tokens against a particular rule from a particular grammar
      * returning a RuleParse data structure is successful and null otherwise.
-     * 
-     * @param inputTokens
-     *            String[]
-     * @param grammarManager
-     *            GrammarManager
-     * @param grammarReference
-     *            String
-     * @param ruleName
-     *            String
+     *
+     * @param inputTokens      String[]
+     * @param grammarManager   GrammarManager
+     * @param grammarReference String
+     * @param ruleName         String
      * @return RuleParse the start rule name
      */
-    public static RuleParse parse(final String[] inputTokens,
-            final GrammarManager grammarManager, final String grammarReference,
-            final String ruleName) {
-        final RuleParse[] parse = mparse(inputTokens, grammarManager,
+    public static RuleParse parse(String[] inputTokens,
+                                  GrammarManager grammarManager, String grammarReference,
+                                  String ruleName) {
+        RuleParse[] parse = mparse(inputTokens, grammarManager,
                 grammarReference, ruleName);
         if (parse == null) {
             return null;
@@ -134,73 +123,64 @@ public class RuleParser {
     /**
      * Parse a text against a particular rule from a particular grammar
      * returning a RuleParse data structure is successful and null otherwise.
-     * 
-     * @param text
-     *            String
-     * @param grammarManager
-     *            GrammarManager
-     * @param grammarReference
-     *            String
-     * @param ruleName
-     *            String
+     *
+     * @param text             String
+     * @param grammarManager   GrammarManager
+     * @param grammarReference String
+     * @param ruleName         String
      * @return RuleParse[]
      */
-    public static RuleParse[] mparse(final String text,
-            final GrammarManager grammarManager, final String grammarReference,
-            final String ruleName) {
-        final String[] inputTokens = text.split(" ");
+    public static RuleParse[] mparse(String text,
+                                     GrammarManager grammarManager, String grammarReference,
+                                     String ruleName) {
+        String[] inputTokens = text.split(" ");
         return mparse(inputTokens, grammarManager, grammarReference, ruleName);
     }
 
     /**
      * Parse a set of tokens against a particular rule from a particular grammar
      * returning a RuleParse data structure is successful and null otherwise.
-     * 
-     * @param inputTokens
-     *            String[]
-     * @param grammarManager
-     *            GrammarManager
-     * @param grammarReference
-     *            String
-     * @param ruleName
-     *            String
+     *
+     * @param inputTokens      String[]
+     * @param grammarManager   GrammarManager
+     * @param grammarReference String
+     * @param ruleName         String
      * @return RuleParse[]
      */
-    public static RuleParse[] mparse(final String[] inputTokens,
-            final GrammarManager grammarManager, final String grammarReference,
-            final String ruleName) {
-        final RuleParser parse = new RuleParser(grammarManager, 0);
-        final Grammar gram = grammarManager.getGrammar(grammarReference);
-        final RuleGrammar grammar;
+    public static RuleParse[] mparse(String[] inputTokens,
+                                     GrammarManager grammarManager, String grammarReference,
+                                     String ruleName) {
+        RuleParser parse = new RuleParser(grammarManager, 0);
+        Grammar gram = grammarManager.getGrammar(grammarReference);
+        RuleGrammar grammar;
         if (gram instanceof RuleGrammar) {
             grammar = (RuleGrammar) gram;
         } else {
             return null;
         }
-        final String[] ruleNames;
+        String[] ruleNames;
         if (ruleName != null) {
             ruleNames = new String[1];
             ruleNames[0] = ruleName;
         } else {
             ruleNames = grammar.listRuleNames();
         }
-        final List<Object> parsed = new java.util.ArrayList<Object>();
-        for (int j = 0; j < ruleNames.length; j++) {
-            final String currentRuleName = ruleNames[j];
+        List<RuleParse> parsed = new java.util.ArrayList<>();
+        for (String currentRuleName : ruleNames) {
             if ((ruleName == null) && !(grammar.isActivatable(currentRuleName))) {
                 continue;
             }
-            final Rule currentRule = grammar.getRule(currentRuleName);
-            final RuleComponent startRule = currentRule.getRuleComponent();
+            Rule currentRule = grammar.getRule(currentRuleName);
+            RuleComponent startRule = currentRule.getRuleComponent();
             if (startRule == null) {
                 LOGGER.severe("Bad rulename '" + currentRuleName + "'");
                 continue;
             }
-            final GrammarGraph grammarGraph = parse.buildGrammarGraph(grammar,
+            GrammarGraph grammarGraph = parse.buildGrammarGraph(grammar,
                     currentRuleName);
-            final GrammarNode node = grammarGraph.getStartNode();
+            GrammarNode node = grammarGraph.getStartNode();
             if (parse.parse(node, inputTokens)) {
-                final Object element = parse.grammarElements.pop();
+                RuleParse element = (RuleParse) parse.grammarElements.pop();
                 parsed.add(element);
             }
         }
@@ -208,25 +188,21 @@ public class RuleParser {
             // No parse is available
             return null;
         }
-        final RuleParse[] rpa = new RuleParse[parsed.size()];
-        parsed.toArray(rpa);
-        return rpa;
+        return parsed.toArray(new RuleParse[0]);
     }
 
     /**
      * this method starts the recursively of the parse.
-     * 
-     * @param currentNode
-     *            the start node
-     * @param input
-     *            the text
+     *
+     * @param currentNode the start node
+     * @param input       the text
      * @return RuleComponent
      */
-    public final RuleComponent parse(final GrammarNode currentNode,
-            final String input) {
+    public final RuleComponent parse(GrammarNode currentNode,
+                                     String input) {
         String[] in = input.split(" ");
         position = 0;
-        grammarElements = new Stack<Object>();
+        grammarElements = new Stack<>();
         if (parse(currentNode, in) && !grammarElements.empty()) {
             return (RuleComponent) grammarElements.pop();
         } else {
@@ -236,15 +212,13 @@ public class RuleParser {
 
     /**
      * Creates a grammar graph, from a rule grammar and a start rule name.
-     * 
-     * @param grammar
-     *            the rule grammar
-     * @param startRuleName
-     *            the start rule name
+     *
+     * @param grammar       the rule grammar
+     * @param startRuleName the start rule name
      * @return GrammarGraph the graph that represents this grammar
      */
-    public final GrammarGraph buildGrammarGraph(final RuleGrammar grammar,
-            final String startRuleName) {
+    public final GrammarGraph buildGrammarGraph(RuleGrammar grammar,
+                                                String startRuleName) {
         RuleComponent startRuleComponent = grammar.getRule(startRuleName)
                 .getRuleComponent();
         RuleReference startRule = new RuleReference(startRuleName);
@@ -261,17 +235,15 @@ public class RuleParser {
     }
 
     /**
-     * this method processes recursively an rule component. It returns the an
+     * this method processes recursively a rule component. It returns the
      * GrammarGraph
-     * 
-     * @param grammar
-     *            the rule grammar
-     * @param component
-     *            the rule component
+     *
+     * @param grammar   the rule grammar
+     * @param component the rule component
      * @return GrammarGraph
      */
-    private GrammarGraph buildGrammarGraph(final RuleGrammar grammar,
-            final RuleComponent component) {
+    private GrammarGraph buildGrammarGraph(RuleGrammar grammar,
+                                           RuleComponent component) {
         if (component instanceof RuleReference) {
             return buildGrammarGraph(grammar, (RuleReference) component);
         } else if (component instanceof RuleToken) {
@@ -296,16 +268,14 @@ public class RuleParser {
     }
 
     /**
-     * Creates an sub-graph that represents a rule reference.
-     * 
-     * @param grammar
-     *            the rule grammar
-     * @param reference
-     *            the rule reference
+     * Creates a sub-graph that represents a rule reference.
+     *
+     * @param grammar   the rule grammar
+     * @param reference the rule reference
      * @return GrammarGraph
      */
-    private GrammarGraph buildGrammarGraph(final RuleGrammar grammar,
-            final RuleReference reference) {
+    private GrammarGraph buildGrammarGraph(RuleGrammar grammar,
+                                           RuleReference reference) {
         RuleGrammar currentRuleGrammar = grammar;
         GrammarNode startNode = new GrammarNode(false,
                 GrammarNode.START_REFERENCE, reference);
@@ -353,31 +323,27 @@ public class RuleParser {
     }
 
     /**
-     * Creates an sub-graph that represents a rule token.
-     * 
-     * @param grammar
-     *            the rule grammar
-     * @param token
-     *            the rule token
+     * Creates a sub-graph that represents a rule token.
+     *
+     * @param grammar the rule grammar
+     * @param token   the rule token
      * @return GrammarGraph
      */
-    private GrammarGraph buildGrammarGraph(final RuleGrammar grammar,
-            final RuleToken token) {
+    private GrammarGraph buildGrammarGraph(RuleGrammar grammar,
+                                           RuleToken token) {
         GrammarNode startNode = new GrammarNode(false, GrammarNode.TOKEN, token);
         return new GrammarGraph(startNode, startNode);
     }
 
     /**
-     * Creates an sub-graph that represents a rule alternative.
-     * 
-     * @param grammar
-     *            the rule grammar
-     * @param alternatives
-     *            the rule alternative
+     * Creates a sub-graph that represents a rule alternative.
+     *
+     * @param grammar      the rule grammar
+     * @param alternatives the rule alternative
      * @return GrammarGraph
      */
-    private GrammarGraph buildGrammarGraph(final RuleGrammar grammar,
-            final RuleAlternatives alternatives) {
+    private GrammarGraph buildGrammarGraph(RuleGrammar grammar,
+                                           RuleAlternatives alternatives) {
         GrammarNode startNode = new GrammarNode(false,
                 GrammarNode.START_ALTERNATIVE, alternatives);
         GrammarNode endNode = new GrammarNode(false,
@@ -408,16 +374,14 @@ public class RuleParser {
     }
 
     /**
-     * Creates an sub-graph that represents a rule sequence.
-     * 
-     * @param rg
-     *            the rule grammar
-     * @param r
-     *            the rule sequence
+     * Creates a sub-graph that represents a rule sequence.
+     *
+     * @param rg the rule grammar
+     * @param r  the rule sequence
      * @return GrammarGraph
      */
-    private GrammarGraph buildGrammarGraph(final RuleGrammar rg,
-            final RuleSequence r) {
+    private GrammarGraph buildGrammarGraph(RuleGrammar rg,
+                                           RuleSequence r) {
         GrammarNode startNode = new GrammarNode(false,
                 GrammarNode.START_SEQUENCE, r);
         GrammarNode endNode = new GrammarNode(false, GrammarNode.END_SEQUENCE);
@@ -451,32 +415,27 @@ public class RuleParser {
     }
 
     /**
-     * Creates an sub-graph that represents a rule tag.
-     * 
-     * @param rg
-     *            the rule grammar
-     * @param r
-     *            the rule tag
+     * Creates a sub-graph that represents a rule tag.
+     *
+     * @param rg the rule grammar
+     * @param r  the rule tag
      * @return GrammarGraph
      */
-    private GrammarGraph buildGrammarGraph(final RuleGrammar rg, final RuleTag r) {
+    private GrammarGraph buildGrammarGraph(RuleGrammar rg, RuleTag r) {
         GrammarNode startNode = new GrammarNode(false, GrammarNode.TAG, r);
         return new GrammarGraph(startNode, startNode);
     }
 
     /**
-     * Creates an sub-graph that represents a rule count.
-     * 
-     * @param rg
-     *            the rule grammar
-     * @param r
-     *            the rule count
+     * Creates a sub-graph that represents a rule count.
+     *
+     * @param rg the rule grammar
+     * @param r  the rule count
      * @return GrammarGraph
      */
-    private GrammarGraph buildGrammarGraph(final RuleGrammar rg,
-            final RuleCount r) {
-        GrammarNode startNode = new GrammarNode(false, GrammarNode.START_COUNT,
-                r);
+    private GrammarGraph buildGrammarGraph(RuleGrammar rg,
+                                           RuleCount r) {
+        GrammarNode startNode = new GrammarNode(false, GrammarNode.START_COUNT, r);
         GrammarNode endNode = new GrammarNode(false, GrammarNode.END_COUNT);
 
         int minRepeat = r.getRepeatMin();
@@ -490,26 +449,26 @@ public class RuleParser {
             GrammarGraph tmpGraph;
             while (countNodes < minRepeat) {
                 countNodes++;
-                /** @todo how can i copy a graph */
+                // TODO how can i copy a graph
                 tmpGraph = buildGrammarGraph(rg, r.getRuleComponent());
                 lastNode = tmpGraph;
                 newNodes.getEndNode().addArc(tmpGraph.getStartNode());
-                /** @todo review this */
+                // TODO review this
                 newNodes.setEndNode(tmpGraph.getEndNode());
             }
         }
 
         if (maxRepeat != RuleCount.REPEAT_INDEFINITELY) {
             GrammarGraph tmpGraph;
-            List<GrammarNode> v = new java.util.ArrayList<GrammarNode>();
+            List<GrammarNode> v = new java.util.ArrayList<>();
             lastNode = newNodes;
             while (countNodes < maxRepeat) {
                 ++countNodes;
-                /** @todo how can i copy a graph */
+                // TODO how can i copy a graph
                 tmpGraph = buildGrammarGraph(rg, r.getRuleComponent());
                 v.add(lastNode.getEndNode());
                 newNodes.getEndNode().addArc(tmpGraph.getStartNode());
-                /** @todo review this */
+                // TODO review this
                 newNodes.setEndNode(tmpGraph.getEndNode());
                 lastNode = tmpGraph;
             }
@@ -539,17 +498,15 @@ public class RuleParser {
 
     /**
      * This method parses a tag.
-     * 
-     * @param currentNode
-     *            the current node of this grammar
-     * @param input
-     *            the set of tokens
-     * @return <code>true</code> if this nodes accepts the current (iPos) input
+     *
+     * @param currentNode the current node of this grammar
+     * @param input       the set of tokens
+     * @return <code>true</code> if these nodes accepts the current (iPos) input
      */
-    private final boolean parseTag(final GrammarNode currentNode,
-            final String[] input) {
+    private boolean parseTag(GrammarNode currentNode,
+                             String[] input) {
         if (parse(currentNode.getArcs().get(0).getGrammarNode(), input)) {
-            final RuleComponent tag = currentNode.getRuleComponent();
+            RuleComponent tag = currentNode.getRuleComponent();
             grammarElements.push(tag);
             return true;
         }
@@ -558,20 +515,18 @@ public class RuleParser {
 
     /**
      * This method parses a token.
-     * 
-     * @param currentNode
-     *            the current node of this grammar
-     * @param input
-     *            the set of tokens
-     * @return <code>true</code> if this nodes accepts the current (iPos) input
+     *
+     * @param currentNode the current node of this grammar
+     * @param input       the set of tokens
+     * @return <code>true</code> if these nodes accepts the current (iPos) input
      */
-    private final boolean parseToken(final GrammarNode currentNode,
-            final String[] input) {
+    private boolean parseToken(GrammarNode currentNode,
+                               String[] input) {
         if (position >= input.length) {
             return false;
         }
-        final RuleToken token = (RuleToken) currentNode.getRuleComponent();
-        final String text = token.getText().toLowerCase();
+        RuleToken token = (RuleToken) currentNode.getRuleComponent();
+        String text = token.getText().toLowerCase();
         if (text.equals(input[position]) || (input[position].equals("%"))
                 || (input[position].equals("*"))) {
             position++;
@@ -591,12 +546,9 @@ public class RuleParser {
             String[] ta = text.split(" ");
             int j = 0;
             StringBuilder buffer = new StringBuilder();
-            // this while is necessary because an token
+            // this while is necessary because a token
             // can contain more than a single word
-            while (true) {
-                if (j >= ta.length) {
-                    break;
-                }
+            while (j < ta.length) {
                 if (position >= input.length) {
                     return false;
                 }
@@ -623,7 +575,7 @@ public class RuleParser {
      * This method constructs an RuleSequence for the rule parser.
      */
     private void posParseStartSequence() {
-        List<RuleComponent> arSeq = new java.util.ArrayList<RuleComponent>();
+        List<RuleComponent> arSeq = new java.util.ArrayList<>();
         while (true) {
             if (grammarElements.empty()) {
                 break;
@@ -643,12 +595,11 @@ public class RuleParser {
 
     /**
      * This method constructs an RuleCount for the rule parser.
-     * 
-     * @param currentNode
-     *            the current node
+     *
+     * @param currentNode the current node
      */
-    private void posParseStartCount(final GrammarNode currentNode) {
-        List<RuleComponent> ruleComponents = new java.util.ArrayList<RuleComponent>();
+    private void posParseStartCount(GrammarNode currentNode) {
+        List<RuleComponent> ruleComponents = new java.util.ArrayList<>();
         int count = 0;
         while (true) {
             if (grammarElements.empty()) {
@@ -679,11 +630,10 @@ public class RuleParser {
 
     /**
      * This method constructs an RuleReference for the rule parser.
-     * 
-     * @param currentNode
-     *            the current node
+     *
+     * @param currentNode the current node
      */
-    private void posParseStartReference(final GrammarNode currentNode) {
+    private void posParseStartReference(GrammarNode currentNode) {
         RuleComponent reference = null;
         while (true) {
             if (grammarElements.empty()) {
@@ -709,7 +659,7 @@ public class RuleParser {
      * This method constructs an RuleAlternative for the rule parser.
      */
     private void posParseStartAlternative() {
-        List<RuleComponent> alternatives = new java.util.ArrayList<RuleComponent>();
+        List<RuleComponent> alternatives = new java.util.ArrayList<>();
         while (true) {
             if (grammarElements.empty()) {
                 break;
@@ -728,18 +678,16 @@ public class RuleParser {
     }
 
     /**
-     * This method parses recursively an grammar graph, to check if a set of
+     * This method parses recursively a grammar graph, to check if a set of
      * tokens belongs at this grammar.
-     * 
-     * @param currentNode
-     *            the current node of this grammar
-     * @param input
-     *            the set of tokens
-     * @return <code>true</code> if starting in the current node exists an way
-     *         in the graph to ends in a final node.
+     *
+     * @param currentNode the current node of this grammar
+     * @param input       the set of tokens
+     * @return <code>true</code> if starting in the current node exists a way
+     * in the graph to ends in a final node.
      */
-    private boolean parse(final GrammarNode currentNode, final String[] input) {
-        final int currentPosition = position;
+    private boolean parse(GrammarNode currentNode, String[] input) {
+        int currentPosition = position;
         if (currentNode.isFinalNode()) {
             if (position == input.length) {
                 grammarElements.push(currentNode);
@@ -749,14 +697,14 @@ public class RuleParser {
             }
         }
 
-        final int type = currentNode.getNodeType();
+        int type = currentNode.getNodeType();
         if (type == GrammarNode.TOKEN) {
             return parseToken(currentNode, input);
         } else if (type == GrammarNode.TAG) {
             return parseTag(currentNode, input);
         } else {
             for (GrammarArc arc : currentNode.getArcs()) {
-                final GrammarNode nextNode = arc.getGrammarNode();
+                GrammarNode nextNode = arc.getGrammarNode();
                 if (parse(nextNode, input)) {
                     switch (type) {
                     case GrammarNode.END_ALTERNATIVE:

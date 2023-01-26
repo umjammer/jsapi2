@@ -26,5 +26,4 @@ public class MockEngineEvent extends EngineEvent {
             throws IllegalArgumentException {
         super(source, id, oldEngineState, newEngineState, problem);
     }
-
 }

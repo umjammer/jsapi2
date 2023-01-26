@@ -54,20 +54,20 @@ public final class BaseResultTest {
      */
     @Test
     void testGetTags() throws Exception {
-        final BaseRecognizer recognizer = new MockRecognizer();
-        final GrammarManager manager = recognizer.getGrammarManager();
-        final RuleGrammar grammar =
+        BaseRecognizer recognizer = new MockRecognizer();
+        GrammarManager manager = recognizer.getGrammarManager();
+        RuleGrammar grammar =
             manager.createRuleGrammar("grammar:test", "test");
-        final RuleComponent[] components = new RuleComponent[]  {
+        RuleComponent[] components = new RuleComponent[]  {
                 new RuleToken("test"),
                 new RuleTag("T")
         };
-        final RuleSequence sequence = new RuleSequence(components);
-        final Rule root = new Rule("test", sequence, Rule.PUBLIC);
+        RuleSequence sequence = new RuleSequence(components);
+        Rule root = new Rule("test", sequence, Rule.PUBLIC);
         grammar.addRule(root);
         recognizer.processGrammars();
-        final BaseResult result = new BaseResult(grammar, "test");
-        final Object[] tags = result.getTags(0);
+        BaseResult result = new BaseResult(grammar, "test");
+        Object[] tags = result.getTags(0);
         assertNotNull(tags);
         assertEquals(1, tags.length);
         assertEquals("T", tags[0]);

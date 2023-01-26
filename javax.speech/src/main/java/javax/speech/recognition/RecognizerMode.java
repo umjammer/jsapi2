@@ -26,7 +26,9 @@
 
 package javax.speech.recognition;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import javax.speech.EngineMode;
 import javax.speech.JavaSpeechSecurity;
@@ -40,22 +42,22 @@ public class RecognizerMode extends EngineMode {
         if (array == null)
             return 0;
         int result = 1;
-        for (int index = 0; index < array.length; index++) {
+        for (Object o : array) {
             result = prime * result
-                    + (array[index] == null ? 0 : array[index].hashCode());
+                    + (o == null ? 0 : o.hashCode());
         }
         return result;
     }
 
     public static RecognizerMode DEFAULT = new RecognizerMode();
 
-    public static Integer SMALL_SIZE = new Integer(10);
+    public static Integer SMALL_SIZE = 10;
 
-    public static Integer MEDIUM_SIZE = new Integer(100);
+    public static Integer MEDIUM_SIZE = 100;
 
-    public static Integer LARGE_SIZE = new Integer(1000);
+    public static Integer LARGE_SIZE = 1000;
 
-    public static Integer VERY_LARGE_SIZE = new Integer(10000);
+    public static Integer VERY_LARGE_SIZE = 10000;
 
     private Integer vocabSupport;
 
@@ -161,8 +163,8 @@ public class RecognizerMode extends EngineMode {
         }
 
         if (require instanceof RecognizerMode) {
-            final RecognizerMode mode = (RecognizerMode) require;
-            final SpeechLocale[] otherLocales = mode.getSpeechLocales();
+            RecognizerMode mode = (RecognizerMode) require;
+            SpeechLocale[] otherLocales = mode.getSpeechLocales();
             if (otherLocales != null) {
                 if (locales == null) {
                     return false;
@@ -170,10 +172,9 @@ public class RecognizerMode extends EngineMode {
 
                 boolean match = false;
                 for (int i = 0; (i < otherLocales.length) && !match; i++) {
-                    final SpeechLocale otherLocale = otherLocales[i];
+                    SpeechLocale otherLocale = otherLocales[i];
 
-                    for (int k = 0; k < locales.length; k++) {
-                        final SpeechLocale locale = locales[k];
+                    for (SpeechLocale locale : locales) {
                         if (locale.equals(otherLocale)) {
                             match = true;
                         }
@@ -185,7 +186,7 @@ public class RecognizerMode extends EngineMode {
                 }
             }
 
-            final SpeakerProfile[] otherProfiles = mode.getSpeakerProfiles();
+            SpeakerProfile[] otherProfiles = mode.getSpeakerProfiles();
             if (otherProfiles != null) {
                 if (profiles == null) {
                     return false;
@@ -193,10 +194,9 @@ public class RecognizerMode extends EngineMode {
 
                 boolean match = false;
                 for (int i = 0; (i < otherProfiles.length) && !match; i++) {
-                    final SpeakerProfile otherProfile = otherProfiles[i];
+                    SpeakerProfile otherProfile = otherProfiles[i];
 
-                    for (int k = 0; k < profiles.length; k++) {
-                        final SpeakerProfile profile = profiles[k];
+                    for (SpeakerProfile profile : profiles) {
                         if (profile.equals(otherProfile)) {
                             match = true;
                         }
@@ -217,28 +217,24 @@ public class RecognizerMode extends EngineMode {
      * 
      * @return collection of all parameters.
      */
-    protected Vector getParameters() {
-        final Vector parameters = super.getParameters();
+    protected List<Object> getParameters() {
+        List<Object> parameters = super.getParameters();
 
-        parameters.addElement(vocabSupport);
+        parameters.add(vocabSupport);
         if (locales == null) {
-            parameters.addElement(null);
+            parameters.add(null);
         } else {
-            final Vector vec = new Vector();
-            for (int i = 0; i < locales.length; i++) {
-                vec.addElement(locales[i]);
-            }
-            parameters.addElement(vec);
+            List<Object> vec = new ArrayList<>();
+            Collections.addAll(vec, locales);
+            parameters.add(vec);
         }
 
         if (profiles == null) {
-            parameters.addElement(null);
+            parameters.add(null);
         } else {
-            final Vector vec = new Vector();
-            for (int i = 0; i < profiles.length; i++) {
-                vec.addElement(profiles[i]);
-            }
-            parameters.addElement(vec);
+            List<Object> vec = new ArrayList<>();
+            Collections.addAll(vec, profiles);
+            parameters.add(vec);
         }
 
         return parameters;

@@ -30,9 +30,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.security.Permission;
-
 import javax.speech.AudioSegment;
 import javax.speech.SpeechPermission;
+
 
 /**
  * Basic implementation of an {@link AudioSegment}.
@@ -40,10 +40,10 @@ import javax.speech.SpeechPermission;
  * The association of audio data to a representation is based on an
  * {@link InputStream} or retrieved from the given media locator.
  * </p>
+ *
  * @author Renato Cassaca
  * @author Dirk Schnelle-Walka
  * @version $Revision: 1370 $
-
  */
 public class BaseAudioSegment extends AudioSegment {
     /** The audio data. */
@@ -55,32 +55,35 @@ public class BaseAudioSegment extends AudioSegment {
      * the locator.
      * The locator is assigned a value of <code>http://localhost/dummy</code>
      * since it must not be null.
+     *
      * @param markupText the alternate markup text
-     * @param in the input stream for the audio data.
+     * @param in         the input stream for the audio data.
      */
-    public BaseAudioSegment(final String markupText, final InputStream in) {
+    public BaseAudioSegment(String markupText, InputStream in) {
         this("http://localhost/dummy", markupText, in);
     }
 
     /**
      * Constructs a new object without an input stream. This means that
      * there is no associated audio data.
-     * @param locator a non-null media locator description.
+     *
+     * @param locator    a non-null media locator description.
      * @param markupText the alternate markup text
      */
-    public BaseAudioSegment(final String locator, final String markupText) {
+    public BaseAudioSegment(String locator, String markupText) {
         super(locator, markupText);
         is = null;
     }
 
     /**
      * Constructs a new object with the given input stream.
-     * @param locator a non-null media locator description.
+     *
+     * @param locator    a non-null media locator description.
      * @param markupText the alternate markup text
-     * @param input the input stream for the audio data.
+     * @param input      the input stream for the audio data.
      */
-    public BaseAudioSegment(final String locator, final String markupText,
-            final InputStream input) {
+    public BaseAudioSegment(String locator, String markupText,
+                            InputStream input) {
         super(locator, markupText);
         is = input;
     }
@@ -96,17 +99,17 @@ public class BaseAudioSegment extends AudioSegment {
             throws IOException, SecurityException {
         // Firstly check the security settings
         if (!isGettable()) {
-            final SecurityManager security = System.getSecurityManager();
+            SecurityManager security = System.getSecurityManager();
             if (security != null) {
-                final Permission permission = new SpeechPermission(
+                Permission permission = new SpeechPermission(
                         "javax.speech.AudioSegment.openInputStream");
                 security.checkPermission(permission);
             }
         }
 
         if (is == null) {
-            final String locator = getMediaLocator();
-            final URL url = new URL(locator);
+            String locator = getMediaLocator();
+            URL url = new URL(locator);
             return url.openStream();
         } else {
             return is;
@@ -115,9 +118,9 @@ public class BaseAudioSegment extends AudioSegment {
 
     @Override
     public final boolean isGettable() {
-        final SecurityManager security = System.getSecurityManager();
+        SecurityManager security = System.getSecurityManager();
         if (security != null) {
-            final Permission permission = new SpeechPermission(
+            Permission permission = new SpeechPermission(
                     "javax.speech.AudioSegment.openInputStream");
             try {
                 security.checkPermission(permission);

@@ -28,7 +28,6 @@ package org.jvoicexml.jsapi2.mac.synthesis;
 
 import java.io.ByteArrayInputStream;
 import java.util.logging.Logger;
-
 import javax.sound.sampled.AudioFormat;
 import javax.speech.AudioException;
 import javax.speech.AudioManager;
@@ -36,24 +35,23 @@ import javax.speech.AudioSegment;
 import javax.speech.EngineException;
 import javax.speech.EngineStateException;
 import javax.speech.synthesis.Speakable;
-import javax.speech.synthesis.SynthesizerProperties;
 import javax.speech.synthesis.Voice;
 
 import org.jvoicexml.jsapi2.BaseAudioSegment;
 import org.jvoicexml.jsapi2.BaseEngineProperties;
 import org.jvoicexml.jsapi2.synthesis.BaseSynthesizer;
-import org.jvoicexml.jsapi2.synthesis.BaseSynthesizerProperties;
+
 
 /**
  * A SAPI compliant {@link javax.speech.synthesis.Synthesizer}.
+ *
  * @author Dirk Schnelle-Walka
  * @author Josua Arndt
- *
  */
 public final class MacSynthesizer extends BaseSynthesizer {
+
     /** Logger for this class. */
-    private static final Logger LOGGER = Logger.getLogger(MacSynthesizer.class
-            .getName());
+    private static final Logger LOGGER = Logger.getLogger(MacSynthesizer.class.getName());
 
     static {
         System.loadLibrary("Jsapi2MacBridge");
@@ -64,21 +62,21 @@ public final class MacSynthesizer extends BaseSynthesizer {
 
     /**
      * Constructs a new synthesizer object.
+     *
      * @param mode the synthesizer mode
      */
-    MacSynthesizer(final MacSynthesizerMode mode) {
+    MacSynthesizer(MacSynthesizerMode mode) {
         super(mode);
     }
 
     @Override
-    protected void handleAllocate() throws EngineStateException,
-        EngineException, AudioException, SecurityException {
-        final Voice voice;
-        final MacSynthesizerMode mode = (MacSynthesizerMode) getEngineMode();
+    protected void handleAllocate() throws EngineStateException, EngineException, AudioException, SecurityException {
+        Voice voice;
+        MacSynthesizerMode mode = (MacSynthesizerMode) getEngineMode();
         if (mode == null) {
             voice = null;
         } else {
-            final Voice[] voices = mode.getVoices();
+            Voice[] voices = mode.getVoices();
             if (voices == null) {
                 voice = null;
             } else {
@@ -90,10 +88,11 @@ public final class MacSynthesizer extends BaseSynthesizer {
 
     /**
      * Allocates a Mac synthesizer.
+     *
      * @param voice the voice to use
      * @return synthesizer handle
      */
-    private native long macHandleAllocate(final Voice voice);
+    private native long macHandleAllocate(Voice voice);
 
     @Override
     public boolean handleCancel() {
@@ -102,24 +101,26 @@ public final class MacSynthesizer extends BaseSynthesizer {
 
     /**
      * Cancels the current output.
+     *
      * @param handle the synthesizer handle
      * @return <code>true</code> if the current output has been canceled
      */
-    private native boolean macHandleCancel(final long handle);
+    private native boolean macHandleCancel(long handle);
 
     @Override
-    protected boolean handleCancel(final int id) {
+    protected boolean handleCancel(int id) {
         return macHandleCancel(synthesizerHandle, id);
     }
 
     /**
      * Cancels the output with the given id.
+     *
      * @param handle the synthesizer handle
-     * @param id the item to cancel
+     * @param id     the item to cancel
      * @return <code>true</code> if the output with the given id has been
      * canceled
      */
-    private native boolean macHandleCancel(final long handle, final int id);
+    private native boolean macHandleCancel(long handle, int id);
 
     @Override
     protected boolean handleCancelAll() {
@@ -128,12 +129,11 @@ public final class MacSynthesizer extends BaseSynthesizer {
 
     /**
      * Cancels all outputs.
-     * 
-     * @param handle
-     *            the synthesizer handle
+     *
+     * @param handle the synthesizer handle
      * @return <code>true</code> if at least one output has been canceled
      */
-    private native boolean macHandleCancelAll(final long handle);
+    private native boolean macHandleCancelAll(long handle);
 
     @Override
     public void handleDeallocate() {
@@ -141,7 +141,7 @@ public final class MacSynthesizer extends BaseSynthesizer {
         try {
             Thread.sleep(500);
         } catch (InterruptedException e) {
-           return;
+            return;
         }
         macHandlDeallocate(synthesizerHandle);
         synthesizerHandle = 0;
@@ -149,10 +149,10 @@ public final class MacSynthesizer extends BaseSynthesizer {
 
     /**
      * Deallocates the SAPI synthesizer.
-     * @param handle
-     *            the synthesizer handle
+     *
+     * @param handle the synthesizer handle
      */
-    private native void macHandlDeallocate(final long handle);
+    private native void macHandlDeallocate(long handle);
 
     @Override
     public void handlePause() {
@@ -161,10 +161,11 @@ public final class MacSynthesizer extends BaseSynthesizer {
 
     /**
      * Pauses the synthesizer.
+     *
      * @param handle the synthesizer handle
-     *            the synthesizer handle
+     *               the synthesizer handle
      */
-    private native void macHandlePause(final long handle);
+    private native void macHandlePause(long handle);
 
     @Override
     public boolean handleResume() {
@@ -173,19 +174,20 @@ public final class MacSynthesizer extends BaseSynthesizer {
 
     /**
      * Resumes the synthesizer.
+     *
      * @param handle the synthesizer handle
-     *            the synthesizer handle
+     *               the synthesizer handle
      * @return <code>true</code> if the synthesizer is resumed
      */
-    private native boolean macHandlResume(final long handle);
+    private native boolean macHandlResume(long handle);
 
     @Override
-    public AudioSegment handleSpeak(final int id, final String item) {
-        final byte[] bytes = macHandleSpeak(synthesizerHandle, id, item);
-        final AudioManager manager = getAudioManager();
-        final String locator = manager.getMediaLocator();
-        final ByteArrayInputStream in = new ByteArrayInputStream(bytes);
-        final AudioSegment segment;
+    public AudioSegment handleSpeak(int id, String item) {
+        byte[] bytes = macHandleSpeak(synthesizerHandle, id, item);
+        AudioManager manager = getAudioManager();
+        String locator = manager.getMediaLocator();
+        ByteArrayInputStream in = new ByteArrayInputStream(bytes);
+        AudioSegment segment;
         if (locator == null) {
             segment = new BaseAudioSegment(item, in);
         } else {
@@ -196,37 +198,28 @@ public final class MacSynthesizer extends BaseSynthesizer {
 
     /**
      * Speaks the given item.
-     * 
-     * @param handle
-     *            synthesizer handle
-     * @param id
-     *            id of the item
-     * @param item
-     *            the item to speak
+     *
+     * @param handle synthesizer handle
+     * @param id     id of the item
+     * @param item   the item to speak
      * @return byte array of the synthesized speech
      */
-    private native byte[] macHandleSpeak(final long handle, final int id,
-            final String item);
+    private native byte[] macHandleSpeak(long handle, int id, String item);
 
     @Override
-    protected AudioSegment handleSpeak(final int id, final Speakable item) {
-        throw new IllegalArgumentException("Synthesizer does not support" +
-        		" speech markup!");
+    protected AudioSegment handleSpeak(int id, Speakable item) {
+        throw new IllegalArgumentException("Synthesizer does not support" + " speech markup!");
     }
 
     /**
      * Speaks the given item.
      *
-     * @param handle
-     *            synthesizer handle
-     * @param id
-     *            id of the item
-     * @param ssml
-     *            the SSML markup to speak
+     * @param handle synthesizer handle
+     * @param id     id of the item
+     * @param ssml   the SSML markup to speak
      * @return byte array of the synthesized speech
      */
-    private native byte[] macHandleSpeakSsml(final long handle, final int id,
-            final String ssml);
+    private native byte[] macHandleSpeakSsml(long handle, int id, String ssml);
 
     @Override
     protected AudioFormat getEngineAudioFormat() {
@@ -235,18 +228,19 @@ public final class MacSynthesizer extends BaseSynthesizer {
 
     /**
      * retrieves the default audio format.
+     *
      * @param handle synthesizer handle.
      * @return native audio format
      */
-    private native AudioFormat macGetAudioFormat(final long handle);
+    private native AudioFormat macGetAudioFormat(long handle);
 
     @Override
     protected void handlePropertyChangeRequest(
-            final BaseEngineProperties properties,
-            final String propName, final Object oldValue,
-            final Object newValue) {
-        LOGGER.warning("changing property '" + propName
-                + "' to '" + newValue + "' ignored");
+            BaseEngineProperties properties,
+            String propName, Object oldValue,
+            Object newValue) {
+        properties.commitPropertyChange(propName, oldValue, newValue);
+//        LOGGER.warning("changing property '" + propName + "' to '" + newValue + "' ignored");
     }
 }
 

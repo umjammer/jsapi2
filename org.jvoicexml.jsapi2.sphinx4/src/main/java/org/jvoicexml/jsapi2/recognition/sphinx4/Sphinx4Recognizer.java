@@ -26,7 +26,6 @@ import java.io.InputStream;
 import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.sound.sampled.AudioFormat;
 import javax.speech.AudioException;
 import javax.speech.EngineException;
@@ -36,29 +35,29 @@ import javax.speech.recognition.RecognizerEvent;
 import javax.speech.recognition.ResultEvent;
 import javax.speech.recognition.RuleGrammar;
 
+import edu.cmu.sphinx.api.Configuration;
+import edu.cmu.sphinx.api.Context;
+import edu.cmu.sphinx.decoder.search.Token;
+import edu.cmu.sphinx.linguist.language.grammar.Grammar;
 import org.jvoicexml.jsapi2.BaseAudioManager;
 import org.jvoicexml.jsapi2.BaseEngineProperties;
 import org.jvoicexml.jsapi2.recognition.BaseRecognizer;
 import org.jvoicexml.jsapi2.recognition.GrammarDefinition;
 
-import edu.cmu.sphinx.api.Configuration;
-import edu.cmu.sphinx.api.Context;
-import edu.cmu.sphinx.decoder.search.Token;
-import edu.cmu.sphinx.linguist.language.grammar.Grammar;
 
 /**
  * JSAPI wrapper for sphinx4.
- * 
+ *
  * <p>
  * Unfortunately sphinx4 provides no full support for JSAPI, so we try to build
  * our own wrapper. This is going to be a bit troublesome. Hope we can make it
  * ;-)
  * </p>
- * 
+ *
  * @author Dirk Schnelle
  * @author Stefan Radomski
  * @author Stephan Radeck-Arneth (adaptation for handling of different
- *         languages)
+ * languages)
  */
 final class Sphinx4Recognizer extends BaseRecognizer {
     /** Logger for this class. */
@@ -126,7 +125,7 @@ final class Sphinx4Recognizer extends BaseRecognizer {
         }
 
         // hard-coded audio format
-        final AudioFormat format = getAudioFormat();
+        AudioFormat format = getAudioFormat();
         ((BaseAudioManager) getAudioManager()).setEngineAudioFormat(format);
         resultListener = new Sphinx4ResultListener(this);
     }
@@ -138,12 +137,11 @@ final class Sphinx4Recognizer extends BaseRecognizer {
      * The name of the configuration file is determined by
      * <code>default-&lt;LOCALE LANGUAGE&gt;.config.xml</code>
      * </p>
-     * 
-     * @param recognizerMode
-     *            the recognizer mode
+     *
+     * @param recognizerMode the recognizer mode
      * @return URL of the configuration file to use.
      */
-    private String getConfiguration(final SphinxRecognizerMode recognizerMode) {
+    private String getConfiguration(SphinxRecognizerMode recognizerMode) {
         // Determine the speech locale to use
         SpeechLocale[] speechLocales = recognizerMode.getSpeechLocales();
         if (speechLocales == null
@@ -158,17 +156,16 @@ final class Sphinx4Recognizer extends BaseRecognizer {
         }
 
         // Determine the name from the locale
-        final SpeechLocale speechLocale = speechLocales[0];
-        final String selectedLanguage = speechLocale.getLanguage();
+        SpeechLocale speechLocale = speechLocales[0];
+        String selectedLanguage = speechLocale.getLanguage();
         return "resource:/default-" + selectedLanguage.toUpperCase()
                 + ".config.xml";
     }
 
     /**
      * Called from the <code>allocate</code> method.
-     * 
-     * @throws EngineException
-     *             if problems are encountered
+     *
+     * @throws EngineException if problems are encountered
      */
     public void handleAllocate() throws AudioException, EngineException,
             EngineStateException, SecurityException {
@@ -191,7 +188,7 @@ final class Sphinx4Recognizer extends BaseRecognizer {
                 "resource:/edu/cmu/sphinx/models/en-us/en-us.lm.bin");
 
         try {
-            final Context context = new Context(
+            Context context = new Context(
                     "resource:/default-EN.config.xml", configuration);
             recognizer = new Jsapi2Recognizer(context);
             recognizer.allocate();
@@ -209,7 +206,7 @@ final class Sphinx4Recognizer extends BaseRecognizer {
     }
 
     @Override
-    public boolean handleResume(final InputStream in) {
+    public boolean handleResume(InputStream in) {
         if (recognizer == null) {
             LOGGER.warning("no recognizer: cannot resume!");
             return false;
@@ -248,7 +245,7 @@ final class Sphinx4Recognizer extends BaseRecognizer {
     }
 
     /**
-     * @todo Correctly implement this
+     * TODO Correctly implement this
      */
     public void handlePause(int flags) {
         handlePause();
@@ -256,12 +253,11 @@ final class Sphinx4Recognizer extends BaseRecognizer {
 
     /**
      * Called from the <code>deallocate</code> method.
-     * 
+     * <p>
      * According to JSAPI2 specs, pause is transitioned before dealloc.
-     * 
-     * @throws EngineException
-     *             if this <code>Engine</code> cannot be deallocated.
-     * @todo Implement this com.sun.speech.engine.BaseEngine method
+     *
+     * @throws EngineException if this <code>Engine</code> cannot be deallocated.
+     * TODO Implement this com.sun.speech.engine.BaseEngine method
      */
     public void handleDeallocate() {
 
@@ -269,22 +265,21 @@ final class Sphinx4Recognizer extends BaseRecognizer {
             LOGGER.fine("deallocating recognizer...");
         }
 
-        // // pause is not called before dealloc obviously
-        // if (recognizer.getState() != State.READY)
-        // handlePause();
-        //
+        // pause is not called before dealloc obviously
+//        if (recognizer.getState() != State.READY)
+//            handlePause();
+
         recognizer.deallocate();
         recognizer.removeResultListener(resultListener);
 
         if (LOGGER.isLoggable(Level.FINE)) {
             LOGGER.fine("...deallocated");
         }
-
     }
 
     /**
      * Selector for the wrapped sphinx4 recognizer.
-     * 
+     *
      * @return Recognizer
      */
     Jsapi2Recognizer getRecognizer() {
@@ -329,12 +324,11 @@ final class Sphinx4Recognizer extends BaseRecognizer {
     /**
      * Get the current rule grammar or the one that produced the list of tokens
      * in case of the SRGS container.
-     * 
+     *
      * @param token
-     * 
      * @return Active grammar.
      */
-    RuleGrammar getRuleGrammar(final Token token) {
+    RuleGrammar getRuleGrammar(Token token) {
         if (grammar instanceof SRGSGrammar) {
             return ((SRGSGrammar) grammar).getRuleGrammar();
         }
@@ -345,15 +339,13 @@ final class Sphinx4Recognizer extends BaseRecognizer {
     }
 
     /**
-     * @todo: in case of grammarDefinition.size > 1, make <one-of> of all the
-     *        grammars
-     * @param newGrammars
-     *            String[]
+     * TODO in case of grammarDefinition.size > 1, make <one-of> of all the grammars
+     * @param grammarDefinitions String[]
      * @return boolean
      */
     @Override
     protected boolean setGrammars(
-            final Collection<GrammarDefinition> grammarDefinitions) {
+            Collection<GrammarDefinition> grammarDefinitions) {
         return recognizer.setGrammars(grammarDefinitions);
     }
 
@@ -368,28 +360,28 @@ final class Sphinx4Recognizer extends BaseRecognizer {
     }
 
     public void postEndOfSpeechEvent() {
-        // SearchGraph sg = linguist.getSearchGraph();
-        // SearchGraphDumper.dumpDot("sg.dot", "foo", sg);
+//        SearchGraph sg = linguist.getSearchGraph();
+//        SearchGraphDumper.dumpDot("sg.dot", "foo", sg);
 
         postEngineEvent(new RecognizerEvent(this,
                 RecognizerEvent.SPEECH_STOPPED, 1, 1, null, null, 0));
     }
 
     public void postProcessingEvent() {
-        long states[] = setEngineState(LISTENING, PROCESSING);
+        long[] states = setEngineState(LISTENING, PROCESSING);
         postEngineEvent(states[0], states[1],
-                RecognizerEvent.RECOGNIZER_PROCESSING, (long) 0);
+                RecognizerEvent.RECOGNIZER_PROCESSING, 0);
     }
 
     public void postListeningEvent() {
-        long states[] = setEngineState(PROCESSING, LISTENING);
+        long[] states = setEngineState(PROCESSING, LISTENING);
         postEngineEvent(states[0], states[1],
-                RecognizerEvent.RECOGNIZER_LISTENING, (long) 0);
+                RecognizerEvent.RECOGNIZER_LISTENING, 0);
 
     }
 
     @Override
-    public void postResultEvent(final ResultEvent resultEvent) {
+    public void postResultEvent(ResultEvent resultEvent) {
         super.postResultEvent(resultEvent);
     }
 
@@ -409,8 +401,8 @@ final class Sphinx4Recognizer extends BaseRecognizer {
 
     @Override
     protected void handlePropertyChangeRequest(
-            final BaseEngineProperties properties, final String propName,
-            final Object oldValue, final Object newValue) {
+            BaseEngineProperties properties, String propName,
+            Object oldValue, Object newValue) {
         LOGGER.warning("changing property '" + propName + "' to '" + newValue
                 + "' ignored");
     }

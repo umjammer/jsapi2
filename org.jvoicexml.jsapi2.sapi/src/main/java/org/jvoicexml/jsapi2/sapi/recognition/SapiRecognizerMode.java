@@ -52,7 +52,7 @@ public final class SapiRecognizerMode extends RecognizerMode
      * Constructs a new object.
      * @param locale  the locale associated with this mode
      */
-    public SapiRecognizerMode(final SpeechLocale locale) {
+    public SapiRecognizerMode(SpeechLocale locale) {
         super(locale);
     }
     

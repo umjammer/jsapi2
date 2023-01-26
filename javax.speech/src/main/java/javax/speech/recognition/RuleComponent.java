@@ -41,9 +41,9 @@ public class RuleComponent {
                     "No text is not a valid for a grammar ");
         }
 
-        final char[] chars = text.toCharArray();
+        char[] chars = text.toCharArray();
         // The first symbol must be a character.
-        final char first = chars[0];
+        char first = chars[0];
         if (!isLetter(first) && (first != '_')) {
             throw new IllegalArgumentException("'" + text
                     + "' is not a valid grammar text: '"
@@ -51,7 +51,7 @@ public class RuleComponent {
         }
         // Following symbols must be a character or a digit.
         for (int i = 1; i < chars.length; i++) {
-            final char ch = chars[i];
+            char ch = chars[i];
             if (!isLetter(ch) && !Character.isDigit(ch)
                     && (ch != '_')) {
                 throw new IllegalArgumentException("'" + text

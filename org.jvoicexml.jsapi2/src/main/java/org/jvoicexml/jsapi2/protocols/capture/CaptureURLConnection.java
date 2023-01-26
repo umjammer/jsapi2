@@ -47,7 +47,7 @@ public final class CaptureURLConnection extends URLConnection {
     private static final Logger LOGGER =
             Logger.getLogger(CaptureURLConnection.class.getName());
 
-    /** Device that that this URLConnection will connect to. */
+    /** Device that this URLConnection will connect to. */
     private final String deviceName;
 
     /** The audio format to use. */
@@ -65,12 +65,12 @@ public final class CaptureURLConnection extends URLConnection {
      * @param url
      *            URL
      */
-    public CaptureURLConnection(final URL url) {
+    public CaptureURLConnection(URL url) {
         super(url);
 
         // Initialize the device that will be connecting to
         try {
-            final String authority = url.getAuthority();
+            String authority = url.getAuthority();
             deviceName = URLDecoder.decode(authority, "UTF-8");
         } catch (UnsupportedEncodingException ex) {
             throw new UnsupportedOperationException(ex);
@@ -201,7 +201,7 @@ public final class CaptureURLConnection extends URLConnection {
      */
     public AudioFormat getAudioFormat() throws IOException {
         if (audioFormat == null) {
-            final URL url = getURL();
+            URL url = getURL();
             try {
                 audioFormat = JavaSoundParser.parse(url);
             } catch (URISyntaxException e) {

@@ -27,21 +27,21 @@ public class RuleCountTest {
      */
     @Test
     void testToString() {
-        final RuleCount count1 = new RuleCount(component, 42);
-        final String str1 = count1.toString();
+        RuleCount count1 = new RuleCount(component, 42);
+        String str1 = count1.toString();
         assertEquals("<item repeat=\"42-\">token</item>", str1);
 
-        final RuleCount count2 = new RuleCount(component, 43, 44);
-        final String str2 = count2.toString();
+        RuleCount count2 = new RuleCount(component, 43, 44);
+        String str2 = count2.toString();
         assertEquals("<item repeat=\"43-44\">token</item>", str2);
 
-        final RuleCount count3 = new RuleCount(component, 45, 45);
-        final String str3 = count3.toString();
+        RuleCount count3 = new RuleCount(component, 45, 45);
+        String str3 = count3.toString();
         assertEquals("<item repeat=\"45\">token</item>", str3);
 
-        final RuleCount count4 = new RuleCount(component, 45, 46,
+        RuleCount count4 = new RuleCount(component, 45, 46,
                 RuleCount.MAX_PROBABILITY);
-        final String str4 = count4.toString();
+        String str4 = count4.toString();
         assertEquals("<item repeat=\"45-46\" repeat-prop=\""
                 + RuleCount.MAX_PROBABILITY + "\">token</item>", str4);
     }
@@ -52,11 +52,11 @@ public class RuleCountTest {
      */
     @Test
     void testRuleCountRuleComponentInt() {
-        final RuleCount count1 = new RuleCount(component, 42);
+        RuleCount count1 = new RuleCount(component, 42);
 
         Exception failure = null;
         try {
-            final RuleCount count2 = new RuleCount(component, -34);
+            RuleCount count2 = new RuleCount(component, -34);
         } catch (IllegalArgumentException e) {
             failure = e;
         }
@@ -69,13 +69,13 @@ public class RuleCountTest {
      */
     @Test
     void testRuleCountRuleComponentIntInt() {
-        final RuleCount count1 = new RuleCount(component, 42, 43);
+        RuleCount count1 = new RuleCount(component, 42, 43);
 
-        final RuleCount count2 = new RuleCount(component, 42, 42);
+        RuleCount count2 = new RuleCount(component, 42, 42);
 
         Exception failure = null;
         try {
-            final RuleCount count3 = new RuleCount(component, 44, 42);
+            RuleCount count3 = new RuleCount(component, 44, 42);
         } catch (IllegalArgumentException e) {
             failure = e;
         }
@@ -83,7 +83,7 @@ public class RuleCountTest {
 
         failure = null;
         try {
-            final RuleCount count4 = new RuleCount(component, -44, 42);
+            RuleCount count4 = new RuleCount(component, -44, 42);
         } catch (IllegalArgumentException e) {
             failure = e;
         }
@@ -96,14 +96,14 @@ public class RuleCountTest {
      */
     @Test
     void testRuleCountRuleComponentIntIntInt() {
-        final RuleCount count1 = new RuleCount(component, 42, 43, 0);
+        RuleCount count1 = new RuleCount(component, 42, 43, 0);
 
-        final RuleCount count2 = new RuleCount(component, 42, 42,
+        RuleCount count2 = new RuleCount(component, 42, 42,
                 RuleCount.MAX_PROBABILITY);
 
         Exception failure = null;
         try {
-            final RuleCount count3 = new RuleCount(component, 44, 42,
+            RuleCount count3 = new RuleCount(component, 44, 42,
                     RuleCount.MAX_PROBABILITY);
         } catch (IllegalArgumentException e) {
             failure = e;
@@ -112,7 +112,7 @@ public class RuleCountTest {
 
         failure = null;
         try {
-            final RuleCount count4 = new RuleCount(component, -44, 42,
+            RuleCount count4 = new RuleCount(component, -44, 42,
                     RuleCount.MAX_PROBABILITY);
         } catch (IllegalArgumentException e) {
             failure = e;
@@ -121,7 +121,7 @@ public class RuleCountTest {
 
         failure = null;
         try {
-            final RuleCount count4 = new RuleCount(component, -44, 42, -2);
+            RuleCount count4 = new RuleCount(component, -44, 42, -2);
         } catch (IllegalArgumentException e) {
             failure = e;
         }
@@ -133,13 +133,13 @@ public class RuleCountTest {
      */
     @Test
     void testGetRepeatMax() {
-        final RuleCount count1 = new RuleCount(component, 42);
+        RuleCount count1 = new RuleCount(component, 42);
         assertEquals(RuleCount.REPEAT_INDEFINITELY, count1.getRepeatMax());
 
-        final RuleCount count2 = new RuleCount(component, 43, 44);
+        RuleCount count2 = new RuleCount(component, 43, 44);
         assertEquals(44, count2.getRepeatMax());
 
-        final RuleCount count3 = new RuleCount(component, 45, 46,
+        RuleCount count3 = new RuleCount(component, 45, 46,
                 RuleCount.MAX_PROBABILITY);
         assertEquals(46, count3.getRepeatMax());
     }
@@ -149,13 +149,13 @@ public class RuleCountTest {
      */
     @Test
     void testGetRepeatMin() {
-        final RuleCount count1 = new RuleCount(component, 42);
+        RuleCount count1 = new RuleCount(component, 42);
         assertEquals(42, count1.getRepeatMin());
 
-        final RuleCount count2 = new RuleCount(component, 43, 44);
+        RuleCount count2 = new RuleCount(component, 43, 44);
         assertEquals(43, count2.getRepeatMin());
 
-        final RuleCount count3 = new RuleCount(component, 45, 46,
+        RuleCount count3 = new RuleCount(component, 45, 46,
                 RuleCount.MAX_PROBABILITY);
         assertEquals(45, count3.getRepeatMin());
     }
@@ -166,15 +166,15 @@ public class RuleCountTest {
      */
     @Test
     void testGetRepeatProbability() {
-        final RuleCount count1 = new RuleCount(component, 42);
+        RuleCount count1 = new RuleCount(component, 42);
         assertEquals(RuleCount.REPEAT_INDEFINITELY, count1
                 .getRepeatProbability());
 
-        final RuleCount count2 = new RuleCount(component, 43, 44);
+        RuleCount count2 = new RuleCount(component, 43, 44);
         assertEquals(RuleCount.REPEAT_INDEFINITELY, count2
                 .getRepeatProbability());
 
-        final RuleCount count3 = new RuleCount(component, 45, 46, 57843);
+        RuleCount count3 = new RuleCount(component, 45, 46, 57843);
         assertEquals(57843, count3.getRepeatProbability());
     }
 
@@ -184,13 +184,13 @@ public class RuleCountTest {
      */
     @Test
     void testGetRuleComponent() {
-        final RuleCount count1 = new RuleCount(component, 42);
+        RuleCount count1 = new RuleCount(component, 42);
         assertEquals(component, count1.getRuleComponent());
 
-        final RuleCount count2 = new RuleCount(component, 43, 44);
+        RuleCount count2 = new RuleCount(component, 43, 44);
         assertEquals(component, count2.getRuleComponent());
 
-        final RuleCount count3 = new RuleCount(component, 45, 46,
+        RuleCount count3 = new RuleCount(component, 45, 46,
                 RuleCount.MAX_PROBABILITY);
         assertEquals(component, count3.getRuleComponent());
     }

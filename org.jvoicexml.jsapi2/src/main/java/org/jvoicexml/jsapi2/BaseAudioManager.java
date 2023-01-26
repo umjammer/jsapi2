@@ -29,7 +29,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.security.Permission;
 import java.util.Collection;
-
 import javax.sound.sampled.AudioFormat;
 import javax.speech.AudioEvent;
 import javax.speech.AudioException;
@@ -40,6 +39,7 @@ import javax.speech.EngineStateException;
 import javax.speech.SpeechEventExecutor;
 import javax.speech.SpeechPermission;
 
+
 /**
  * Supports the JSAPI 2.0 {@link AudioManager} interface. Actual JSAPI
  * implementations might want to extend or modify this implementation. Usually,
@@ -49,6 +49,7 @@ import javax.speech.SpeechPermission;
  * (via {@link #getInputStream()}) respectively.
  */
 public abstract class BaseAudioManager implements AudioManager {
+
     /**
      * List of <code>AudioListeners</code> registered for
      * <code>AudioEvents</code> on this object.
@@ -77,13 +78,11 @@ public abstract class BaseAudioManager implements AudioManager {
 
     /**
      * Constructs a new object.
-     * 
-     * @param eng
-     *            the associated engine
-     * @param format
-     *            native engine audio format
+     *
+     * @param eng    the associated engine
+     * @param format native engine audio format
      */
-    public BaseAudioManager(final Engine eng, final AudioFormat format) {
+    public BaseAudioManager(Engine eng, AudioFormat format) {
         this(eng);
         engineAudioFormat = format;
         targetAudioFormat = engineAudioFormat;
@@ -91,12 +90,11 @@ public abstract class BaseAudioManager implements AudioManager {
 
     /**
      * Creates a new object.
-     * 
-     * @param eng
-     *            the associated engine
+     *
+     * @param eng the associated engine
      */
-    protected BaseAudioManager(final Engine eng) {
-        audioListeners = new java.util.ArrayList<AudioListener>();
+    protected BaseAudioManager(Engine eng) {
+        audioListeners = new java.util.ArrayList<>();
         audioMask = AudioEvent.DEFAULT_MASK;
         engine = eng;
     }
@@ -104,11 +102,10 @@ public abstract class BaseAudioManager implements AudioManager {
     /**
      * Requests notification of {@link AudioEvent}s from the
      * {@link AudioManager}.
-     * 
-     * @param listener
-     *            the listener to add
+     *
+     * @param listener the listener to add
      */
-    public final void addAudioListener(final AudioListener listener) {
+    public final void addAudioListener(AudioListener listener) {
         synchronized (audioListeners) {
             if (!audioListeners.contains(listener)) {
                 audioListeners.add(listener);
@@ -119,11 +116,10 @@ public abstract class BaseAudioManager implements AudioManager {
     /**
      * Removes an {@link AudioListener} from the list of
      * <code>AudioListeners</code>.
-     * 
-     * @param listener
-     *            the listener to remove
+     *
+     * @param listener the listener to remove
      */
-    public final void removeAudioListener(final AudioListener listener) {
+    public final void removeAudioListener(AudioListener listener) {
         synchronized (audioListeners) {
             audioListeners.remove(listener);
         }
@@ -135,17 +131,15 @@ public abstract class BaseAudioManager implements AudioManager {
     }
 
     @Override
-    public final void setAudioMask(final int mask) {
+    public final void setAudioMask(int mask) {
         audioMask = mask;
     }
 
     @Override
-    public final void audioStart()
-            throws SecurityException, AudioException, EngineStateException {
-        final SecurityManager security = System.getSecurityManager();
+    public final void audioStart() throws SecurityException, AudioException, EngineStateException {
+        SecurityManager security = System.getSecurityManager();
         if (security != null) {
-            final Permission permission = new SpeechPermission(
-                    "javax.speech.AudioManager.control");
+            Permission permission = new SpeechPermission("javax.speech.AudioManager.control");
             security.checkPermission(permission);
         }
 
@@ -155,45 +149,40 @@ public abstract class BaseAudioManager implements AudioManager {
         audioStarted = true;
 
         // Notify all listeners.
-        final AudioEvent event = new AudioEvent(engine,
-                AudioEvent.AUDIO_STARTED);
+        AudioEvent event = new AudioEvent(engine, AudioEvent.AUDIO_STARTED);
         postAudioEvent(event);
     }
 
     /**
      * Handles further processing if the audio output has to be started by a
      * call to {@link #audioStart()}.
-     * 
-     * @throws AudioException
-     *             error stopping
+     *
+     * @throws AudioException error stopping
      */
     protected abstract void handleAudioStart() throws AudioException;
 
     @Override
-    public final void audioStop()
-            throws SecurityException, AudioException, EngineStateException {
-        final SecurityManager security = System.getSecurityManager();
+    public final void audioStop() throws SecurityException, AudioException, EngineStateException {
+        SecurityManager security = System.getSecurityManager();
         if (security != null) {
-            final Permission permission = new SpeechPermission(
-                    "javax.speech.AudioManager.control");
+            Permission permission = new SpeechPermission("javax.speech.AudioManager.control");
             security.checkPermission(permission);
         }
 
         validatePaused();
-        
+
         handleAudioStop();
         audioStarted = false;
 
         // Notify all listeners.
-        final AudioEvent event = new AudioEvent(engine,
-                AudioEvent.AUDIO_STOPPED);
+        AudioEvent event = new AudioEvent(engine, AudioEvent.AUDIO_STOPPED);
         postAudioEvent(event);
     }
 
     /**
      * Validates that the engine is not in an active state.
-     * @throws EngineStateException
-     *          if the engine is active
+     *
+     * @throws EngineStateException if the engine is active
      */
     private void validatePaused() throws EngineStateException {
         if (!engine.testEngineState(Engine.PAUSED)
@@ -202,24 +191,23 @@ public abstract class BaseAudioManager implements AudioManager {
                 && !engine.testEngineState(Engine.DEALLOCATED)) {
             throw new EngineStateException("the Engine has not been paused!");
         }
-
     }
+
     /**
      * Handles further processing if the audio output has to be stopped by a
      * call to {@link #audioStop()}.
      * <p>
      * Closes the format converter. May be overridden to handle further cleanup.
      * </p>
-     * 
-     * @throws AudioException
-     *             error stopping
+     *
+     * @throws AudioException error stopping
      */
     protected void handleAudioStop() throws AudioException {
     }
 
     /**
      * Checks if the audio has been started.
-     * 
+     *
      * @return {@code true} if the audio has been started.
      */
     public final boolean isAudioStarted() {
@@ -227,14 +215,13 @@ public abstract class BaseAudioManager implements AudioManager {
     }
 
     @Override
-    public final void setMediaLocator(final String locator)
+    public final void setMediaLocator(String locator)
             throws AudioException, EngineStateException,
             IllegalArgumentException, SecurityException {
         // Check audio permission
-        final SecurityManager security = System.getSecurityManager();
+        SecurityManager security = System.getSecurityManager();
         if (security != null) {
-            final Permission permission = new SpeechPermission(
-                    "javax.speech.AudioManager.control");
+            Permission permission = new SpeechPermission("javax.speech.AudioManager.control");
             security.checkPermission(permission);
         }
 
@@ -250,8 +237,7 @@ public abstract class BaseAudioManager implements AudioManager {
 
         // Set the locator and notify the change
         mediaLocator = locator;
-        final AudioEvent event = new AudioEvent(engine,
-                AudioEvent.AUDIO_CHANGED);
+        AudioEvent event = new AudioEvent(engine, AudioEvent.AUDIO_CHANGED);
         postAudioEvent(event);
     }
 
@@ -262,36 +248,33 @@ public abstract class BaseAudioManager implements AudioManager {
 
     /**
      * {@inheritDoc}
-     * 
+     * <p>
      * TODO This is just a dummy implementation
      */
-    public String[] getSupportedMediaLocators(final String locator)
-            throws IllegalArgumentException {
-        return new String[] { mediaLocator };
+    public String[] getSupportedMediaLocators(String locator) throws IllegalArgumentException {
+        return new String[] {mediaLocator};
     }
 
     @Override
-    public final boolean isSupportedMediaLocator(final String locator)
-            throws IllegalArgumentException {
+    public final boolean isSupportedMediaLocator(String locator) throws IllegalArgumentException {
         if (locator == null) {
             return true;
         }
-        final String[] supportedMediaLocators = getSupportedMediaLocators(
-                locator);
+        String[] supportedMediaLocators = getSupportedMediaLocators(locator);
         return supportedMediaLocators != null;
     }
 
     /**
      * {@inheritDoc}
-     * 
+     * <p>
      * TODO: This implementation checks only for equal media locators.
      */
     @Override
-    public boolean isSameChannel(final AudioManager audioManager) {
+    public boolean isSameChannel(AudioManager audioManager) {
         if (audioManager == null) {
             return false;
         }
-        final String otherLocator = audioManager.getMediaLocator();
+        String otherLocator = audioManager.getMediaLocator();
         if (otherLocator == null) {
             return mediaLocator == null;
         }
@@ -304,28 +287,24 @@ public abstract class BaseAudioManager implements AudioManager {
     /**
      * Notifies all listeners about the audio event using the configured
      * {@link javax.speech.SpeechEventExecutor}.
-     * 
-     * @param event
-     *            the event to notify.
+     *
+     * @param event the event to notify.
      */
-    protected final void postAudioEvent(final AudioEvent event) {
-        final int eventId = event.getId();
+    protected final void postAudioEvent(AudioEvent event) {
+        int eventId = event.getId();
         if ((getAudioMask() & eventId) != eventId) {
             return;
         }
-        final Runnable runnable = new Runnable() {
-            public void run() {
-                synchronized (audioListeners) {
-                    for (AudioListener listener : audioListeners) {
-                        listener.audioUpdate(event);
-                    }
+        Runnable runnable = () -> {
+            synchronized (audioListeners) {
+                for (AudioListener listener : audioListeners) {
+                    listener.audioUpdate(event);
                 }
             }
         };
 
         try {
-            final SpeechEventExecutor executor = engine
-                    .getSpeechEventExecutor();
+            SpeechEventExecutor executor = engine.getSpeechEventExecutor();
             executor.execute(runnable);
         } catch (RuntimeException ex) {
             // Ignore exception
@@ -335,14 +314,14 @@ public abstract class BaseAudioManager implements AudioManager {
 
     /**
      * Retrieves the output stream associated with the given media locator.
-     * 
+     *
      * @return output stream, <code>null</code> if streaming is not supported.
      */
     public abstract OutputStream getOutputStream();
 
     /**
      * Retrieves the input stream associated with the given media locator.
-     * 
+     *
      * @return input stream, <code>null</code> if streaming is not supported.
      */
     public abstract InputStream getInputStream();
@@ -350,26 +329,22 @@ public abstract class BaseAudioManager implements AudioManager {
     /**
      * Opens the connection to the configured media locator. Does nothing if
      * there is no media locator
-     * 
-     * @param doOutput
-     *            {@code true} if the connection is intended to be used for
-     *            output, i.e., speaker or similar.
+     *
+     * @param doOutput {@code true} if the connection is intended to be used for
+     *                 output, i.e., speaker or similar.
      * @return opened connection
-     * @throws IOException
-     *             error opening the connection.
-     * @throws MalformedURLException
-     *             error creating a URL from the media locator
+     * @throws IOException           error opening the connection.
+     * @throws MalformedURLException error creating a URL from the media locator
      */
-    protected final URLConnection openURLConnection(final boolean doOutput)
-            throws IOException, MalformedURLException {
-        final String locator = getMediaLocator();
+    protected final URLConnection openURLConnection(boolean doOutput) throws IOException, MalformedURLException {
+        String locator = getMediaLocator();
         if (locator == null) {
             return null;
         }
-        final URL url = new URL(locator);
+        URL url = new URL(locator);
 
         // Open a connection to URL
-        final URLConnection connection = url.openConnection();
+        URLConnection connection = url.openConnection();
         connection.setDoOutput(doOutput);
         connection.connect();
         return connection;
@@ -377,17 +352,16 @@ public abstract class BaseAudioManager implements AudioManager {
 
     /**
      * Sets the audio format that is being used by this engine.
-     * 
-     * @param format
-     *            new audio format.
+     *
+     * @param format new audio format.
      */
-    public final void setEngineAudioFormat(final AudioFormat format) {
+    public final void setEngineAudioFormat(AudioFormat format) {
         engineAudioFormat = format;
     }
 
     /**
      * Retrieves the audio format that is used by the associated engine.
-     * 
+     *
      * @return audio format used by this engine.
      */
     public final AudioFormat getEngineAudioFormat() {
@@ -396,7 +370,7 @@ public abstract class BaseAudioManager implements AudioManager {
 
     /**
      * Retrieves the target audio format.
-     * 
+     *
      * @return target audio format.
      */
     public final AudioFormat getTargetAudioFormat() {
@@ -406,11 +380,10 @@ public abstract class BaseAudioManager implements AudioManager {
     /**
      * Sets the target audio format used by the stream that is consumed by the
      * associated engine.
-     * 
-     * @param format
-     *            the target audio format
+     *
+     * @param format the target audio format
      */
-    protected final void setTargetAudioFormat(final AudioFormat format) {
+    protected final void setTargetAudioFormat(AudioFormat format) {
         targetAudioFormat = format;
     }
 }

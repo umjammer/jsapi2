@@ -182,12 +182,12 @@ public final class SpeechLocale {
         return true;
     }
     
-    public final String toString() {
+    public String toString() {
         if ((language.length() == 0) && (country.length() == 0)) {
             return "";
         }
 
-        StringBuffer str = new StringBuffer();
+        StringBuilder str = new StringBuilder();
         str.append(language);
         if (country.length() != 0) {
             str.append('_').append(country);

@@ -44,8 +44,8 @@ public class EngineModeTest {
      */
     @Test
     void testHashCode() {
-        final EngineMode mode1 = new MockEngineMode();
-        final EngineMode mode2 = new MockEngineMode();
+        EngineMode mode1 = new MockEngineMode();
+        EngineMode mode2 = new MockEngineMode();
         assertEquals(mode1.hashCode(), mode2.hashCode());
     }
 
@@ -54,7 +54,7 @@ public class EngineModeTest {
      */
     @Test
     void testGetEngineName() {
-        final EngineMode mode1 = new MockEngineMode();
+        EngineMode mode1 = new MockEngineMode();
         assertNull(mode1.getEngineName());
 
         String engineName1 = "name1";
@@ -62,7 +62,7 @@ public class EngineModeTest {
         Boolean running1 = Boolean.TRUE;
         Boolean supportsLetterToSound1 = Boolean.TRUE;
         Boolean markupSupport1 = Boolean.TRUE;
-        final EngineMode mode2 = new MockEngineMode(engineName1, modeName1,
+        EngineMode mode2 = new MockEngineMode(engineName1, modeName1,
                 running1, supportsLetterToSound1, markupSupport1);
         assertEquals(engineName1, mode2.getEngineName());
 
@@ -71,7 +71,7 @@ public class EngineModeTest {
         Boolean running2 = Boolean.TRUE;
         Boolean supportsLetterToSound2 = Boolean.TRUE;
         Boolean markupSupport2 = Boolean.TRUE;
-        final EngineMode mode3 = new MockEngineMode(engineName2, modeName2,
+        EngineMode mode3 = new MockEngineMode(engineName2, modeName2,
                 running2, supportsLetterToSound2, markupSupport2);
         assertNull(mode3.getEngineName());
     }
@@ -81,7 +81,7 @@ public class EngineModeTest {
      */
     @Test
     void testGetSupportsMarkup() {
-        final EngineMode mode1 = new MockEngineMode();
+        EngineMode mode1 = new MockEngineMode();
         assertNull(mode1.getSupportsMarkup());
 
         String engineName1 = "name1";
@@ -89,7 +89,7 @@ public class EngineModeTest {
         Boolean running1 = Boolean.TRUE;
         Boolean supportsLetterToSound1 = Boolean.TRUE;
         Boolean markupSupport1 = Boolean.TRUE;
-        final EngineMode mode2 = new MockEngineMode(engineName1, modeName1,
+        EngineMode mode2 = new MockEngineMode(engineName1, modeName1,
                 running1, supportsLetterToSound1, markupSupport1);
         assertEquals(Boolean.TRUE, mode2.getSupportsMarkup());
 
@@ -98,7 +98,7 @@ public class EngineModeTest {
         Boolean running2 = Boolean.TRUE;
         Boolean supportsLetterToSound2 = Boolean.TRUE;
         Boolean markupSupport2 = Boolean.FALSE;
-        final EngineMode mode3 = new MockEngineMode(engineName2, modeName2,
+        EngineMode mode3 = new MockEngineMode(engineName2, modeName2,
                 running2, supportsLetterToSound2, markupSupport2);
         assertEquals(Boolean.FALSE, mode3.getSupportsMarkup());
 
@@ -107,7 +107,7 @@ public class EngineModeTest {
         Boolean running3 = Boolean.TRUE;
         Boolean supportsLetterToSound3 = Boolean.TRUE;
         Boolean markupSupport3 = null;
-        final EngineMode mode4 = new MockEngineMode(engineName3, modeName3,
+        EngineMode mode4 = new MockEngineMode(engineName3, modeName3,
                 running3, supportsLetterToSound3, markupSupport3);
         assertNull(mode4.getSupportsMarkup());
     }
@@ -117,7 +117,7 @@ public class EngineModeTest {
      */
     @Test
     void testGetModeName() {
-        final EngineMode mode1 = new MockEngineMode();
+        EngineMode mode1 = new MockEngineMode();
         assertNull(mode1.getModeName());
 
         String engineName1 = "name1";
@@ -125,7 +125,7 @@ public class EngineModeTest {
         Boolean running1 = Boolean.TRUE;
         Boolean supportsLetterToSound1 = Boolean.TRUE;
         Boolean markupSupport1 = Boolean.TRUE;
-        final EngineMode mode2 = new MockEngineMode(engineName1, modeName1,
+        EngineMode mode2 = new MockEngineMode(engineName1, modeName1,
                 running1, supportsLetterToSound1, markupSupport1);
         assertEquals(modeName1, mode2.getModeName());
 
@@ -134,7 +134,7 @@ public class EngineModeTest {
         Boolean running2 = Boolean.TRUE;
         Boolean supportsLetterToSound2 = Boolean.TRUE;
         Boolean markupSupport2 = Boolean.TRUE;
-        final EngineMode mode3 = new MockEngineMode(engineName2, modeName2,
+        EngineMode mode3 = new MockEngineMode(engineName2, modeName2,
                 running2, supportsLetterToSound2, markupSupport2);
         assertNull(mode3.getModeName());
     }
@@ -144,7 +144,7 @@ public class EngineModeTest {
      */
     @Test
     void testGetRunning() {
-        final EngineMode mode1 = new MockEngineMode();
+        EngineMode mode1 = new MockEngineMode();
         assertNull(mode1.getRunning());
 
         String engineName1 = "name1";
@@ -152,7 +152,7 @@ public class EngineModeTest {
         Boolean running1 = Boolean.TRUE;
         Boolean supportsLetterToSound1 = Boolean.TRUE;
         Boolean markupSupport1 = Boolean.TRUE;
-        final EngineMode mode2 = new MockEngineMode(engineName1, modeName1,
+        EngineMode mode2 = new MockEngineMode(engineName1, modeName1,
                 running1, supportsLetterToSound1, markupSupport1);
         assertEquals(Boolean.TRUE, mode2.getRunning());
 
@@ -161,7 +161,7 @@ public class EngineModeTest {
         Boolean running2 = Boolean.FALSE;
         Boolean supportsLetterToSound2 = Boolean.TRUE;
         Boolean markupSupport2 = Boolean.TRUE;
-        final EngineMode mode3 = new MockEngineMode(engineName2, modeName2,
+        EngineMode mode3 = new MockEngineMode(engineName2, modeName2,
                 running2, supportsLetterToSound2, markupSupport2);
         assertEquals(Boolean.FALSE, mode3.getRunning());
 
@@ -170,7 +170,7 @@ public class EngineModeTest {
         Boolean running3 = null;
         Boolean supportsLetterToSound3 = Boolean.TRUE;
         Boolean markupSupport3 = null;
-        final EngineMode mode4 = new MockEngineMode(engineName3, modeName3,
+        EngineMode mode4 = new MockEngineMode(engineName3, modeName3,
                 running3, supportsLetterToSound3, markupSupport3);
         assertNull(mode4.getRunning());
     }
@@ -181,7 +181,7 @@ public class EngineModeTest {
      */
     @Test
     void testGetSupportsLetterToSound() {
-        final EngineMode mode1 = new MockEngineMode();
+        EngineMode mode1 = new MockEngineMode();
         assertNull(mode1.getSupportsLetterToSound());
 
         String engineName1 = "name1";
@@ -189,7 +189,7 @@ public class EngineModeTest {
         Boolean running1 = Boolean.TRUE;
         Boolean supportsLetterToSound1 = Boolean.TRUE;
         Boolean markupSupport1 = Boolean.TRUE;
-        final EngineMode mode2 = new MockEngineMode(engineName1, modeName1,
+        EngineMode mode2 = new MockEngineMode(engineName1, modeName1,
                 running1, supportsLetterToSound1, markupSupport1);
         assertEquals(Boolean.TRUE, mode2.getSupportsLetterToSound());
 
@@ -198,7 +198,7 @@ public class EngineModeTest {
         Boolean running2 = Boolean.TRUE;
         Boolean supportsLetterToSound2 = Boolean.FALSE;
         Boolean markupSupport2 = Boolean.TRUE;
-        final EngineMode mode3 = new MockEngineMode(engineName2, modeName2,
+        EngineMode mode3 = new MockEngineMode(engineName2, modeName2,
                 running2, supportsLetterToSound2, markupSupport2);
         assertEquals(Boolean.FALSE, mode3.getSupportsLetterToSound());
 
@@ -207,7 +207,7 @@ public class EngineModeTest {
         Boolean running3 = Boolean.TRUE;
         Boolean supportsLetterToSound3 = null;
         Boolean markupSupport3 = null;
-        final EngineMode mode4 = new MockEngineMode(engineName3, modeName3,
+        EngineMode mode4 = new MockEngineMode(engineName3, modeName3,
                 running3, supportsLetterToSound3, markupSupport3);
         assertNull(mode4.getSupportsLetterToSound());
     }
@@ -218,13 +218,13 @@ public class EngineModeTest {
      */
     @Test
     void testMatch() {
-        final EngineMode mode1 = new MockEngineMode();
-        assertTrue(mode1.match((EngineMode) null));
+        EngineMode mode1 = new MockEngineMode();
+        assertTrue(mode1.match(null));
 
-        final EngineMode mode2 = new MockEngineMode();
+        EngineMode mode2 = new MockEngineMode();
         assertTrue(mode1.match(mode2));
 
-        final SynthesizerMode synthesizerMode = new SynthesizerMode();
+        SynthesizerMode synthesizerMode = new SynthesizerMode();
         assertTrue(mode1.match(synthesizerMode));
 
         String engineName1 = "name1";
@@ -232,7 +232,7 @@ public class EngineModeTest {
         Boolean running1 = Boolean.TRUE;
         Boolean supportsLetterToSound1 = Boolean.TRUE;
         Boolean markupSupport1 = Boolean.TRUE;
-        final EngineMode mode3 = new MockEngineMode(engineName1, modeName1,
+        EngineMode mode3 = new MockEngineMode(engineName1, modeName1,
                 running1, supportsLetterToSound1, markupSupport1);
         assertTrue(mode3.match(mode1));
         assertFalse(mode1.match(mode3));
@@ -242,7 +242,7 @@ public class EngineModeTest {
         Boolean running2 = Boolean.TRUE;
         Boolean supportsLetterToSound2 = Boolean.TRUE;
         Boolean markupSupport2 = Boolean.TRUE;
-        final EngineMode mode4 = new MockEngineMode(engineName2, modeName2,
+        EngineMode mode4 = new MockEngineMode(engineName2, modeName2,
                 running2, supportsLetterToSound2, markupSupport2);
         assertTrue(mode3.match(mode4));
 
@@ -251,7 +251,7 @@ public class EngineModeTest {
         Boolean running3 = Boolean.TRUE;
         Boolean supportsLetterToSound3 = Boolean.TRUE;
         Boolean markupSupport3 = Boolean.TRUE;
-        final EngineMode mode5 = new MockEngineMode(engineName3, modeName3,
+        EngineMode mode5 = new MockEngineMode(engineName3, modeName3,
                 running3, supportsLetterToSound3, markupSupport3);
         assertFalse(mode3.match(mode5));
     }
@@ -261,38 +261,38 @@ public class EngineModeTest {
      */
     @Test
     void testEqualsObject() {
-        final EngineMode mode1 = new MockEngineMode();
-        assertFalse(mode1.equals("test"));
+        EngineMode mode1 = new MockEngineMode();
+        assertNotEquals("test", mode1);
 
-        final EngineMode mode2 = new MockEngineMode();
-        assertTrue(mode1.equals(mode2));
+        EngineMode mode2 = new MockEngineMode();
+        assertEquals(mode1, mode2);
 
         String engineName1 = "name1";
         String modeName1 = "mode1";
         Boolean running1 = Boolean.TRUE;
         Boolean supportsLetterToSound1 = Boolean.TRUE;
         Boolean markupSupport1 = Boolean.TRUE;
-        final EngineMode mode3 = new MockEngineMode(engineName1, modeName1,
+        EngineMode mode3 = new MockEngineMode(engineName1, modeName1,
                 running1, supportsLetterToSound1, markupSupport1);
-        assertFalse(mode1.equals(mode3));
+        assertNotEquals(mode1, mode3);
 
         String engineName2 = "name1";
         String modeName2 = "mode1";
         Boolean running2 = Boolean.TRUE;
         Boolean supportsLetterToSound2 = Boolean.TRUE;
         Boolean markupSupport2 = Boolean.TRUE;
-        final EngineMode mode4 = new MockEngineMode(engineName2, modeName2,
+        EngineMode mode4 = new MockEngineMode(engineName2, modeName2,
                 running2, supportsLetterToSound2, markupSupport2);
-        assertTrue(mode3.equals(mode4));
+        assertEquals(mode3, mode4);
 
         String engineName3 = "name2";
         String modeName3 = "mode1";
         Boolean running3 = Boolean.TRUE;
         Boolean supportsLetterToSound3 = Boolean.TRUE;
         Boolean markupSupport3 = Boolean.TRUE;
-        final EngineMode mode5 = new MockEngineMode(engineName3, modeName3,
+        EngineMode mode5 = new MockEngineMode(engineName3, modeName3,
                 running3, supportsLetterToSound3, markupSupport3);
-        assertFalse(mode3.equals(mode5));
+        assertNotEquals(mode3, mode5);
     }
 
     /**
@@ -300,7 +300,7 @@ public class EngineModeTest {
      */
     @Test
     void testToString() {
-        final EngineMode mode1 = new MockEngineMode();
+        EngineMode mode1 = new MockEngineMode();
         assertNotNull(mode1.toString());
 
         String engineName1 = "name1";
@@ -308,7 +308,7 @@ public class EngineModeTest {
         Boolean running1 = Boolean.TRUE;
         Boolean supportsLetterToSound1 = Boolean.TRUE;
         Boolean markupSupport1 = Boolean.TRUE;
-        final EngineMode mode2 = new MockEngineMode(engineName1, modeName1,
+        EngineMode mode2 = new MockEngineMode(engineName1, modeName1,
                 running1, supportsLetterToSound1, markupSupport1);
         assertEquals(Boolean.TRUE, mode2.getSupportsLetterToSound());
         String str2 = mode2.toString();

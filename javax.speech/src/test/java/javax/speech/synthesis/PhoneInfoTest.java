@@ -30,9 +30,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+
 /**
- * Test case for {@link jjavax.speech.synthesis.PhoneInfo}.
- * 
+ * Test case for {@link javax.speech.synthesis.PhoneInfo}.
+ *
  * @author Dirk Schnelle
  */
 public class PhoneInfoTest {
@@ -42,10 +43,10 @@ public class PhoneInfoTest {
      */
     @Test
     void testGetDuration() {
-        final PhoneInfo info = new PhoneInfo("phoneme", 45);
+        PhoneInfo info = new PhoneInfo("phoneme", 45);
         assertEquals(45, info.getDuration());
 
-        final PhoneInfo info2 = new PhoneInfo("phoneme2",
+        PhoneInfo info2 = new PhoneInfo("phoneme2",
                 PhoneInfo.UNKNOWN_DURATION);
         assertEquals(PhoneInfo.UNKNOWN_DURATION, info2.getDuration());
     }
@@ -55,12 +56,11 @@ public class PhoneInfoTest {
      */
     @Test
     void testGetPhoneme() {
-        final PhoneInfo info = new PhoneInfo("phoneme", 45);
+        PhoneInfo info = new PhoneInfo("phoneme", 45);
         assertEquals("phoneme", info.getPhoneme());
 
-        final PhoneInfo info2 = new PhoneInfo("phoneme2",
+        PhoneInfo info2 = new PhoneInfo("phoneme2",
                 PhoneInfo.UNKNOWN_DURATION);
         assertEquals("phoneme2", info2.getPhoneme());
     }
-
 }

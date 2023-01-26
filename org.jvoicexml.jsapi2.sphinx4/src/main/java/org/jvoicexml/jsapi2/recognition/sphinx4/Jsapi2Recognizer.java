@@ -60,13 +60,13 @@ public class Jsapi2Recognizer extends AbstractSpeechRecognizer
     }
 
     public AudioFormat getAudioFormat() {
-        final SphinxInputDataProcessor processor = context
+        SphinxInputDataProcessor processor = context
                 .getInstance(SphinxInputDataProcessor.class);
         return processor.getAudioFormat();
     }
 
     protected boolean setGrammars(
-            final Collection<GrammarDefinition> grammarDefinitions) {
+            Collection<GrammarDefinition> grammarDefinitions) {
         SRGSGrammarContainer grammar = context
                 .getInstance(SRGSGrammarContainer.class);
         // if (grammar instanceof SRGSGrammar) {
@@ -87,7 +87,7 @@ public class Jsapi2Recognizer extends AbstractSpeechRecognizer
         // } else if (grammar instanceof SRGSGrammarContainer) {
         // the big one-of dispatcher
         try {
-            ((SRGSGrammarContainer) grammar).loadGrammars(grammarDefinitions);
+            grammar.loadGrammars(grammarDefinitions);
         } catch (IOException ex) {
             System.err.println(ex);
             return false;
@@ -100,23 +100,23 @@ public class Jsapi2Recognizer extends AbstractSpeechRecognizer
         waitForRecognizerState(State.READY);
     }
 
-    public void addResultListener(final ResultListener listener) {
+    public void addResultListener(ResultListener listener) {
         recognizer.addResultListener(listener);
     }
 
-    public void removeResultListener(final ResultListener listener) {
+    public void removeResultListener(ResultListener listener) {
         recognizer.removeResultListener(listener);
     }
 
-    public void startRecognition(final InputStream in) {
-        final SphinxInputDataProcessor processor = context
+    public void startRecognition(InputStream in) {
+        SphinxInputDataProcessor processor = context
                 .getInstance(SphinxInputDataProcessor.class);
         processor.setInputStream(in);
         processor.isRunning(true);
     }
 
     public void stopRecognition() {
-        final SphinxInputDataProcessor processor = context
+        SphinxInputDataProcessor processor = context
                 .getInstance(SphinxInputDataProcessor.class);
         processor.isRunning(false);
         waitForRecognizerState(State.READY);
@@ -147,7 +147,7 @@ public class Jsapi2Recognizer extends AbstractSpeechRecognizer
      * @param status
      *            The state of the recognizer to wait for.
      */
-    synchronized void waitForRecognizerState(final State status) {
+    void waitForRecognizerState(State status) {
         while (recognizer.getState() != status) {
             try {
                 synchronized (stateMonitor) {

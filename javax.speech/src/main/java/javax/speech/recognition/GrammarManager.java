@@ -3,7 +3,7 @@ package javax.speech.recognition;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
-import java.util.Vector;
+import java.util.List;
 
 import javax.speech.EngineException;
 import javax.speech.EngineStateException;
@@ -41,7 +41,7 @@ public interface GrammarManager {
 
     Grammar loadGrammar(String grammarReference, String mediaType,
             boolean loadReferences, boolean reloadReferences,
-            Vector loadedGrammars) throws GrammarException,
+            @SuppressWarnings("rawtypes") List loadedGrammars) throws GrammarException,
             IllegalArgumentException, IOException, EngineStateException,
             EngineException;
 
