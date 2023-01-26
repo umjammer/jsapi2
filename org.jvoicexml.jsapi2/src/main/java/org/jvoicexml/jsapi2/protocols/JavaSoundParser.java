@@ -25,35 +25,35 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.sound.sampled.AudioFormat;
+
 
 /**
  * A parser for the javasound URL schema.
  *
  * @author Dirk Schnelle-Walka
- *
  */
 public final class JavaSoundParser {
+
     /** The default sample rate. */
     public static final int DEFAULT_SAMPLE_RATE = 16000;
 
     /** Number of bits per byte. */
     private static final int BITS_PER_BYTE = 8;
-    
+
     /** Constant for a signed byte stream. */
     private static final String SIGNED = "signed";
-    
+
     /** Constant for an unsigned byte stream. */
     private static final String UNSIGNED = "unsigned";
-    
+
     /** Constant for big-endian byte order. */
     private static final String BIG_ENDIAN = "big";
-    
+
     /** Constant for little-endian byte order. */
     private static final String LITTLE_ENDIAN = "little";
 
-    
+
     /**
      * Prevent construction from outside.
      */
@@ -63,25 +63,21 @@ public final class JavaSoundParser {
     /**
      * Parses the given URI into an audio format.
      *
-     * @param url
-     *            the URL to parse.
+     * @param url the URL to parse.
      * @return audio format.
-     * @throws URISyntaxException
-     *         error parsing the URL
+     * @throws URISyntaxException error parsing the URL
      */
     public static AudioFormat parse(URL url) throws URISyntaxException {
         URI uri = url.toURI();
         return parse(uri);
     }
-    
-        /**
+
+    /**
      * Parses the given URI into an audio format.
      *
-     * @param uri
-     *            the URI to parse.
+     * @param uri the URI to parse.
      * @return audio format.
-     * @throws URISyntaxException
-     *         error parsing the URL
+     * @throws URISyntaxException error parsing the URL
      */
     public static AudioFormat parse(URI uri) throws URISyntaxException {
         Map<String, String> parameters = new HashMap<>();
@@ -106,12 +102,10 @@ public final class JavaSoundParser {
         // Change default values as specified
         String signedStr = parameters.get("signed");
         if (signedStr != null) {
-            if (signedStr.equalsIgnoreCase(UNSIGNED)
-                    || signedStr.equalsIgnoreCase(Boolean.FALSE.toString())) {
+            if (signedStr.equalsIgnoreCase(UNSIGNED) || signedStr.equalsIgnoreCase(Boolean.FALSE.toString())) {
                 signed = false;
             } else {
-                if (signedStr.equalsIgnoreCase(SIGNED)
-                        || Boolean.parseBoolean(signedStr)) {
+                if (signedStr.equalsIgnoreCase(SIGNED) || Boolean.parseBoolean(signedStr)) {
                     signed = true;
                 }
             }
@@ -134,8 +128,7 @@ public final class JavaSoundParser {
                 encoding = AudioFormat.Encoding.ULAW;
                 break;
             case "gsm":
-                throw new URISyntaxException(uri.toString(),
-                        "gsm is currently not supported!");
+                throw new URISyntaxException(uri.toString(), "gsm is currently not supported!");
             }
         }
 
@@ -165,7 +158,6 @@ public final class JavaSoundParser {
 
         // Construct the AudioFormat
         return new AudioFormat(encoding, sampleRate,
-                bits, channels, channels * bits / BITS_PER_BYTE, sampleRate,
-                endian);
+                bits, channels, channels * bits / BITS_PER_BYTE, sampleRate, endian);
     }
 }

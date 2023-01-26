@@ -21,8 +21,7 @@ import java.util.logging.Logger;
  * </p>
  * @author Renato Cassaca
  */
-public final class ThreadSpeechEventExecutor
-    implements TerminatableSpeechEventExecutor, Runnable {
+public final class ThreadSpeechEventExecutor implements TerminatableSpeechEventExecutor, Runnable {
 
     private static final Logger logger = Logger.getLogger(ThreadSpeechEventExecutor.class.getName());
 
@@ -78,8 +77,7 @@ logger.finer("shutdown services: " + thread.isShutdown());
             throw new NullPointerException("Command must not be null!");
         }
         if (!shouldRun) {
-            throw new IllegalStateException(
-                    "SpeechEventExecutor is terminated!");
+            throw new IllegalStateException("SpeechEventExecutor is terminated!");
         }
         commands.add(command);
         synchronized (commands) {
@@ -103,7 +101,7 @@ logger.finer("shutdown services: " + thread.isShutdown());
                 return;
             }
 
-            //Use this thread to run the command
+            // Use this thread to run the command
             Runnable command = commands.get(0);
             commands.remove(0);
             command.run();

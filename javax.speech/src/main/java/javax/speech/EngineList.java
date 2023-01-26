@@ -62,6 +62,7 @@ public class EngineList {
         try {
             return features.get(index);
         } catch (IndexOutOfBoundsException e) {
+            // for compatibility
             throw new ArrayIndexOutOfBoundsException(e.getMessage());
         }
     }
@@ -94,6 +95,7 @@ public class EngineList {
         try {
             features.remove(index);
         } catch (IndexOutOfBoundsException e) {
+            // for compatibility
             throw new ArrayIndexOutOfBoundsException(e.getMessage());
         }
     }

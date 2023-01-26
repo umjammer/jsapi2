@@ -22,18 +22,20 @@ import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.DataLine.Info;
+import javax.sound.sampled.SourceDataLine;
+
 
 /**
  * A demo to output a received RTP stream to the speaker.
+ *
  * @author Dirk Schnelle-Walka
  */
 public final class RTPReceiver {
+
     /**
      * Do not create from outside.
      */
@@ -42,6 +44,7 @@ public final class RTPReceiver {
 
     /**
      * Starts this demo.
+     *
      * @param args command line arguments.
      */
     public static void main(String[] args) {
@@ -51,8 +54,7 @@ public final class RTPReceiver {
         Logger.getLogger("").addHandler(handler);
         Logger.getLogger("").setLevel(Level.ALL);
 
-        System.setProperty("java.protocol.handler.pkgs",
-            "org.jlibrtp.protocols");
+        System.setProperty("java.protocol.handler.pkgs", "org.jlibrtp.protocols");
 
         RTPReceiver testrtpurlreceiver = new RTPReceiver();
         testrtpurlreceiver.doIt();
@@ -63,17 +65,15 @@ public final class RTPReceiver {
      */
     private void doIt() {
         try {
-            AudioFormat receiveFormat =
-                new AudioFormat(AudioFormat.Encoding.ULAW,
-                                        8000,
-                                        8,
-                                        1,
-                                        1,
-                                        8000,
-                                        false);
+            AudioFormat receiveFormat = new AudioFormat(AudioFormat.Encoding.ULAW,
+                    8000,
+                    8,
+                    1,
+                    1,
+                    8000,
+                    false);
 
-            AudioFormat playFormat =
-                new AudioFormat(AudioFormat.Encoding.PCM_SIGNED,
+            AudioFormat playFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED,
                     8000,
                     16,
                     1,
@@ -82,18 +82,14 @@ public final class RTPReceiver {
                     false);
 
 
-            Info playbackLineInfo =
-                new Info(SourceDataLine.class, playFormat,
-                        AudioSystem.NOT_SPECIFIED);
-            SourceDataLine sourceLine =
-                (SourceDataLine) AudioSystem.getLine(playbackLineInfo);
+            Info playbackLineInfo = new Info(SourceDataLine.class, playFormat, AudioSystem.NOT_SPECIFIED);
+            SourceDataLine sourceLine = (SourceDataLine) AudioSystem.getLine(playbackLineInfo);
             System.out.println("Playing to: " + playbackLineInfo);
             sourceLine.open();
             sourceLine.start();
 
 
-            URL recvURL = new URL(
-                    "rtp://localhost:16384/audio?rate=8000&keepAlive=false");
+            URL recvURL = new URL("rtp://localhost:16384/audio?rate=8000&keepAlive=false");
             URLConnection con = recvURL.openConnection();
             con.connect();
             InputStream in = con.getInputStream();
@@ -102,11 +98,8 @@ public final class RTPReceiver {
             int br;
             OutputStream os = Files.newOutputStream(Paths.get("rtp_received.raw"));
 
-            AudioInputStream receiveStream =
-                new AudioInputStream(in, receiveFormat,
-                        AudioSystem.NOT_SPECIFIED);
-            AudioInputStream convStream =
-                AudioSystem.getAudioInputStream(playFormat, receiveStream);
+            AudioInputStream receiveStream = new AudioInputStream(in, receiveFormat, AudioSystem.NOT_SPECIFIED);
+            AudioInputStream convStream = AudioSystem.getAudioInputStream(playFormat, receiveStream);
 
             while ((br = convStream.read(buffer)) != -1) {
                 os.write(buffer, 0, br);

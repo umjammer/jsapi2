@@ -28,6 +28,7 @@ package org.jvoicexml.jsapi2.synthesis;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.logging.Logger;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
@@ -46,6 +47,8 @@ import org.jvoicexml.jsapi2.BaseAudioManager;
  * @author Dirk Schnelle-Walka
  */
 public final class SpeakerOutputStream extends OutputStream implements LineListener {
+
+    private static final Logger logger = Logger.getLogger(SpeakerOutputStream.class.getName());
 
     /** The audio manager to use. */
     private final BaseAudioManager manager;
@@ -72,12 +75,12 @@ public final class SpeakerOutputStream extends OutputStream implements LineListe
             return;
         }
         AudioFormat format = manager.getTargetAudioFormat();
-        DataLine.Info info = new DataLine.Info(SourceDataLine.class,
-                format);
+        DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
         try {
             line = (SourceDataLine) AudioSystem.getLine(info);
             line.addLineListener(this);
             line.open(format);
+logger.finer("line open: " + line.hashCode());
         } catch (LineUnavailableException e) {
             throw new IOException(e.getMessage(), e);
         }
@@ -85,7 +88,7 @@ public final class SpeakerOutputStream extends OutputStream implements LineListe
 
         FloatControl gainControl = (FloatControl) line.getControl(FloatControl.Type.MASTER_GAIN);
         double gain = ((BaseSynthesizerAudioManager) manager).getVolume(); // number between 0 and 1 (loudest)
-//System.err.println("volume: " + gain);
+logger.finer("volume: " + gain);
         float dB = (float) (Math.log(gain) / Math.log(10.0) * 20.0);
         gainControl.setValue(dB);
     }
@@ -118,6 +121,7 @@ public final class SpeakerOutputStream extends OutputStream implements LineListe
     @Override
     public void close() throws IOException {
         if (line != null) {
+logger.finer("line close: " + line.hashCode());
             line.close();
         }
         super.close();

@@ -129,7 +129,7 @@ class SynthesisQueueTest {
         queue.appendItem(segment1, null);
         int secondId = queue.appendItem(segment2, null);
         assertFalse(queue.isQueueEmpty());
-        assertTrue(queue.cancelFirstItem());
+        assertTrue(queue.cancelFirstItem()); // TODO not stable
         QueueItem secondItem = queue.getNextQueueItem();
         assertEquals(secondId, secondItem.getId());
         assertTrue(queue.cancelFirstItem());
@@ -153,7 +153,7 @@ class SynthesisQueueTest {
         assertTrue(queue.cancelItem(secondId));
         QueueItem firstItem = queue.getNextQueueItem();
         assertEquals(firstId, firstItem.getId());
-        assertTrue(queue.cancelItem(firstId));
+        assertTrue(queue.cancelItem(firstId)); // TODO not stable
         assertTrue(queue.isQueueEmpty());
         assertFalse(queue.cancelItem(-1));
     }

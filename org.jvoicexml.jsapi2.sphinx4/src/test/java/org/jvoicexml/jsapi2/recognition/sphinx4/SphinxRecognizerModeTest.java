@@ -20,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  *
  * @author Dirk Schnelle-Walka
  */
-@DisabledIfEnvironmentVariable(named = "GITHUB_WORKFLOW", matches = ".*")
 public class SphinxRecognizerModeTest {
 
     /**
@@ -85,7 +84,7 @@ public class SphinxRecognizerModeTest {
 //        });
         // Start recognition process pruning previously cached data.
         recognizer.startRecognition(recinput);
-        Thread micThread = new Thread(() -> {
+        Thread micThread = new Thread(null, () -> {
             lineLocalMic.start();
             System.out.println("say something");
             try {
@@ -100,7 +99,7 @@ public class SphinxRecognizerModeTest {
 //                // TODO Auto-generated catch block
 //                e.printStackTrace();
             }
-        });
+        }, "JSAPI2 Sphinx Mic");
         micThread.start();
 //        thread.start();
         SpeechResult result = recognizer.getResult();

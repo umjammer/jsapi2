@@ -15,21 +15,27 @@ package org.jvoicexml.jsapi2.protocols.playback;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.OutputStream;
-
+import java.util.logging.Logger;
 import javax.sound.sampled.SourceDataLine;
+
+import org.jvoicexml.jsapi2.ThreadSpeechEventExecutor;
+
 
 /**
  * An {@link OutputStream} that writes to a {@link SourceDataLine}.
- * @author Dirk Schnelle-Walka
  *
+ * @author Dirk Schnelle-Walka
  */
-public final class LineOutputStream extends OutputStream
-    implements Closeable {
+public final class LineOutputStream extends OutputStream implements Closeable {
+
+    private static final Logger logger = Logger.getLogger(LineOutputStream.class.getName());
+
     /** The source data line. */
     private SourceDataLine line;
 
     /**
      * Constructs a new object.
+     *
      * @param source the line to write to.
      */
     public LineOutputStream(SourceDataLine source) {
@@ -44,7 +50,7 @@ public final class LineOutputStream extends OutputStream
 
     @Override
     public void write(byte[] b, int off, int len)
-        throws IOException {
+            throws IOException {
         line.write(b, off, len);
     }
 
@@ -58,6 +64,7 @@ public final class LineOutputStream extends OutputStream
         line.drain();
         line.stop();
         line.close();
+logger.fine("line close: " + line.hashCode());
         super.close();
     }
 
@@ -66,5 +73,4 @@ public final class LineOutputStream extends OutputStream
         line.drain();
         super.flush();
     }
-
 }

@@ -14,6 +14,7 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.logging.Logger;
 import javax.sound.sampled.AudioFormat;
 import javax.speech.AudioException;
 import javax.speech.Engine;
@@ -29,6 +30,8 @@ import org.jvoicexml.jsapi2.protocols.JavaSoundParser;
  * implementations might want to extend or modify this implementation.
  */
 public class BaseSynthesizerAudioManager extends BaseAudioManager {
+
+    private static final Logger logger = Logger.getLogger(BaseSynthesizerAudioManager.class.getName());
 
     /** The output stream from the synthesizer. */
     private OutputStream outputStream;
@@ -52,6 +55,7 @@ public class BaseSynthesizerAudioManager extends BaseAudioManager {
         String locator = getMediaLocator();
         if (locator == null) {
             outputStream = new SpeakerOutputStream(this);
+logger.finer("open: " + outputStream);
         } else {
             // Parse the target audio format
             // TODO: check if this is really correct. The URL encoding is only
@@ -70,6 +74,7 @@ public class BaseSynthesizerAudioManager extends BaseAudioManager {
                 try {
                     URLConnection urlConnection = openURLConnection(true);
                     outputStream = urlConnection.getOutputStream();
+logger.finer("open: " + outputStream);
                 } catch (IOException ex) {
                     throw new AudioException("Cannot get OutputStream from URL: " + ex.getMessage());
                 }
@@ -86,6 +91,7 @@ public class BaseSynthesizerAudioManager extends BaseAudioManager {
     public void handleAudioStop() throws AudioException {
         if (outputStream != null) {
             try {
+logger.finer("close: " + outputStream);
                 outputStream.close();
             } catch (IOException ex) {
                 throw new AudioException(ex.getMessage());

@@ -31,6 +31,7 @@ import javax.speech.SpeechLocale;
 //Comp 2.0.6
 
 public class Voice {
+
     public static final int AGE_CHILD = 0x80010000;
 
     public static final int AGE_TEENAGER = 0x80020000;
@@ -49,12 +50,15 @@ public class Voice {
 
     public static final int GENDER_MALE = 0x2;
 
+    /** Neutral voice that is neither male or female. Examples include artificial voices and robotic voices. */
     public static final int GENDER_NEUTRAL = 0x4;
 
     public static final int GENDER_DONT_CARE = -1;
 
+    /** The default variant for a Voice. */
     public static final int VARIANT_DEFAULT = 1;
 
+    /** Ignore the variant when performing a match of voices. */
     public static final int VARIANT_DONT_CARE = -1;
 
     private final SpeechLocale locale;
@@ -75,24 +79,20 @@ public class Voice {
         name = null;
     }
 
-    public Voice(SpeechLocale locale, String name, int gender, int age,
-            int variant) throws IllegalArgumentException {
+    public Voice(SpeechLocale locale, String name, int gender, int age, int variant) throws IllegalArgumentException {
         if ((age < 0) && (age != AGE_DONT_CARE)) {
             if ((age & 0xFFFF0000) != AGE_SPECIFIC) {
                 if ((age & 0x7FE0FFFF) != 0) {
-                    throw new IllegalArgumentException(
-                            "Age must be a positive integer or AGE_DONT_CARE!");
+                    throw new IllegalArgumentException("Age must be a positive integer or AGE_DONT_CARE!");
                 }
             }
         }
         if ((variant < 0) && (variant != VARIANT_DONT_CARE)) {
-            throw new IllegalArgumentException(
-                    "Variant must be a positive integer or VARIANT_DONT_CARE!");
+            throw new IllegalArgumentException("Variant must be a positive integer or VARIANT_DONT_CARE!");
         }
         if ((gender != GENDER_DONT_CARE) && (gender != GENDER_FEMALE)
                 && (gender != GENDER_MALE) && (gender != GENDER_NEUTRAL)) {
-            throw new IllegalArgumentException(gender
-                    + " is not a valid value for gender!");
+            throw new IllegalArgumentException(gender + " is not a valid value for gender!");
         }
         this.locale = locale;
         this.name = name;
@@ -169,6 +169,7 @@ public class Voice {
         return true;
     }
 
+    @Override
     public String toString() {
 
         String str = getClass().getName() +
@@ -187,6 +188,28 @@ public class Voice {
         return str;
     }
 
+    /**
+     * Determines whether a Voice has all the features defined in the require object. Strings in require which are
+     * null are ignored. All string comparisons are exact matches (case-sensitive). A null locale in the require object
+     * is ignored. Otherwise, all Strings in the require locale must match.
+     * <code>GENDER_DONT_CARE</code>, <code>AGE_DONT_CARE</code>, and <code>VARIANT_DONT_CARE</code> values in the
+     * require object are ignored. The gender parameters are OR'able. The age parameter finds the closest one.
+     * <p>
+     * The following example shows how to test for a male and/or neutral Voice:
+     * </p>
+     * <pre>
+     *  Voice aVoice = ...;
+     *  Voice maleishVoice =
+     *      new Voice(null, null, Voice.GENDER_MALE | Voice.GENDER_NEUTRAL,
+     *                Voice.AGE_DONT_CARE, Voice.VARIANT_DONT_CARE);
+     *  if (aVoice.match(maleishVoice)) ...
+     * </pre>
+     * @param require the required features to match this voice
+     * @return true if all the required features match
+     * @see #GENDER_DONT_CARE
+     * @see #AGE_DONT_CARE
+     * @see #VARIANT_DONT_CARE
+     */
     public boolean match(Voice require) {
         if (require == null) {
             return true;
@@ -203,9 +226,9 @@ public class Voice {
         boolean genderMatch;
         int requiredGender = require.getGender();
         if (requiredGender == GENDER_DONT_CARE) {
-          genderMatch = true;
+            genderMatch = true;
         } else {
-          genderMatch = (gender == requiredGender);
+            genderMatch = (gender == requiredGender);
         }
         boolean localeMatch;
         SpeechLocale requiredLocale = require.getSpeechLocale();
@@ -232,15 +255,13 @@ public class Voice {
             variantMatch = (variant == requiredVariant);
         }
 
-        return namesMatch && genderMatch && localeMatch && ageMatch
-                && variantMatch;
+        return namesMatch && genderMatch && localeMatch && ageMatch && variantMatch;
     }
 
     /**
      * Determines the age closest to the given age.
      *
-     * @param age
-     *            the given age.
+     * @param age the given age.
      * @return Age defined as a constant closest to the given age.
      */
     private int getClosestAge(int age) {
@@ -252,8 +273,7 @@ public class Voice {
             return AGE_TEENAGER;
         }
 
-        if (age <= AGE_YOUNGER_ADULT + (AGE_MIDDLE_ADULT - AGE_YOUNGER_ADULT)
-                / 2) {
+        if (age <= AGE_YOUNGER_ADULT + (AGE_MIDDLE_ADULT - AGE_YOUNGER_ADULT) / 2) {
             return AGE_YOUNGER_ADULT;
         }
 

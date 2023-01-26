@@ -34,6 +34,7 @@ import javax.speech.synthesis.SpeakableListener;
 
 import org.jvoicexml.jsapi2.BaseAudioManager;
 
+
 /**
  * The {@link QueueManager} basically accepts the speech segments to
  * synthesized, appends them to a corresponding queue and hands them to the
@@ -82,6 +83,7 @@ public class QueueManager {
 
     /**
      * Retrieves the synthesis queue.
+     *
      * @return the synthesis queue
      */
     final SynthesisQueue getSynthesisQueue() {
@@ -90,6 +92,7 @@ public class QueueManager {
 
     /**
      * Retrieves the play queue.
+     *
      * @return the play queue
      */
     final PlayQueue getPlayQueue() {
@@ -98,6 +101,7 @@ public class QueueManager {
 
     /**
      * Retrieves the synthesizer.
+     *
      * @return the synthesizer
      */
     final BaseSynthesizer getSynthesizer() {
@@ -125,6 +129,7 @@ logger.finer("shutdown services: " + playThread.isShutdown() + ", " + synthThrea
 
     /**
      * Checks if the queue manager has terminated.
+     *
      * @return <code>true</code> if the queue manager has terminated
      */
     final boolean isDone() {
@@ -136,11 +141,10 @@ logger.finer("shutdown services: " + playThread.isShutdown() + ", " + synthThrea
      * appropriate queue events.
      *
      * @param speakable the speakable item to add
-     * @param listener a listener to notify about events of this item
+     * @param listener  a listener to notify about events of this item
      * @return queue id.
      */
-    public final int appendItem(Speakable speakable,
-                                SpeakableListener listener) {
+    public final int appendItem(Speakable speakable, SpeakableListener listener) {
         return synthQueue.appendItem(speakable, listener, null);
     }
 
@@ -149,12 +153,11 @@ logger.finer("shutdown services: " + playThread.isShutdown() + ", " + synthThrea
      * appropriate queue events.
      *
      * @param speakable the speakable item to add
-     * @param listener a listener to notify about events of this item
-     * @param text the text to be spoken
+     * @param listener  a listener to notify about events of this item
+     * @param text      the text to be spoken
      * @return queue id.
      */
-    public final int appendItem(Speakable speakable,
-                                SpeakableListener listener, String text) {
+    public final int appendItem(Speakable speakable, SpeakableListener listener, String text) {
         return synthQueue.appendItem(speakable, listener, text);
     }
 
@@ -162,15 +165,11 @@ logger.finer("shutdown services: " + playThread.isShutdown() + ", " + synthThrea
      * Add an item to be spoken to the output queue. Fires the appropriate queue
      * events
      *
-     * @param audioSegment
-     *                the audio segment to add to the queue
-     * @param listener 
-     *                the listener to inform about the change
+     * @param audioSegment the audio segment to add to the queue
+     * @param listener     the listener to inform about the change
      * @return id of the audio segment
-     *                
      */
-    public int appendItem(AudioSegment audioSegment,
-                          SpeakableListener listener) {
+    public int appendItem(AudioSegment audioSegment, SpeakableListener listener) {
         return synthQueue.appendItem(audioSegment, listener);
     }
 
@@ -197,14 +196,14 @@ logger.finer("shutdown services: " + playThread.isShutdown() + ", " + synthThrea
 
     /**
      * Cancels the current item.
+     *
      * @return <code>true</code> if an item was canceled
      */
     protected boolean cancelItem() throws EngineStateException {
         if (playQueue.isQueueEmpty()) {
             return synthQueue.cancelFirstItem();
         } else {
-            BaseAudioManager manager =
-                (BaseAudioManager) synthesizer.getAudioManager();
+            BaseAudioManager manager = (BaseAudioManager) synthesizer.getAudioManager();
             OutputStream out = manager.getOutputStream();
             try {
                 out.close();
@@ -217,6 +216,7 @@ logger.finer("shutdown services: " + playThread.isShutdown() + ", " + synthThrea
 
     /**
      * Cancels all items in the queue.
+     *
      * @return {@code true} if at least one item was canceled
      */
     public boolean cancelAllItems() {
@@ -244,22 +244,30 @@ logger.finer("shutdown services: " + playThread.isShutdown() + ", " + synthThrea
     /**
      * Cancel the given item.
      *
-     * @param source
-     *                the item to cancel.
+     * @param source the item to cancel.
      */
     protected void cancelItem(Object source) {
-        /*
-         * Speakable item = null; synchronized (queue) { int index =
-         * queue.indexOf(source); if (index == 0) { cancelItem(); } else { item =
-         * (Speakable) queue.remove(index); if (item != null) { //
-         * item.postSpeakableCancelled(); item.cancelled(); queueDrained(); } } }
-         */
+//        Speakable item;
+//        synchronized (queue) {
+//            int index = queue.indexOf(source);
+//            if (index == 0) {
+//                cancelItem();
+//            } else {
+//                item = (Speakable) queue.remove(index);
+//                if (item != null) { //
+//                    item.postSpeakableCancelled();
+//                    item.cancelled();
+//                    queueDrained();
+//                }
+//            }
+//        }
     }
 
     /**
-     * Cancels the playback of the speakable with the given id. This is 
+     * Cancels the playback of the speakable with the given id. This is
      * done by trying to remove it from the play queue and from
      * the synthesis queue.
+     *
      * @param id the id of the speakable to cancel
      * @return <code>true</code> if the speakable could be canceled.
      */
@@ -281,8 +289,7 @@ logger.finer("shutdown services: " + playThread.isShutdown() + ", " + synthThrea
      * Removes the given item, posting the appropriate events. The item may have
      * already been removed (due to a cancel).
      *
-     * @param item
-     *                the item to remove
+     * @param item the item to remove
      */
     protected void removeQueueItem(QueueItem item) {
         synthQueue.removeQueueItem(item);
@@ -293,13 +300,12 @@ logger.finer("shutdown services: " + playThread.isShutdown() + ", " + synthThrea
      * Generates the appropriate state changes and events.
      */
     void queueDrained() {
-        /*
-         * if (queue.size() == 0) { long[] states =
-         * setEngineState(synthesizer.QUEUE_NOT_EMPTY, synthesizer.QUEUE_EMPTY);
-         * postQueueEmptied(states[0], states[1]); } else { long[] states =
-         * setEngineState(synthesizer.QUEUE_NOT_EMPTY,
-         * synthesizer.QUEUE_NOT_EMPTY); postQueueUpdated(true, states[0],
-         * states[1]); }
-         */
+//        if (queue.size() == 0) {
+//            long[] states = setEngineState(synthesizer.QUEUE_NOT_EMPTY, synthesizer.QUEUE_EMPTY);
+//            postQueueEmptied(states[0], states[1]);
+//        } else {
+//            long[] states = setEngineState(synthesizer.QUEUE_NOT_EMPTY, synthesizer.QUEUE_NOT_EMPTY);
+//            postQueueUpdated(true, states[0], states[1]);
+//        }
     }
 }

@@ -57,8 +57,7 @@ public class AudioEvent extends SpeechEvent {
     public AudioEvent(Engine source, int id) {
         super(source, id);
         if ((id != AUDIO_STARTED) && (id != AUDIO_CHANGED) && (id != AUDIO_STOPPED)) {
-            throw new IllegalArgumentException(
-                    "Id must be AUDIO_STARTED, AUDIO_CHANGED or AUDIO_STOPPED!");
+            throw new IllegalArgumentException("Id must be AUDIO_STARTED, AUDIO_CHANGED or AUDIO_STOPPED!");
         }
         audioLevel = AUDIO_LEVEL_MIN;
     }
@@ -70,8 +69,7 @@ public class AudioEvent extends SpeechEvent {
         }
 
         if ((audioLevel < AUDIO_LEVEL_MIN) || (audioLevel > AUDIO_LEVEL_MAX)) {
-            throw new IllegalArgumentException("Audiolevel must be between "
-                    + "AUDIO_LEVEL_MIN and AUDIO_LEVEL_MAX");
+            throw new IllegalArgumentException("Audiolevel must be between AUDIO_LEVEL_MIN and AUDIO_LEVEL_MAX");
         }
 
         this.audioLevel = audioLevel;

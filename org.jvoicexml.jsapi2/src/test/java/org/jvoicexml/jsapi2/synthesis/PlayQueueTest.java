@@ -63,7 +63,7 @@ public class PlayQueueTest {
         AudioSegment segment1 = new AudioSegment("http://localhost", "test");
         QueueItem item1 = new QueueItem(1, segment1, null);
         queue.addQueueItem(item1);
-        Thread thread = new Thread(() -> {
+        Thread thread = new Thread(null, () -> {
             try {
                 Thread.sleep(1000);
                 item1.setSynthesized(true);
@@ -71,7 +71,7 @@ public class PlayQueueTest {
             } catch (InterruptedException e) {
                 fail(e.getMessage());
             }
-        });
+        }, "Test Fire Event");
         thread.start();
         QueueItem fetchedItem = queue.getNextQueueItem();
         assertTrue(fetchedItem.isSynthesized());
