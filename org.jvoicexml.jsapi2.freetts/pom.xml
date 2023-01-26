@@ -51,7 +51,7 @@
       <url>https://jitpack.io</url>
     </repository>
     <repository>
-      <id>umjammer-mvn-repo</id>
+      <id>github</id>
       <url>https://maven.pkg.github.com/umjammer/FreeTTS</url>
     </repository>
   </repositories>
