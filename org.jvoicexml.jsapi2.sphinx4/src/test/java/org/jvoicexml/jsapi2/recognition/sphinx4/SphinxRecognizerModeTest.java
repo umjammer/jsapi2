@@ -20,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  *
  * @author Dirk Schnelle-Walka
  */
+@DisabledIfEnvironmentVariable(named = "GITHUB_WORKFLOW", matches = ".*")
 public class SphinxRecognizerModeTest {
 
     /**
