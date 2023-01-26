@@ -41,7 +41,7 @@
                 <javahClassName>org.jvoicexml.jsapi2.sapi.synthesis.SapiSynthesizer</javahClassName>
               </javahClassNames>
               <javahSearchJNIFromDependencies>false</javahSearchJNIFromDependencies>
-              <javahOS>x64</javahOS>
+              <javahOS>win64</javahOS>
               <compilerProvider>generic-classic</compilerProvider>
               <compilerStartOptions>
                 <compilerStartOption>-g -Wall -O2 -fomit-frame-pointer -fPIC</compilerStartOption>
@@ -176,6 +176,7 @@
             <configuration>
               <forkMode>once</forkMode>
               <argLine>
+                -Djava.util.logging.config.file=${project.build.testOutputDirectory}/logging.properties
                 -Djava.library.path=${project.build.testOutputDirectory}
               </argLine>
             </configuration>
@@ -187,6 +188,16 @@
 
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.10.1</version>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+          <encoding>UTF-8</encoding>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-deploy-plugin</artifactId>
