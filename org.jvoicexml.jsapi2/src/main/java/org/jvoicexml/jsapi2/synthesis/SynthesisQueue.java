@@ -251,7 +251,7 @@ final class SynthesisQueue implements Runnable {
      */
     QueueItem getNextQueueItem() {
         synchronized (queue) {
-Debug.println("queue.size(): " + queue.size() + ", queueManager.isDone(): " + queueManager.isDone());
+//Debug.println("queue.size(): " + queue.size() + ", queueManager.isDone(): " + queueManager.isDone());
             while (queue.size() == 0 && !queueManager.isDone()) {
                 try {
                     queue.wait();

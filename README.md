@@ -8,11 +8,12 @@
 
 mavenized JSR-113 fka JSAPI2
 
-this JSAPI 2.0 implementation DOES NOT support the J2ME platform (like CLDC 1.0, MIDP 1.0)
+ * this JSAPI 2.0 implementation DOES NOT support the J2ME platform (like CLDC 1.0, MIDP 1.0)
+ * volume property is enabled
 
 ## Install
 
- * [maven](https://jitpack.io/#umjammer/jsapi)
+ * [maven](https://github.com/umjammer?tab=packages&repo_name=jsapi)
 
 ## Usage
 
@@ -20,7 +21,8 @@ this JSAPI 2.0 implementation DOES NOT support the J2ME platform (like CLDC 1.0,
 
 ## TODO
 
- * clean up remaining running threads at exiting
+ * ~~clean up remaining running threads at exiting~~
+ * jsapi2 queue tests are not stable
  * jspi2/jse in sphinx4.1
 
 ---
