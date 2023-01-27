@@ -161,6 +161,7 @@
                 <argument>-Dfile=${project.build.directory}/libJsapi2MacBridge-${project.version}.dylib</argument>
                 <argument>-DrepositoryId=github</argument>
                 <argument>-Durl=https://maven.pkg.github.com/umjammer/jsapi</argument>
+                <argument>-DgeneratePom=false</argument>
                 <argument>-s</argument>
                 <argument>${env.GITHUB_WORKSPACE}/settings.xml</argument>
               </arguments>
@@ -205,14 +206,6 @@
           <argLine>
             -Djava.util.logging.config.file=${project.build.testOutputDirectory}/logging.properties
           </argLine>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-deploy-plugin</artifactId>
-        <version>3.0.0-M2</version>
-        <configuration>
-          <skip>true</skip>
         </configuration>
       </plugin>
     </plugins>

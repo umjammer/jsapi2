@@ -21,6 +21,7 @@ this JSAPI 2.0 implementation DOES NOT support the J2ME platform (like CLDC 1.0,
 ## TODO
 
  * clean up remaining running threads at exiting
+ * jspi2/jse in sphinx4.1
 
 ---
 
