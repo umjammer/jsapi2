@@ -88,8 +88,8 @@ logger.finer("line open: " + line.hashCode());
 
         FloatControl gainControl = (FloatControl) line.getControl(FloatControl.Type.MASTER_GAIN);
         double gain = ((BaseSynthesizerAudioManager) manager).getVolume(); // number between 0 and 1 (loudest)
-logger.finer("volume: " + gain);
         float dB = (float) (Math.log(gain) / Math.log(10.0) * 20.0);
+logger.finer("volume: " + gain + ", dB: " + dB);
         gainControl.setValue(dB);
     }
 
