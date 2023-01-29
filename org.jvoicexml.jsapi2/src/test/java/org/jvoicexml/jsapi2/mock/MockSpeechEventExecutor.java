@@ -37,8 +37,7 @@ import javax.speech.SpeechEventExecutor;
 public class MockSpeechEventExecutor implements SpeechEventExecutor {
 
     @Override
-    public void execute(Runnable command) throws IllegalStateException,
-            NullPointerException {
+    public void execute(Runnable command) throws IllegalStateException, NullPointerException {
         if (command == null) {
             throw new NullPointerException("command must not be null!");
         }

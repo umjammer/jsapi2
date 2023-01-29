@@ -26,11 +26,33 @@
 
 package javax.speech.recognition;
 
-//Comp. 2.0.6
+// Comp. 2.0.6
 
+/**
+ * Represents speakable text in a RuleGrammar.
+ * <p>
+ * This is the primitive type of a RuleComponent -
+ * eventually any Rule must break down
+ * into a sequence of RuleTokens that may be spoken.
+ * This is also the primitive type of a RuleParse.
+ * @see javax.speech.recognition.RuleGrammar
+ * @see javax.speech.recognition.RuleParse
+ */
 public class RuleToken extends RuleComponent {
+
     private String text;
 
+    /**
+     * Constructs a RuleToken with the speakable text String.
+     * <p>
+     * The String format should conform to the grammar text conventions.
+     * <p>
+     * The text corresponds to the written form used by the VocabularyManager.
+     * @param text represents what can be said
+     * @throws java.lang.IllegalArgumentException if the text is not valid grammar text
+     * @see javax.speech.recognition.RuleToken#getText()
+     * @see javax.speech.VocabularyManager
+     */
     public RuleToken(String text) throws IllegalArgumentException {
         if ((text == null) || (text.length() == 0)) {
             throw new IllegalArgumentException("'" + text + "'" + " is not a valid grammar text");
@@ -59,10 +81,26 @@ public class RuleToken extends RuleComponent {
         this.text = str.toString();
     }
 
+    /**
+     * Gets the text of the token.
+     * <p>
+     * The text corresponds to the written form used by the VocabularyManager.
+     * @return the text for this token
+     * @see javax.speech.VocabularyManager
+     */
     public String getText() {
         return text;
     }
 
+    /**
+     * Returns a String representing this RuleComponent as grammar text.
+     * <p>
+     * The String represents a portion of a grammar that could appear
+     * on the right hand side of a Rule definition.
+     * @return printable String representing grammar text.
+     * @see javax.speech.recognition.RuleComponent
+     * @see javax.speech.recognition.Rule
+     */
     public String toString() {
         return text;
     }

@@ -28,19 +28,50 @@ package javax.speech.recognition;
 
 import javax.speech.SpeechException;
 
-//Comp 2.0.6
+// Comp 2.0.6
 
+/**
+ * Thrown if a problem is found with grammar text from resource or
+ * with a RuleGrammar object derived from grammar text.
+ * <p>
+ * Grammar problems are typically identified and
+ * fixed during application development.
+ * This class provides information that allows a
+ * debugging environment to handle the error.
+ * <p>
+ * The exception message is a printable String. Recognizers may optionally
+ * provide details for each syntax problem.
+ * @see javax.speech.recognition.Grammar
+ * @see javax.speech.recognition.RuleGrammar
+ * @see javax.speech.recognition.Recognizer
+ */
 public class GrammarException extends SpeechException {
 
     private GrammarExceptionDetail[] details;
 
+    /**
+     * Constructs a GrammarException with no detail message.
+     */
     public GrammarException() {
     }
 
+    /**
+     * Constructs a GrammarException with the specified detail message.
+     * @param message a printable detail message
+     * @see java.lang.Throwable#getMessage()
+     */
     public GrammarException(String message) {
         super(message);
     }
 
+    /**
+     * Constructs a GrammarException with the specified detail message
+     * and an optional programmatic description of each error.
+     * @param message a printable detail message
+     * @param details details of each error encountered or null
+     * @see java.lang.Throwable#getMessage()
+     * @see javax.speech.recognition.GrammarException#getDetails()
+     */
     public GrammarException(String message, GrammarExceptionDetail[] details) throws IllegalArgumentException {
         super(message);
         if (details == null) {
@@ -49,6 +80,14 @@ public class GrammarException extends SpeechException {
         this.details = details;
     }
 
+    /**
+     * Gets the list of grammar syntax detail descriptions.
+     * <p>
+     * This provides additional detail for grammar syntax problems.
+     * <p>
+     * If no detail is available, a zero-length array is returned.
+     * @return an array of GrammarExceptionDetail objects
+     */
     public GrammarExceptionDetail[] getDetails() {
         return details;
     }

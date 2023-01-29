@@ -29,14 +29,63 @@ package javax.speech;
 import java.io.IOException;
 import java.io.InputStream;
 
-//Comp. 2.0.6
+// Comp. 2.0.6
 
+/**
+ * Associates audio data with a representation of the audio format.
+ * <p>
+ * The format of the audio data is described by a media locator String.
+ * Use
+ * {@link javax.speech.AudioSegment#getMediaLocator()}
+ * to get the format.
+ * Media locators are described in the AudioManager.
+ * Examples of media locators include:
+ * <p>
+ * "segment://audio?encoding=pcm
+ * rate=11025
+ * bits=16
+ * channels=1"
+ * "file:///user/smith/audio.wav"
+ * <p>
+ * {@link javax.speech.AudioSegment#openInputStream()}
+ * provides a means to get the audio data.
+ * Some implementations may limit the capability to get the audio data.
+ * The capabilities may depend on security settings on the device.
+ * @see javax.speech.AudioSegment#openInputStream()
+ * @see javax.speech.AudioSegment#getMediaLocator()
+ * @see javax.speech.AudioManager
+ */
 public class AudioSegment {
 
     private final String locator;
 
     private final String markupText;
 
+    /**
+     * Constructs an AudioSegment from the resource indicated by the given media
+     * locator.
+     * <p>
+     * The media locator defines the format and location of the data as described
+     * in the AudioManager.
+     * The markup text may be used in case there is a problem with the
+     * audio data.
+     * <p>
+     * <A/>
+     * The following example shows how to speak audio from a file:
+     * <p>
+     * Synthesizer synth = ...        // see Synthesizer for creation options
+     * synth.allocate();
+     * <p>
+     * AudioSegment audio = new AudioSegment("file:///user/smith/audio.wav");
+     * <p>
+     * synth.speak(audio, null);      // speak
+     *
+     * @param locator a media locator description string
+     * @param markupText the alternate markup text
+     * @throws java.lang.IllegalArgumentException if the media locator is not supported.
+     * @see javax.speech.AudioManager
+     * @see javax.speech.AudioSegment#getMarkupText()
+     */
     public AudioSegment(String locator, String markupText) throws IllegalArgumentException {
         if (locator == null) {
             throw new IllegalArgumentException("locator must not be null");
@@ -45,10 +94,25 @@ public class AudioSegment {
         this.markupText = markupText;
     }
 
+    /**
+     * Returns the media locator for the segment.
+     * <p>
+     * This locator specifies characteristics about the audio segment
+     * including the sample rate and encoding.  If the audio segment was
+     * constructed without a stream, the locator may also encode information
+     * used to determine how to obtain the data (e.g., a "file:" locator).
+     * @return A media locator description string.
+     * @see javax.speech.AudioSegment#AudioSegment(java.lang.String, java.lang.String)
+     */
     public String getMediaLocator() {
         return locator;
     }
 
+    /**
+     * Returns the alternate markup text that may be used in case there is
+     * a problem with the audio for this AudioSegment.
+     * @return the alternate markup text for this AudioSegment
+     */
     public String getMarkupText() {
         return markupText;
     }
@@ -60,6 +124,13 @@ public class AudioSegment {
         return null;
     }
 
+    /**
+     * Indicates that a getInputStream request will not throw a SecurityException.
+     * @return true if the platform allows access to this audio data
+     * @see javax.speech.AudioSegment#AudioSegment(java.lang.String, java.lang.String)
+     * @see javax.speech.AudioSegment#getMediaLocator()
+     * @see javax.speech.AudioSegment#openInputStream()
+     */
     public boolean isGettable() {
         return true;
     }

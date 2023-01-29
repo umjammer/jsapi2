@@ -29,9 +29,62 @@ package javax.speech.spi;
 import javax.speech.EngineList;
 import javax.speech.EngineMode;
 
-//Comp. 2.0.6
+// Comp. 2.0.6
 
+/**
+ * Provides a list of EngineMode objects that define the available
+ * operating modes of a speech Engine.
+ * <p>
+ * This interface is part of the Service Provider Interface (SPI).
+ * Application developers do not need to use this interface.
+ * EngineListFactory is used internally by the EngineManager and
+ * speech engine implementations.
+ * <p>
+ * Each speech engine implementation registers an EngineListFactory object
+ * with the EngineManager class using the registerEngineListFactory method.
+ * When requested by the EngineManager class, each
+ * registered EngineListFactory object provides a list with an EngineMode
+ * object that describes each available operating mode of the
+ * speech engine implementation.
+ * <p>
+ * The EngineMode objects returned by EngineListFactory in its list must
+ * implement the EngineFactory interface and be a sub-class of EngineMode
+ * (not EngineMode directly).
+ * The EngineManager class calls the createEngine method of the
+ * EngineListFactory interface when it is requested to create an Engine.
+ * (See EngineFactory for more detail.)
+ * <p>
+ * The speech engine implementation must perform the same security checks on
+ * access to speech Engines as the EngineManager class.
+ * @see javax.speech.Engine
+ * @see javax.speech.EngineManager
+ * @see javax.speech.EngineManager#registerEngineListFactory(java.lang.String)
+ * @see javax.speech.spi.EngineFactory
+ * @see javax.speech.EngineMode
+ */
 public interface EngineListFactory {
 
+    /**
+     * Creates an EngineList containing an EngineMode for each mode of
+     * operation of a speech Engine that matches a set of required features.
+     * <p>
+     * Each object in the list must be a sub-class of EngineMode
+     * and must implement the EngineFactory interface.
+     * <p>
+     * Returns null if no Engines are available or if none meet the
+     * specified requirements.
+     * <p>
+     * The returned list should indicate the list of modes available at the
+     * time of the call (the list may change over time).
+     * An implementation can create the list at the time of the call or it
+     * may be pre-stored.
+     * @param require a required set of features
+     * @return the EngineList with matching EngineMode descriptions
+     * @throws java.lang.SecurityException if the caller does not have permission
+     * @see javax.speech.spi.EngineFactory
+     * @see javax.speech.EngineMode
+     * @see javax.speech.recognition.RecognizerMode
+     * @see javax.speech.synthesis.SynthesizerMode
+     */
     EngineList createEngineList(EngineMode require);
 }

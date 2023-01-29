@@ -26,8 +26,51 @@
 
 package javax.speech.recognition;
 
-//Comp 2.0.6
+// Comp 2.0.6
 
+/**
+ * Describes a problem found in a Grammar.
+ * <p>
+ * This is usually bundled with a GrammarException.
+ * <p>
+ * The Grammar may have been created programmatically or by loading
+ * grammar text.
+ * Multiple GrammarExceptionDetail objects may be encapsulated by a single
+ * GrammarException.
+ * <p>
+ * Depending on the type of error and the context in which the error is
+ * identified, some or all of the following information may be provided:
+ * <p>
+ * Grammar reference (URI, named resource, or application name),
+ * Rule name in which error is found,
+ * Line number of error in the grammar text,
+ * Character number (within line) in the grammar text,
+ * A printable description string.
+ * <p>
+ * The following problems may be encountered when loading grammar text:
+ * <p>
+ * Missing or illegal grammar reference declaration.
+ * URI String does not reference a grammar text file.
+ * Illegal rule name or token.
+ * Grammar text syntax error.
+ * Redefinition of a rule.
+ * Definition of a reserved rule name (NULL, VOID, GARBAGE).
+ * Empty rule definition or empty alternative.
+ * Missing or illegal weight on alternatives.
+ * Some other error.
+ * <p>
+ * When the commitChanges method of a Recognizer is called, it performs
+ * additional checks to ensure all loaded grammars are legal.
+ * The following problems may be encountered:
+ * <p>
+ * Reference to an undefined rule name.
+ * Unsupported recursion: the recognizer does not support
+ * embedded recursion.
+ *
+ * @see javax.speech.recognition.GrammarException
+ * @see javax.speech.recognition.Recognizer#loadRuleGrammar(java.lang.String, java.io.Reader)
+ * @see javax.speech.recognition.Recognizer#processGrammars()
+ */
 public class GrammarExceptionDetail {
 
     public static final int UNKNOWN_VALUE = -1;
@@ -78,6 +121,13 @@ public class GrammarExceptionDetail {
         this.message = message;
     }
 
+    /**
+     * Gets the character number in a line in a grammar text file
+     * containing this problem.
+     * <p>
+     * Negative values indicate that the character number is unknown.
+     * @return the character number in a line in a grammar text file
+     */
     public int getCharNumber() {
         if (getLineNumber() == UNKNOWN_VALUE) {
             return UNKNOWN_VALUE;
@@ -85,18 +135,42 @@ public class GrammarExceptionDetail {
         return charNumber;
     }
 
+    /**
+     * Gets the grammar reference in which this problem is encountered.
+     * <p>
+     * May be null.
+     * @return the grammar reference in which this problem is encountered
+     */
     public String getGrammarReference() {
         return grammarReference;
     }
 
+    /**
+     * Gets the line number in a grammar text file containing this problem.
+     * <p>
+     * Negative values indicate that the line number is unknown.
+     * @return the line number in a grammar text file
+     */
     public int getLineNumber() {
         return lineNumber;
     }
 
+    /**
+     * Gets a printable string describing this problem.
+     * <p>
+     * May be null.
+     * @return a string description of this problem
+     */
     public String getMessage() {
         return message;
     }
 
+    /**
+     * Gets the rule name within a Grammar containing this problem.
+     * <p>
+     * May be null.
+     * @return the rule name containing this problem
+     */
     public String getRuleName() {
         return ruleName;
     }

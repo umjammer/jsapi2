@@ -33,8 +33,23 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.stream.Collectors;
 
-//Comp. 2.0.6
+// Comp. 2.0.6
 
+/**
+ * Container for a set of EngineMode objects.
+ * <p>
+ * An EngineList is used in the selection of speech engines in conjunction
+ * with the methods of the EngineManager class. It provides convenience methods
+ * for the purpose of testing and manipulating the EngineMode objects it contains.
+ * <p>
+ * An EngineList object is typically obtained through the
+ * availableEngines method of the javax.speech.EngineManager class.
+ * The orderByMatch, anyMatch, requireMatch and rejectMatch methods
+ * are used to prune the list to find the best match given multiple criteria.
+ * @see javax.speech.EngineMode
+ * @see javax.speech.EngineManager
+ * @see javax.speech.EngineManager#availableEngines(javax.speech.EngineMode)
+ */
 public class EngineList {
 
     /**
@@ -42,11 +57,32 @@ public class EngineList {
      */
     private List<EngineMode> features;
 
+    /**
+     * Constructs the initial EngineList.
+     * @param features the initial list of features
+     */
     public EngineList(EngineMode[] features) {
         this.features = new ArrayList<>(features.length);
         Collections.addAll(this.features, features);
     }
 
+    /**
+     * Returns true if one or more EngineMode in the
+     * EngineList match the required features.
+     * <p>
+     * The require object is tested with the match
+     * method of each EngineMode in the list.
+     * If any match call returns true then this method returns true.
+     * <p>
+     * anyMatch is often used to test whether pruning a list
+     * (with requireMatch or rejectMatch)
+     * would leave the list empty.
+     * @param require required features to match
+     * @return true if a matching engine exists
+     * @see javax.speech.EngineMode#match(javax.speech.EngineMode)
+     * @see javax.speech.EngineList#requireMatch(javax.speech.EngineMode)
+     * @see javax.speech.EngineList#rejectMatch(javax.speech.EngineMode)
+     */
     public boolean anyMatch(EngineMode require) {
         // A match for require==null is handled by the match methods
         for (EngineMode mode : features) {
@@ -54,10 +90,17 @@ public class EngineList {
                 return true;
             }
         }
-
         return false;
     }
 
+    /**
+     * Returns the EngineMode at the specified index.
+     * @param index an index into this list
+     * @return the EngineMode at the specified index
+     * @throws java.lang.ArrayIndexOutOfBoundsException if an invalid index was given
+     * @see javax.speech.EngineList#elements()
+     * @see javax.speech.EngineList#size()
+     */
     public EngineMode elementAt(int index) throws ArrayIndexOutOfBoundsException {
         try {
             return features.get(index);
@@ -67,10 +110,34 @@ public class EngineList {
         }
     }
 
+    /**
+     * Returns an Enumeration of the components of this list.
+     * @return an Enumeration of the components of this list.
+     * @see java.util.Enumeration
+     * @see javax.speech.EngineList#elementAt(int)
+     */
     public Enumeration<EngineMode> elements() {
         return Collections.enumeration(features);
     }
 
+    /**
+     * Orders this list so that elements matching the required features are at
+     * the head of the list, and others are at the end.
+     * <p>
+     * Within categories, the original order of the list is preserved.
+     * <p>
+     * <A/>
+     * Example:
+     * <p>
+     * // Put running engines at the head of the list.
+     * EngineList list = ....;
+     * // Running is the 3rd feature in the constructor
+     * EngineMode mode = new EngineMode(null, null, true, null, null);
+     * list.orderByMatch(mode);
+     *
+     * @param require features to match
+     * @see javax.speech.EngineMode#match(javax.speech.EngineMode)
+     */
     public void orderByMatch(EngineMode require) {
         if (require == null) {
             return;
@@ -79,6 +146,24 @@ public class EngineList {
         Sorter.sort(features, comparator);
     }
 
+    /**
+     * Removes EngineMode entries from the list that match reject.
+     * <p>
+     * The match method for each EngineMode
+     * in the list is called and
+     * if it returns true it is removed from the list.
+     * <p>
+     * <A/>
+     * Example:
+     * <p>
+     * // Remove EngineMode objects if they support US English.
+     * EngineList list = ....;
+     * EngineMode mode = new EngineMode(new Locale("en", "US"));
+     * list.rejectMatch(mode);
+     *
+     * @param reject features to reject
+     * @see javax.speech.EngineMode#match(javax.speech.EngineMode)
+     */
     public void rejectMatch(EngineMode reject) {
         List<EngineMode> cleaned = new ArrayList<>();
 
@@ -91,6 +176,16 @@ public class EngineList {
         features = cleaned;
     }
 
+    /**
+     * Removes the EngineMode at the specified index.
+     * <p>
+     * The index must be a value greater than or equal to 0 and
+     * less than the current size of the list.
+     * @param index the index of the EngineMode to remove
+     * @throws java.lang.ArrayIndexOutOfBoundsException if the index was invalid.
+     * @see javax.speech.EngineList#elementAt(int)
+     * @see javax.speech.EngineList#size()
+     */
     public void removeElementAt(int index) throws ArrayIndexOutOfBoundsException {
         try {
             features.remove(index);
@@ -100,6 +195,25 @@ public class EngineList {
         }
     }
 
+    /**
+     * Removes EngineMode entries from the list that
+     * do not match require.
+     * <p>
+     * The match method for each EngineMode
+     * in the list is called and
+     * if it returns false it is removed from the list.
+     * <p>
+     * <A/>
+     * Example:
+     * <p>
+     * // Require EngineMode objects to support US English.
+     * EngineList list = ....;
+     * EngineMode mode = new EngineMode(new Locale("en", "US"));
+     * list.requireMatch(mode);
+     *
+     * @param require features to match
+     * @see javax.speech.EngineMode#match(javax.speech.EngineMode)
+     */
     public void requireMatch(EngineMode require) {
         List<EngineMode> cleaned = new ArrayList<>();
 
@@ -112,6 +226,10 @@ public class EngineList {
         features = cleaned;
     }
 
+    /**
+     * Returns the number of EngineMode objects in this list.
+     * @return the number of EngineMode objects in this list.
+     */
     public int size() {
         return features.size();
     }

@@ -26,8 +26,27 @@
 
 package javax.speech.recognition;
 
-//Comp. 2.0.6
+// Comp. 2.0.6
 
+/**
+ * Provides information on a finalized Result for
+ * an utterance that matches a RuleGrammar.
+ * <p>
+ * A finalized Result is in either the ACCEPTED or REJECTED state
+ * as returned by the getResultState method.
+ * <p>
+ * The methods of FinalRuleResult should only be called on a Result object if
+ * the Result.getGrammar method returns a RuleGrammar and the Result
+ * has been finalized with either a RESULT_ACCEPTED or RESULT_REJECTED event.
+ * Inappropriate calls will cause a ResultException.
+ * @see javax.speech.recognition.RuleGrammar
+ * @see javax.speech.recognition.Result#ACCEPTED
+ * @see javax.speech.recognition.Result#REJECTED
+ * @see javax.speech.recognition.Result#getResultState()
+ * @see javax.speech.recognition.Result#getGrammar()
+ * @see javax.speech.recognition.ResultEvent#RESULT_ACCEPTED
+ * @see javax.speech.recognition.ResultEvent#RESULT_REJECTED
+ */
 public interface FinalRuleResult extends FinalResult {
     RuleReference getRuleReference(int nBest) throws ResultStateException,
             IllegalArgumentException, IllegalStateException;

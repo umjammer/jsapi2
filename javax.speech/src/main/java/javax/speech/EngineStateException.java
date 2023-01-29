@@ -26,13 +26,30 @@
 
 package javax.speech;
 
-//Comp. 2.0.6
+// Comp. 2.0.6
 
+/**
+ * Thrown when there is an illegal call to a method of a speech engine.
+ * <p>
+ * For example, it is illegal to request a deallocated Synthesizer to speak,
+ * to request a deallocated Recognizer to create a new grammar, or
+ * to request any deallocated engine to pause or resume.
+ * @see javax.speech.SpeechException
+ */
 public class EngineStateException extends IllegalStateException {
 
+    /**
+     * Constructs an EngineStateException with no detail message.
+     */
     public EngineStateException() {
     }
 
+    /**
+     * Constructs an EngineStateException with the specified detail message.
+     * <p>
+     * A detail message is a String that describes this particular exception.
+     * @param s the detail message
+     */
     public EngineStateException(String s) {
         super(s);
     }

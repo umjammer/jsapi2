@@ -26,20 +26,53 @@
 
 package javax.speech.recognition;
 
-//Comp. 2.0.6
+// Comp. 2.0.6
 
+/**
+ * Specifies a RuleComponent composed of a sequence of sub-RuleComponents
+ * that must each be spoken in order.
+ * <p>
+ * If there are zero RuleComponents in the sequence,
+ * the sequence behaves the same as NULL.
+ * @see javax.speech.recognition.RuleSpecial#NULL
+ */
 public class RuleSequence extends RuleComponent {
 
     private RuleComponent[] ruleComponents;
 
-    public RuleSequence(RuleComponent[] ruleComponents)
-            throws IllegalArgumentException {
+    /**
+     * Constructs a RuleSequence with a sequence of RuleComponents.
+     * <p>
+     * The RuleComponents may have zero-length or be null.
+     * This produces a zero-length
+     * sequence which behaves the same as NULL.
+     * @param ruleComponents a sequence of RuleComponent
+     * @see javax.speech.recognition.RuleSpecial#NULL
+     * @see javax.speech.recognition.RuleSequence#getRuleComponents()
+     */
+    public RuleSequence(RuleComponent[] ruleComponents) throws IllegalArgumentException {
         if (ruleComponents == null) {
             throw new IllegalArgumentException("Rule components must not be null!");
         }
         this.ruleComponents = ruleComponents;
     }
 
+    /**
+     * Constructs a RuleSequence that converts a sequence of strings to RuleTokens.
+     * <p>
+     * A string containing multiple words (e.g. "San Francisco") is treated
+     * as a single token.
+     * If appropriate, an application should parse such strings
+     * to produce separate tokens.
+     * <p>
+     * The token list may be zero-length or null.
+     * This produces a zero-length
+     * sequence which behaves the same as NULL.
+     * @param tokens a sequence of Strings converted to RuleTokens
+     * @see javax.speech.recognition.RuleSpecial#NULL
+     * @see javax.speech.recognition.RuleToken
+     * @see javax.speech.recognition.RuleSequence#getRuleComponents()
+     */
     public RuleSequence(String[] tokens) throws IllegalArgumentException {
         if (tokens == null) {
             throw new IllegalArgumentException("Tokens must not be null!");
@@ -52,10 +85,23 @@ public class RuleSequence extends RuleComponent {
         }
     }
 
+    /**
+     * Returns the array of RuleComponents that define this sequence.
+     * @return the RuleComponents in this sequence
+     */
     public RuleComponent[] getRuleComponents() {
         return ruleComponents;
     }
 
+    /**
+     * Returns a String representing this RuleComponent as grammar text.
+     * <p>
+     * The String represents a portion of a grammar that could appear
+     * on the right hand side of a Rule definition.
+     * @return printable String representing grammar text.
+     * @see javax.speech.recognition.RuleComponent
+     * @see javax.speech.recognition.Rule
+     */
     public String toString() {
         if (ruleComponents == null) {
             return "";

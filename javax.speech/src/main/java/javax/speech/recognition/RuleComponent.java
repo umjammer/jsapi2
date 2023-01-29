@@ -26,8 +26,21 @@
 
 package javax.speech.recognition;
 
-//Comp 2.0.6
+// Comp 2.0.6
 
+/**
+ * Represents the different components
+ * that may appear on the right-hand side of a Rule definition
+ * in a RuleGrammar
+ * <p>
+ * Most RuleComponent subclasses help define the components of a Rule.
+ * However, the RuleParse subclass is returned by the parse method
+ * of RuleGrammar to represent the structure of parsed text.
+ * <p>
+ * Any RuleComponent object can be converted to a partial grammar text
+ * String using its toString method.
+ * @see javax.speech.recognition.RuleGrammar
+ */
 public class RuleComponent {
 
     /**
@@ -71,15 +84,24 @@ public class RuleComponent {
     }
 
     static boolean isWhitespace(char ch) {
-        switch (ch) {
-        case ' ':
-        case '\t':
-            return true;
-        default:
-            return false;
+        switch(ch) {
+            case ' ':
+            case '\t':
+                return true;
+            default:
+                return false;
         }
     }
 
+    /**
+     * Returns a String representing this RuleComponent as grammar text.
+     * <p>
+     * The String represents a portion of a grammar that could appear
+     * on the right hand side of a Rule definition.
+     * @return printable String representing grammar text.
+     * @see javax.speech.recognition.RuleComponent
+     * @see javax.speech.recognition.Rule
+     */
     public String toString() {
         return null;
     }

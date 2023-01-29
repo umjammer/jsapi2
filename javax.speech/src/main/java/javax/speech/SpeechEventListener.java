@@ -26,8 +26,11 @@
 
 package javax.speech;
 
-//Comp. 2.0.6
+// Comp. 2.0.6
 
+/**
+ * A tagging interface that all speech event listener interfaces must extend.
+ */
 public interface SpeechEventListener {
 
 }

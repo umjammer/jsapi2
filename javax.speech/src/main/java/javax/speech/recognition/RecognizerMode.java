@@ -33,8 +33,40 @@ import javax.speech.EngineMode;
 import javax.speech.JavaSpeechSecurity;
 import javax.speech.SpeechLocale;
 
-//Comp 2.0.6
+// Comp 2.0.6
 
+/**
+ * Provides information about a specific operating mode of a Recognizer.
+ * <p>
+ * RecognizerMode extends EngineMode with features
+ * specific to speech Recognizers.
+ * <p>
+ * Like EngineMode, there are two types of RecognizerMode objects:
+ * those created by the EngineManager or a Recognizer instance and
+ * those created by an application.
+ * Engine-created RecognizerMode objects are obtained from the EngineManager
+ * through the availableEngines method.
+ * They are also returned from a Recognizer instance with the getEngineMode method.
+ * For engine-created RecognizerMode objects, all features will be set to non-null values.
+ * <p>
+ * Applications can create RecognizerMode objects using the appropriate constructor.
+ * Applications may leave any or all of the feature values null to indicate "don't care".
+ * Typically, application-created RecognizerModes are used to test the engine-created
+ * RecognizerModes to select an appropriate recognizer for creation.
+ * <p>
+ * The EngineMode class describes additional detail on Engine selection.
+ * <p>
+ * Engine creation is described in the documentation for the EngineManager class.
+ * @see javax.speech.Engine
+ * @see javax.speech.recognition.Recognizer
+ * @see javax.speech.Engine#getEngineMode()
+ * @see javax.speech.EngineMode
+ * @see javax.speech.EngineManager
+ * @see javax.speech.EngineManager#availableEngines(javax.speech.EngineMode)
+ * @see javax.speech.EngineManager#createEngine(javax.speech.EngineMode)
+ * @see javax.speech.recognition.SpeakerManager
+ * @see javax.speech.recognition.SpeakerProfile
+ */
 public class RecognizerMode extends EngineMode {
 
     private static int hashCode(Object[] array) {
@@ -48,6 +80,17 @@ public class RecognizerMode extends EngineMode {
         return result;
     }
 
+    /**
+     * RecognizerMode with all mode features set to "don't care" values.
+     * <p>
+     * This can be used to select a default Recognizer with
+     * EngineManager.createEngine.
+     * The documentation for the Recognizer interface includes
+     * an example of this.
+     * @see javax.speech.recognition.Recognizer
+     * @see javax.speech.EngineManager
+     * @see javax.speech.EngineManager#createEngine(javax.speech.EngineMode)
+     */
     public static RecognizerMode DEFAULT = new RecognizerMode();
 
     public static Integer SMALL_SIZE = 10;
@@ -64,6 +107,9 @@ public class RecognizerMode extends EngineMode {
 
     private SpeakerProfile[] profiles;
 
+    /**
+     * Constructs a RecognizerMode with all mode features set to don't care values.
+     */
     public RecognizerMode() {
     }
 
@@ -83,6 +129,12 @@ public class RecognizerMode extends EngineMode {
         this.profiles = profiles;
     }
 
+    /**
+     * Returns a hash code value for the object.
+     * <p>
+     * This method is supported for the benefit of hashtables.
+     * @return a hash code value for the object
+     */
     public int hashCode() {
         final int prime = 31;
         int result = super.hashCode();
@@ -92,6 +144,13 @@ public class RecognizerMode extends EngineMode {
         return result;
     }
 
+    /**
+     * Returns true if and only if the mode parameter
+     * is not null and has equal values of all
+     * mode features with this EngineMode.
+     * mode an EngineMode to compare
+     * @return true if mode is equal to this EngineMode
+     */
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -143,15 +202,104 @@ public class RecognizerMode extends EngineMode {
         return locales;
     }
 
+    /**
+     * Gets the list of SpeakerProfiles specified in this RecognizerMode.
+     * <p>
+     * The list of SpeakerProfiles is the same as returned by the listKnownSpeakers
+     * method of SpeakerManager if this Engine is running.
+     * <p>
+     * In an application-generated RecognizerMode, a null value means "don't care".
+     * An Engine-generated RecognizerMode returns null if speaker training
+     * is not supported (i.e., the SpeakerManager is not implemented).
+     * It returns a zero-length array if speaker training is supported but no
+     * speaker profiles have been constructed yet.
+     * <p>
+     * The class description describes how features may be used to select an
+     * Engine or request information about a specific Engine.
+     * @return speaker profiles known to this mode
+     * @throws java.lang.SecurityException if the application does not have accessSpeakerProfiles permission
+     * @see javax.speech.recognition.SpeakerManager
+     * @see javax.speech.recognition.SpeakerManager#listKnownSpeakers()
+     */
     public SpeakerProfile[] getSpeakerProfiles() {
         JavaSpeechSecurity.checkPermission("javax.speech.recognition.SpeakerProfile");
         return profiles;
     }
 
+    /**
+     * Gets the vocabulary support feature.
+     * <p>
+     * Values may be SMALL, MEDIUM, LARGE, VERYLARGE, and null for don't care.
+     * <p>
+     * This feature gives an application an indication of the capabilities
+     * of a given engine on a given platform.
+     * Vocabulary size support varies by engine implementation and platform
+     * capabilities.
+     * <p>
+     * The same engine running on one platform may return a different value
+     * on another platform due to platform resource constraints.
+     * Also, two different implementations on the same platform may return
+     * different values due to differences in implementation resource
+     * requirements.
+     * <p>
+     * The values of SMALL, MEDIUM, LARGE, and VERYLARGE correspond to
+     * vocabulary support for engines supporting approximately 10s, 100s, 1000s, and 10,000s
+     * of words.  This is as measured for a nominal perplexity of 10.
+     * <p>
+     * When using this feature to request an engine, the size supported may be
+     * larger than the size requested.
+     * An application may decide not to use such an engine due to
+     * resource considerations.
+     * The getRunning feature may be used to determine if the
+     * larger engine is already running.
+     * <p>
+     * This value may be a fixed value for a given engine on a platform or
+     * may take current resources into account.
+     * <p>
+     * In an application-generated RecognizerMode, a null value means "don't care".
+     * An Engine-generated RecognizerMode never returns null.
+     * <p>
+     * The class description describes how features may be used to select an
+     * engine or request information about a specific engine.
+     * @return the value of the vocabulary support feature
+     * @see javax.speech.recognition.RecognizerMode#SMALL_SIZE
+     * @see javax.speech.recognition.RecognizerMode#MEDIUM_SIZE
+     * @see javax.speech.recognition.RecognizerMode#LARGE_SIZE
+     * @see javax.speech.recognition.RecognizerMode#VERY_LARGE_SIZE
+     * @see javax.speech.recognition.RecognizerMode#getVocabSupport()
+     * @see javax.speech.EngineMode#getRunning()
+     */
     public Integer getVocabSupport() {
         return vocabSupport;
     }
 
+    /**
+     * Determines whether a RecognizerMode has all the features defined
+     * in the require object.
+     * <p>
+     * Features in require which are null are not tested.
+     * All string comparisons are exact (case-sensitive).
+     * <p>
+     * The parameters are used as follows:
+     * <p>
+     * If the require parameter is an EngineMode then only the
+     * EngineMode features are tested.
+     * If the require parameter is a RecognizerMode (or sub-class)
+     * then the required locales and required speakers are tested
+     * as follows.
+     * <p>
+     * Every locale in the required set must be matched by
+     * a locale in the tested object.
+     * A null require value for locales is ignored.
+     * Every speaker profile in the required set must be matched by
+     * a profile in the tested object.
+     * A null require value for speakers speaker profiles is ignored.
+     * <p>
+     * Note that it is possible to compare an EngineMode against
+     * a RecognizerMode and vice versa.
+     * @param require an EngineMode to compare
+     * @return true if all defined features match
+     */
     public boolean match(EngineMode require) {
         if (!super.match(require)) {
             return false;

@@ -29,9 +29,28 @@ package javax.speech.synthesis;
 import javax.speech.EngineListener;
 import javax.speech.SpeechEventListener;
 
-//Comp 2.0.6
+// Comp 2.0.6
 
+/**
+ * The listener interface for receiving notification
+ * of events associated with a Synthesizer.
+ * <p>
+ * SynthesizerListener objects are attached to and removed from a Synthesizer
+ * by calling the addSynthesizerListener and removeSynthesizerListener methods.
+ * <p>
+ * The source for all SynthesizerEvents provided to a SynthesizerListener
+ * is the Synthesizer.
+ * @see javax.speech.synthesis.Synthesizer
+ * @see javax.speech.synthesis.SynthesizerEvent
+ * @see javax.speech.synthesis.Synthesizer#addSynthesizerListener(javax.speech.synthesis.SynthesizerListener)
+ * @see javax.speech.synthesis.Synthesizer#removeSynthesizerListener(javax.speech.synthesis.SynthesizerListener)
+ */
 public interface SynthesizerListener extends EngineListener, SpeechEventListener {
 
+    /**
+     * Method called back to indicate a Synthesizer update.
+     * @param e a SynthesizerEvent object
+     * @see javax.speech.synthesis.SynthesizerEvent
+     */
     void synthesizerUpdate(SynthesizerEvent e);
 }
