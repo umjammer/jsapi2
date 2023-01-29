@@ -24,7 +24,6 @@ import java.net.URLDecoder;
 import java.net.UnknownServiceException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -36,16 +35,18 @@ import javax.sound.sampled.TargetDataLine;
 
 import org.jvoicexml.jsapi2.protocols.JavaSoundParser;
 
+
 /**
  * A {@link URLConnection} for the capture protool.
+ *
  * @author Renato Cassaca
  * @author Dirk Schnelle-Walka
  * @version 1.0
  */
 public final class CaptureURLConnection extends URLConnection {
+
     /** Logger for this class. */
-    private static final Logger LOGGER =
-            Logger.getLogger(CaptureURLConnection.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CaptureURLConnection.class.getName());
 
     /** Device that this URLConnection will connect to. */
     private final String deviceName;
@@ -62,8 +63,7 @@ public final class CaptureURLConnection extends URLConnection {
     /**
      * Constructs a new object.
      *
-     * @param url
-     *            URL
+     * @param url URL
      */
     public CaptureURLConnection(URL url) {
         super(url);
@@ -79,7 +79,7 @@ public final class CaptureURLConnection extends URLConnection {
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * Closes any open line.
      */
     protected void finalize() throws Throwable {
@@ -105,8 +105,7 @@ public final class CaptureURLConnection extends URLConnection {
      * Opens a communications link to the resource referenced by this URL, if
      * such a connection has not already been established.
      *
-     * @throws IOException
-     *             if an I/O error occurs while opening the connection.
+     * @throws IOException if an I/O error occurs while opening the connection.
      */
     public synchronized void connect() throws IOException {
         if (connected) {
@@ -116,8 +115,7 @@ public final class CaptureURLConnection extends URLConnection {
         // Get the mixer info associated with the device name
         line = getLine();
         if (line == null) {
-            throw new IOException("Cannot open line with required format: "
-                    + getAudioFormat());
+            throw new IOException("Cannot open line with required format: " + getAudioFormat());
         }
 
         // Obtain, open and start the line.
@@ -137,8 +135,7 @@ public final class CaptureURLConnection extends URLConnection {
      * Retrieves the line to use.
      *
      * @return the line to use.
-     * @exception IOException
-     *            error obtaining the line.
+     * @throws IOException error obtaining the line.
      */
     private TargetDataLine getLine() throws IOException {
         if (deviceName.equals("audio")) {
@@ -162,8 +159,7 @@ public final class CaptureURLConnection extends URLConnection {
                 throw new IOException(ex.getMessage());
             }
 
-            DataLine.Info lineInfo = new DataLine.Info(TargetDataLine.class,
-                    getAudioFormat());
+            DataLine.Info lineInfo = new DataLine.Info(TargetDataLine.class, getAudioFormat());
             try {
                 line = (TargetDataLine) mixer.getLine(lineInfo);
             } catch (LineUnavailableException ex) {
@@ -183,8 +179,7 @@ public final class CaptureURLConnection extends URLConnection {
         Info[] mixerInfo = AudioSystem.getMixerInfo();
         for (Info info : mixerInfo) {
             if (info.getName().contains(deviceName)) {
-                if (!info.getName().contains("Playback")
-                        && !info.getDescription().contains("Playback")) {
+                if (!info.getName().contains("Playback") && !info.getDescription().contains("Playback")) {
                     return info;
                 }
             }
@@ -196,8 +191,7 @@ public final class CaptureURLConnection extends URLConnection {
      * Given URI parameters, constructs an AudioFormat.
      *
      * @return AudioFormat
-     * @exception IOException
-     *            error determining the audio format.
+     * @throws IOException error determining the audio format.
      */
     public AudioFormat getAudioFormat() throws IOException {
         if (audioFormat == null) {
@@ -231,8 +225,7 @@ public final class CaptureURLConnection extends URLConnection {
      * {@inheritDoc}
      * Throws an {@link UnknownServiceException}.
      *
-     * @throws UnknownServiceException
-     *         output streams are not supported by the capture protocol.
+     * @throws UnknownServiceException output streams are not supported by the capture protocol.
      */
     public OutputStream getOutputStream() throws UnknownServiceException {
         throw new UnknownServiceException("Cannot write to a capture device");

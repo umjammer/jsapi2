@@ -29,6 +29,7 @@ package javax.speech.recognition;
 //Comp 2.0.6
 
 public class SpeakerProfile {
+
     public static SpeakerProfile DEFAULT = new SpeakerProfile(null, null);
 
     private String name;
@@ -47,11 +48,8 @@ public class SpeakerProfile {
     public String getVariant() {
         return variant;
     }
-    
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#hashCode()
-     */
+    @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
@@ -60,9 +58,7 @@ public class SpeakerProfile {
         return result;
     }
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -92,7 +88,6 @@ public class SpeakerProfile {
     }
 
     public String toString() {
-
         String str = getClass().getName() +
                 "[" +
                 name +

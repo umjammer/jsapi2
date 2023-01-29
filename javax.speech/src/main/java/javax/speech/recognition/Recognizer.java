@@ -32,6 +32,7 @@ import javax.speech.EngineStateException;
 // Comp. 2.0.6
 
 public interface Recognizer extends Engine {
+
     int BUFFER_MODE = 0x1000;
 
     long LISTENING = 0x1000;

@@ -204,6 +204,7 @@ public class Voice {
      *                Voice.AGE_DONT_CARE, Voice.VARIANT_DONT_CARE);
      *  if (aVoice.match(maleishVoice)) ...
      * </pre>
+     *
      * @param require the required features to match this voice
      * @return true if all the required features match
      * @see #GENDER_DONT_CARE

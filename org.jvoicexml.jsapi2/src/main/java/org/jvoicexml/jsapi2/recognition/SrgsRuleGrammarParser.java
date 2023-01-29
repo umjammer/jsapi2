@@ -33,7 +33,6 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import javax.speech.recognition.Rule;
 import javax.speech.recognition.RuleAlternatives;
 import javax.speech.recognition.RuleComponent;
@@ -56,9 +55,10 @@ import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+
 /**
  * A parser for SRGS grammars.
- * 
+ *
  * @author Renato Cassaca
  * @author Dirk Schnelle-Walka
  * @version $Revision: 1370 $
@@ -70,8 +70,7 @@ public class SrgsRuleGrammarParser {
 
     public static class EmptyEntityResolver implements EntityResolver {
         @Override
-        public InputSource resolveEntity(String publicId, String systemId)
-                throws SAXException, IOException {
+        public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
             return new InputSource(new StringReader(""));
         }
     }
@@ -92,8 +91,7 @@ public class SrgsRuleGrammarParser {
 
     public Rule[] loadRule(Reader reader) {
         try {
-            DocumentBuilder builder = DocumentBuilderFactory
-                    .newInstance().newDocumentBuilder();
+            DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             builder.setEntityResolver(entityResolver);
             InputSource source = new InputSource(reader);
             return parseGrammar(builder.parse(source));
@@ -105,8 +103,7 @@ public class SrgsRuleGrammarParser {
 
     public Rule[] loadRule(InputStream stream) {
         try {
-            DocumentBuilderFactory factory = DocumentBuilderFactory
-                    .newInstance();
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             builder.setEntityResolver(entityResolver);
             return parseGrammar(builder.parse(new InputSource(stream)));
@@ -118,8 +115,7 @@ public class SrgsRuleGrammarParser {
 
     private Rule[] load(InputSource inputSource) {
         try {
-            DocumentBuilderFactory factory = DocumentBuilderFactory
-                    .newInstance();
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             builder.setEntityResolver(entityResolver);
 
@@ -167,8 +163,7 @@ public class SrgsRuleGrammarParser {
                 Rule rule = new Rule(ruleId, components.get(0), scope);
                 rules.add(rule);
             } else if (components.size() > 1) {
-                RuleSequence rs = new RuleSequence(
-                        components.toArray(new RuleComponent[] {}));
+                RuleSequence rs = new RuleSequence(components.toArray(new RuleComponent[] {}));
                 Rule rule = new Rule(ruleId, rs, scope);
                 rules.add(rule);
             }
@@ -196,8 +191,7 @@ public class SrgsRuleGrammarParser {
             }
         } else if (nodeName.equalsIgnoreCase("one-of")) {
             List<RuleComponent> rcs = evalChildNodes(node);
-            RuleAlternatives ra = new RuleAlternatives(
-                    rcs.toArray(new RuleComponent[] {}));
+            RuleAlternatives ra = new RuleAlternatives(rcs.toArray(new RuleComponent[] {}));
             ruleComponents.add(ra);
         } else if (nodeName.equalsIgnoreCase("item")) {
             int repeatMin = -1;
@@ -269,22 +263,17 @@ public class SrgsRuleGrammarParser {
                     RuleReference reference = new RuleReference(uriStr);
                     ruleComponents.add(reference);
                 } else if (uriStr != null) {
-                    String ruleName = uriStr.substring(
-                            uriStr.indexOf("#") + 1).trim();
-                    String grammarName = uriStr.substring(0,
-                            uriStr.indexOf("#"));
+                    String ruleName = uriStr.substring(uriStr.indexOf("#") + 1).trim();
+                    String grammarName = uriStr.substring(0, uriStr.indexOf("#"));
                     String typeStr = getAttribute(attributes, "type");
                     if (grammarName.isEmpty()) {
-                        RuleReference reference = new RuleReference(
-                                ruleName);
+                        RuleReference reference = new RuleReference(ruleName);
                         ruleComponents.add(reference);
                     } else if (typeStr == null) {
-                        RuleReference reference = new RuleReference(
-                                grammarName, ruleName);
+                        RuleReference reference = new RuleReference(grammarName, ruleName);
                         ruleComponents.add(reference);
                     } else {
-                        RuleReference reference = new RuleReference(
-                                grammarName, typeStr.trim());
+                        RuleReference reference = new RuleReference(grammarName, typeStr.trim());
                         ruleComponents.add(reference);
                     }
                 }

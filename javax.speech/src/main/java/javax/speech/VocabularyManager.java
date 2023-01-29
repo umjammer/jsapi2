@@ -29,19 +29,16 @@ package javax.speech;
 //Comp. 2.0.6
 
 public interface VocabularyManager {
+
     void addWord(Word word) throws EngineStateException, SecurityException;
 
     void addWords(Word[] words) throws EngineStateException, SecurityException;
 
-    String[] getPronounciations(String text, SpeechLocale locale)
-        throws EngineStateException;
+    String[] getPronounciations(String text, SpeechLocale locale) throws EngineStateException;
 
-    Word[] getWords(String text, SpeechLocale locale)
-        throws EngineStateException;
+    Word[] getWords(String text, SpeechLocale locale) throws EngineStateException;
 
-    void removeWord(Word word) throws EngineStateException,
-        IllegalArgumentException, SecurityException;
+    void removeWord(Word word) throws EngineStateException, IllegalArgumentException, SecurityException;
 
-    void removeWords(Word[] words) throws EngineStateException,
-        IllegalArgumentException, SecurityException;
+    void removeWords(Word[] words) throws EngineStateException, IllegalArgumentException, SecurityException;
 }

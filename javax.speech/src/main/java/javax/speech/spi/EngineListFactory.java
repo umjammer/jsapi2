@@ -32,5 +32,6 @@ import javax.speech.EngineMode;
 //Comp. 2.0.6
 
 public interface EngineListFactory {
+
     EngineList createEngineList(EngineMode require);
 }

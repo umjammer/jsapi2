@@ -32,12 +32,12 @@ import java.io.InputStream;
 //Comp. 2.0.6
 
 public class AudioSegment {
+
     private final String locator;
 
     private final String markupText;
 
-    public AudioSegment(String locator, String markupText)
-        throws IllegalArgumentException {
+    public AudioSegment(String locator, String markupText) throws IllegalArgumentException {
         if (locator == null) {
             throw new IllegalArgumentException("locator must not be null");
         }
@@ -55,8 +55,7 @@ public class AudioSegment {
 
     public InputStream openInputStream() throws IOException, SecurityException {
         if (!isGettable()) {
-            throw new SecurityException(
-                    "The platform does not allow to access the input stream!");
+            throw new SecurityException("The platform does not allow to access the input stream!");
         }
         return null;
     }

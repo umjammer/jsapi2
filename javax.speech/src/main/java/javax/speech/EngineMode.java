@@ -52,7 +52,7 @@ public abstract class EngineMode {
     }
 
     public EngineMode(String engineName, String modeName, Boolean running,
-            Boolean supportsLetterToSound, Boolean supportsMarkup) {
+                      Boolean supportsLetterToSound, Boolean supportsMarkup) {
         this.engineName = engineName;
         this.modeName = modeName;
         this.running = running;
@@ -109,14 +109,12 @@ public abstract class EngineMode {
             runningsMatch = otherModeRunning.equals(running);
         }
 
-        Boolean otherSupportsLetterToSound = require
-                .getSupportsLetterToSound();
+        Boolean otherSupportsLetterToSound = require.getSupportsLetterToSound();
         boolean supportsLetterToSoundMatch;
         if (otherSupportsLetterToSound == null) {
             supportsLetterToSoundMatch = true;
         } else {
-            supportsLetterToSoundMatch = otherSupportsLetterToSound
-                    .equals(supportsLetterToSound);
+            supportsLetterToSoundMatch = otherSupportsLetterToSound.equals(supportsLetterToSound);
         }
 
         Boolean otherMarkupSupport = require.getSupportsMarkup();
@@ -135,17 +133,11 @@ public abstract class EngineMode {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result
-                + ((engineName == null) ? 0 : engineName.hashCode());
-        result = prime * result
-                + ((modeName == null) ? 0 : modeName.hashCode());
+        result = prime * result + ((engineName == null) ? 0 : engineName.hashCode());
+        result = prime * result + ((modeName == null) ? 0 : modeName.hashCode());
         result = prime * result + ((running == null) ? 0 : running.hashCode());
-        result = prime
-                * result
-                + ((supportsLetterToSound == null) ? 0 : supportsLetterToSound
-                        .hashCode());
-        result = prime * result
-                + ((supportsMarkup == null) ? 0 : supportsMarkup.hashCode());
+        result = prime * result + ((supportsLetterToSound == null) ? 0 : supportsLetterToSound.hashCode());
+        result = prime * result + ((supportsMarkup == null) ? 0 : supportsMarkup.hashCode());
         return result;
     }
 
@@ -200,7 +192,7 @@ public abstract class EngineMode {
 
     /**
      * Creates a collection of all parameters.
-     * 
+     *
      * @return collection of all parameters.
      */
     protected List<Object> getParameters() {

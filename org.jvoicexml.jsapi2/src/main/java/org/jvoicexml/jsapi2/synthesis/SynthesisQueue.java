@@ -35,8 +35,6 @@ import javax.speech.synthesis.SpeakableListener;
 import javax.speech.synthesis.Synthesizer;
 import javax.speech.synthesis.SynthesizerEvent;
 
-import vavi.util.Debug;
-
 
 /**
  * Synthesis thread. Queues all speakable and calls the synthesizer to
@@ -152,13 +150,9 @@ final class SynthesisQueue implements Runnable {
         long[] states;
         BaseSynthesizer synthesizer = queueManager.getSynthesizer();
         if (topOfQueueChanged) {
-            states = synthesizer.setEngineState(
-                    Synthesizer.QUEUE_EMPTY,
-                    Synthesizer.QUEUE_NOT_EMPTY);
+            states = synthesizer.setEngineState(Synthesizer.QUEUE_EMPTY, Synthesizer.QUEUE_NOT_EMPTY);
         } else {
-            states = synthesizer.setEngineState(
-                    Synthesizer.QUEUE_NOT_EMPTY,
-                    Synthesizer.QUEUE_NOT_EMPTY);
+            states = synthesizer.setEngineState(Synthesizer.QUEUE_NOT_EMPTY, Synthesizer.QUEUE_NOT_EMPTY);
         }
         synthesizer.postSynthesizerEvent(states[0], states[1],
                 SynthesizerEvent.QUEUE_UPDATED, topOfQueueChanged);
@@ -293,10 +287,8 @@ final class SynthesisQueue implements Runnable {
             if (item != null) {
                 BaseSynthesizer synthesizer = queueManager.getSynthesizer();
                 if (lastFocusEvent == Synthesizer.DEFOCUSED) {
-                    long[] states = synthesizer.setEngineState(
-                            Synthesizer.DEFOCUSED, Synthesizer.FOCUSED);
-                    synthesizer.postSynthesizerEvent(states[0], states[1],
-                            SynthesizerEvent.ENGINE_FOCUSED, true);
+                    long[] states = synthesizer.setEngineState(Synthesizer.DEFOCUSED, Synthesizer.FOCUSED);
+                    synthesizer.postSynthesizerEvent(states[0], states[1], SynthesizerEvent.ENGINE_FOCUSED, true);
                     lastFocusEvent = Synthesizer.FOCUSED;
                 }
 
@@ -341,10 +333,8 @@ final class SynthesisQueue implements Runnable {
             Speakable speakable = (Speakable) itemSource;
             segment = synthesizer.handleSpeak(id, speakable);
         } else {
-            throw new RuntimeException(
-                    "WTF! It could only be text or speakable but was "
-                            + (itemSource == null ? "null" :
-                            item.getClass().getName()));
+            throw new RuntimeException("WTF! It could only be text or speakable but was "
+                            + (itemSource == null ? "null" : item.getClass().getName()));
         }
 
         item.setAudioSegment(segment);

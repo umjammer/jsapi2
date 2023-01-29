@@ -55,13 +55,13 @@ public interface Engine {
             EngineStateException, SecurityException;
 
     void allocate(int mode) throws IllegalArgumentException, AudioException,
-        EngineException, EngineStateException, SecurityException;
+            EngineException, EngineStateException, SecurityException;
 
     void deallocate() throws AudioException, EngineException,
             EngineStateException;
 
     void deallocate(int mode) throws IllegalArgumentException, AudioException,
-        EngineException, EngineStateException;
+            EngineException, EngineStateException;
 
     void pause() throws EngineStateException;
 
@@ -70,11 +70,11 @@ public interface Engine {
     boolean testEngineState(long state) throws IllegalArgumentException;
 
     long waitEngineState(long state)
-        throws InterruptedException, IllegalArgumentException,
+            throws InterruptedException, IllegalArgumentException,
             IllegalStateException;
 
     long waitEngineState(long state, long timeout)
-        throws InterruptedException, IllegalArgumentException,
+            throws InterruptedException, IllegalArgumentException,
             IllegalStateException;
 
     AudioManager getAudioManager();

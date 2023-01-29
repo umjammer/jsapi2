@@ -27,7 +27,6 @@
 package org.jvoicexml.jsapi2.mock.synthesis;
 
 import java.util.Vector;
-
 import javax.speech.synthesis.SpeakableEvent;
 import javax.speech.synthesis.SpeakableListener;
 
@@ -36,8 +35,8 @@ import vavi.util.Debug;
 
 /**
  * An implementation of a {@link SpeakableListener} for test purposes.
- * @author Dirk Schnelle-Walka
  *
+ * @author Dirk Schnelle-Walka
  */
 public class MockSpeakableListener implements SpeakableListener {
 
@@ -57,9 +56,9 @@ public class MockSpeakableListener implements SpeakableListener {
 
     /**
      * Waits until the number of events matches the given size.
+     *
      * @param size the number of expected events
-     * @throws InterruptedException
-     *         if waiting was interrupted
+     * @throws InterruptedException if waiting was interrupted
      */
     public void waitForSize(int size) throws InterruptedException {
         while (events.size() != size) {
@@ -72,6 +71,7 @@ public class MockSpeakableListener implements SpeakableListener {
 
     /**
      * Returns the {@link SpeakableEvent} at the given position.
+     *
      * @param pos position of the event to return
      * @return the event at the given position
      */
@@ -82,7 +82,7 @@ public class MockSpeakableListener implements SpeakableListener {
     @Override
     public void speakableUpdate(SpeakableEvent e) {
         events.add(e);
- Debug.println(e);
+        Debug.println(e);
         synchronized (lock) {
             lock.notifyAll();
         }

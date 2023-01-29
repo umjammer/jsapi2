@@ -1,6 +1,7 @@
 /**
- * 
+ *
  */
+
 package javax.speech;
 
 import java.security.Permission;
@@ -8,11 +9,12 @@ import java.security.Permission;
 
 /**
  * Base implementation of a security check.
- * 
+ *
  * @author Dirk Schnelle-Walka
- * 
+ *
  */
 public final class JavaSpeechSecurity {
+
     /**
      * Do not instantiate.
      */
@@ -26,8 +28,7 @@ public final class JavaSpeechSecurity {
      * @throws SecurityException
      *         if the named permission is not allowed to be executed 
      */
-    public static void checkPermission(String name)
-            throws SecurityException {
+    public static void checkPermission(String name) throws SecurityException {
         SecurityManager security = System.getSecurityManager();
         if (security != null) {
             Permission permission = new SpeechPermission(name);

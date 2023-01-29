@@ -1,6 +1,7 @@
 /**
- * 
+ *
  */
+
 package org.jvoicexml.jsapi2.sapi;
 
 import java.util.Enumeration;
@@ -31,7 +32,7 @@ public final class SapiEngineListFactoryTest {
     void testCreateEngineList() {
         SapiEngineListFactory factory = new SapiEngineListFactory();
         EngineList list =
-            factory.createEngineList(SynthesizerMode.DEFAULT);
+                factory.createEngineList(SynthesizerMode.DEFAULT);
         Enumeration<?> e = list.elements();
         assertTrue(e.hasMoreElements());
         SynthesizerMode mode = (SynthesizerMode) e.nextElement();

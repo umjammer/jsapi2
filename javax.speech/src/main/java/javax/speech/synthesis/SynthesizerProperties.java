@@ -112,6 +112,7 @@ public interface SynthesizerProperties extends EngineProperties {
      * <p>
      * The requested value may be rejected or limited.
      * </p>
+     *
      * @param hertz the pitch in Hertz
      */
     void setPitch(int hertz) throws IllegalArgumentException;
@@ -170,6 +171,7 @@ public interface SynthesizerProperties extends EngineProperties {
      *  synthesizerProperties.setVoice(voice);
      * </code></pre>
      * The requested value may be rejected or limited.
+     *
      * @param voice a voice to match in the current synthesizer
      * @see #getVoice
      * @see EngineProperties#addEnginePropertyListener(EnginePropertyListener)

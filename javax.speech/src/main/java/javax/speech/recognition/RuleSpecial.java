@@ -29,6 +29,7 @@ package javax.speech.recognition;
 //Comp. 2.0.6
 
 public class RuleSpecial extends RuleComponent {
+
     public static RuleSpecial GARBAGE = new RuleSpecial("GARBAGE");
 
     public static RuleSpecial NULL = new RuleSpecial("NULL");

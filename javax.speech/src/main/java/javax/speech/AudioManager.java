@@ -32,6 +32,7 @@ import java.io.OutputStream;
 //Comp. 2.0.6
 
 public interface AudioManager {
+
     int getAudioMask();
 
     void setAudioMask(int mask);
@@ -40,31 +41,24 @@ public interface AudioManager {
 
     void removeAudioListener(AudioListener listener);
 
-    void audioStart()
-        throws SecurityException, AudioException, EngineStateException;
+    void audioStart() throws SecurityException, AudioException, EngineStateException;
 
-    void audioStop()
-        throws SecurityException, AudioException, EngineStateException;
+    void audioStop() throws SecurityException, AudioException, EngineStateException;
 
     void setMediaLocator(String locator) throws AudioException,
-            IllegalStateException, IllegalArgumentException,
-            SecurityException;
+            IllegalStateException, IllegalArgumentException, SecurityException;
 
     void setMediaLocator(String locator, InputStream stream) throws
-            AudioException, IllegalStateException, IllegalArgumentException,
-            SecurityException;
+            AudioException, IllegalStateException, IllegalArgumentException, SecurityException;
 
     void setMediaLocator(String locator, OutputStream stream) throws
-            AudioException, IllegalStateException, IllegalArgumentException,
-            SecurityException;
+            AudioException, IllegalStateException, IllegalArgumentException, SecurityException;
 
     String getMediaLocator();
 
-    String[] getSupportedMediaLocators(String mediaLocator) throws
-            IllegalArgumentException;
+    String[] getSupportedMediaLocators(String mediaLocator) throws IllegalArgumentException;
 
-    boolean isSupportedMediaLocator(String mediaLocator) throws
-            IllegalArgumentException;
+    boolean isSupportedMediaLocator(String mediaLocator) throws IllegalArgumentException;
 
     boolean isSameChannel(AudioManager audioManager);
 }

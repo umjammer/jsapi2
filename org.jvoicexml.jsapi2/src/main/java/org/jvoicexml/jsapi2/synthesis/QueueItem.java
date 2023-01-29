@@ -26,20 +26,23 @@
 
 package org.jvoicexml.jsapi2.synthesis;
 
-import javax.speech.synthesis.Speakable;
-import javax.speech.synthesis.SpeakableListener;
 import javax.speech.AudioSegment;
 import javax.speech.synthesis.PhoneInfo;
+import javax.speech.synthesis.Speakable;
+import javax.speech.synthesis.SpeakableListener;
+
 
 /**
  * An item of the {@link QueueManager}. The data is initialized with the
  * data from the speak requests and are updated as the synthesis process
  * is progressing.
+ *
  * @author Renato Cassaca
  * @author Dirk Schnelle-Walka
  * @version $Revision: 1370 $
  */
 public class QueueItem {
+
     /** The text (or markup) to be synthesized. */
     private Object source;
 
@@ -57,24 +60,24 @@ public class QueueItem {
 
     /** the words in the text or markup to be synthesized. */
     private String[] words;
-    
+
     private float[] wordsStartTimes;
     private PhoneInfo[] phonesInfo;
 
     /**
-     *  <code>true</code> if this queue item has already been passed to the
-     *  synthesizer.
+     * <code>true</code> if this queue item has already been passed to the
+     * synthesizer.
      */
     private boolean synthesized;
 
     /**
      * Constructs a new object.
-     * @param itemId the unique id of the speakable
+     *
+     * @param itemId          the unique id of the speakable
      * @param queuedSpeakable the speakable
-     * @param itemListener a listener to notify about events of this item
+     * @param itemListener    a listener to notify about events of this item
      */
-    public QueueItem(int itemId, Speakable queuedSpeakable,
-                     SpeakableListener itemListener) {
+    public QueueItem(int itemId, Speakable queuedSpeakable, SpeakableListener itemListener) {
         this.id = itemId;
         this.speakable = queuedSpeakable;
         this.listener = itemListener;
@@ -87,27 +90,27 @@ public class QueueItem {
 
     /**
      * Constructs a new object.
-     * @param itemId the unique id of the speakable
+     *
+     * @param itemId          the unique id of the speakable
      * @param queuedSpeakable the speakable
-     * @param itemListener a listener to notify about events of this item
-     * @param text the text to be spoken, maybe <code>null</code> if the
-     *             speakable contains markup text
+     * @param itemListener    a listener to notify about events of this item
+     * @param text            the text to be spoken, maybe <code>null</code> if the
+     *                        speakable contains markup text
      */
     public QueueItem(int itemId, Speakable queuedSpeakable,
-                     SpeakableListener itemListener,
-                     String text) {
+                     SpeakableListener itemListener, String text) {
         this(itemId, queuedSpeakable, itemListener);
         source = text;
     }
 
     /**
      * Constructs a new object.
-     * @param itemId the unique id of the speakable
+     *
+     * @param itemId       the unique id of the speakable
      * @param audioSegment the audio segment to be synthesized
-     * @param listener a listener to notify about events of this item
+     * @param listener     a listener to notify about events of this item
      */
-    public QueueItem(int itemId, AudioSegment audioSegment,
-                     SpeakableListener listener) {
+    public QueueItem(int itemId, AudioSegment audioSegment, SpeakableListener listener) {
         this.id = itemId;
         this.speakable = null;
         this.listener = listener;
@@ -120,6 +123,7 @@ public class QueueItem {
 
     /**
      * Checks, if this queue item has already been passed to the synthesizer.
+     *
      * @return <code>true</code> if this queue item is already synthesizer.
      */
     public boolean isSynthesized() {
@@ -128,8 +132,9 @@ public class QueueItem {
 
     /**
      * Modifies the synthesized state of this queue item.
+     *
      * @param synthesized <code>true</code> if this queue item has been
-     *          synthesized
+     *                    synthesized
      */
     public void setSynthesized(boolean synthesized) {
         this.synthesized = synthesized;
@@ -137,6 +142,7 @@ public class QueueItem {
 
     /**
      * Retrieves the speakable.
+     *
      * @return the speakable.
      */
     public Speakable getSpeakable() {
@@ -145,6 +151,7 @@ public class QueueItem {
 
     /**
      * Retrieves the speakable listener for this queue item.
+     *
      * @return the speakable listener
      */
     public SpeakableListener getListener() {
@@ -153,6 +160,7 @@ public class QueueItem {
 
     /**
      * Retrieves the id of this item.
+     *
      * @return id of this queue item.
      */
     public int getId() {
@@ -161,6 +169,7 @@ public class QueueItem {
 
     /**
      * Retrieves the text or markup to be synthesized.
+     *
      * @return the text or markup to be synthesized
      */
     public Object getSource() {
@@ -169,6 +178,7 @@ public class QueueItem {
 
     /**
      * Retrieves the associated audio segment.
+     *
      * @return the audio segment.
      */
     public AudioSegment getAudioSegment() {
@@ -177,6 +187,7 @@ public class QueueItem {
 
     /**
      * Sets the audio segment.
+     *
      * @param audiosegment new value for the audio segment.
      */
     public void setAudioSegment(AudioSegment audiosegment) {
@@ -185,6 +196,7 @@ public class QueueItem {
 
     /**
      * Retrieves the words in the text or markup to be synthesized.
+     *
      * @return the words in the text or markup to be synthesized.
      */
     public String[] getWords() {
@@ -193,6 +205,7 @@ public class QueueItem {
 
     /**
      * Sets the words in the text or markup to be synthesized.
+     *
      * @param w words in the text or markup to be synthesized
      */
     public void setWords(String[] w) {

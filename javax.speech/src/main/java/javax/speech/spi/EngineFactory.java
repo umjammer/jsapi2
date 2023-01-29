@@ -32,5 +32,6 @@ import javax.speech.EngineException;
 //Comp. 2.0.6
 
 public interface EngineFactory {
+
     Engine createEngine() throws IllegalArgumentException, EngineException;
 }

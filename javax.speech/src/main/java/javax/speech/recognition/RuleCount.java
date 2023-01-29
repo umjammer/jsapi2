@@ -29,6 +29,7 @@ package javax.speech.recognition;
 //Comp 2.0.6
 
 public class RuleCount extends RuleComponent {
+
     public static final int MAX_PROBABILITY = 0x7fffffff;
 
     public static final int REPEAT_INDEFINITELY = 0x7fffffff;
@@ -41,11 +42,9 @@ public class RuleCount extends RuleComponent {
 
     private int repeatProbability;
 
-    public RuleCount(RuleComponent ruleComponent, int repeatMin)
-        throws IllegalArgumentException {
+    public RuleCount(RuleComponent ruleComponent, int repeatMin) throws IllegalArgumentException {
         if (repeatMin < 0) {
-            throw new IllegalArgumentException(
-                    "Repeat minimum must be greater or equal to 0!");
+            throw new IllegalArgumentException("Repeat minimum must be greater or equal to 0!");
         }
         this.ruleComponent = ruleComponent;
         this.repeatMax = REPEAT_INDEFINITELY;
@@ -54,10 +53,9 @@ public class RuleCount extends RuleComponent {
     }
 
     public RuleCount(RuleComponent ruleComponent, int repeatMin, int repeatMax)
-        throws IllegalArgumentException {
+            throws IllegalArgumentException {
         if (repeatMin < 0 || (repeatMin > repeatMax)) {
-            throw new IllegalArgumentException(
-                    "Repeat minimum must be greater or equal to 0 and smaller "
+            throw new IllegalArgumentException("Repeat minimum must be greater or equal to 0 and smaller "
                             + "than or equal to repeat maximum!");
         }
         this.ruleComponent = ruleComponent;
@@ -66,17 +64,15 @@ public class RuleCount extends RuleComponent {
         this.repeatProbability = -1;
     }
 
-    public RuleCount(RuleComponent ruleComponent, int repeatMin, int repeatMax,
-            int repeatProbability) throws IllegalArgumentException {
+    public RuleCount(RuleComponent ruleComponent, int repeatMin, int repeatMax, int repeatProbability)
+            throws IllegalArgumentException {
         if (repeatMin < 0 || (repeatMin > repeatMax)) {
-            throw new IllegalArgumentException(
-                    "Repeat minimum must be greater or equal to 0 and smaller "
+            throw new IllegalArgumentException("Repeat minimum must be greater or equal to 0 and smaller "
                             + "than or equal to repeat maximum!");
         }
 
         if (repeatProbability < 0) {
-            throw new IllegalArgumentException(
-                    "Repeat propability must be greater or equal to 0!");
+            throw new IllegalArgumentException("Repeat propability must be greater or equal to 0!");
         }
         this.ruleComponent = ruleComponent;
         this.repeatMin = repeatMin;

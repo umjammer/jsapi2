@@ -29,7 +29,6 @@ package org.jvoicexml.jsapi2.synthesis.freetts;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -44,6 +43,7 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
+
 
 public class Ssml2JsmlTransformer {
 
@@ -69,8 +69,8 @@ public class Ssml2JsmlTransformer {
 
         /* create a template from a xsl file */
         try {
-        	InputStream in = Ssml2JsmlTransformer.class.getResourceAsStream(
-        			"/ssml2jsml.xsl");
+            InputStream in = Ssml2JsmlTransformer.class.getResourceAsStream(
+                    "/ssml2jsml.xsl");
             template = tfactory.newTemplates(new StreamSource(in));
         } catch (TransformerConfigurationException ex2) {
             ex2.printStackTrace();

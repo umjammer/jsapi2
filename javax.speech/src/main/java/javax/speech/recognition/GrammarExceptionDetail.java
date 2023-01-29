@@ -29,6 +29,7 @@ package javax.speech.recognition;
 //Comp 2.0.6
 
 public class GrammarExceptionDetail {
+
     public static final int UNKNOWN_VALUE = -1;
 
     public static final int UNKNOWN_TYPE = -1;
@@ -46,9 +47,9 @@ public class GrammarExceptionDetail {
     public static final int SYNTAX_ERROR = 9;
 
     private final int type;
-    
+
     private final String textInfo;
-    
+
     private final String grammarReference;
 
     private final String ruleName;
@@ -60,15 +61,13 @@ public class GrammarExceptionDetail {
     private final String message;
 
     public GrammarExceptionDetail(int type, String textInfo,
-            String grammarReference, String ruleName, int lineNumber,
-            int charNumber, String message) throws IllegalArgumentException {
+                                  String grammarReference, String ruleName, int lineNumber,
+                                  int charNumber, String message) throws IllegalArgumentException {
         if ((lineNumber <= 0) && (lineNumber != UNKNOWN_VALUE)) {
-            throw new IllegalArgumentException(
-                    "Line number must be a positive integer or UNKNOWN_VALUE");
+            throw new IllegalArgumentException("Line number must be a positive integer or UNKNOWN_VALUE");
         }
         if ((charNumber <= 0) && (charNumber != UNKNOWN_VALUE)) {
-            throw new IllegalArgumentException(
-                    "Char number must be a positive integer or UNKNOWN_VALUE");
+            throw new IllegalArgumentException("Char number must be a positive integer or UNKNOWN_VALUE");
         }
         this.type = type;
         this.textInfo = textInfo;

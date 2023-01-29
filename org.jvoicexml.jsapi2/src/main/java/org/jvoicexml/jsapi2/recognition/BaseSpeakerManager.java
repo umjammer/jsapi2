@@ -22,14 +22,15 @@
 package org.jvoicexml.jsapi2.recognition;
 
 import java.util.Collection;
-
 import javax.speech.EngineStateException;
 import javax.speech.recognition.SpeakerManager;
 import javax.speech.recognition.SpeakerManagerUI;
 import javax.speech.recognition.SpeakerProfile;
 
+
 /**
  * Basic implementation of a speaker manager.
+ *
  * @author Renato Cassaca
  * @author Dirk Schnelle-Walka
  */
@@ -71,15 +72,13 @@ public class BaseSpeakerManager implements SpeakerManager {
 
     @Override
     public SpeakerProfile[] listKnownSpeakers() {
-        SpeakerProfile[] profiles =
-                new SpeakerProfile[speakerProfiles.size()];
+        SpeakerProfile[] profiles = new SpeakerProfile[speakerProfiles.size()];
         speakerProfiles.toArray(profiles);
         return profiles;
     }
 
     @Override
-    public void renameSpeaker(SpeakerProfile oldSpeaker,
-                              SpeakerProfile newSpeaker) {
+    public void renameSpeaker(SpeakerProfile oldSpeaker, SpeakerProfile newSpeaker) {
     }
 
     @Override

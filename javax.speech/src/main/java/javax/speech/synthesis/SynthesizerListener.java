@@ -31,7 +31,7 @@ import javax.speech.SpeechEventListener;
 
 //Comp 2.0.6
 
-public interface SynthesizerListener extends EngineListener,
-    SpeechEventListener {
+public interface SynthesizerListener extends EngineListener, SpeechEventListener {
+
     void synthesizerUpdate(SynthesizerEvent e);
 }

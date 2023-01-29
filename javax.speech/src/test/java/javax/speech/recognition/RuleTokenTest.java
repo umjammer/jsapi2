@@ -31,9 +31,10 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+
 /**
  * Test case for {@link javax.speech.recognition.RuleToken}.
- * 
+ *
  * @author Dirk Schnelle-Walka
  */
 public class RuleTokenTest {
@@ -51,7 +52,7 @@ public class RuleTokenTest {
 
         RuleToken token3 = new RuleToken("möaüAÖÜß?!");
         assertEquals("möaüAÖÜß?!", token3.getText());
-        
+
         Exception failure = null;
         try {
             new RuleToken(null);

@@ -28,10 +28,11 @@ package org.jvoicexml.jsapi2.mock;
 
 import javax.speech.SpeechEventExecutor;
 
+
 /**
  * Dummy implementation of a speech event executor that executes asynchronously.
- * @author Dirk Schnelle-Walka
  *
+ * @author Dirk Schnelle-Walka
  */
 public class MockSpeechEventExecutor implements SpeechEventExecutor {
 

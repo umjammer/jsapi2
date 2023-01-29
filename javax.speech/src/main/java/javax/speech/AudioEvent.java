@@ -40,7 +40,7 @@ public class AudioEvent extends SpeechEvent {
 
     public static final int AUDIO_LEVEL = 0x8000008;
 
-    public static final int DEFAULT_MASK = AUDIO_STARTED | AUDIO_CHANGED |  AUDIO_STOPPED;
+    public static final int DEFAULT_MASK = AUDIO_STARTED | AUDIO_CHANGED | AUDIO_STOPPED;
 
     public static final int AUDIO_LEVEL_MIN = 0;
 

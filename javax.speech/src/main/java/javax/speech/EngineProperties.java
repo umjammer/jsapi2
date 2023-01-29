@@ -29,6 +29,7 @@ package javax.speech;
 //Comp. 2.0.6
 
 public interface EngineProperties {
+
     int MIN_PRIORITY = 0x01;
 
     int NORM_TRUSTED_PRIORITY = 0x02;

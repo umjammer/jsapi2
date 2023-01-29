@@ -1,8 +1,8 @@
 package org.jvoicexml.jsapi2.recognition;
 
 import java.util.List;
-
 import javax.speech.recognition.RuleComponent;
+
 
 /**
  * Represents a node of a graph.
@@ -33,7 +33,7 @@ public class GrammarNode {
     public static final int TAG = 9;
     /** Represent an token node. */
     public static final int TOKEN = 10;
-    
+
     /** Represent an token node. */
     public static final int SPECIAL = 11;
 
@@ -51,12 +51,12 @@ public class GrammarNode {
 
     /**
      * Creates a grammar node without a rule component associated.
+     *
      * @param isFinalNode boolean
-     * @param nodeType the node type
-     * @param rc RuleComponent the associated rule component
+     * @param nodeType    the node type
+     * @param rc          RuleComponent the associated rule component
      */
-    protected GrammarNode(boolean isFinalNode, int nodeType,
-                          RuleComponent rc) {
+    protected GrammarNode(boolean isFinalNode, int nodeType, RuleComponent rc) {
         this.isFinal = isFinalNode;
         this.type = nodeType;
         this.component = rc;
@@ -65,8 +65,9 @@ public class GrammarNode {
 
     /**
      * Create a grammar node, without a rule component associated.
+     *
      * @param isFinalNode boolean
-     * @param nodeType int
+     * @param nodeType    int
      */
     protected GrammarNode(boolean isFinalNode, int nodeType) {
         this.isFinal = isFinalNode;
@@ -77,6 +78,7 @@ public class GrammarNode {
 
     /**
      * Checks if this node is a final node.
+     *
      * @return <code>true</code> if this is a final node.
      */
     public final boolean isFinalNode() {
@@ -85,6 +87,7 @@ public class GrammarNode {
 
     /**
      * Adds an arc, from this node to the destinationNode.
+     *
      * @param destinationNode the destination node
      */
     public final void addArc(GrammarNode destinationNode) {
@@ -93,6 +96,7 @@ public class GrammarNode {
 
     /**
      * Gets the node type.
+     *
      * @return int
      */
     public final int getNodeType() {
@@ -101,6 +105,7 @@ public class GrammarNode {
 
     /**
      * Gets the arc list.
+     *
      * @return List
      */
     public final List<GrammarArc> getArcs() {
@@ -109,6 +114,7 @@ public class GrammarNode {
 
     /**
      * Gets the rule component associated with this node.
+     *
      * @return RuleComponent
      */
     public final RuleComponent getRuleComponent() {

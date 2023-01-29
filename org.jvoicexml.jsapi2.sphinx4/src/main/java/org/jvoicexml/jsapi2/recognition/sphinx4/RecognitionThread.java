@@ -26,9 +26,10 @@ import java.util.logging.Logger;
 
 import edu.cmu.sphinx.api.SpeechResult;
 
+
 /**
  * Recognition thread to run the recognizer in parallel.
- * 
+ *
  * @author Dirk Schnelle-Walka
  * @author Stefan Radomski
  */
@@ -43,9 +44,8 @@ final class RecognitionThread extends Thread {
 
     /**
      * Creates a new object.
-     * 
-     * @param rec
-     *            The wrapper for the sphinx4 recognizer.
+     *
+     * @param rec The wrapper for the sphinx4 recognizer.
      */
     public RecognitionThread(Sphinx4Recognizer rec) {
         super("RecognitionThread");

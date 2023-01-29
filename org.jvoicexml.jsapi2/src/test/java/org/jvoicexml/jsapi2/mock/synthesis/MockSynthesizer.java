@@ -36,9 +36,11 @@ import org.jvoicexml.jsapi2.mock.MockAudioManager;
 import org.jvoicexml.jsapi2.mock.MockSpeechEventExecutor;
 import org.jvoicexml.jsapi2.synthesis.BaseSynthesizer;
 
+
 /**
  * Dummy implementation of a {@link javax.speech.synthesis.Synthesizer}
  * for test purposes.
+ *
  * @author Dirk Schnelle-Walka
  */
 public final class MockSynthesizer extends BaseSynthesizer {

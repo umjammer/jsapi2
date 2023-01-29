@@ -31,7 +31,9 @@ import java.util.List;
 //Comp. 2.0.6
 
 public class EngineEvent extends SpeechEvent {
+
     // Events.
+
     public static final int ENGINE_ALLOCATED = 0x1000001;
 
     public static final int ENGINE_DEALLOCATED = 0x1000002;
@@ -60,18 +62,15 @@ public class EngineEvent extends SpeechEvent {
 
     private Throwable problem;
 
-    public EngineEvent(Engine source, int id, long oldEngineState,
-            long newEngineState, Throwable problem)
-        throws IllegalArgumentException {
+    public EngineEvent(Engine source, int id, long oldEngineState, long newEngineState, Throwable problem)
+            throws IllegalArgumentException {
         super(source, id);
 
         if ((problem != null) && (id != ENGINE_ERROR)) {
-            throw new IllegalArgumentException(
-                    "A problem can only be provided for ENGINE_ERROR");
+            throw new IllegalArgumentException("A problem can only be provided for ENGINE_ERROR");
         }
         if ((problem == null) && (id == ENGINE_ERROR)) {
-            throw new IllegalArgumentException(
-                    "A problem must be provided for ENGINE_ERROR");
+            throw new IllegalArgumentException("A problem must be provided for ENGINE_ERROR");
         }
         this.oldEngineState = oldEngineState;
         this.newEngineState = newEngineState;
@@ -99,10 +98,8 @@ public class EngineEvent extends SpeechEvent {
     protected void id2String(StringBuffer str) {
         maybeAddId(str, ENGINE_ALLOCATED, "ENGINE_ALLOCATED");
         maybeAddId(str, ENGINE_DEALLOCATED, "ENGINE_DEALLOCATED");
-        maybeAddId(str, ENGINE_ALLOCATING_RESOURCES, 
-                "ENGINE_ALLOCATING_RESOURCES");
-        maybeAddId(str, ENGINE_DEALLOCATING_RESOURCES, 
-            "ENGINE_DEALLOCATING_RESOURCES");
+        maybeAddId(str, ENGINE_ALLOCATING_RESOURCES, "ENGINE_ALLOCATING_RESOURCES");
+        maybeAddId(str, ENGINE_DEALLOCATING_RESOURCES, "ENGINE_DEALLOCATING_RESOURCES");
         maybeAddId(str, ENGINE_PAUSED, "ENGINE_PAUSED");
         maybeAddId(str, ENGINE_RESUMED, "ENGINE_RESUMED");
         maybeAddId(str, ENGINE_DEFOCUSED, "ENGINE_DEFOCUSED");

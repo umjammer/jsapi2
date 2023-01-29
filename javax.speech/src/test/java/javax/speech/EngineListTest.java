@@ -27,18 +27,23 @@
 package javax.speech;
 
 import java.util.Enumeration;
-
 import javax.speech.mock.MockEngineMode;
 import javax.speech.recognition.RecognizerMode;
 import javax.speech.synthesis.SynthesizerMode;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 /**
  * Test case for {@link javax.speech.EngineList}.
- * 
+ *
  * @author Dirk Schnelle
  */
 public class EngineListTest {

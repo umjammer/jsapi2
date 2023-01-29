@@ -29,6 +29,7 @@ package javax.speech.recognition;
 //Comp 2.0.6
 
 public interface ResultToken {
+
     long getStartTime();
 
     long getEndTime();

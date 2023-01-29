@@ -29,6 +29,7 @@ package javax.speech.recognition;
 //Comp. 2.0.6
 
 public interface Grammar {
+
     int ACTIVATION_INDIRECT = 0x384;
 
     int ACTIVATION_FOCUS = 0x385;

@@ -46,6 +46,7 @@ import javax.speech.SpeechPermission;
  * @version $Revision: 1370 $
  */
 public class BaseAudioSegment extends AudioSegment {
+
     /** The audio data. */
     private final InputStream is;
 
@@ -82,8 +83,7 @@ public class BaseAudioSegment extends AudioSegment {
      * @param markupText the alternate markup text
      * @param input      the input stream for the audio data.
      */
-    public BaseAudioSegment(String locator, String markupText,
-                            InputStream input) {
+    public BaseAudioSegment(String locator, String markupText, InputStream input) {
         super(locator, markupText);
         is = input;
     }
@@ -95,14 +95,12 @@ public class BaseAudioSegment extends AudioSegment {
      * to open a stream to the given media locator.
      */
     @Override
-    public final InputStream openInputStream()
-            throws IOException, SecurityException {
+    public final InputStream openInputStream() throws IOException, SecurityException {
         // Firstly check the security settings
         if (!isGettable()) {
             SecurityManager security = System.getSecurityManager();
             if (security != null) {
-                Permission permission = new SpeechPermission(
-                        "javax.speech.AudioSegment.openInputStream");
+                Permission permission = new SpeechPermission("javax.speech.AudioSegment.openInputStream");
                 security.checkPermission(permission);
             }
         }
@@ -120,8 +118,7 @@ public class BaseAudioSegment extends AudioSegment {
     public final boolean isGettable() {
         SecurityManager security = System.getSecurityManager();
         if (security != null) {
-            Permission permission = new SpeechPermission(
-                    "javax.speech.AudioSegment.openInputStream");
+            Permission permission = new SpeechPermission("javax.speech.AudioSegment.openInputStream");
             try {
                 security.checkPermission(permission);
             } catch (SecurityException e) {

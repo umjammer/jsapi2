@@ -39,7 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Test case for {@link javax.speech.recognition.GrammarEvent}.
- * 
+ *
  * @author Dirk Schnelle
  */
 public class GrammarEventTest {

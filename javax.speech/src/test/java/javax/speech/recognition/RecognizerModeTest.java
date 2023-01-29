@@ -40,9 +40,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+
 /**
  * Test case for {@link javax.speech.recognition.RecognizerMode}.
- * 
+ *
  * @author Dirk Schnelle
  */
 public class RecognizerModeTest {
@@ -64,9 +65,9 @@ public class RecognizerModeTest {
         Boolean supportsLetterToSound1 = Boolean.TRUE;
         Boolean markupSupport1 = Boolean.TRUE;
         Integer vocabSupport1 = RecognizerMode.SMALL_SIZE;
-        SpeechLocale[] locales1 = new SpeechLocale[] { SpeechLocale.US,
-                SpeechLocale.GERMAN };
-        SpeakerProfile[] profiles1 = new SpeakerProfile[] { SpeakerProfile.DEFAULT  };
+        SpeechLocale[] locales1 = new SpeechLocale[] {SpeechLocale.US,
+                SpeechLocale.GERMAN};
+        SpeakerProfile[] profiles1 = new SpeakerProfile[] {SpeakerProfile.DEFAULT};
         RecognizerMode mode3 = new RecognizerMode(engineName1, modeName1,
                 running1, supportsLetterToSound1, markupSupport1,
                 vocabSupport1, locales1, profiles1);
@@ -98,9 +99,9 @@ public class RecognizerModeTest {
         Boolean supportsLetterToSound1 = Boolean.TRUE;
         Boolean markupSupport1 = Boolean.TRUE;
         Integer vocabSupport1 = RecognizerMode.SMALL_SIZE;
-        SpeechLocale[] locales1 = new SpeechLocale[] { SpeechLocale.US,
-                SpeechLocale.GERMAN };
-        SpeakerProfile[] profiles1 = new SpeakerProfile[] { SpeakerProfile.DEFAULT };
+        SpeechLocale[] locales1 = new SpeechLocale[] {SpeechLocale.US,
+                SpeechLocale.GERMAN};
+        SpeakerProfile[] profiles1 = new SpeakerProfile[] {SpeakerProfile.DEFAULT};
         RecognizerMode mode6 = new RecognizerMode(engineName1, modeName1,
                 running1, supportsLetterToSound1, markupSupport1,
                 vocabSupport1, locales1, profiles1);
@@ -114,9 +115,9 @@ public class RecognizerModeTest {
         Boolean supportsLetterToSound2 = Boolean.TRUE;
         Boolean markupSupport2 = Boolean.TRUE;
         Integer vocabSupport2 = RecognizerMode.SMALL_SIZE;
-        SpeechLocale[] locales2 = new SpeechLocale[] { SpeechLocale.US,
-                SpeechLocale.GERMAN };
-        SpeakerProfile[] profiles2 = new SpeakerProfile[] { SpeakerProfile.DEFAULT };
+        SpeechLocale[] locales2 = new SpeechLocale[] {SpeechLocale.US,
+                SpeechLocale.GERMAN};
+        SpeakerProfile[] profiles2 = new SpeakerProfile[] {SpeakerProfile.DEFAULT};
         RecognizerMode mode7 = new RecognizerMode(engineName2, modeName2,
                 running2, supportsLetterToSound2, markupSupport2,
                 vocabSupport2, locales2, profiles2);
@@ -129,9 +130,9 @@ public class RecognizerModeTest {
         Boolean supportsLetterToSound3 = Boolean.TRUE;
         Boolean markupSupport3 = Boolean.TRUE;
         Integer vocabSupport3 = RecognizerMode.SMALL_SIZE;
-        SpeechLocale[] locales3 = new SpeechLocale[] { SpeechLocale.US };
+        SpeechLocale[] locales3 = new SpeechLocale[] {SpeechLocale.US};
         SpeakerProfile[] profiles3 = new SpeakerProfile[] {
-                SpeakerProfile.DEFAULT , SpeakerProfile.DEFAULT  };
+                SpeakerProfile.DEFAULT, SpeakerProfile.DEFAULT};
         RecognizerMode mode8 = new RecognizerMode(engineName3, modeName3,
                 running3, supportsLetterToSound3, markupSupport3,
                 vocabSupport3, locales3, profiles3);
@@ -170,9 +171,9 @@ public class RecognizerModeTest {
         Boolean supportsLetterToSound1 = Boolean.TRUE;
         Boolean markupSupport1 = Boolean.TRUE;
         Integer vocabSupport1 = RecognizerMode.SMALL_SIZE;
-        SpeechLocale[] locales1 = new SpeechLocale[] { SpeechLocale.US,
-                SpeechLocale.GERMAN };
-        SpeakerProfile[] profiles1 = new SpeakerProfile[] { SpeakerProfile.DEFAULT };
+        SpeechLocale[] locales1 = new SpeechLocale[] {SpeechLocale.US,
+                SpeechLocale.GERMAN};
+        SpeakerProfile[] profiles1 = new SpeakerProfile[] {SpeakerProfile.DEFAULT};
         RecognizerMode mode6 = new RecognizerMode(engineName1, modeName1,
                 running1, supportsLetterToSound1, markupSupport1,
                 vocabSupport1, locales1, profiles1);
@@ -184,9 +185,9 @@ public class RecognizerModeTest {
         Boolean supportsLetterToSound2 = Boolean.TRUE;
         Boolean markupSupport2 = Boolean.TRUE;
         Integer vocabSupport2 = RecognizerMode.SMALL_SIZE;
-        SpeechLocale[] locales2 = new SpeechLocale[] { SpeechLocale.US,
-                SpeechLocale.GERMAN };
-        SpeakerProfile[] profiles2 = new SpeakerProfile[] { SpeakerProfile.DEFAULT };
+        SpeechLocale[] locales2 = new SpeechLocale[] {SpeechLocale.US,
+                SpeechLocale.GERMAN};
+        SpeakerProfile[] profiles2 = new SpeakerProfile[] {SpeakerProfile.DEFAULT};
         RecognizerMode mode7 = new RecognizerMode(engineName2, modeName2,
                 running2, supportsLetterToSound2, markupSupport2,
                 vocabSupport2, locales2, profiles2);
@@ -199,9 +200,9 @@ public class RecognizerModeTest {
         Boolean supportsLetterToSound3 = Boolean.TRUE;
         Boolean markupSupport3 = Boolean.TRUE;
         Integer vocabSupport3 = RecognizerMode.SMALL_SIZE;
-        SpeechLocale[] locales3 = new SpeechLocale[] { SpeechLocale.US };
+        SpeechLocale[] locales3 = new SpeechLocale[] {SpeechLocale.US};
         SpeakerProfile[] profiles3 = new SpeakerProfile[] {
-                SpeakerProfile.DEFAULT, SpeakerProfile.DEFAULT };
+                SpeakerProfile.DEFAULT, SpeakerProfile.DEFAULT};
         RecognizerMode mode8 = new RecognizerMode(engineName3, modeName3,
                 running3, supportsLetterToSound3, markupSupport3,
                 vocabSupport3, locales3, profiles3);
@@ -229,9 +230,9 @@ public class RecognizerModeTest {
         Boolean supportsLetterToSound1 = Boolean.TRUE;
         Boolean markupSupport1 = Boolean.TRUE;
         Integer vocabSupport1 = RecognizerMode.SMALL_SIZE;
-        SpeechLocale[] locales1 = new SpeechLocale[] { SpeechLocale.US,
-                SpeechLocale.GERMAN };
-        SpeakerProfile[] profiles1 = new SpeakerProfile[] { SpeakerProfile.DEFAULT };
+        SpeechLocale[] locales1 = new SpeechLocale[] {SpeechLocale.US,
+                SpeechLocale.GERMAN};
+        SpeakerProfile[] profiles1 = new SpeakerProfile[] {SpeakerProfile.DEFAULT};
         RecognizerMode mode3 = new RecognizerMode(engineName1, modeName1,
                 running1, supportsLetterToSound1, markupSupport1,
                 vocabSupport1, locales1, profiles1);
@@ -259,9 +260,9 @@ public class RecognizerModeTest {
         Boolean supportsLetterToSound1 = Boolean.TRUE;
         Boolean markupSupport1 = Boolean.TRUE;
         Integer vocabSupport1 = RecognizerMode.SMALL_SIZE;
-        SpeechLocale[] locales1 = new SpeechLocale[] { SpeechLocale.US,
-                SpeechLocale.GERMAN };
-        SpeakerProfile[] profiles1 = new SpeakerProfile[] { SpeakerProfile.DEFAULT };
+        SpeechLocale[] locales1 = new SpeechLocale[] {SpeechLocale.US,
+                SpeechLocale.GERMAN};
+        SpeakerProfile[] profiles1 = new SpeakerProfile[] {SpeakerProfile.DEFAULT};
         RecognizerMode mode3 = new RecognizerMode(engineName1, modeName1,
                 running1, supportsLetterToSound1, markupSupport1,
                 vocabSupport1, locales1, profiles1);
@@ -287,9 +288,9 @@ public class RecognizerModeTest {
         Boolean supportsLetterToSound1 = Boolean.TRUE;
         Boolean markupSupport1 = Boolean.TRUE;
         Integer vocabSupport1 = RecognizerMode.SMALL_SIZE;
-        SpeechLocale[] locales1 = new SpeechLocale[] { SpeechLocale.US,
-                SpeechLocale.GERMAN };
-        SpeakerProfile[] profiles1 = new SpeakerProfile[] { SpeakerProfile.DEFAULT };
+        SpeechLocale[] locales1 = new SpeechLocale[] {SpeechLocale.US,
+                SpeechLocale.GERMAN};
+        SpeakerProfile[] profiles1 = new SpeakerProfile[] {SpeakerProfile.DEFAULT};
         RecognizerMode mode3 = new RecognizerMode(engineName1, modeName1,
                 running1, supportsLetterToSound1, markupSupport1,
                 vocabSupport1, locales1, profiles1);
@@ -326,9 +327,9 @@ public class RecognizerModeTest {
         Boolean supportsLetterToSound1 = Boolean.TRUE;
         Boolean markupSupport1 = Boolean.TRUE;
         Integer vocabSupport1 = RecognizerMode.SMALL_SIZE;
-        SpeechLocale[] locales1 = new SpeechLocale[] { SpeechLocale.US,
-                SpeechLocale.GERMAN };
-        SpeakerProfile[] profiles1 = new SpeakerProfile[] { SpeakerProfile.DEFAULT  };
+        SpeechLocale[] locales1 = new SpeechLocale[] {SpeechLocale.US,
+                SpeechLocale.GERMAN};
+        SpeakerProfile[] profiles1 = new SpeakerProfile[] {SpeakerProfile.DEFAULT};
         RecognizerMode mode3 = new RecognizerMode(engineName1, modeName1,
                 running1, supportsLetterToSound1, markupSupport1,
                 vocabSupport1, locales1, profiles1);

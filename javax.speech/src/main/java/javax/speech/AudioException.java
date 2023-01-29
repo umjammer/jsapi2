@@ -36,5 +36,4 @@ public class AudioException extends SpeechException {
     public AudioException(String s) {
         super(s);
     }
-
 }

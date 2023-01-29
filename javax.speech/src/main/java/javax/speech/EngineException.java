@@ -36,5 +36,4 @@ public class EngineException extends SpeechException {
     public EngineException(String s) {
         super(s);
     }
-
 }

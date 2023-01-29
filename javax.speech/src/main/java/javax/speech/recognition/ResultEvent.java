@@ -58,7 +58,7 @@ public class ResultEvent extends SpeechEvent {
     }
 
     public ResultEvent(Result source, int id, boolean tokensFinalized,
-            boolean unfinalizedTokensChanged) throws IllegalArgumentException {
+                       boolean unfinalizedTokensChanged) throws IllegalArgumentException {
         super(source, id);
 
         this.tokensFinalized = tokensFinalized;

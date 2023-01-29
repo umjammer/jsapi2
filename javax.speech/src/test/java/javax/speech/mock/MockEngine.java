@@ -32,8 +32,9 @@ import javax.speech.Engine;
 import javax.speech.EngineException;
 import javax.speech.EngineMode;
 import javax.speech.EngineStateException;
-import javax.speech.VocabularyManager;
 import javax.speech.SpeechEventExecutor;
+import javax.speech.VocabularyManager;
+
 
 /**
  * Engine for test purposes.
@@ -44,84 +45,62 @@ public class MockEngine implements Engine {
 
     public void allocate() throws AudioException, EngineException,
             EngineStateException, SecurityException {
-        // TODO Auto-generated method stub
-        
     }
 
     public void allocate(int mode) throws IllegalArgumentException,
             AudioException, EngineException, EngineStateException,
             SecurityException {
-        // TODO Auto-generated method stub
-        
     }
 
     public void deallocate() throws AudioException, EngineException,
             EngineStateException {
-        // TODO Auto-generated method stub
-        
     }
 
     public void deallocate(int mode) throws IllegalArgumentException,
             AudioException, EngineException, EngineStateException {
-        // TODO Auto-generated method stub
-        
     }
 
     public void pause() throws EngineStateException {
-        // TODO Auto-generated method stub
-        
     }
 
     public boolean resume() throws EngineStateException {
-        // TODO Auto-generated method stub
         return false;
     }
 
     public boolean testEngineState(long state) throws IllegalArgumentException {
-        // TODO Auto-generated method stub
         return false;
     }
 
     public long waitEngineState(long state) throws InterruptedException,
             IllegalArgumentException, IllegalStateException {
-        // TODO Auto-generated method stub
         return 0;
     }
 
     public long waitEngineState(long state, long timeout)
-            throws InterruptedException, IllegalArgumentException,
-            IllegalStateException {
-        // TODO Auto-generated method stub
+            throws InterruptedException, IllegalArgumentException, IllegalStateException {
         return 0;
     }
 
     public AudioManager getAudioManager() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     public EngineMode getEngineMode() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     public long getEngineState() {
-        // TODO Auto-generated method stub
         return 0;
     }
 
     public VocabularyManager getVocabularyManager() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     public void setEngineMask(int mask) {
-        // TODO Auto-generated method stub
-        
     }
 
     public int getEngineMask() {
-        // TODO Auto-generated method stub
         return 0;
     }
 
@@ -130,7 +109,5 @@ public class MockEngine implements Engine {
     }
 
     public void setSpeechEventExecutor(SpeechEventExecutor speechEventExecutor) {
-        // TODO Auto-generated method stub
-        
     }
 }

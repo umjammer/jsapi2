@@ -17,6 +17,7 @@ import javax.speech.synthesis.Voice;
 import org.jvoicexml.jsapi2.synthesis.BaseSynthesizer;
 import org.jvoicexml.jsapi2.synthesis.BaseSynthesizerProperties;
 
+
 /**
  * Engine properties for FreeTTS.
  *
@@ -26,6 +27,7 @@ import org.jvoicexml.jsapi2.synthesis.BaseSynthesizerProperties;
 public class FreeTTSEngineProperties extends BaseSynthesizerProperties {
     /**
      * Constructs a new object.
+     *
      * @param synthesizer the associated synthesizer
      */
     public FreeTTSEngineProperties(BaseSynthesizer synthesizer) {

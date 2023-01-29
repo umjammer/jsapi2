@@ -29,15 +29,16 @@ package javax.speech.synthesis;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import javax.speech.EngineMode;
 import javax.speech.SpeechLocale;
 
 //Comp 2.0.6
 
 public class SynthesizerMode extends EngineMode {
+
     /**
      * Returns a hash code value for the array
+     *
      * @param array the array to create a hash code value for
      * @return a hash code value for the array
      */
@@ -47,8 +48,7 @@ public class SynthesizerMode extends EngineMode {
             return 0;
         int result = 1;
         for (Object o : array) {
-            result = prime * result
-                    + (o == null ? 0 : o.hashCode());
+            result = prime * result + (o == null ? 0 : o.hashCode());
         }
         return result;
     }
@@ -70,18 +70,13 @@ public class SynthesizerMode extends EngineMode {
     }
 
     public SynthesizerMode(String engineName, String modeName, Boolean running,
-            Boolean supportsLetterToSound, Boolean supportsMarkup,
-            Voice[] voices) {
-        super(engineName, modeName, running, supportsLetterToSound,
-                supportsMarkup);
+                           Boolean supportsLetterToSound, Boolean supportsMarkup, Voice[] voices) {
+        super(engineName, modeName, running, supportsLetterToSound, supportsMarkup);
 
         this.voices = voices;
     }
 
-
-    /* (non-Javadoc)
-     * @see java.lang.Object#hashCode()
-     */
+    @Override
     public int hashCode() {
         final int prime = 31;
         int result = super.hashCode();
@@ -89,9 +84,7 @@ public class SynthesizerMode extends EngineMode {
         return result;
     }
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -110,7 +103,7 @@ public class SynthesizerMode extends EngineMode {
         } else if (voices.length != other.voices.length) {
             return false;
         } else {
-            for (int i=0; i<voices.length; i++) {
+            for (int i = 0; i < voices.length; i++) {
                 if (!voices[i].equals(other.voices[i])) {
                     return false;
                 }
@@ -161,7 +154,7 @@ public class SynthesizerMode extends EngineMode {
 
     /**
      * Creates a collection of all parameters.
-     * 
+     *
      * @return collection of all parameters.
      */
     protected List<Object> getParameters() {

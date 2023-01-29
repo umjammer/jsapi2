@@ -19,6 +19,7 @@ import java.net.URLConnection;
 import java.net.URLStreamHandler;
 import java.net.UnknownHostException;
 
+
 /**
  * Protocol handler for the capture protocol.
  *
@@ -27,6 +28,7 @@ import java.net.UnknownHostException;
  * @version 1.0
  */
 public final class Handler extends URLStreamHandler {
+
     /**
      * Constructs a new object.
      */

@@ -27,7 +27,6 @@
 package org.jvoicexml.jsapi2.recognition;
 
 import java.util.List;
-
 import javax.speech.SpeechEventExecutor;
 import javax.speech.SpeechLocale;
 import javax.speech.recognition.Grammar;
@@ -39,6 +38,7 @@ import javax.speech.recognition.RecognizerMode;
 import javax.speech.recognition.ResultEvent;
 import javax.speech.recognition.ResultListener;
 
+
 /**
  * Implementation of {@link javax.speech.recognition.Grammar}.
  *
@@ -47,11 +47,13 @@ import javax.speech.recognition.ResultListener;
  * recognizer and forwards the received events. Currently there is no filtering
  * if the result matches this grammar.
  * </p>
+ *
  * @author Renato Cassaca
  * @author Dirk Schnelle-Walka
  * @version $Revision: 1370 $
  */
 public class BaseGrammar implements Grammar, ResultListener {
+
     /** Reference to the recognizer. */
     private transient Recognizer recognizer;
 
@@ -75,16 +77,14 @@ public class BaseGrammar implements Grammar, ResultListener {
 
     /**
      * Creates a new BaseGrammar.
-     * @param rec the BaseRecognizer for this Grammar.
+     *
+     * @param rec                the BaseRecognizer for this Grammar.
      * @param grammarRefererence the reference of this Grammar.
-     * @exception IllegalArgumentException
-     *            if the grammar reference is null
+     * @throws IllegalArgumentException if the grammar reference is null
      */
-    public BaseGrammar(Recognizer rec, String grammarRefererence)
-        throws IllegalArgumentException {
+    public BaseGrammar(Recognizer rec, String grammarRefererence) throws IllegalArgumentException {
         if (grammarRefererence == null) {
-            throw new IllegalArgumentException(
-                    "grammar reference must not be null");
+            throw new IllegalArgumentException("grammar reference must not be null");
         }
         grammarListeners = new java.util.ArrayList<>();
         resultListeners = new java.util.ArrayList<>();
@@ -97,7 +97,7 @@ public class BaseGrammar implements Grammar, ResultListener {
         activationMode = ACTIVATION_FOCUS;
     }
 
-    /** */
+    /**  */
     public final Recognizer getRecognizer() {
         return recognizer;
     }
@@ -118,14 +118,12 @@ public class BaseGrammar implements Grammar, ResultListener {
     }
 
     @Override
-    public final void setActivationMode(int mode)
-        throws IllegalArgumentException {
+    public final void setActivationMode(int mode) throws IllegalArgumentException {
         if ((mode != ACTIVATION_GLOBAL)
-            && (mode != ACTIVATION_MODAL)
-            && (mode != ACTIVATION_FOCUS)
-            && (mode != ACTIVATION_INDIRECT)) {
-            throw new IllegalArgumentException("Invalid ActivationMode: "
-                    + mode);
+                && (mode != ACTIVATION_MODAL)
+                && (mode != ACTIVATION_FOCUS)
+                && (mode != ACTIVATION_INDIRECT)) {
+            throw new IllegalArgumentException("Invalid ActivationMode: " + mode);
         } else if (mode != activationMode) {
             activationMode = mode;
         }
@@ -181,12 +179,12 @@ public class BaseGrammar implements Grammar, ResultListener {
 
     /**
      * Retrieves the locale of this grammar.
+     *
      * @return the locale
      */
     protected final SpeechLocale getSpeechLocale() {
         if (locale == null) {
-            RecognizerMode mode =
-                (RecognizerMode) recognizer.getEngineMode();
+            RecognizerMode mode = (RecognizerMode) recognizer.getEngineMode();
             SpeechLocale[] locales = mode.getSpeechLocales();
             if (locales != null) {
                 locale = locales[0];
@@ -200,6 +198,7 @@ public class BaseGrammar implements Grammar, ResultListener {
 
     /**
      * Sets the speech locale of this grammar.
+     *
      * @param speechLocale the locale
      */
     protected final void setSpeechLocale(SpeechLocale speechLocale) {
@@ -210,12 +209,11 @@ public class BaseGrammar implements Grammar, ResultListener {
      * Utility function to generate grammar event and post it to the event
      * queue. This method uses the {@link  SpeechEventExecutor} to post the
      * event asynchronously.
-     * @param event the event to post
      *
+     * @param event the event to post
      */
     private void postGrammarEvent(GrammarEvent event) {
-        SpeechEventExecutor executor =
-            recognizer.getSpeechEventExecutor();
+        SpeechEventExecutor executor = recognizer.getSpeechEventExecutor();
         Runnable runnable = () -> fireGrammarEvent(event);
         try {
             executor.execute(runnable);
@@ -230,6 +228,7 @@ public class BaseGrammar implements Grammar, ResultListener {
      * <p>
      * This method runs within the configures {@link SpeechEventExecutor}.
      * </p>
+     *
      * @param event the event to fire
      */
     private void fireGrammarEvent(GrammarEvent event) {
@@ -245,9 +244,8 @@ public class BaseGrammar implements Grammar, ResultListener {
      * listeners.
      */
     public final void postGrammarActivated() {
-        GrammarEvent event =
-            new GrammarEvent(this, GrammarEvent.GRAMMAR_ACTIVATED,
-                    true, false, null);
+        GrammarEvent event = new GrammarEvent(this, GrammarEvent.GRAMMAR_ACTIVATED,
+                        true, false, null);
         postGrammarEvent(event);
     }
 
@@ -256,9 +254,8 @@ public class BaseGrammar implements Grammar, ResultListener {
      * listeners.
      */
     public final void postGrammarChangesCommitted() {
-        GrammarEvent event =
-            new GrammarEvent(this, GrammarEvent.GRAMMAR_CHANGES_COMMITTED,
-                    false, true, null);
+        GrammarEvent event = new GrammarEvent(this, GrammarEvent.GRAMMAR_CHANGES_COMMITTED,
+                        false, true, null);
         postGrammarEvent(event);
     }
 
@@ -267,9 +264,8 @@ public class BaseGrammar implements Grammar, ResultListener {
      * listeners.
      */
     public final void postGrammarChangesRejected() {
-        GrammarEvent event =
-            new GrammarEvent(this, GrammarEvent.GRAMMAR_CHANGES_REJECTED,
-                    false, true, null);
+        GrammarEvent event = new GrammarEvent(this, GrammarEvent.GRAMMAR_CHANGES_REJECTED,
+                        false, true, null);
         postGrammarEvent(event);
     }
 
@@ -278,9 +274,8 @@ public class BaseGrammar implements Grammar, ResultListener {
      * listeners.
      */
     public final void postGrammarDeactivated() {
-        GrammarEvent event =
-            new GrammarEvent(this, GrammarEvent.GRAMMAR_DEACTIVATED,
-                    true, false, null);
+        GrammarEvent event = new GrammarEvent(this, GrammarEvent.GRAMMAR_DEACTIVATED,
+                        true, false, null);
         postGrammarEvent(event);
     }
 
@@ -288,8 +283,7 @@ public class BaseGrammar implements Grammar, ResultListener {
     public final void resultUpdate(ResultEvent event) {
         int id = event.getId();
         // TODO correct the event filter.
-        if ((id != ResultEvent.RESULT_ACCEPTED)
-                && (id != ResultEvent.RESULT_REJECTED)) {
+        if ((id != ResultEvent.RESULT_ACCEPTED) && (id != ResultEvent.RESULT_REJECTED)) {
             return;
         }
 

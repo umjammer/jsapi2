@@ -31,6 +31,7 @@ import javax.speech.EngineStateException;
 //Comp 2.0.6
 
 public interface SpeakerManager {
+
     void createSpeaker(SpeakerProfile speaker) throws IllegalArgumentException;
 
     void deleteSpeaker(SpeakerProfile speaker) throws IllegalArgumentException;
@@ -41,13 +42,11 @@ public interface SpeakerManager {
 
     SpeakerProfile[] listKnownSpeakers();
 
-    void renameSpeaker(SpeakerProfile oldSpeaker, SpeakerProfile newSpeaker)
-        throws IllegalArgumentException;
+    void renameSpeaker(SpeakerProfile oldSpeaker, SpeakerProfile newSpeaker) throws IllegalArgumentException;
 
     void restoreCurrentSpeaker() throws EngineStateException;
 
     void saveCurrentSpeaker() throws EngineStateException;
 
-    void setCurrentSpeaker(SpeakerProfile speaker)
-        throws IllegalArgumentException;
+    void setCurrentSpeaker(SpeakerProfile speaker) throws IllegalArgumentException;
 }

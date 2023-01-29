@@ -2,7 +2,6 @@ package org.jvoicexml.jsapi2.mock.recognition;
 
 import java.io.InputStream;
 import java.util.Collection;
-
 import javax.sound.sampled.AudioFormat;
 import javax.speech.AudioException;
 import javax.speech.EngineException;
@@ -20,9 +19,11 @@ import org.jvoicexml.jsapi2.recognition.BaseGrammarManager;
 import org.jvoicexml.jsapi2.recognition.BaseRecognizer;
 import org.jvoicexml.jsapi2.recognition.GrammarDefinition;
 
+
 /**
  * Dummy implementation of a {@link javax.speech.recognition.Recognizer}
  * for test purposes.
+ *
  * @author Dirk Schnelle-Walka
  */
 public final class MockRecognizer extends BaseRecognizer {

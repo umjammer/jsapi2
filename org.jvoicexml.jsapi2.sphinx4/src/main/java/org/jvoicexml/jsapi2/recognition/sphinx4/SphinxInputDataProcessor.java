@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.sound.sampled.AudioFormat;
 
 import edu.cmu.sphinx.frontend.BaseDataProcessor;
@@ -41,10 +40,11 @@ import edu.cmu.sphinx.util.props.PropertySheet;
 import edu.cmu.sphinx.util.props.S4Boolean;
 import edu.cmu.sphinx.util.props.S4Integer;
 
+
 /**
  * A data processor to read the data from a given input stream and feed it into
  * the sphinx system.
- * 
+ *
  * @author Renato Cassaca
  * @author Stefan Radomski
  * @author Dirk Schnelle-Walka
@@ -106,9 +106,8 @@ public class SphinxInputDataProcessor extends BaseDataProcessor
 
     /**
      * Sets the input stream to read the audio from.
-     * 
-     * @param in
-     *            the input stream.
+     *
+     * @param in the input stream.
      */
     public void setInputStream(InputStream in) {
         inputStream = in;
@@ -116,17 +115,16 @@ public class SphinxInputDataProcessor extends BaseDataProcessor
 
     /**
      * Start or stop this data processor
-     * 
+     * <p>
      * We need to send a DataStartSignal before commencing to send samples. When
      * we were stopped, send a DataEndSignal and return null for subsequent
      * calls to getData().
-     * 
+     * <p>
      * This way, we can stop this processor and have calls to recognize() return
      * immediately.
-     * 
-     * @param running
-     *            {@code true} if notifications about the status change should
-     *            be sent
+     *
+     * @param running {@code true} if notifications about the status change should
+     *                be sent
      */
     public synchronized void isRunning(boolean running) {
         if (this.running != running) {
@@ -141,7 +139,7 @@ public class SphinxInputDataProcessor extends BaseDataProcessor
 
     /**
      * Retrieves the audio format.
-     * 
+     *
      * @return the audio format used by this data processor.
      */
     public AudioFormat getAudioFormat() {
@@ -150,10 +148,9 @@ public class SphinxInputDataProcessor extends BaseDataProcessor
 
     /**
      * Returns the processed Data output.
-     * 
+     *
      * @return a Data object that has been processed by this DataProcessor
-     * @throws DataProcessingException
-     *             if a data processor error occurs
+     * @throws DataProcessingException if a data processor error occurs
      */
     @Override
     public Data getData() throws DataProcessingException {

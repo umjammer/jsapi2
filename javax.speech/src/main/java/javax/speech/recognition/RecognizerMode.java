@@ -29,7 +29,6 @@ package javax.speech.recognition;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import javax.speech.EngineMode;
 import javax.speech.JavaSpeechSecurity;
 import javax.speech.SpeechLocale;
@@ -37,14 +36,14 @@ import javax.speech.SpeechLocale;
 //Comp 2.0.6
 
 public class RecognizerMode extends EngineMode {
+
     private static int hashCode(Object[] array) {
         int prime = 31;
         if (array == null)
             return 0;
         int result = 1;
         for (Object o : array) {
-            result = prime * result
-                    + (o == null ? 0 : o.hashCode());
+            result = prime * result + (o == null ? 0 : o.hashCode());
         }
         return result;
     }
@@ -75,24 +74,21 @@ public class RecognizerMode extends EngineMode {
     }
 
     public RecognizerMode(String engineName, String modeName, Boolean running,
-            Boolean supportsLetterToSound, Boolean supportsMarkup,
-            Integer vocabSupport, SpeechLocale[] locales,
-            SpeakerProfile[] profiles) {
-        super(engineName, modeName, running, supportsLetterToSound,
-                supportsMarkup);
+                          Boolean supportsLetterToSound, Boolean supportsMarkup,
+                          Integer vocabSupport, SpeechLocale[] locales,
+                          SpeakerProfile[] profiles) {
+        super(engineName, modeName, running, supportsLetterToSound, supportsMarkup);
         this.vocabSupport = vocabSupport;
         this.locales = locales;
         this.profiles = profiles;
     }
-
 
     public int hashCode() {
         final int prime = 31;
         int result = super.hashCode();
         result = prime * result + RecognizerMode.hashCode(locales);
         result = prime * result + RecognizerMode.hashCode(profiles);
-        result = prime * result
-                + ((vocabSupport == null) ? 0 : vocabSupport.hashCode());
+        result = prime * result + ((vocabSupport == null) ? 0 : vocabSupport.hashCode());
         return result;
     }
 
@@ -114,7 +110,7 @@ public class RecognizerMode extends EngineMode {
         } else if (locales.length != other.locales.length) {
             return false;
         } else {
-            for (int i=0; i<locales.length; i++) {
+            for (int i = 0; i < locales.length; i++) {
                 if (!locales[i].equals(other.locales[i])) {
                     return false;
                 }
@@ -127,7 +123,7 @@ public class RecognizerMode extends EngineMode {
         } else if (profiles.length != other.profiles.length) {
             return false;
         } else {
-            for (int i=0; i<profiles.length; i++) {
+            for (int i = 0; i < profiles.length; i++) {
                 if (!profiles[i].equals(other.profiles[i])) {
                     return false;
                 }
@@ -148,8 +144,7 @@ public class RecognizerMode extends EngineMode {
     }
 
     public SpeakerProfile[] getSpeakerProfiles() {
-        JavaSpeechSecurity.checkPermission(
-                "javax.speech.recognition.SpeakerProfile");
+        JavaSpeechSecurity.checkPermission("javax.speech.recognition.SpeakerProfile");
         return profiles;
     }
 
@@ -214,7 +209,7 @@ public class RecognizerMode extends EngineMode {
 
     /**
      * Creates a collection of all parameters.
-     * 
+     *
      * @return collection of all parameters.
      */
     protected List<Object> getParameters() {

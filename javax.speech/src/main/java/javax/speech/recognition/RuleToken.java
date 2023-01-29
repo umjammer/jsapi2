@@ -33,8 +33,7 @@ public class RuleToken extends RuleComponent {
 
     public RuleToken(String text) throws IllegalArgumentException {
         if ((text == null) || (text.length() == 0)) {
-            throw new IllegalArgumentException("'" + text + "'"
-                    + " is not a valid grammar text");
+            throw new IllegalArgumentException("'" + text + "'" + " is not a valid grammar text");
         }
 
         // TODO Check causes for IllegalArgumentsException
@@ -51,8 +50,7 @@ public class RuleToken extends RuleComponent {
                 str.append(' ');
             }
 
-            while ((pos < chars.length)
-                    && !isWhitespace(chars[pos])) {
+            while ((pos < chars.length) && !isWhitespace(chars[pos])) {
                 str.append(chars[pos]);
                 ++pos;
             }
@@ -79,7 +77,7 @@ public class RuleToken extends RuleComponent {
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-        if (obj == null){
+        if (obj == null) {
             return false;
         }
         if (getClass() != obj.getClass()) {

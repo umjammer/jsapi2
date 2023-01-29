@@ -1,12 +1,12 @@
 /**
- * 
+ *
  */
+
 package org.jvoicexml.jsapi2.sapi.recognition;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
 import javax.speech.recognition.GrammarManager;
 import javax.speech.recognition.Result;
 import javax.speech.recognition.RuleGrammar;
@@ -21,9 +21,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Test methods for {@link SapiResult}.
- * 
+ *
  * @author Dirk Schnelle-Walka
- * 
+ *
  */
 @EnabledOnOs(OS.WINDOWS)
 public class SapiResultTest {
@@ -83,6 +83,7 @@ public class SapiResultTest {
         assertEquals("out.greet=\"general\";", tags[0]);
         assertEquals("out.who=\"Projectmanager\";", tags[1]);
     }
+
     @Test
     void testSetSmlCompound() throws Exception {
         GrammarManager manager = new BaseGrammarManager();

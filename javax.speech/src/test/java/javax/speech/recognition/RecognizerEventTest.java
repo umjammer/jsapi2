@@ -23,6 +23,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
+
 package javax.speech.recognition;
 
 import javax.speech.mock.recognition.MockRecognizer;
@@ -34,11 +35,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+
 /**
  * Test case for {@link javax.speech.recognition.RecognizerEvent}.
- * 
+ *
  * @author Dirk Schnelle
- * 
  */
 public class RecognizerEventTest {
     /** The recognizer. */
@@ -46,7 +47,7 @@ public class RecognizerEventTest {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see junit.framework.TestCase#setUp()
      */
     @BeforeEach

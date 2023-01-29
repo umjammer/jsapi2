@@ -33,13 +33,14 @@ import javax.speech.spi.EngineFactory;
 import javax.speech.synthesis.SynthesizerMode;
 import javax.speech.synthesis.Voice;
 
+
 /**
  * Synthesizer mode for SAPI.
- * @author Dirk Schnelle-Walka
  *
+ * @author Dirk Schnelle-Walka
  */
 public final class SapiSynthesizerMode extends SynthesizerMode
-    implements EngineFactory {
+        implements EngineFactory {
     /**
      * Constructs a new object.
      */
@@ -49,7 +50,8 @@ public final class SapiSynthesizerMode extends SynthesizerMode
 
     /**
      * Constructs a new object.
-     * @param locale  the locale associated with this mode
+     *
+     * @param locale the locale associated with this mode
      */
     public SapiSynthesizerMode(SpeechLocale locale) {
         super(locale);
@@ -57,11 +59,11 @@ public final class SapiSynthesizerMode extends SynthesizerMode
 
     /**
      * Constructs a new object.
+     *
      * @param engineName the name of the engine
-     * @param modeName the name of the mode
-     * @param running {@code Boolean.TRUE} if this synthesizer is running
-     * @param voices known voices
-     * 
+     * @param modeName   the name of the mode
+     * @param running    {@code Boolean.TRUE} if this synthesizer is running
+     * @param voices     known voices
      */
     public SapiSynthesizerMode(String engineName,
                                String modeName,

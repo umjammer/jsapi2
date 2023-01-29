@@ -26,7 +26,6 @@ import com.sun.speech.freetts.VoiceManager;
  * <pre>
  * FreeTTS=org.jvoicexml.implementation.jsapi20.jvxml.freetts.FreeTTSEngineListFactory
  * </pre>
- *
  */
 public class FreeTTSEngineListFactory implements EngineListFactory {
 
@@ -67,11 +66,10 @@ public class FreeTTSEngineListFactory implements EngineListFactory {
      * the name of the FreeTTS Voice (e.g. "kevin" "kevin16").
      * </ul>
      *
-     * @param require  an engine mode that describes the desired
-     *          synthesizer
-     *
+     * @param require an engine mode that describes the desired
+     *                synthesizer
      * @return an engineList containing matching engines, or null if
-     *          no matching engines are found
+     * no matching engines are found
      */
     public EngineList createEngineList(EngineMode require) {
         // Must be a synthesizer.
@@ -129,7 +127,7 @@ public class FreeTTSEngineListFactory implements EngineListFactory {
         if (synthesizerModes.size() == 0) {
             el = null;
         } else {
-            el = new EngineList(synthesizerModes.toArray(new EngineMode[]{}));
+            el = new EngineList(synthesizerModes.toArray(new EngineMode[] {}));
         }
         return el;
     }
@@ -138,8 +136,7 @@ public class FreeTTSEngineListFactory implements EngineListFactory {
      * Gets an item out of a vector.
      *
      * @param vector the vector to search
-     * @param o the object to look for using vector.get(i).equals(o)
-     *
+     * @param o      the object to look for using vector.get(i).equals(o)
      * @return the item if it exists in the vector, else null
      */
     private DomainLocale getItem(List<DomainLocale> vector, DomainLocale o) {

@@ -29,10 +29,11 @@ package javax.speech.recognition;
 //Comp. 2.0.6
 
 public interface RuleGrammar extends Grammar {
+
     boolean isActivatable(String ruleName);
 
     void setActivatable(String ruleName, boolean activatable);
-    
+
     void addElement(String element) throws GrammarException;
 
     void removeElement(String element);
@@ -49,18 +50,15 @@ public interface RuleGrammar extends Grammar {
 
     String[] listRuleNames();
 
-    void setAttribute(String attribute, String value)
-        throws IllegalArgumentException;
+    void setAttribute(String attribute, String value) throws IllegalArgumentException;
 
     String getAttribute(String attribute) throws IllegalArgumentException;
 
     String[] getElements();
 
-    RuleParse parse(String[] tokens, String ruleName)
-        throws IllegalArgumentException, GrammarException;
+    RuleParse parse(String[] tokens, String ruleName) throws IllegalArgumentException, GrammarException;
 
-    RuleParse parse(String text, String ruleName)
-        throws IllegalArgumentException, GrammarException;
+    RuleParse parse(String text, String ruleName) throws IllegalArgumentException, GrammarException;
 
     RuleReference resolve(RuleReference ruleReference) throws GrammarException;
 

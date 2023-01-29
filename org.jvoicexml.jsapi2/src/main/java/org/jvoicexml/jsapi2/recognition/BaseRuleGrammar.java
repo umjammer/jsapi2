@@ -518,31 +518,41 @@ public class BaseRuleGrammar extends BaseGrammar implements RuleGrammar {
     @Override
     public RuleReference resolve(RuleReference name) throws GrammarException {
         RuleReference rn = new RuleReference(name.getRuleName());
-        /*
-         * String simpleName = rn.getRuleName(); String grammarName =
-         * rn.getGrammarReference(); // String packageName =
-         * rn.getPackageName(); // String fullGrammarName =
-         * rn.getFullGrammarName(); String fullGrammarName =
-         * rn.getGrammarReference();
-         *
-         * // Check for badly formed RuleName if (packageName != null &&
-         * grammarName == null) { throw new
-         * GrammarException("Error: badly formed rulename " + rn, null); }
-         *
-         * if (name.getRuleName().equals("NULL")) { return RuleSpecial.NULL; }
-         *
-         * if (name.getRuleName().equals("VOID")) { return RuleSpecial.VOID; }
-         *
-         * // Check simple case: a local rule reference if (fullGrammarName ==
-         * null && this.getRule(simpleName) != null) { return new
-         * RuleReference(myName + "." + simpleName); }
-         *
-         * // Check for fully-qualified reference if (fullGrammarName != null) {
-         * RuleGrammar g = myRec.getRuleGrammar(fullGrammarName); if (g != null)
-         * { if (g.getRule(simpleName) != null) { // we have a successful
-         * resolution return new RuleReference(fullGrammarName + "." +
-         * simpleName); } } }
-         */
+
+//        String simpleName = rn.getRuleName();
+//        String grammarName = rn.getGrammarReference();
+//        //String packageName = rn.getPackageName();
+//        //String fullGrammarName = rn.getFullGrammarName();
+//        String fullGrammarName = rn.getGrammarReference();
+//
+//        // Check for badly formed RuleName
+//        if (packageName != null && grammarName == null) {
+//            throw new GrammarException("Error: badly formed rulename " + rn, null);
+//        }
+//
+//        if (name.getRuleName().equals("NULL")) {
+//            return RuleSpecial.NULL;
+//        }
+//
+//        if (name.getRuleName().equals("VOID")) {
+//            return RuleSpecial.VOID;
+//        }
+//
+//        // Check simple case: a local rule reference
+//        if (fullGrammarName == null && this.getRule(simpleName) != null) {
+//            return new RuleReference(myName + "." + simpleName);
+//        }
+//
+//        // Check for fully-qualified reference
+//        if (fullGrammarName != null) {
+//            RuleGrammar g = myRec.getRuleGrammar(fullGrammarName);
+//            if (g != null) {
+//                if (g.getRule(simpleName) != null) { // we have a successful
+//                    resolution return new RuleReference(fullGrammarName + "." + simpleName);
+//                }
+//            }
+//        }
+
         // Collect all matching imports into a vector. After trying to
         // match rn to each import statement the vec will have
         // size()=0 if rn is unresolvable
@@ -550,80 +560,119 @@ public class BaseRuleGrammar extends BaseGrammar implements RuleGrammar {
         // size()>1 if rn is an ambiguous reference
         List<?> matches = new ArrayList<>();
 
-        /*
-         * // Get list of imports // Add local grammar to simply the case of
-         * checking for // a qualified or fully-qualified local reference.
-         * RuleReference imports[] = listImports();
-         *
-         * if (imports == null) { imports = new RuleReference[1]; imports[0] =
-         * new RuleReference(getReference() + ".*"); } else { RuleReference[]
-         * tmp = new RuleReference[imports.length + 1];
-         * System.arraycopy(imports, 0, tmp, 0, imports.length);
-         * tmp[imports.length] = new RuleReference(getReference() + ".*");
-         * imports = tmp; }
-         *
-         * // Check each import statement for a possible match // for(int i=0;
-         * i<imports.length; i++) { // TO-DO: update for JSAPI 1.0 String
-         * iSimpleName = imports[i].getRuleName(); String iGrammarName =
-         * imports[i].getGrammarReference(); //String iPackageName =
-         * imports[i].getPackageName(); String iFullGrammarName =
-         * imports[i].getGrammarReference();
-         *
-         * // Check for badly formed import name if (iFullGrammarName == null)
-         * throw new GrammarException("Error: badly formed import " +
-         * imports[i], null);
-         *
-         * // Get the imported grammar RuleGrammar gref =
-         * myRec.getRuleGrammar(iFullGrammarName); if (gref == null) {
-         * System.err.println("Warning: import of unknown grammar " + imports[i]
-         * + " in " + getReference()); continue; }
-         *
-         * // If import includes simpleName, test that it really exists if
-         * (!iSimpleName.equals("*") && gref.getRule(iSimpleName) == null) {
-         * System.err.println("Warning: import of undefined rule " + imports[i]
-         * + " in " + getReference()); continue; }
-         *
-         * // Check for fully-qualified or qualified reference if
-         * (iFullGrammarName.equals(fullGrammarName) ||
-         * iGrammarName.equals(fullGrammarName)) { // Know that either // import
-         * <ipkg.igram.???> matches <pkg.gram.???> // OR // import
-         * <ipkg.igram.???> matches <gram.???> // (ipkg may be null)
-         *
-         * if (iSimpleName.equals("*")) { if (gref.getRule(simpleName) != null)
-         * { // import <pkg.gram.*> matches <pkg.gram.rulename>
-         * matches.addElement( new RuleReference(iFullGrammarName + "." +
-         * simpleName)); } continue; } else { // Now testing // import
-         * <ipkg.igram.iRuleName> against <??.gram.ruleName> // if
-         * (iSimpleName.equals(simpleName)) { // import <pkg.gram.rulename>
-         * exact match for <???.gram.rulename> matches.addElement(new
-         * RuleReference(iFullGrammarName + "." + simpleName)); } continue; } }
-         *
-         * // If we get here and rn is qualified or fully-qualified // then the
-         * match failed - try the next import statement if (fullGrammarName !=
-         * null) { continue; }
-         *
-         * // Now test // import <ipkg.igram.*> against <simpleName>
-         *
-         * if (iSimpleName.equals("*")) { if (gref.getRule(simpleName) != null)
-         * { // import <pkg.gram.*> matches <simpleName> matches.addElement(new
-         * RuleReference(iFullGrammarName + "." + simpleName)); } continue; }
-         *
-         * // Finally test // import <ipkg.igram.iSimpleName> against
-         * <simpleName>
-         *
-         * if (iSimpleName.equals(simpleName)) { matches.addElement(new
-         * RuleReference(iFullGrammarName + "." + simpleName)); continue; } }
-         *
-         * // // The return behavior depends upon number of matches // if
-         * (matches.size() == 0) { // Return null if rulename is unresolvable
-         * return null; } else if (matches.size() > 1) { // Throw exception if
-         * ambiguous reference StringBuffer b = new StringBuffer();
-         * b.append("Warning: ambiguous reference " + rn + " in " +
-         * getReference() + " to "); for (int i = 0; i<matches.size(); i++) {
-         * RuleReference tmp = (RuleReference)(matches.elementAt(i)); if (i > 0)
-         * { b.append(" and "); } b.append(tmp); } throw new
-         * GrammarException(b.toString(), null); } else {
-         */
+//        // Get list of imports
+//        // Add local grammar to simply the case of checking for
+//        // a qualified or fully-qualified local reference.
+//        RuleReference imports[] = listImports();
+//
+//        if (imports == null) {
+//            imports = new RuleReference[1];
+//            imports[0] = new RuleReference(getReference() + ".*");
+//        } else {
+//            RuleReference[] tmp = new RuleReference[imports.length + 1];
+//            System.arraycopy(imports, 0, tmp, 0, imports.length);
+//            tmp[imports.length] = new RuleReference(getReference() + ".*");
+//            imports = tmp;
+//        }
+//
+//        // Check each import statement for a possible match
+//        //
+//        for (int i = 0; i < imports.length; i++) {
+//            // TO-DO: update for JSAPI 1.0 String
+//            iSimpleName = imports[i].getRuleName();
+//            String iGrammarName = imports[i].getGrammarReference();
+//            //String iPackageName = imports[i].getPackageName();
+//            String iFullGrammarName = imports[i].getGrammarReference();
+//
+//            // Check for badly formed import name
+//            if (iFullGrammarName == null)
+//                throw new GrammarException("Error: badly formed import " + imports[i], null);
+//
+//            // Get the imported grammar
+//            RuleGrammar gref = myRec.getRuleGrammar(iFullGrammarName);
+//            if (gref == null) {
+//                System.err.println("Warning: import of unknown grammar " + imports[i] + " in " + getReference());
+//                continue;
+//            }
+//
+//            // If import includes simpleName, test that it really exists
+//            if (!iSimpleName.equals("*") && gref.getRule(iSimpleName) == null) {
+//                System.err.println("Warning: import of undefined rule " + imports[i] + " in " + getReference());
+//                continue;
+//            }
+//
+//            // Check for fully-qualified or qualified reference
+//            if (iFullGrammarName.equals(fullGrammarName) || iGrammarName.equals(fullGrammarName)) {
+//                // Know that either
+//                // import <ipkg.igram.???> matches <pkg.gram.???>
+//                // OR
+//                // import <ipkg.igram.???> matches <gram.???>
+//                // (ipkg may be null)
+//
+//                if (iSimpleName.equals("*")) {
+//                    if (gref.getRule(simpleName) != null) {
+//                        // import <pkg.gram.*> matches <pkg.gram.rulename>
+//                        matches.addElement(new RuleReference(iFullGrammarName + "." + simpleName));
+//                    }
+//                    continue;
+//                } else {
+//                    // Now testing
+//                    // import <ipkg.igram.iRuleName > against <??.gram.ruleName>
+//                    //
+//                    if (iSimpleName.equals(simpleName)) {
+//                        // import <pkg.gram.rulename> exact match for <???.gram.rulename >
+//                        matches.addElement(new RuleReference(iFullGrammarName + "." + simpleName));
+//                    }
+//                    continue;
+//                }
+//            }
+//
+//            // If we get here and rn is qualified or fully-qualified
+//            // then the match failed - try the next import statement
+//            if (fullGrammarName != null) {
+//                continue;
+//            }
+//
+//            // Now test
+//            // import <ipkg.igram.*> against <simpleName>
+//
+//            if (iSimpleName.equals("*")) {
+//                if (gref.getRule(simpleName) != null) {
+//                    // import <pkg.gram.*> matches <simpleName>
+//                    matches.addElement(new RuleReference(iFullGrammarName + "." + simpleName));
+//                }
+//                continue;
+//            }
+//
+//            // Finally test
+//            // import <ipkg.igram.iSimpleName> against <simpleName>
+//
+//            if (iSimpleName.equals(simpleName)) {
+//                matches.addElement(new RuleReference(iFullGrammarName + "." + simpleName));
+//                continue;
+//            }
+//        }
+//
+//        //
+//        // The return behavior depends upon number of matches
+//        //
+//        if (matches.size() == 0) {
+//            // Return null if rulename is unresolvable
+//            return null;
+//        } else if (matches.size() > 1) {
+//            // Throw exception if ambiguous reference
+//            StringBuffer b = new StringBuffer();
+//            b.append("Warning: ambiguous reference " + rn + " in " + getReference() + " to ");
+//            for (int i = 0; i < matches.size(); i++) {
+//                RuleReference tmp = (RuleReference) (matches.elementAt(i));
+//                if (i > 0) {
+//                    b.append(" and ");
+//                }
+//                b.append(tmp);
+//            }
+//            throw new GrammarException(b.toString(), null);
+//        } else {
+
         // Return successfully
         return (RuleReference) (matches.get(0));
         // }
@@ -707,16 +756,22 @@ public class BaseRuleGrammar extends BaseGrammar implements RuleGrammar {
         // StringBuffer b = new StringBuffer();
 
         // First make sure that all imports are resolvable
-        /*
-         * RuleReference imports[] = listImports();
-         *
-         * if (imports != null) { for(int i=0; i<imports.length; i++) { String
-         * gname = imports[i].getGrammarReference(); RuleGrammar GI =
-         * myRec.getRuleGrammar(gname); if (GI == null) {
-         * b.append("Undefined grammar " + gname + " imported in " +
-         * getReference() + "\n"); } } } if (b.length() > 0) { throw new
-         * GrammarException(b.toString(), null); }
-         */
+
+//        RuleReference imports[] = listImports();
+//
+//        if (imports != null) {
+//            for (int i = 0; i < imports.length; i++) {
+//                String gname = imports[i].getGrammarReference();
+//                RuleGrammar GI = myRec.getRuleGrammar(gname);
+//                if (GI == null) {
+//                    b.append("Undefined grammar " + gname + " imported in " + getReference() + "\n");
+//                }
+//            }
+//        }
+//        if (b.length() > 0) {
+//            throw new GrammarException(b.toString(), null);
+//        }
+
 
         for (String rulename : listRuleNames()) {
             InternalRule rule = rules.get(rulename);
@@ -776,10 +831,9 @@ public class BaseRuleGrammar extends BaseGrammar implements RuleGrammar {
 //
 //            if (resolved == null) {
 //                throw new GrammarException(
-//                        "Unresolvable rulename in grammar " + getReference() + ": " +
-//                                rn.toString(), null);
+//                        "Unresolvable rulename in grammar " + getReference() + ": " + rn.toString(), null);
 //            } else {
-//                // [[[WDW - This forces all rule names to be fully resolved. This should be changed.]]]
+//                // WDW - This forces all rule names to be fully resolved. This should be changed.
 //                rn.resolvedRuleName = resolved.getRuleName();
 //                rn.setRuleName(resolved.getRuleName());
 //                return;

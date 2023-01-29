@@ -32,6 +32,7 @@ import java.util.Arrays;
 
 
 public class Word {
+
     public static final long UNKNOWN = 0x00000;
 
     public static final long DONT_CARE = 0x00001;
@@ -81,17 +82,15 @@ public class Word {
     private SpeechLocale locale;
 
     public Word(String text, String[] pronunciations, String spokenForm,
-            AudioSegment audioSegment, long categories)
-        throws IllegalArgumentException {
+                AudioSegment audioSegment, long categories) throws IllegalArgumentException {
         this(text, pronunciations, spokenForm, audioSegment, categories, null);
     }
 
     public Word(String text, String[] pronunciations, String spokenForm,
-            AudioSegment audioSegment, long categories, SpeechLocale locale)
-        throws IllegalArgumentException {
+                AudioSegment audioSegment, long categories, SpeechLocale locale)
+            throws IllegalArgumentException {
         if (text == null) {
-            throw new IllegalArgumentException(
-                    "Written form text must be specified");
+            throw new IllegalArgumentException("Written form text must be specified");
         }
         this.text = text;
         this.pronunciations = pronunciations;

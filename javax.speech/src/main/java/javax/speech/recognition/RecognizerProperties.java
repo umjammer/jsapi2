@@ -31,6 +31,7 @@ import javax.speech.EngineProperties;
 //Comp 2.0.6
 
 public interface RecognizerProperties extends EngineProperties {
+
     int UNKNOWN_CONFIDENCE = -1;
 
     int MIN_CONFIDENCE = 0;
@@ -74,7 +75,7 @@ public interface RecognizerProperties extends EngineProperties {
     int getCompleteTimeout();
 
     void setConfidenceThreshold(int confidenceThreshold)
-        throws IllegalArgumentException;
+            throws IllegalArgumentException;
 
     int getConfidenceThreshold();
 
@@ -99,7 +100,7 @@ public interface RecognizerProperties extends EngineProperties {
     void setSensitivity(int sensitivity) throws IllegalArgumentException;
 
     void setSpeedVsAccuracy(int speedVsAccuracy)
-        throws IllegalArgumentException;
+            throws IllegalArgumentException;
 
     int getSpeedVsAccuracy();
 

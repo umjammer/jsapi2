@@ -27,12 +27,12 @@
 package javax.speech.synthesis;
 
 import java.util.List;
-
 import javax.speech.SpeechEvent;
 
 // Comp 2.0.6
 
 public class SpeakableEvent extends SpeechEvent {
+
     // Events.
     public static final int TOP_OF_QUEUE = 0x7000001;
 
@@ -53,7 +53,7 @@ public class SpeakableEvent extends SpeechEvent {
     public static final int MARKER_REACHED = 0x7000100;
 
     public static final int VOICE_CHANGED = 0x7000200;
-    
+
     public static final int SPEAKABLE_FAILED = 0x7000400;
 
     public static final int PROSODY_UPDATED = 0x7000800;
@@ -71,12 +71,12 @@ public class SpeakableEvent extends SpeechEvent {
 
     public static final int SPEAKABLE_FAILURE_RECOVERABLE = 0x10;
 
-    public static final int  SPEAKABLE_FAILURE_UNRECOVERABLE = 0x20;
+    public static final int SPEAKABLE_FAILURE_UNRECOVERABLE = 0x20;
 
     public static final int PROSODY_RATE = 0x01;
 
     public static final int PROSODY_PITCH = 0x02;
-    
+
     public static final int PROSODY_VOLUME = 0x04;
 
     public static final int PROSODY_PITCH_RANGE = 0x08;
@@ -119,8 +119,7 @@ public class SpeakableEvent extends SpeechEvent {
 
     private Voice oldVoice;
 
-    public SpeakableEvent(Object source, int id, int requestId)
-        throws IllegalArgumentException {
+    public SpeakableEvent(Object source, int id, int requestId) throws IllegalArgumentException {
         super(source, id);
         if ((id != TOP_OF_QUEUE) && (id != SPEAKABLE_STARTED)
                 && (id != SPEAKABLE_ENDED) && (id != SPEAKABLE_PAUSED)
@@ -131,37 +130,32 @@ public class SpeakableEvent extends SpeechEvent {
                 && (id != SPEAKABLE_FAILED)) {
             StringBuffer str = new StringBuffer();
             id2String(str);
-            throw new IllegalArgumentException("Invalid event identifier "
-                    + str + "!");
+            throw new IllegalArgumentException("Invalid event identifier " + str + "!");
         }
         this.requestId = requestId;
     }
 
-    public SpeakableEvent(Object source, int id, int requestId,
-            String textInfo, int audioPosition)
-        throws IllegalArgumentException {
+    public SpeakableEvent(Object source, int id, int requestId, String textInfo, int audioPosition)
+            throws IllegalArgumentException {
         this(source, id, requestId);
         if (id != MARKER_REACHED) {
             StringBuffer str = new StringBuffer();
             id2String(str);
-            throw new IllegalArgumentException("Invalid event identifier "
-                    + str + "!");
+            throw new IllegalArgumentException("Invalid event identifier " + str + "!");
         }
 
         this.textInfo = textInfo;
         this.audioPosition = audioPosition;
     }
 
-    public SpeakableEvent(Object source, int id, int requestId,
-            String textInfo, int textBegin, int textEnd) 
-        throws IllegalArgumentException {
+    public SpeakableEvent(Object source, int id, int requestId, String textInfo, int textBegin, int textEnd)
+            throws IllegalArgumentException {
         this(source, id, requestId);
 
         if (id != WORD_STARTED) {
             StringBuffer str = new StringBuffer();
             id2String(str);
-            throw new IllegalArgumentException("Invalid event identifier "
-                    + str + "!");
+            throw new IllegalArgumentException("Invalid event identifier " + str + "!");
         }
 
         this.textInfo = textInfo;
@@ -170,15 +164,14 @@ public class SpeakableEvent extends SpeechEvent {
     }
 
     public SpeakableEvent(Object source, int id, int requestId,
-            String textInfo, int type, int requested, int realized)
-        throws IllegalArgumentException {
+                          String textInfo, int type, int requested, int realized)
+            throws IllegalArgumentException {
         this(source, id, requestId);
 
         if (id != PROSODY_UPDATED) {
             StringBuffer str = new StringBuffer();
             id2String(str);
-            throw new IllegalArgumentException("Invalid event identifier "
-                    + str + "!");
+            throw new IllegalArgumentException("Invalid event identifier " + str + "!");
         }
 
         this.textInfo = textInfo;
@@ -188,15 +181,14 @@ public class SpeakableEvent extends SpeechEvent {
     }
 
     public SpeakableEvent(Object source, int id, int requestId,
-            String textInfo, int type, SpeakableException exception) 
-        throws IllegalArgumentException {
+                          String textInfo, int type, SpeakableException exception)
+            throws IllegalArgumentException {
         this(source, id, requestId);
 
         if (id != SPEAKABLE_FAILED) {
             StringBuffer str = new StringBuffer();
             id2String(str);
-            throw new IllegalArgumentException("Invalid event identifier "
-                    + str + "!");
+            throw new IllegalArgumentException("Invalid event identifier " + str + "!");
         }
 
         this.textInfo = textInfo;
@@ -205,15 +197,14 @@ public class SpeakableEvent extends SpeechEvent {
     }
 
     public SpeakableEvent(Object source, int id, int requestId,
-            String textInfo, int type, String[] attributes)
-        throws IllegalArgumentException {
+                          String textInfo, int type, String[] attributes)
+            throws IllegalArgumentException {
         this(source, id, requestId);
 
         if (id != ELEMENT_REACHED) {
             StringBuffer str = new StringBuffer();
             id2String(str);
-            throw new IllegalArgumentException("Invalid event identifier "
-                    + str + "!");
+            throw new IllegalArgumentException("Invalid event identifier " + str + "!");
         }
 
         this.textInfo = textInfo;
@@ -222,15 +213,14 @@ public class SpeakableEvent extends SpeechEvent {
     }
 
     public SpeakableEvent(Object source, int id, int requestId,
-            String textInfo, PhoneInfo[] phones, int index) 
-        throws IllegalArgumentException {
+                          String textInfo, PhoneInfo[] phones, int index)
+            throws IllegalArgumentException {
         this(source, id, requestId);
 
         if (id != PHONEME_STARTED) {
             StringBuffer str = new StringBuffer();
             id2String(str);
-            throw new IllegalArgumentException("Invalid event identifier "
-                    + str + "!");
+            throw new IllegalArgumentException("Invalid event identifier " + str + "!");
         }
 
         this.textInfo = textInfo;
@@ -239,15 +229,14 @@ public class SpeakableEvent extends SpeechEvent {
     }
 
     public SpeakableEvent(Object source, int id, int requestId,
-            String textInfo, Voice oldVoice, Voice newVoice) 
-        throws IllegalArgumentException {
+                          String textInfo, Voice oldVoice, Voice newVoice)
+            throws IllegalArgumentException {
         this(source, id, requestId);
 
         if (id != VOICE_CHANGED) {
             StringBuffer str = new StringBuffer();
             id2String(str);
-            throw new IllegalArgumentException("Invalid event identifier "
-                    + str + "!");
+            throw new IllegalArgumentException("Invalid event identifier " + str + "!");
         }
 
         this.textInfo = textInfo;
@@ -343,8 +332,7 @@ public class SpeakableEvent extends SpeechEvent {
         // TODO Check if there is an error in the specification.
         // The MARKER_REACHED does not provide a type.
         int id = getId();
-        if ((id == ELEMENT_REACHED) || (id == SPEAKABLE_FAILED)
-                || (id == PROSODY_UPDATED)) {
+        if ((id == ELEMENT_REACHED) || (id == SPEAKABLE_FAILED) || (id == PROSODY_UPDATED)) {
             return type;
         }
 

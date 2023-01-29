@@ -81,13 +81,13 @@ public class EngineList {
 
     public void rejectMatch(EngineMode reject) {
         List<EngineMode> cleaned = new ArrayList<>();
-        
+
         for (EngineMode mode : features) {
             if (!mode.match(reject)) {
                 cleaned.add(mode);
             }
         }
-        
+
         features = cleaned;
     }
 
@@ -102,13 +102,13 @@ public class EngineList {
 
     public void requireMatch(EngineMode require) {
         List<EngineMode> cleaned = new ArrayList<>();
-        
+
         for (EngineMode mode : features) {
             if (mode.match(require)) {
                 cleaned.add(mode);
             }
         }
-        
+
         features = cleaned;
     }
 
@@ -117,9 +117,8 @@ public class EngineList {
     }
 
     /**
-     * 
      * @author Dirk Schnelle Note: this comparator imposes orderings that are
-     *         inconsistent with equals.
+     * inconsistent with equals.
      */
     private static class EngineListComparator implements Comparator<EngineMode> {
         final EngineMode require;
@@ -145,6 +144,9 @@ public class EngineList {
     }
 
     public String toString() {
-        return getClass() + "[" + features.stream().map(Object::toString).collect(Collectors.joining(",")) + "]";
+        return getClass() +
+                "[" +
+                features.stream().map(Object::toString).collect(Collectors.joining(",")) +
+                "]";
     }
 }

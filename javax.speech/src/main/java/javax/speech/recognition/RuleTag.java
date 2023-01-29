@@ -29,6 +29,7 @@ package javax.speech.recognition;
 //Comp. 2.0.6
 
 public class RuleTag extends RuleComponent {
+
     private Object tag;
 
     public RuleTag(Object tag) {
@@ -41,12 +42,9 @@ public class RuleTag extends RuleComponent {
 
     public String toString() {
         if (tag == null) {
-            throw new IllegalArgumentException(
-                    "null can not be represented in XML");
+            throw new IllegalArgumentException("null can not be represented in XML");
         }
-        String str = "<tag>" +
-                tag +
-                "</tag>";
+        String str = "<tag>" + tag + "</tag>";
 
         return str;
     }

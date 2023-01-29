@@ -31,5 +31,6 @@ import javax.speech.SpeechEventListener;
 //Comp 2.0.6
 
 public interface ResultListener extends SpeechEventListener {
+
     void resultUpdate(ResultEvent e);
 }

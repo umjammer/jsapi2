@@ -29,6 +29,7 @@ package javax.speech.recognition;
 //Comp. 2.0.6
 
 public class RuleReference extends RuleComponent {
+
     private static final String DEFAULT_MEDIA_TYPE = "application/srgs+xml";
 
     private String grammarReference;
@@ -43,8 +44,7 @@ public class RuleReference extends RuleComponent {
         this.ruleName = ruleName;
     }
 
-    public RuleReference(String grammarReference, String ruleName)
-        throws IllegalArgumentException {
+    public RuleReference(String grammarReference, String ruleName) throws IllegalArgumentException {
         checkValidGrammarText(grammarReference);
         checkValidGrammarText(ruleName);
 
@@ -52,8 +52,8 @@ public class RuleReference extends RuleComponent {
         this.ruleName = ruleName;
     }
 
-    public RuleReference(String grammarReference, String ruleName,
-            String mediaType) throws IllegalArgumentException {
+    public RuleReference(String grammarReference, String ruleName, String mediaType)
+            throws IllegalArgumentException {
         checkValidGrammarText(ruleName);
 
         // TODO According to the specification, we must check the media type
@@ -107,5 +107,4 @@ public class RuleReference extends RuleComponent {
 
         return str.toString();
     }
-
 }

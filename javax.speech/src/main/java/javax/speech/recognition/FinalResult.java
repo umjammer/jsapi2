@@ -31,14 +31,14 @@ import javax.speech.AudioSegment;
 //Comp. 2.0.6
 
 public interface FinalResult extends Result {
+
     int MISRECOGNITION = 0x190;
 
     int USER_CHANGE = 0x191;
 
     int DONT_KNOW = 0x192;
 
-    ResultToken[] getAlternativeTokens(int nBest) throws ResultStateException,
-        IllegalArgumentException;
+    ResultToken[] getAlternativeTokens(int nBest) throws ResultStateException, IllegalArgumentException;
 
     AudioSegment getAudio() throws ResultStateException;
 
@@ -47,16 +47,13 @@ public interface FinalResult extends Result {
 
     int getConfidenceLevel() throws ResultStateException;
 
-    int getConfidenceLevel(int nBest) throws ResultStateException,
-        IllegalArgumentException;
+    int getConfidenceLevel(int nBest) throws ResultStateException, IllegalArgumentException;
 
-    Grammar getGrammar(int nBest) throws ResultStateException,
-                              IllegalArgumentException;
+    Grammar getGrammar(int nBest) throws ResultStateException, IllegalArgumentException;
 
     int getNumberAlternatives() throws ResultStateException;
 
-    Object[] getTags(int nBest) throws ResultStateException,
-           IllegalArgumentException, IllegalStateException;
+    Object[] getTags(int nBest) throws ResultStateException, IllegalArgumentException, IllegalStateException;
 
     boolean isAudioAvailable() throws ResultStateException;
 
@@ -67,7 +64,6 @@ public interface FinalResult extends Result {
     void releaseTrainingInfo() throws ResultStateException;
 
     void tokenCorrection(String[] correctTokens, ResultToken fromToken,
-            ResultToken toToken, int correctionType)
-        throws ResultStateException, IllegalArgumentException,
-            SecurityException;
+                         ResultToken toToken, int correctionType)
+            throws ResultStateException, IllegalArgumentException, SecurityException;
 }

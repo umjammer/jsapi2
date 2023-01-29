@@ -3,6 +3,7 @@ package javax.speech.synthesis;
 //Comp 2.0.6
 
 public class SpeakableExceptionDetail {
+
     public static int UNKNOWN_TYPE = -1;
     public static int UNKNOWN_VALUE = -1;
     public static int UNSUPPORTED_ALPHABET = 0x1;
@@ -22,14 +23,12 @@ public class SpeakableExceptionDetail {
     private final String message;
 
     public SpeakableExceptionDetail(int type, String textInfo, int lineNumber,
-            int charNumber, String message) throws IllegalArgumentException {
+                                    int charNumber, String message) throws IllegalArgumentException {
         if ((lineNumber < 0) && (lineNumber != UNKNOWN_VALUE)) {
-            throw new IllegalArgumentException(
-                    "Line number must be a positive numer or UNKNOWN_VALUE!");
+            throw new IllegalArgumentException("Line number must be a positive numer or UNKNOWN_VALUE!");
         }
         if ((charNumber < 0) && (charNumber != UNKNOWN_VALUE)) {
-            throw new IllegalArgumentException(
-                    "Char number must be a positive numer or UNKNOWN_VALUE!");
+            throw new IllegalArgumentException("Char number must be a positive numer or UNKNOWN_VALUE!");
         }
         this.type = type;
         this.textInfo = textInfo;

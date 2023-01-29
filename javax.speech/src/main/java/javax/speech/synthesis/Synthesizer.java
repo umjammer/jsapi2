@@ -33,6 +33,7 @@ import javax.speech.EngineStateException;
 //Comp 2.0.6
 
 public interface Synthesizer extends Engine {
+
     long QUEUE_EMPTY = 0x1000;
 
     long QUEUE_NOT_EMPTY = 0x2000;
@@ -64,14 +65,12 @@ public interface Synthesizer extends Engine {
     int getSpeakableMask();
 
     int speak(AudioSegment audio, SpeakableListener listener)
-            throws SpeakableException, EngineStateException,
-                IllegalArgumentException;
+            throws SpeakableException, EngineStateException, IllegalArgumentException;
 
     int speak(Speakable speakable, SpeakableListener listener)
             throws SpeakableException, EngineStateException;
 
-    int speak(String text, SpeakableListener listener)
-            throws EngineStateException;
+    int speak(String text, SpeakableListener listener) throws EngineStateException;
 
     int speakMarkup(String synthesisMarkup, SpeakableListener listener)
             throws SpeakableException, EngineStateException;

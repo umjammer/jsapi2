@@ -27,7 +27,6 @@
 package org.jvoicexml.jsapi2.mock;
 
 import java.util.Collection;
-
 import javax.speech.AudioException;
 import javax.speech.AudioManager;
 import javax.speech.EngineEvent;
@@ -40,8 +39,10 @@ import javax.speech.VocabularyManager;
 import org.jvoicexml.jsapi2.BaseEngine;
 import org.jvoicexml.jsapi2.BaseEngineProperties;
 
+
 /**
  * An engine for test purposes.
+ *
  * @author Dirk Schnelle-Walka
  */
 public class MockEngine extends BaseEngine {
@@ -90,13 +91,13 @@ public class MockEngine extends BaseEngine {
 
     @Override
     protected EngineEvent createStateTransitionEngineEvent(long oldState, long newState,
-            int id) {
+                                                           int id) {
         return new MockEngineEvent(this, id, oldState, newState, null);
     }
 
     @Override
     protected void handlePropertyChangeRequest(BaseEngineProperties properties,
-            String propName, Object oldValue, Object newValue) {
+                                               String propName, Object oldValue, Object newValue) {
         properties.commitPropertyChange(propName, oldValue, newValue);
     }
 }

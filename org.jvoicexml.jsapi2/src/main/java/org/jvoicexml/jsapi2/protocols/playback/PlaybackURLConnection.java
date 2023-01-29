@@ -19,7 +19,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.UnknownServiceException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
@@ -80,7 +79,7 @@ public final class PlaybackURLConnection extends URLConnection {
         if (line != null) {
             if (line.isOpen()) {
                 line.close();
-logger.fine("line close: " + line.hashCode());
+                logger.fine("line close: " + line.hashCode());
             }
             line = null;
         }
@@ -106,7 +105,7 @@ logger.fine("line close: " + line.hashCode());
         try {
             line = (SourceDataLine) AudioSystem.getLine(info);
             line.open(format, AudioSystem.NOT_SPECIFIED);
-logger.fine("line open: " + line.hashCode());
+            logger.fine("line open: " + line.hashCode());
 
             // Starts the line
             line.start();

@@ -32,13 +32,13 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
-
 import javax.speech.spi.EngineFactory;
 import javax.speech.spi.EngineListFactory;
 
 //Comp. 2.0.6
 
 public class EngineManager {
+
     private static final List<EngineListFactory> ENGINE_LIST_FACTORIES;
 
     private static SpeechEventExecutor executor;
@@ -99,8 +99,7 @@ public class EngineManager {
     public static Engine createEngine(EngineMode require)
             throws IllegalArgumentException, EngineException {
         if (require == null) {
-            throw new IllegalArgumentException(
-                    "An engine mode must be specified to create an engine!");
+            throw new IllegalArgumentException("An engine mode must be specified to create an engine!");
         }
 
         SpeechLocale defaultLocale = SpeechLocale.getDefault();
@@ -140,8 +139,7 @@ public class EngineManager {
         return executor;
     }
 
-    public static void setSpeechEventExecutor(
-            SpeechEventExecutor speechEventDispatcher) {
+    public static void setSpeechEventExecutor(SpeechEventExecutor speechEventDispatcher) {
         executor = speechEventDispatcher;
     }
 
@@ -150,35 +148,28 @@ public class EngineManager {
     }
 
     public static void registerEngineListFactory(String className)
-            throws IllegalArgumentException, EngineException,
-            SecurityException {
-        JavaSpeechSecurity.checkPermission(
-                "javax.speech.EngineManager.registerEngineListFactory");
+            throws IllegalArgumentException, EngineException, SecurityException {
+        JavaSpeechSecurity.checkPermission("javax.speech.EngineManager.registerEngineListFactory");
         Class<?> clazz;
         try {
             clazz = Class.forName(className);
         } catch (ClassNotFoundException e) {
-            throw new IllegalArgumentException(
-                    "'" + className + "' cannot be loaded!");
+            throw new IllegalArgumentException("'" + className + "' cannot be loaded!");
         }
 
         EngineListFactory engineListFactory;
         try {
             engineListFactory = (EngineListFactory) clazz.newInstance();
         } catch (InstantiationException e) {
-            throw new IllegalArgumentException(
-                    "'" + className + "' cannot be created!");
+            throw new IllegalArgumentException("'" + className + "' cannot be created!");
         } catch (IllegalAccessException e) {
-            throw new SecurityException(
-                    "'" + className + "' cannot be created!");
+            throw new SecurityException("'" + className + "' cannot be created!");
         } catch (ClassCastException e) {
-            throw new IllegalArgumentException("'" + className
-                    + "' does not implement EngineListFactory!");
+            throw new IllegalArgumentException("'" + className + "' does not implement EngineListFactory!");
         }
 
         if (!(engineListFactory instanceof EngineListFactory)) {
-            throw new IllegalArgumentException(
-                    "'" + className + "' does not implement EngineListFactory");
+            throw new IllegalArgumentException("'" + className + "' does not implement EngineListFactory");
         }
 
         for (Object current : ENGINE_LIST_FACTORIES) {

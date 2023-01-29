@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.logging.Logger;
-
 import javax.sound.sampled.AudioFormat;
 import javax.speech.AudioException;
 import javax.speech.EngineException;
@@ -23,16 +22,16 @@ import org.jvoicexml.jsapi2.recognition.BaseRecognizer;
 import org.jvoicexml.jsapi2.recognition.BaseResult;
 import org.jvoicexml.jsapi2.recognition.GrammarDefinition;
 
+
 /**
  * A SAPI recognizer.
- * 
+ *
  * @author Dirk Schnelle-Walka
- * 
  */
 public final class MacRecognizer extends BaseRecognizer {
+
     /** Logger for this class. */
-    private static final Logger LOGGER = Logger.getLogger(MacRecognizer.class
-            .getName());
+    private static final Logger logger = Logger.getLogger(MacRecognizer.class.getName());
 
     static {
         System.loadLibrary("Jsapi2MacBridge");
@@ -43,9 +42,8 @@ public final class MacRecognizer extends BaseRecognizer {
 
     /**
      * Constructs a new object.
-     * 
-     * @param mode
-     *            the recognizer mode.
+     *
+     * @param mode the recognizer mode.
      */
     public MacRecognizer(MacRecognizerMode mode) {
         super(mode);
@@ -141,9 +139,8 @@ public final class MacRecognizer extends BaseRecognizer {
 
     /**
      * Notification from the SAPI recognizer about a recognition result.
-     * 
-     * @param utterance
-     *            the detected utterance
+     *
+     * @param utterance the detected utterance
      */
     @SuppressWarnings("unused")
     private void reportResult(String utterance) {
@@ -151,14 +148,14 @@ public final class MacRecognizer extends BaseRecognizer {
         System.out.println("Java Code " + utterance);
 
         RuleGrammar grammar = currentGrammar; // current grammar is not
-                                                    // available
+        // available
         System.out.println(grammar);
 
         BaseResult result;
         try {
             result = new BaseResult(grammar, utterance);
         } catch (GrammarException e) {
-            LOGGER.warning(e.getMessage());
+            logger.warning(e.getMessage());
             return;
         }
 
@@ -166,8 +163,7 @@ public final class MacRecognizer extends BaseRecognizer {
                 ResultEvent.RESULT_CREATED, false, false);
         postResultEvent(created);
 
-        ResultEvent grammarFinalized = new ResultEvent(result,
-                ResultEvent.GRAMMAR_FINALIZED);
+        ResultEvent grammarFinalized = new ResultEvent(result, ResultEvent.GRAMMAR_FINALIZED);
         postResultEvent(grammarFinalized);
 
         if (result.getResultState() == Result.REJECTED) {
@@ -203,7 +199,6 @@ public final class MacRecognizer extends BaseRecognizer {
             BaseEngineProperties properties,
             String propName, Object oldValue,
             Object newValue) {
-        LOGGER.warning("changing property '" + propName
-                + "' to '" + newValue + "' ignored");
+logger.warning("changing property '" + propName + "' to '" + newValue + "' ignored");
     }
 }

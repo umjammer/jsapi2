@@ -188,7 +188,7 @@ public final class SapiResult extends BaseResult {
     /**
      * Creates a vector of ResultToken (jsapi) from a sphinx result.
      *
-     * @param utterance  The Sphinx4 result
+     * @param utterance The Sphinx4 result
      * @return The current BaseResult (jsapi)
      */
     private ResultToken[] resultToResultToken(String utterance) {

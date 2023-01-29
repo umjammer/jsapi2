@@ -40,6 +40,7 @@ import javax.speech.recognition.RecognizerProperties;
 import javax.speech.recognition.ResultListener;
 import javax.speech.recognition.SpeakerManager;
 
+
 /**
  * Recognizer for test purposes.
  *
@@ -47,112 +48,142 @@ import javax.speech.recognition.SpeakerManager;
  */
 public class MockRecognizer implements Recognizer {
 
-    @Override public void allocate() throws AudioException, EngineException,
+    @Override
+    public void allocate() throws AudioException, EngineException,
             EngineStateException, SecurityException {
     }
 
-    @Override public void allocate(int mode) throws IllegalArgumentException,
+    @Override
+    public void allocate(int mode) throws IllegalArgumentException,
             AudioException, EngineException, EngineStateException, SecurityException {
     }
 
-    @Override public void deallocate() throws AudioException, EngineException, EngineStateException {
+    @Override
+    public void deallocate() throws AudioException, EngineException, EngineStateException {
     }
 
-    @Override public void deallocate(int mode) throws IllegalArgumentException,
+    @Override
+    public void deallocate(int mode) throws IllegalArgumentException,
             AudioException, EngineException, EngineStateException {
     }
 
-    @Override public void pause() throws EngineStateException {
+    @Override
+    public void pause() throws EngineStateException {
     }
 
-    @Override public boolean testEngineState(long state) throws IllegalArgumentException {
+    @Override
+    public boolean testEngineState(long state) throws IllegalArgumentException {
         return false;
     }
 
-    @Override public long waitEngineState(long state) throws InterruptedException,
+    @Override
+    public long waitEngineState(long state) throws InterruptedException,
             IllegalArgumentException, IllegalStateException {
         return 0;
     }
 
-    @Override public long waitEngineState(long state, long timeout)
+    @Override
+    public long waitEngineState(long state, long timeout)
             throws InterruptedException, IllegalArgumentException, IllegalStateException {
         return 0;
     }
 
-    @Override public AudioManager getAudioManager() {
+    @Override
+    public AudioManager getAudioManager() {
         return null;
     }
 
-    @Override public EngineMode getEngineMode() {
+    @Override
+    public EngineMode getEngineMode() {
         return null;
     }
 
-    @Override public long getEngineState() {
+    @Override
+    public long getEngineState() {
         return 0;
     }
 
-    @Override public VocabularyManager getVocabularyManager() {
+    @Override
+    public VocabularyManager getVocabularyManager() {
         return null;
     }
 
-    @Override public void setEngineMask(int mask) {
+    @Override
+    public void setEngineMask(int mask) {
     }
 
-    @Override public int getEngineMask() {
+    @Override
+    public int getEngineMask() {
         return 0;
     }
 
-    @Override public SpeechEventExecutor getSpeechEventExecutor() {
+    @Override
+    public SpeechEventExecutor getSpeechEventExecutor() {
         return null;
     }
 
-    @Override public void setSpeechEventExecutor(SpeechEventExecutor speechEventExecutor) {
+    @Override
+    public void setSpeechEventExecutor(SpeechEventExecutor speechEventExecutor) {
     }
 
-    @Override public void addRecognizerListener(RecognizerListener listener) {
+    @Override
+    public void addRecognizerListener(RecognizerListener listener) {
     }
 
-    @Override public void removeRecognizerListener(RecognizerListener listener) {
+    @Override
+    public void removeRecognizerListener(RecognizerListener listener) {
     }
 
-    @Override public void addResultListener(ResultListener listener) {
+    @Override
+    public void addResultListener(ResultListener listener) {
     }
 
-    @Override public void removeResultListener(ResultListener listener) {
+    @Override
+    public void removeResultListener(ResultListener listener) {
     }
 
-    @Override public SpeakerManager getSpeakerManager() {
+    @Override
+    public SpeakerManager getSpeakerManager() {
         return null;
     }
 
-    @Override public RecognizerProperties getRecognizerProperties() {
+    @Override
+    public RecognizerProperties getRecognizerProperties() {
         return null;
     }
 
-    @Override public GrammarManager getGrammarManager() {
+    @Override
+    public GrammarManager getGrammarManager() {
         return null;
     }
 
-    @Override public void processGrammars() throws EngineStateException {
+    @Override
+    public void processGrammars() throws EngineStateException {
     }
 
-    @Override public void pause(int flags) throws IllegalArgumentException, EngineStateException {
+    @Override
+    public void pause(int flags) throws IllegalArgumentException, EngineStateException {
     }
 
-    @Override public void releaseFocus() throws EngineStateException {
+    @Override
+    public void releaseFocus() throws EngineStateException {
     }
 
-    @Override public void requestFocus() throws EngineStateException {
+    @Override
+    public void requestFocus() throws EngineStateException {
     }
 
-    @Override public boolean resume() throws EngineStateException {
+    @Override
+    public boolean resume() throws EngineStateException {
         return false;
     }
 
-    @Override public void setResultMask(int mask) {
+    @Override
+    public void setResultMask(int mask) {
     }
 
-    @Override public int getResultMask() {
+    @Override
+    public int getResultMask() {
         return 0;
     }
 }

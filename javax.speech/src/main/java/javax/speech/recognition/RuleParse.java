@@ -32,6 +32,7 @@ import java.util.List;
 //Comp. 2.0.6
 
 public class RuleParse extends RuleComponent {
+
     private RuleReference ruleReference;
 
     private RuleComponent parse;

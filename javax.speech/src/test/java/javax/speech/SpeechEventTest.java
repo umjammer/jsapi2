@@ -29,13 +29,15 @@ package javax.speech;
 import javax.speech.mock.MockSpeechEvent;
 
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 /**
  * Test case for {@link javax.speech.SpeechEvent}.
- * 
+ *
  * @author Dirk Schnelle
- * 
  */
 public class SpeechEventTest {
 

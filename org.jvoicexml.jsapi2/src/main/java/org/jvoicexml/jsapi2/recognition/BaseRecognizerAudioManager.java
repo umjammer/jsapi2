@@ -108,8 +108,7 @@ public class BaseRecognizerAudioManager extends BaseAudioManager {
             InputStream source = urlConnection.getInputStream();
             return new BufferedInputStream(source);
         } catch (IOException ex) {
-            throw new AudioException("Cannot get InputStream from URL: "
-                    + ex.getMessage());
+            throw new AudioException("Cannot get InputStream from URL: " + ex.getMessage());
         }
     }
 
@@ -131,14 +130,12 @@ public class BaseRecognizerAudioManager extends BaseAudioManager {
      * @param stream the current stream
      * @return a converting stream
      */
-    private AudioInputStream handleAudioStart(
-            AudioInputStream stream) {
+    private AudioInputStream handleAudioStart(AudioInputStream stream) {
         AudioFormat format = stream.getFormat();
         setTargetAudioFormat(format);
         AudioFormat engineFormat = getEngineAudioFormat();
         return AudioSystem.getAudioInputStream(engineFormat, stream);
     }
-
 
     /**
      * Starts audio processing for the given media locator.
@@ -171,8 +168,7 @@ public class BaseRecognizerAudioManager extends BaseAudioManager {
             format = getTargetAudioFormat();
         }
         if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.log(Level.FINE, "using target audio format {0}",
-                    format);
+            LOGGER.log(Level.FINE, "using target audio format {0}", format);
         }
         AudioInputStream stream = new AudioInputStream(inputStream, format, AudioSystem.NOT_SPECIFIED);
         AudioFormat engineFormat = getEngineAudioFormat();

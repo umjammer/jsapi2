@@ -28,7 +28,6 @@ package org.jvoicexml.jsapi2.sapi.synthesis;
 
 import java.io.ByteArrayInputStream;
 import java.util.logging.Logger;
-
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.speech.AudioException;
@@ -44,22 +43,24 @@ import org.jvoicexml.jsapi2.BaseAudioSegment;
 import org.jvoicexml.jsapi2.BaseEngineProperties;
 import org.jvoicexml.jsapi2.synthesis.BaseSynthesizer;
 
+
 /**
  * A SAPI compliant {@link javax.speech.synthesis.Synthesizer}.
+ *
  * @author Dirk Schnelle-Walka
  * @author Josua Arndt
- *
  */
 public final class SapiSynthesizer extends BaseSynthesizer {
     /** Logger for this class. */
     private static final Logger LOGGER =
-        Logger.getLogger(SapiSynthesizer.class.getName());
+            Logger.getLogger(SapiSynthesizer.class.getName());
 
     /** SAPI synthesizer handle. */
     private long synthesizerHandle;
 
     /**
      * Constructs a new synthesizer object.
+     *
      * @param mode the synthesizer mode
      */
     SapiSynthesizer(SapiSynthesizerMode mode) {
@@ -68,8 +69,8 @@ public final class SapiSynthesizer extends BaseSynthesizer {
 
     /**
      * Do some cleanup.
-     * @throws Throwable
-     *         error finalizing
+     *
+     * @throws Throwable error finalizing
      */
     @Override
     protected void finalize() throws Throwable {
@@ -82,7 +83,7 @@ public final class SapiSynthesizer extends BaseSynthesizer {
 
     @Override
     protected void handleAllocate() throws EngineStateException,
-        EngineException, AudioException, SecurityException {
+            EngineException, AudioException, SecurityException {
         Voice voice;
         SapiSynthesizerMode mode = (SapiSynthesizerMode) getEngineMode();
         if (mode == null) {
@@ -100,6 +101,7 @@ public final class SapiSynthesizer extends BaseSynthesizer {
 
     /**
      * Allocates a SAPI synthesizer.
+     *
      * @param voice the voice to use
      * @return synthesizer handle
      */
@@ -112,6 +114,7 @@ public final class SapiSynthesizer extends BaseSynthesizer {
 
     /**
      * Cancels the current output.
+     *
      * @param handle the synthesizer handle
      * @return <code>true</code> if the current output has been canceled
      */
@@ -124,8 +127,9 @@ public final class SapiSynthesizer extends BaseSynthesizer {
 
     /**
      * Cancels the output with the given id.
+     *
      * @param handle the synthesizer handle
-     * @param id the item to cancel
+     * @param id     the item to cancel
      * @return <code>true</code> if the output with the given id has been
      * canceled
      */
@@ -138,9 +142,8 @@ public final class SapiSynthesizer extends BaseSynthesizer {
 
     /**
      * Cancels all outputs.
-     * 
-     * @param handle
-     *            the synthesizer handle
+     *
+     * @param handle the synthesizer handle
      * @return <code>true</code> if at least one output has been canceled
      */
     private native boolean sapiHandleCancelAll(long handle);
@@ -151,7 +154,7 @@ public final class SapiSynthesizer extends BaseSynthesizer {
         try {
             Thread.sleep(500);
         } catch (InterruptedException e) {
-           return;
+            return;
         }
         sapiHandlDeallocate(synthesizerHandle);
         synthesizerHandle = 0;
@@ -159,8 +162,8 @@ public final class SapiSynthesizer extends BaseSynthesizer {
 
     /**
      * Deallocates the SAPI synthesizer.
-     * @param handle
-     *            the synthesizer handle
+     *
+     * @param handle the synthesizer handle
      */
     private native void sapiHandlDeallocate(long handle);
 
@@ -171,8 +174,9 @@ public final class SapiSynthesizer extends BaseSynthesizer {
 
     /**
      * Pauses the synthesizer.
+     *
      * @param handle the synthesizer handle
-     *            the synthesizer handle
+     *               the synthesizer handle
      */
     private native void sapiHandlPause(long handle);
 
@@ -183,8 +187,9 @@ public final class SapiSynthesizer extends BaseSynthesizer {
 
     /**
      * Resumes the synthesizer.
+     *
      * @param handle the synthesizer handle
-     *            the synthesizer handle
+     *               the synthesizer handle
      * @return <code>true</code> if the synthesizer is resumed
      */
     private native boolean sapiHandlResume(long handle);
@@ -210,13 +215,10 @@ public final class SapiSynthesizer extends BaseSynthesizer {
 
     /**
      * Speaks the given item.
-     * 
-     * @param handle
-     *            synthesizer handle
-     * @param id
-     *            id of the item
-     * @param item
-     *            the item to speak
+     *
+     * @param handle synthesizer handle
+     * @param id     id of the item
+     * @param item   the item to speak
      * @return byte array of the synthesized speech
      */
     private native byte[] sapiHandleSpeak(long handle, int id,
@@ -246,14 +248,11 @@ public final class SapiSynthesizer extends BaseSynthesizer {
     /**
      * Speaks the given item.
      *
-     * @param handle
-     *            synthesizer handle
-     * @param id
-     *            id of the item
-     * @param ssml
-     *            the SSML markup to speak
+     * @param handle synthesizer handle
+     * @param id     id of the item
+     * @param ssml   the SSML markup to speak
      * @return byte array of the synthesized speech
-     * @throws SpeakableException error processing the SSML 
+     * @throws SpeakableException error processing the SSML
      */
     private native byte[] sapiHandleSpeakSsml(long handle, int id,
                                               String ssml) throws SpeakableException;
@@ -265,6 +264,7 @@ public final class SapiSynthesizer extends BaseSynthesizer {
 
     /**
      * Retrieves the default audio format.
+     *
      * @param handle synthesizer handle.
      * @return native audio format
      */

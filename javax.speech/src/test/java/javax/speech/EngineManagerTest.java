@@ -1,6 +1,7 @@
 /**
- * 
+ *
  */
+
 package javax.speech;
 
 import javax.speech.mock.MockRecognizerEngineListFactory;
@@ -11,11 +12,15 @@ import javax.speech.synthesis.SynthesizerMode;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 
 /**
  * Test case for {@link javax.speech.recognition.RuleAlternatives}.
- * 
+ *
  * @author Dirk Schnelle-Walka
  */
 public class EngineManagerTest {

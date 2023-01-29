@@ -33,6 +33,7 @@ import java.util.stream.Collectors;
 //Comp. 2.0.6
 
 public abstract class SpeechEvent {
+
     private final Object source;
 
     private final int id;
@@ -57,7 +58,8 @@ public abstract class SpeechEvent {
     /**
      * Appends a human readable representation of the id to the given
      * representation.
-     * @param str the current buffer. 
+     *
+     * @param str the current buffer.
      */
     protected void id2String(StringBuffer str) {
         if (str.length() == 0) {
@@ -68,12 +70,13 @@ public abstract class SpeechEvent {
     /**
      * Checks if the given flag is set in the id and adds a human readable
      * description to the existing description if the flag is set.
-     * @param str the existing description
-     * @param flag the flag to check for
+     *
+     * @param str         the existing description
+     * @param flag        the flag to check for
      * @param description the description to add
      */
     protected void maybeAddId(StringBuffer str, int flag, String description) {
-        if ((id & flag) == flag){
+        if ((id & flag) == flag) {
             if (str.length() > 0) {
                 str.append('|');
             }
@@ -83,7 +86,7 @@ public abstract class SpeechEvent {
 
     /**
      * Creates a collection of all parameters.
-     * 
+     *
      * @return collection of all parameters.
      */
     protected List<Object> getParameters() {

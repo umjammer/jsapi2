@@ -27,9 +27,10 @@ import javax.speech.SpeechLocale;
 import javax.speech.recognition.RecognizerMode;
 import javax.speech.spi.EngineFactory;
 
+
 /**
  * The recognizer mode for Sphinx.
- * 
+ *
  * @author Renato Cassaca
  * @author Dirk Schnelle-Walka
  */
@@ -37,13 +38,12 @@ public class SphinxRecognizerMode extends RecognizerMode
         implements EngineFactory {
     /**
      * Constructs a new object.
-     * 
-     * @param locale
-     *            the locale of this recognizer
+     *
+     * @param locale the locale of this recognizer
      */
     public SphinxRecognizerMode(SpeechLocale locale) {
         super("sphinx4", null, true, false, true, 10000,
-                new SpeechLocale[] { locale }, null);
+                new SpeechLocale[] {locale}, null);
     }
 
     @Override

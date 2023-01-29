@@ -29,8 +29,8 @@ import org.jvoicexml.jsapi2.BaseEngineProperties;
  * @author Dirk Schnelle-Walka
  * @version $Revision: $
  */
-public class BaseRecognizerProperties extends BaseEngineProperties
-        implements RecognizerProperties {
+public class BaseRecognizerProperties extends BaseEngineProperties implements RecognizerProperties {
+
     /** Name of the training provided property in events. */
     public static final String TRAINING_PROVIDED = "trainingProvided";
 
@@ -219,15 +219,13 @@ public class BaseRecognizerProperties extends BaseEngineProperties
             return;
         }
 
-        handlePropertyChangeRequest(ADAPTATION, adaptation,
-                adapt);
+        handlePropertyChangeRequest(ADAPTATION, adaptation, adapt);
     }
 
     @Override
     public final void setCompleteTimeout(int value) {
         if (value < 0) {
-            throw new IllegalArgumentException("Invalid completeTimeout: "
-                    + value);
+            throw new IllegalArgumentException("Invalid completeTimeout: " + value);
         }
 
         if (completeTimeout == value) {
@@ -239,8 +237,7 @@ public class BaseRecognizerProperties extends BaseEngineProperties
     @Override
     public final void setConfidenceThreshold(int threshold) {
         if ((threshold > MAX_CONFIDENCE) || (threshold < MIN_CONFIDENCE)) {
-            throw new IllegalArgumentException("Invalid confidenceThreshold: "
-                    + threshold);
+            throw new IllegalArgumentException("Invalid confidenceThreshold: " + threshold);
         }
         if (confidenceThreshold == threshold) {
             return;
@@ -253,21 +250,18 @@ public class BaseRecognizerProperties extends BaseEngineProperties
         if ((style != ENDPOINT_SPEECH_DETECTION)
                 && (style != ENDPOINT_PUSH_TO_START)
                 && (style != ENDPOINT_PUSH_TO_TALK)) {
-            throw new IllegalArgumentException("Invalid endpointStyle: "
-                    + style);
+            throw new IllegalArgumentException("Invalid endpointStyle: " + style);
         }
         if (endpointStyle == style) {
             return;
         }
-        handlePropertyChangeRequest(ENDPOINT_STYLE, endpointStyle,
-                style);
+        handlePropertyChangeRequest(ENDPOINT_STYLE, endpointStyle, style);
     }
 
     @Override
     public final void setIncompleteTimeout(int timeout) {
         if (timeout < 0) {
-            throw new IllegalArgumentException("Invalid incompleteTimeout: "
-                    + timeout);
+            throw new IllegalArgumentException("Invalid incompleteTimeout: " + timeout);
         }
         if (incompleteTimeout == timeout) {
             return;
@@ -298,8 +292,7 @@ public class BaseRecognizerProperties extends BaseEngineProperties
     @Override
     public final void setSpeedVsAccuracy(int value) {
         if (value != MAX_ACCURACY && value != NORM_ACCURACY) {
-            throw new IllegalArgumentException("Invalid speedVsAccuracy: "
-                    + value);
+            throw new IllegalArgumentException("Invalid speedVsAccuracy: " + value);
         }
         if (speedVsAccuracy == value) {
             return;

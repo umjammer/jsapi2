@@ -40,7 +40,7 @@ public class Rule {
     private int scope;
 
     public Rule(String ruleName, RuleComponent ruleComponent)
-        throws IllegalArgumentException {
+            throws IllegalArgumentException {
         this(ruleName, ruleComponent, PRIVATE);
     }
 

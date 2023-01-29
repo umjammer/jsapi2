@@ -28,6 +28,7 @@ package org.jvoicexml.jsapi2.synthesis;
 
 import javax.speech.synthesis.Speakable;
 
+
 /**
  * A basic implementation of a {@link Speakable}.
  *
@@ -35,11 +36,13 @@ import javax.speech.synthesis.Speakable;
  * author Dirk Schnelle-Walka
  */
 public class BaseSpeakable implements Speakable {
+
     /** The markup. */
     private String markup;
 
     /**
      * Constructs a new object.
+     *
      * @param text the markup.
      */
     public BaseSpeakable(String text) {

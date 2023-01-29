@@ -33,7 +33,7 @@ public interface FinalRuleResult extends FinalResult {
             IllegalArgumentException, IllegalStateException;
 
     Object[] getTags(int nBest) throws ResultStateException,
-        IllegalArgumentException, IllegalStateException;
+            IllegalArgumentException, IllegalStateException;
 
     RuleParse parse(int nBest) throws ResultStateException;
 }

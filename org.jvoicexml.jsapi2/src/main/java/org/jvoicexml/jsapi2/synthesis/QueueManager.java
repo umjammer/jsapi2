@@ -117,7 +117,7 @@ public class QueueManager {
         // the synthQueue terminates
         playThread.shutdownNow();
         synthThread.shutdown();
-logger.finer("shutdown services: " + playThread.isShutdown() + ", " + synthThread.isShutdown());
+        logger.finer("shutdown services: " + playThread.isShutdown() + ", " + synthThread.isShutdown());
     }
 
     /**

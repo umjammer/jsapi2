@@ -27,12 +27,12 @@
 package javax.speech.recognition;
 
 import java.util.List;
-
 import javax.speech.EngineEvent;
 
 //Comp. 2.0.6
 
 public class RecognizerEvent extends EngineEvent {
+
     public static final int RECOGNIZER_PROCESSING = 0x2000800;
 
     public static final int RECOGNIZER_LISTENING = 0x2001000;
@@ -62,28 +62,24 @@ public class RecognizerEvent extends EngineEvent {
     private long audioPosition;
 
     public RecognizerEvent(Recognizer source, int id, long oldEngineState,
-            long newEngineState, Throwable problem,
-            GrammarException grammarException, long audioPosition) 
-        throws IllegalArgumentException {
+                           long newEngineState, Throwable problem,
+                           GrammarException grammarException, long audioPosition) throws IllegalArgumentException {
         super(source, id, oldEngineState, newEngineState, problem);
         if ((id != CHANGES_REJECTED) && (grammarException != null)) {
-            throw new IllegalArgumentException(
-              "A grammar exception can only be specified for CHANGES_REJECTED");
+            throw new IllegalArgumentException("A grammar exception can only be specified for CHANGES_REJECTED");
         }
         if ((id == SPEECH_STARTED) || (id == SPEECH_STOPPED)
                 || (id == RECOGNIZER_BUFFERING)
                 || (id == RECOGNIZER_NOT_BUFFERING)) {
             if (audioPosition < 0) {
-                throw new IllegalArgumentException(
-                        "Audio position must be a non-negative integer!");
+                throw new IllegalArgumentException("Audio position must be a non-negative integer!");
             }
         } else {
             if (audioPosition != UNKNOWN_AUDIO_POSITION) {
                 StringBuffer str = new StringBuffer();
                 id2String(str);
-                throw new IllegalArgumentException(
-                        "Audio position must be UNKNOWN_AUDIO_POSITION for"
-                        + " the given event id (" + str + ")!");
+                throw new IllegalArgumentException("Audio position must be UNKNOWN_AUDIO_POSITION for"
+                                + " the given event id (" + str + ")!");
             }
         }
         this.grammarException = grammarException;

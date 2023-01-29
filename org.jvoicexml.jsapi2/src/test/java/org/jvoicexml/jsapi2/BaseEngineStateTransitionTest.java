@@ -1,6 +1,7 @@
 /**
- * 
+ *
  */
+
 package org.jvoicexml.jsapi2;
 
 import javax.speech.Engine;
@@ -9,7 +10,6 @@ import javax.speech.SpeechEventExecutor;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import org.jvoicexml.jsapi2.mock.EngineEventAccumulator;
 import org.jvoicexml.jsapi2.mock.synthesis.MockSynthesizer;
 

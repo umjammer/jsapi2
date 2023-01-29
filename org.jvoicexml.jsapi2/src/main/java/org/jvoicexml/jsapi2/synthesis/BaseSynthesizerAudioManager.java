@@ -55,7 +55,7 @@ public class BaseSynthesizerAudioManager extends BaseAudioManager {
         String locator = getMediaLocator();
         if (locator == null) {
             outputStream = new SpeakerOutputStream(this);
-logger.finer("open: " + outputStream);
+            logger.finer("open: " + outputStream);
         } else {
             // Parse the target audio format
             // TODO: check if this is really correct. The URL encoding is only
@@ -74,7 +74,7 @@ logger.finer("open: " + outputStream);
                 try {
                     URLConnection urlConnection = openURLConnection(true);
                     outputStream = urlConnection.getOutputStream();
-logger.finer("open: " + outputStream);
+                    logger.finer("open: " + outputStream);
                 } catch (IOException ex) {
                     throw new AudioException("Cannot get OutputStream from URL: " + ex.getMessage());
                 }
@@ -91,7 +91,7 @@ logger.finer("open: " + outputStream);
     public void handleAudioStop() throws AudioException {
         if (outputStream != null) {
             try {
-logger.finer("close: " + outputStream);
+                logger.finer("close: " + outputStream);
                 outputStream.close();
             } catch (IOException ex) {
                 throw new AudioException(ex.getMessage());

@@ -32,13 +32,14 @@ import javax.speech.SpeechLocale;
 import javax.speech.recognition.RecognizerMode;
 import javax.speech.spi.EngineFactory;
 
+
 /**
  * Recognizer mode for the SAPI recognizer.
- * @author Dirk Schnelle-Walka
  *
+ * @author Dirk Schnelle-Walka
  */
 public final class SapiRecognizerMode extends RecognizerMode
-    implements EngineFactory {
+        implements EngineFactory {
 
     /**
      * Constructs a new object.
@@ -50,12 +51,13 @@ public final class SapiRecognizerMode extends RecognizerMode
 
     /**
      * Constructs a new object.
-     * @param locale  the locale associated with this mode
+     *
+     * @param locale the locale associated with this mode
      */
     public SapiRecognizerMode(SpeechLocale locale) {
         super(locale);
     }
-    
+
     @Override
     public Engine createEngine() throws IllegalArgumentException,
             EngineException {

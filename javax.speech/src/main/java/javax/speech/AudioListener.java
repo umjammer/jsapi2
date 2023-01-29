@@ -29,5 +29,6 @@ package javax.speech;
 //Comp. 2.0.6
 
 public interface AudioListener extends SpeechEventListener {
+
     void audioUpdate(AudioEvent e);
 }

@@ -32,9 +32,10 @@ import javax.speech.SpeechLocale;
 import javax.speech.recognition.RecognizerMode;
 import javax.speech.spi.EngineListFactory;
 
+
 /**
  * The engine list factory for sphinx.
- * 
+ *
  * @author Renato Cassaca
  * @author Dirk Schnelle-Walka
  */
@@ -48,7 +49,7 @@ public class SphinxEngineListFactory implements EngineListFactory {
     public SphinxEngineListFactory() {
         engineModes = new EngineMode[] {
                 new SphinxRecognizerMode(SpeechLocale.ENGLISH),
-                new SphinxRecognizerMode(SpeechLocale.GERMAN) };
+                new SphinxRecognizerMode(SpeechLocale.GERMAN)};
     }
 
     @Override

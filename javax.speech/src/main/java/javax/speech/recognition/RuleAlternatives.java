@@ -29,6 +29,7 @@ package javax.speech.recognition;
 //Comp 2.0.6
 
 public class RuleAlternatives extends RuleComponent {
+
     public static final int MAX_WEIGHT = 0x7fffffff;
 
     public static final int NORM_WEIGHT = 0x3E8;
@@ -40,19 +41,16 @@ public class RuleAlternatives extends RuleComponent {
     private int[] weights;
 
     public RuleAlternatives(RuleComponent[] ruleComponents)
-     throws IllegalArgumentException {
+            throws IllegalArgumentException {
         if (ruleComponents == null) {
-            throw new IllegalArgumentException(
-                    "Rule components must not be null!");
+            throw new IllegalArgumentException("Rule components must not be null!");
         }
         this.ruleComponents = ruleComponents;
     }
 
-    public RuleAlternatives(RuleComponent[] ruleComponents, int[] weights)
-        throws IllegalArgumentException {
+    public RuleAlternatives(RuleComponent[] ruleComponents, int[] weights) throws IllegalArgumentException {
         if (ruleComponents == null) {
-            throw new IllegalArgumentException(
-                    "Rule components must not be null!");
+            throw new IllegalArgumentException("Rule components must not be null!");
         }
         this.ruleComponents = ruleComponents;
         if (weights == null) {
@@ -62,8 +60,7 @@ public class RuleAlternatives extends RuleComponent {
             }
         } else {
             if (ruleComponents.length != weights.length) {
-                throw new IllegalArgumentException(
-                        "Lengths of rule components and weights do not match!");
+                throw new IllegalArgumentException("Lengths of rule components and weights do not match!");
             }
             this.weights = weights;
         }

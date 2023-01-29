@@ -30,6 +30,8 @@ package javax.speech.synthesis;
 
 import javax.speech.SpeechEventListener;
 
+
 public interface SpeakableListener extends SpeechEventListener {
+
     void speakableUpdate(SpeakableEvent e);
 }

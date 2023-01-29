@@ -1,6 +1,7 @@
 /**
- * 
+ *
  */
+
 package javax.speech;
 
 import org.junit.jupiter.api.Test;
@@ -8,14 +9,15 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+
 /**
  * @author Dirk Schnelle
- * 
+ *
  */
 public class WordTest {
     @Test
     void testConstructor() {
-        String[] pronounciations = new String[] { "one", "two", "three" };
+        String[] pronounciations = new String[] {"one", "two", "three"};
         final String locator = "file:///user/smith/hello.wav";
         final String markup = "<speak xml:lang='en-US' version='1.0'>Hello</speak>";
         AudioSegment segment = new AudioSegment(locator, markup);
@@ -39,7 +41,7 @@ public class WordTest {
      */
     @Test
     void testGetAudioSegment() {
-        String[] pronounciations = new String[] { "one", "two", "three" };
+        String[] pronounciations = new String[] {"one", "two", "three"};
         final String locator = "file:///user/smith/hello.wav";
         final String markup = "<speak xml:lang='en-US' version='1.0'>Hello</speak>";
         AudioSegment segment = new AudioSegment(locator, markup);
@@ -53,7 +55,7 @@ public class WordTest {
      */
     @Test
     void testGetCategories() {
-        String[] pronounciations = new String[] { "one", "two", "three" };
+        String[] pronounciations = new String[] {"one", "two", "three"};
         final String locator = "file:///user/smith/hello.wav";
         final String markup = "<speak xml:lang='en-US' version='1.0'>Hello</speak>";
         AudioSegment segment = new AudioSegment(locator, markup);
@@ -67,7 +69,7 @@ public class WordTest {
      */
     @Test
     void testGetPronunciations() {
-        String[] pronounciations = new String[] { "one", "two", "three" };
+        String[] pronounciations = new String[] {"one", "two", "three"};
         final String locator = "file:///user/smith/hello.wav";
         final String markup = "<speak xml:lang='en-US' version='1.0'>Hello</speak>";
         AudioSegment segment = new AudioSegment(locator, markup);
@@ -81,7 +83,7 @@ public class WordTest {
      */
     @Test
     void testGetSpokenForm() {
-        String[] pronounciations = new String[] { "one", "two", "three" };
+        String[] pronounciations = new String[] {"one", "two", "three"};
         final String locator = "file:///user/smith/hello.wav";
         final String markup = "<speak xml:lang='en-US' version='1.0'>Hello</speak>";
         AudioSegment segment = new AudioSegment(locator, markup);
@@ -95,7 +97,7 @@ public class WordTest {
      */
     @Test
     void testGetText() {
-        String[] pronounciations = new String[] { "one", "two", "three" };
+        String[] pronounciations = new String[] {"one", "two", "three"};
         final String locator = "file:///user/smith/hello.wav";
         final String markup = "<speak xml:lang='en-US' version='1.0'>Hello</speak>";
         AudioSegment segment = new AudioSegment(locator, markup);

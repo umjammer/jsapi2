@@ -51,9 +51,8 @@ public final class TestRecognizer implements ResultListener {
      */
     @BeforeAll
     public static void init() throws Exception {
-        EngineManager.registerEngineListFactory(
-                MacEngineListFactory.class.getCanonicalName());
-System.err.println(EngineManager.availableEngines(RecognizerMode.DEFAULT));
+        EngineManager.registerEngineListFactory(MacEngineListFactory.class.getCanonicalName());
+        System.err.println(EngineManager.availableEngines(RecognizerMode.DEFAULT));
     }
 
     /**
@@ -63,8 +62,7 @@ System.err.println(EngineManager.availableEngines(RecognizerMode.DEFAULT));
      */
     @BeforeEach
     public void setUp() throws Exception {
-        recognizer =
-                (Recognizer) EngineManager.createEngine(RecognizerMode.DEFAULT);
+        recognizer = (Recognizer) EngineManager.createEngine(RecognizerMode.DEFAULT);
         recognizer.allocate();
         recognizer.waitEngineState(Engine.ALLOCATED);
     }

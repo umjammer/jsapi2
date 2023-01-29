@@ -30,11 +30,15 @@ import javax.speech.SpeechLocale;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 /**
  * Test case for {@link javax.speech.synthesis.SpeakableEvent}.
- * 
+ *
  * @author Dirk Schnelle-Walka
  */
 public class SpeakableEventTest {
@@ -55,7 +59,7 @@ public class SpeakableEventTest {
                 SpeakableEvent.TOP_OF_QUEUE, 42);
         assertEquals(0, event1.getAttributes().length);
 
-        String[] attrs = new String[] { "attribute1", "attribute2" };
+        String[] attrs = new String[] {"attribute1", "attribute2"};
         SpeakableEvent event2 = new SpeakableEvent(source,
                 SpeakableEvent.ELEMENT_REACHED, 46, "textInfo",
                 SpeakableEvent.ELEMENT_OPEN, attrs);
@@ -80,8 +84,8 @@ public class SpeakableEventTest {
                 wordEnd);
         assertEquals(0, event5.getAttributes().length);
 
-        PhoneInfo[] phones = new PhoneInfo[] { new PhoneInfo("ph1", 1),
-                new PhoneInfo("ph2", 2) };
+        PhoneInfo[] phones = new PhoneInfo[] {new PhoneInfo("ph1", 1),
+                new PhoneInfo("ph2", 2)};
         SpeakableEvent event6 = new SpeakableEvent(source,
                 SpeakableEvent.PHONEME_STARTED, 59, "textInfo5", phones, 1);
         assertEquals(0, event6.getAttributes().length);
@@ -112,7 +116,7 @@ public class SpeakableEventTest {
         assertEquals(SpeakableEvent.UNKNOWN_AUDIO_POSITION,
                 event1.getAudioPosition());
 
-        String[] attrs = new String[] { "attribute1", "attribute2" };
+        String[] attrs = new String[] {"attribute1", "attribute2"};
         SpeakableEvent event2 = new SpeakableEvent(source,
                 SpeakableEvent.ELEMENT_REACHED, 46, "textInfo",
                 SpeakableEvent.ELEMENT_OPEN, attrs);
@@ -140,8 +144,8 @@ public class SpeakableEventTest {
         assertEquals(SpeakableEvent.UNKNOWN_AUDIO_POSITION,
                 event5.getAudioPosition());
 
-        PhoneInfo[] phones = new PhoneInfo[] { new PhoneInfo("ph1", 1),
-                new PhoneInfo("ph2", 2) };
+        PhoneInfo[] phones = new PhoneInfo[] {new PhoneInfo("ph1", 1),
+                new PhoneInfo("ph2", 2)};
         SpeakableEvent event6 = new SpeakableEvent(source,
                 SpeakableEvent.PHONEME_STARTED, 59, "textInfo5", phones, 1);
         assertEquals(SpeakableEvent.UNKNOWN_AUDIO_POSITION,
@@ -174,7 +178,7 @@ public class SpeakableEventTest {
         int index;
         assertEquals(SpeakableEvent.UNKNOWN_INDEX, event1.getIndex());
 
-        String[] attrs = new String[] { "attribute1", "attribute2" };
+        String[] attrs = new String[] {"attribute1", "attribute2"};
         SpeakableEvent event2 = new SpeakableEvent(source,
                 SpeakableEvent.ELEMENT_REACHED, 46, "textInfo",
                 SpeakableEvent.ELEMENT_OPEN, attrs);
@@ -199,8 +203,8 @@ public class SpeakableEventTest {
                 wordEnd);
         assertEquals(SpeakableEvent.UNKNOWN_INDEX, event5.getIndex());
 
-        PhoneInfo[] phones = new PhoneInfo[] { new PhoneInfo("ph1", 1),
-                new PhoneInfo("ph2", 2) };
+        PhoneInfo[] phones = new PhoneInfo[] {new PhoneInfo("ph1", 1),
+                new PhoneInfo("ph2", 2)};
         SpeakableEvent event6 = new SpeakableEvent(source,
                 SpeakableEvent.PHONEME_STARTED, 59, "textInfo5", phones, 1);
         index = event6.getIndex();
@@ -233,7 +237,7 @@ public class SpeakableEventTest {
         Voice voice;
         assertNull(event1.getNewVoice());
 
-        String[] attrs = new String[] { "attribute1", "attribute2" };
+        String[] attrs = new String[] {"attribute1", "attribute2"};
         SpeakableEvent event2 = new SpeakableEvent(source,
                 SpeakableEvent.ELEMENT_REACHED, 46, "textInfo",
                 SpeakableEvent.ELEMENT_OPEN, attrs);
@@ -258,8 +262,8 @@ public class SpeakableEventTest {
                 wordEnd);
         assertNull(event5.getNewVoice());
 
-        PhoneInfo[] phones = new PhoneInfo[] { new PhoneInfo("ph1", 1),
-                new PhoneInfo("ph2", 2) };
+        PhoneInfo[] phones = new PhoneInfo[] {new PhoneInfo("ph1", 1),
+                new PhoneInfo("ph2", 2)};
         SpeakableEvent event6 = new SpeakableEvent(source,
                 SpeakableEvent.PHONEME_STARTED, 59, "textInfo5", phones, 1);
         assertNull(event6.getNewVoice());
@@ -290,7 +294,7 @@ public class SpeakableEventTest {
                 SpeakableEvent.TOP_OF_QUEUE, 42);
         assertNull(event1.getOldVoice());
 
-        String[] attrs = new String[] { "attribute1", "attribute2" };
+        String[] attrs = new String[] {"attribute1", "attribute2"};
         SpeakableEvent event2 = new SpeakableEvent(source,
                 SpeakableEvent.ELEMENT_REACHED, 46, "textInfo",
                 SpeakableEvent.ELEMENT_OPEN, attrs);
@@ -315,8 +319,8 @@ public class SpeakableEventTest {
                 wordEnd);
         assertNull(event5.getOldVoice());
 
-        PhoneInfo[] phones = new PhoneInfo[] { new PhoneInfo("ph1", 1),
-                new PhoneInfo("ph2", 2) };
+        PhoneInfo[] phones = new PhoneInfo[] {new PhoneInfo("ph1", 1),
+                new PhoneInfo("ph2", 2)};
         SpeakableEvent event6 = new SpeakableEvent(source,
                 SpeakableEvent.PHONEME_STARTED, 59, "textInfo5", phones, 1);
         assertNull(event6.getOldVoice());
@@ -348,7 +352,7 @@ public class SpeakableEventTest {
         Exception error = null;
         assertEquals(0, event1.getPhones().length);
 
-        String[] attrs = new String[] { "attribute1", "attribute2" };
+        String[] attrs = new String[] {"attribute1", "attribute2"};
         SpeakableEvent event2 = new SpeakableEvent(source,
                 SpeakableEvent.ELEMENT_REACHED, 46, "textInfo",
                 SpeakableEvent.ELEMENT_OPEN, attrs);
@@ -373,8 +377,8 @@ public class SpeakableEventTest {
                 wordEnd);
         assertEquals(0, event5.getPhones().length);
 
-        PhoneInfo[] phones = new PhoneInfo[] { new PhoneInfo("ph1", 1),
-                new PhoneInfo("ph2", 2) };
+        PhoneInfo[] phones = new PhoneInfo[] {new PhoneInfo("ph1", 1),
+                new PhoneInfo("ph2", 2)};
         SpeakableEvent event6 = new SpeakableEvent(source,
                 SpeakableEvent.PHONEME_STARTED, 59, "textInfo5", phones, 1);
         assertEquals(phones, event6.getPhones());
@@ -405,7 +409,7 @@ public class SpeakableEventTest {
         assertEquals(SpeakableEvent.UNKNOWN_VALUE, event1.getRealizedValue());
 
 
-        String[] attrs = new String[] { "attribute1", "attribute2" };
+        String[] attrs = new String[] {"attribute1", "attribute2"};
         SpeakableEvent event2 = new SpeakableEvent(source,
                 SpeakableEvent.ELEMENT_REACHED, 46, "textInfo",
                 SpeakableEvent.ELEMENT_OPEN, attrs);
@@ -430,8 +434,8 @@ public class SpeakableEventTest {
                 wordEnd);
         assertEquals(SpeakableEvent.UNKNOWN_VALUE, event5.getRealizedValue());
 
-        PhoneInfo[] phones = new PhoneInfo[] { new PhoneInfo("ph1", 1),
-                new PhoneInfo("ph2", 2) };
+        PhoneInfo[] phones = new PhoneInfo[] {new PhoneInfo("ph1", 1),
+                new PhoneInfo("ph2", 2)};
         SpeakableEvent event6 = new SpeakableEvent(source,
                 SpeakableEvent.PHONEME_STARTED, 59, "textInfo5", phones, 1);
         assertEquals(SpeakableEvent.UNKNOWN_VALUE, event6.getRealizedValue());
@@ -462,7 +466,7 @@ public class SpeakableEventTest {
         assertEquals(SpeakableEvent.UNKNOWN_VALUE,
                 event1.getRequestedValue());
 
-        String[] attrs = new String[] { "attribute1", "attribute2" };
+        String[] attrs = new String[] {"attribute1", "attribute2"};
         SpeakableEvent event2 = new SpeakableEvent(source,
                 SpeakableEvent.ELEMENT_REACHED, 46, "textInfo",
                 SpeakableEvent.ELEMENT_OPEN, attrs);
@@ -490,8 +494,8 @@ public class SpeakableEventTest {
         assertEquals(SpeakableEvent.UNKNOWN_VALUE,
                 event5.getRequestedValue());
 
-        PhoneInfo[] phones = new PhoneInfo[] { new PhoneInfo("ph1", 1),
-                new PhoneInfo("ph2", 2) };
+        PhoneInfo[] phones = new PhoneInfo[] {new PhoneInfo("ph1", 1),
+                new PhoneInfo("ph2", 2)};
         SpeakableEvent event6 = new SpeakableEvent(source,
                 SpeakableEvent.PHONEME_STARTED, 59, "textInfo5", phones, 1);
         assertEquals(SpeakableEvent.UNKNOWN_VALUE,
@@ -524,7 +528,7 @@ public class SpeakableEventTest {
                 SpeakableEvent.TOP_OF_QUEUE, 42);
         assertEquals(42, event1.getRequestId());
 
-        String[] attrs = new String[] { "attribute1", "attribute2" };
+        String[] attrs = new String[] {"attribute1", "attribute2"};
         SpeakableEvent event2 = new SpeakableEvent(source,
                 SpeakableEvent.ELEMENT_REACHED, 46, "textInfo",
                 SpeakableEvent.ELEMENT_OPEN, attrs);
@@ -549,8 +553,8 @@ public class SpeakableEventTest {
                 wordEnd);
         assertEquals(55, event5.getRequestId());
 
-        PhoneInfo[] phones = new PhoneInfo[] { new PhoneInfo("ph1", 1),
-                new PhoneInfo("ph2", 2) };
+        PhoneInfo[] phones = new PhoneInfo[] {new PhoneInfo("ph1", 1),
+                new PhoneInfo("ph2", 2)};
         SpeakableEvent event6 = new SpeakableEvent(source,
                 SpeakableEvent.PHONEME_STARTED, 59, "textInfo5", phones, 1);
         assertEquals(59, event6.getRequestId());
@@ -584,7 +588,7 @@ public class SpeakableEventTest {
         textinfo = event1.getTextInfo();
         assertNull(textinfo);
 
-        String[] attrs = new String[] { "attribute1", "attribute2" };
+        String[] attrs = new String[] {"attribute1", "attribute2"};
         SpeakableEvent event2 = new SpeakableEvent(source,
                 SpeakableEvent.ELEMENT_REACHED, 46, "textInfo",
                 SpeakableEvent.ELEMENT_OPEN, attrs);
@@ -613,8 +617,8 @@ public class SpeakableEventTest {
         textinfo = event5.getTextInfo();
         assertEquals("textInfo4", textinfo);
 
-        PhoneInfo[] phones = new PhoneInfo[] { new PhoneInfo("ph1", 1),
-                new PhoneInfo("ph2", 2) };
+        PhoneInfo[] phones = new PhoneInfo[] {new PhoneInfo("ph1", 1),
+                new PhoneInfo("ph2", 2)};
         SpeakableEvent event6 = new SpeakableEvent(source,
                 SpeakableEvent.PHONEME_STARTED, 59, "textInfo5", phones, 1);
         textinfo = event6.getTextInfo();
@@ -646,7 +650,7 @@ public class SpeakableEventTest {
                 SpeakableEvent.TOP_OF_QUEUE, 42);
         assertEquals(SpeakableEvent.UNKNOWN_TYPE, event1.getType());
 
-        String[] attrs = new String[] { "attribute1", "attribute2" };
+        String[] attrs = new String[] {"attribute1", "attribute2"};
         SpeakableEvent event2 = new SpeakableEvent(source,
                 SpeakableEvent.ELEMENT_REACHED, 46, "textInfo",
                 SpeakableEvent.ELEMENT_OPEN, attrs);
@@ -671,8 +675,8 @@ public class SpeakableEventTest {
                 wordEnd);
         assertEquals(SpeakableEvent.UNKNOWN_TYPE, event5.getType());
 
-        PhoneInfo[] phones = new PhoneInfo[] { new PhoneInfo("ph1", 1),
-                new PhoneInfo("ph2", 2) };
+        PhoneInfo[] phones = new PhoneInfo[] {new PhoneInfo("ph1", 1),
+                new PhoneInfo("ph2", 2)};
         SpeakableEvent event6 = new SpeakableEvent(source,
                 SpeakableEvent.PHONEME_STARTED, 59, "textInfo5", phones, 1);
         assertEquals(SpeakableEvent.UNKNOWN_TYPE, event6.getType());
@@ -705,7 +709,7 @@ public class SpeakableEventTest {
         assertTrue(str1.contains("TOP_OF_QUEUE"),
                 "id not found in toString");
 
-        String[] attrs = new String[] { "attribute1", "attribute2" };
+        String[] attrs = new String[] {"attribute1", "attribute2"};
         SpeakableEvent event2 = new SpeakableEvent(source,
                 SpeakableEvent.ELEMENT_REACHED, 46, "textInfo",
                 SpeakableEvent.ELEMENT_OPEN, attrs);
@@ -738,8 +742,8 @@ public class SpeakableEventTest {
         assertTrue(str5.contains("WORD_STARTED"),
                 "id not found in toString");
 
-        PhoneInfo[] phones = new PhoneInfo[] { new PhoneInfo("ph1", 1),
-                new PhoneInfo("ph2", 2) };
+        PhoneInfo[] phones = new PhoneInfo[] {new PhoneInfo("ph1", 1),
+                new PhoneInfo("ph2", 2)};
         SpeakableEvent event6 = new SpeakableEvent(source,
                 SpeakableEvent.PHONEME_STARTED, 59, "textInfo5", phones, 1);
         String str6 = event6.paramString();
@@ -778,7 +782,7 @@ public class SpeakableEventTest {
         assertTrue(str1.length() > paramString.length(),
                 "toString not longer than paramString");
 
-        String[] attrs = new String[] { "attribute1", "attribute2" };
+        String[] attrs = new String[] {"attribute1", "attribute2"};
         SpeakableEvent event2 = new SpeakableEvent(source,
                 SpeakableEvent.ELEMENT_REACHED, 46, "textInfo",
                 SpeakableEvent.ELEMENT_OPEN, attrs);
@@ -823,8 +827,8 @@ public class SpeakableEventTest {
         assertTrue(str5.length() > paramString5.length(),
                 "toString not longer than paramString");
 
-        PhoneInfo[] phones = new PhoneInfo[] { new PhoneInfo("ph1", 1),
-                new PhoneInfo("ph2", 2) };
+        PhoneInfo[] phones = new PhoneInfo[] {new PhoneInfo("ph1", 1),
+                new PhoneInfo("ph2", 2)};
         SpeakableEvent event6 = new SpeakableEvent(source,
                 SpeakableEvent.PHONEME_STARTED, 59, "textInfo5", phones, 1);
         String str6 = event6.toString();

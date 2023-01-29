@@ -29,5 +29,6 @@ package javax.speech.synthesis;
 //Comp 2.0.6
 
 public interface Speakable {
+
     String getMarkupText();
 }

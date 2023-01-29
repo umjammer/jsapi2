@@ -31,5 +31,6 @@ import javax.speech.EngineListener;
 //Comp 2.0.6
 
 public interface RecognizerListener extends EngineListener {
+
     void recognizerUpdate(RecognizerEvent e);
 }

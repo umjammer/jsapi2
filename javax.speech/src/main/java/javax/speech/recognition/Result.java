@@ -29,6 +29,7 @@ package javax.speech.recognition;
 //Comp 2.0.6
 
 public interface Result {
+
     int UNFINALIZED = 0x12c;
 
     int ACCEPTED = 0x12d;

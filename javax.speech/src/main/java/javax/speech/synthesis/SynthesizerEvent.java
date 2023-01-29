@@ -27,12 +27,12 @@
 package javax.speech.synthesis;
 
 import java.util.List;
-
 import javax.speech.EngineEvent;
 
 //Comp. 2.0.6
 
 public class SynthesizerEvent extends EngineEvent {
+
     public static final int QUEUE_EMPTIED = 0x3000800;
 
     public static final int QUEUE_UPDATED = 0x3001000;
@@ -47,18 +47,16 @@ public class SynthesizerEvent extends EngineEvent {
     private boolean topOfQueueChanged;
 
     public SynthesizerEvent(Synthesizer source, int id, long oldEngineState,
-            long newEngineState, Throwable problem, boolean topOfQueueChanged)
-        throws IllegalArgumentException {
+                            long newEngineState, Throwable problem, boolean topOfQueueChanged)
+            throws IllegalArgumentException {
         super(source, id, oldEngineState, newEngineState, problem);
         if ((id != ENGINE_ERROR) && (problem != null)) {
-            throw new IllegalArgumentException(
-                    "A problem can only be specified for ENGINE_ERROR");
+            throw new IllegalArgumentException("A problem can only be specified for ENGINE_ERROR");
         }
         if (topOfQueueChanged && (id != QUEUE_UPDATED)
                 && (id != QUEUE_EMPTIED)) {
-            throw new IllegalArgumentException(
-                    "topOfQueueChanged can only be set for the events" +
-                    " QUEUE_UPDATED and QUEUE_EMPTIED");
+            throw new IllegalArgumentException("topOfQueueChanged can only be set for the events" +
+                            " QUEUE_UPDATED and QUEUE_EMPTIED");
         }
         this.topOfQueueChanged = topOfQueueChanged;
     }
@@ -76,10 +74,8 @@ public class SynthesizerEvent extends EngineEvent {
     protected void id2String(StringBuffer str) {
         maybeAddId(str, QUEUE_EMPTIED, "QUEUE_EMPTIED");
         maybeAddId(str, QUEUE_UPDATED, "QUEUE_UPDATED");
-        maybeAddId(str, SYNTHESIZER_BUFFER_READY, 
-                "SYNTHESIZER_BUFFER_READY");
-        maybeAddId(str, SYNTHESIZER_BUFFER_UNFILLED, 
-            "SYNTHESIZER_BUFFER_UNFILLED");
+        maybeAddId(str, SYNTHESIZER_BUFFER_READY, "SYNTHESIZER_BUFFER_READY");
+        maybeAddId(str, SYNTHESIZER_BUFFER_UNFILLED, "SYNTHESIZER_BUFFER_UNFILLED");
         super.id2String(str);
     }
 

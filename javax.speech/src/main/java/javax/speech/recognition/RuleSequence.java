@@ -29,21 +29,20 @@ package javax.speech.recognition;
 //Comp. 2.0.6
 
 public class RuleSequence extends RuleComponent {
+
     private RuleComponent[] ruleComponents;
 
     public RuleSequence(RuleComponent[] ruleComponents)
-        throws IllegalArgumentException {
+            throws IllegalArgumentException {
         if (ruleComponents == null) {
-            throw new IllegalArgumentException(
-                    "Rule components must not be null!");
+            throw new IllegalArgumentException("Rule components must not be null!");
         }
         this.ruleComponents = ruleComponents;
     }
 
     public RuleSequence(String[] tokens) throws IllegalArgumentException {
         if (tokens == null) {
-            throw new IllegalArgumentException(
-                    "Tokens must not be null!");
+            throw new IllegalArgumentException("Tokens must not be null!");
         }
         ruleComponents = new RuleComponent[tokens.length];
 

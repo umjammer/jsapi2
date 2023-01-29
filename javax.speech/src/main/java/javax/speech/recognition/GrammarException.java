@@ -41,8 +41,7 @@ public class GrammarException extends SpeechException {
         super(message);
     }
 
-    public GrammarException(String message, GrammarExceptionDetail[] details) 
-        throws IllegalArgumentException {
+    public GrammarException(String message, GrammarExceptionDetail[] details) throws IllegalArgumentException {
         super(message);
         if (details == null) {
             throw new IllegalArgumentException("Details must not be null!");

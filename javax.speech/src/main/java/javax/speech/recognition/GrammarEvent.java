@@ -27,12 +27,12 @@
 package javax.speech.recognition;
 
 import java.util.List;
-
 import javax.speech.SpeechEvent;
 
 // Comp 2.0.6
 
 public class GrammarEvent extends SpeechEvent {
+
     public static int GRAMMAR_CHANGES_COMMITTED = 0x4000001;
 
     public static int GRAMMAR_ACTIVATED = 0x4000002;
@@ -56,13 +56,12 @@ public class GrammarEvent extends SpeechEvent {
     }
 
     public GrammarEvent(Grammar source, int id, boolean activableChanged,
-            boolean definitionChanged, GrammarException grammarException) 
-        throws IllegalArgumentException {
+                        boolean definitionChanged, GrammarException grammarException)
+            throws IllegalArgumentException {
         super(source, id);
         if ((id != GRAMMAR_CHANGES_REJECTED) && (grammarException != null)) {
             throw new IllegalArgumentException(
-                    "A grammar exception can only supplied for "
-                    + "GRAMMAR_CHANGES_REJECTED!");
+                    "A grammar exception can only supplied for " + "GRAMMAR_CHANGES_REJECTED!");
         }
         this.activableChanged = activableChanged;
         this.definitionChanged = definitionChanged;
