@@ -26,12 +26,17 @@
 
 package org.jvoicexml.jsapi2.synthesis;
 
+import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 import javax.speech.AudioSegment;
 import javax.speech.synthesis.SpeakableEvent;
+import javax.speech.synthesis.SynthesizerEvent;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 import org.jvoicexml.jsapi2.mock.synthesis.MockSpeakableListener;
 import org.jvoicexml.jsapi2.mock.synthesis.MockSynthesizer;
 
@@ -54,7 +59,7 @@ public final class QueueManagerTest {
      */
     @BeforeEach
     public void setUp() {
-        synthesizer = new MockSynthesizer();
+        synthesizer = new MockSynthesizer(true);
     }
 
     /**
@@ -62,8 +67,8 @@ public final class QueueManagerTest {
      *
      * @throws Exception test failed.
      */
-    @Disabled
     @Test
+//    @Timeout(value = 5000, unit = TimeUnit.MICROSECONDS)
     void testAppendItemSpeakableSpeakableListener() throws Exception {
         QueueManager manager = synthesizer.getQueueManager();
         AudioSegment segment = new AudioSegment("http://nowhere", "test");
@@ -80,5 +85,13 @@ public final class QueueManagerTest {
         SpeakableEvent ended = listener.getEvent(1);
         assertEquals(SpeakableEvent.SPEAKABLE_ENDED, ended.getId());
         assertEquals(segment.getMarkupText(), ended.getSource());
+    }
+
+    @AfterAll
+    static void teardown() {
+//        Thread.getAllStackTraces().forEach((k, v) -> {
+//            System.err.println("---- " + k + " ----");
+//            Arrays.stream(v).forEach(System.err::println);
+//        });
     }
 }

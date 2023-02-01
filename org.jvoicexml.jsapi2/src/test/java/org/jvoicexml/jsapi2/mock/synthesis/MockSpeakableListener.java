@@ -62,7 +62,7 @@ public class MockSpeakableListener implements SpeakableListener {
      */
     public void waitForSize(int size) throws InterruptedException {
         while (events.size() != size) {
-            Debug.println("events.size(): " + events.size() + " / " + size);
+Debug.println("events.size(): " + events.size() + " / " + size);
             synchronized (lock) {
                 lock.wait();
             }
@@ -82,7 +82,7 @@ public class MockSpeakableListener implements SpeakableListener {
     @Override
     public void speakableUpdate(SpeakableEvent e) {
         events.add(e);
-        Debug.println(e);
+new Exception("event added: " + e).printStackTrace();
         synchronized (lock) {
             lock.notifyAll();
         }

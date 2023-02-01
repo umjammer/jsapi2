@@ -53,6 +53,8 @@ import javax.speech.EngineStateException;
 import javax.speech.SpeechEventExecutor;
 import javax.speech.VocabularyManager;
 
+import vavi.util.Debug;
+
 
 /**
  * Supports the JSAPI 2.0 {@link Engine} interface.
@@ -552,6 +554,7 @@ public abstract class BaseEngine implements Engine {
     protected final void postEngineEvent(EngineEvent event) {
         // Filter all events which are not observable due to the engine mask
         int id = event.getId();
+Debug.printf("event filtered: %s, %s, &: %08x, i: %08x, m: %08x", (engineMask & id) != id, event, engineMask & id, id, engineMask);
         if ((engineMask & id) != id) {
             return;
         }
