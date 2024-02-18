@@ -337,9 +337,9 @@ public interface Grammar {
      * @throws java.lang.IllegalArgumentException if an inappropriate
      *          activation mode is used
      * @see javax.speech.recognition.Grammar#getActivationMode()
-     * @see javax.speech.recognition.Grammar#RECOGNIZER_FOCUS
-     * @see javax.speech.recognition.Grammar#RECOGNIZER_MODAL
-     * @see javax.speech.recognition.Grammar#GLOBAL
+     * @see javax.speech.recognition.Grammar#ACTIVATION_FOCUS
+     * @see javax.speech.recognition.Grammar#ACTIVATION_MODAL
+     * @see javax.speech.recognition.Grammar#ACTIVATION_GLOBAL
      * @see javax.speech.recognition.Grammar#setActivatable(boolean)
      * @see javax.speech.recognition.Grammar#isActive()
      * @see javax.speech.recognition.Recognizer#processGrammars()
@@ -375,11 +375,11 @@ public interface Grammar {
      * An ENGINE_FOCUSED or ENGINE_DEFOCUSED event.
      *
      * @return the current state of the Grammar being active
-     * @see javax.speech.recognition.Grammar#setEnabled(boolean)
+     * @see javax.speech.recognition.Grammar#setActivatable(boolean)
      * @see javax.speech.recognition.Grammar#setActivationMode(int)
-     * @see javax.speech.recognition.Grammar#RECOGNIZER_FOCUS
-     * @see javax.speech.recognition.Grammar#RECOGNIZER_MODAL
-     * @see javax.speech.recognition.Grammar#GLOBAL
+     * @see javax.speech.recognition.Grammar#ACTIVATION_FOCUS
+     * @see javax.speech.recognition.Grammar#ACTIVATION_MODAL
+     * @see javax.speech.recognition.Grammar#ACTIVATION_GLOBAL
      * @see javax.speech.recognition.GrammarEvent
      * @see javax.speech.recognition.GrammarEvent#GRAMMAR_ACTIVATED
      * @see javax.speech.recognition.GrammarEvent#GRAMMAR_DEACTIVATED

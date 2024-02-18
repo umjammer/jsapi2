@@ -68,7 +68,7 @@ package javax.speech.recognition;
  * embedded recursion.
  *
  * @see javax.speech.recognition.GrammarException
- * @see javax.speech.recognition.Recognizer#loadRuleGrammar(java.lang.String, java.io.Reader)
+ * @see javax.speech.recognition.GrammarManager#loadGrammar(java.lang.String, java.lang.String, java.io.Reader)
  * @see javax.speech.recognition.Recognizer#processGrammars()
  */
 public class GrammarExceptionDetail {

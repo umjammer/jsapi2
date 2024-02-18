@@ -49,8 +49,8 @@ package javax.speech.recognition;
  *       SRGS specification</A>,
  * @see javax.speech.recognition.Rule
  * @see javax.speech.recognition.Recognizer
- * @see javax.speech.recognition.Recognizer#createRuleGrammar(java.lang.String, java.lang.String)
- * @see javax.speech.recognition.Recognizer#loadRuleGrammar(java.lang.String, java.io.Reader)
+ * @see javax.speech.recognition.GrammarManager#createRuleGrammar(java.lang.String, java.lang.String)
+ * @see javax.speech.recognition.GrammarManager#loadGrammar(java.lang.String, java.lang.String, java.io.Reader)
  */
 public interface RuleGrammar extends Grammar {
 
@@ -77,10 +77,10 @@ public interface RuleGrammar extends Grammar {
      * @param element the element to add to this RuleGrammar
      * @throws java.lang.IllegalArgumentException if the element is not supported
      *          or is malformed
-     * @see javax.speech.recognition.RuleGrammar#getElements(java.lang.String)
+     * @see javax.speech.recognition.RuleGrammar#getElements()
      * @see javax.speech.recognition.RuleGrammar#removeElement(java.lang.String)
      * @see javax.speech.recognition.RuleGrammar#setAttribute(java.lang.String, java.lang.String)
-     * @see javax.speech.recognition.RuleGrammar#setDoctype(java.lang.String)
+     * @see javax.speech.recognition.RuleGrammar#setRoot(java.lang.String)
      * @see javax.speech.VocabularyManager
      */
     void addElement(String element) throws GrammarException;
@@ -101,7 +101,7 @@ public interface RuleGrammar extends Grammar {
      * @param ruleName the name of the Rule to find
      * @return the Rule with the specified name or null
      * @see javax.speech.recognition.RuleGrammar#addRule(javax.speech.recognition.Rule)
-     * @see javax.speech.recognition.Recognizer#commitChanges()
+     * @see javax.speech.recognition.Recognizer#processGrammars()
      * @see javax.speech.recognition.RuleGrammar#toString()
      */
     Rule getRule(String ruleName);
@@ -245,7 +245,7 @@ public interface RuleGrammar extends Grammar {
      *          value is not supported.
      * @see javax.speech.recognition.RuleGrammar#getAttribute(java.lang.String)
      * <A href="../../../javax/speech/recognition/RuleGrammar.html#addElement(java.lang.String)">#addElement</A>,
-     * @see javax.speech.recognition.RuleGrammar#setDoctype(java.lang.String)
+     * @see javax.speech.recognition.RuleGrammar#setRoot(java.lang.String)
      * @see javax.speech.recognition.RuleReference
      * @see javax.speech.recognition.Rule#PUBLIC
      */

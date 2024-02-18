@@ -386,7 +386,7 @@ public interface Engine {
      *          the ALLOCATING_RESOURCES state
      * @see javax.speech.Engine#deallocate()
      * @see javax.speech.Engine#ASYNCHRONOUS_MODE
-     * @see javax.speech.Engine#FLUSH_MODE
+     * @see javax.speech.Engine#IMMEDIATE_MODE
      * @see javax.speech.Engine#allocate()
      * @see javax.speech.EngineEvent#ENGINE_DEALLOCATING_RESOURCES
      * @see javax.speech.EngineEvent#ENGINE_DEALLOCATED

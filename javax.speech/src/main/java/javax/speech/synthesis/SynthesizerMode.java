@@ -126,13 +126,13 @@ public class SynthesizerMode extends EngineMode {
      * @param engineName the desired engine name
      * @param modeName the desired mode name
      * @param running a flag specifying a running engine
-     * @param generalDomain a flag specifying general domain support
+     * @param supportsLetterToSound a flag specifying general domain support
      * @param supportsMarkup a flag specifying markup support
      * @param voices the desired set of voices
      * @see javax.speech.EngineMode#getEngineName()
      * @see javax.speech.EngineMode#getModeName()
      * @see javax.speech.EngineMode#getRunning()
-     * @see javax.speech.EngineMode#getGeneralDomain()
+     * @see javax.speech.EngineMode#getSupportsLetterToSound()
      * @see javax.speech.EngineMode#getSupportsMarkup()
      * @see javax.speech.synthesis.SynthesizerMode#getVoices()
      * @see javax.speech.synthesis.Voice

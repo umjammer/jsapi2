@@ -165,10 +165,10 @@ public class SpeakableEvent extends SpeechEvent {
      * {@link javax.speech.synthesis.SpeakableEvent#getTextInfo()}
      * the next word to be spoken
      * <p>
-     * {@link javax.speech.synthesis.SpeakableEvent#getWordStart()}
+     * {@link javax.speech.synthesis.SpeakableEvent#getTextBegin()}
      * character index of the word start within the speakable's string
      * <p>
-     * {@link javax.speech.synthesis.SpeakableEvent#getWordEnd()}
+     * {@link javax.speech.synthesis.SpeakableEvent#getTextEnd()}
      * character index of the word end within the speakable's string
      * <p>
      * The text of the next word to be spoken may differ from the
@@ -306,7 +306,7 @@ public class SpeakableEvent extends SpeechEvent {
      * {@link javax.speech.synthesis.SpeakableEvent#ELEMENT_CLOSE}
      * , or
      * <p>
-     * {@link javax.speech.synthesis.SpeakableEvent#ELEMENT_EMPTY}
+     * {@link javax.speech.synthesis.SpeakableEvent#ELEMENT_CLOSE}
      *
      * {@link javax.speech.synthesis.SpeakableEvent#getAttributes()}
      * returns
@@ -696,7 +696,7 @@ public class SpeakableEvent extends SpeechEvent {
      * @return the text associated with this event
      * @see javax.speech.synthesis.SpeakableEvent#ELEMENT_REACHED
      * @see javax.speech.synthesis.SpeakableEvent#MARKER_REACHED
-     * @see javax.speech.synthesis.SpeakableEvent#MARKUP_FAILED
+     * @see javax.speech.synthesis.SpeakableEvent#SPEAKABLE_FAILURE_UNRECOVERABLE
      * @see javax.speech.synthesis.SpeakableEvent#PHONEME_STARTED
      * @see javax.speech.synthesis.SpeakableEvent#PROSODY_UPDATED
      * @see javax.speech.synthesis.SpeakableEvent#VOICE_CHANGED
@@ -715,7 +715,7 @@ public class SpeakableEvent extends SpeechEvent {
      * @throws java.lang.IllegalStateException if called for an inappropriate event
      * @see javax.speech.synthesis.SpeakableEvent#ELEMENT_REACHED
      * @see javax.speech.synthesis.SpeakableEvent#MARKER_REACHED
-     * @see javax.speech.synthesis.SpeakableEvent#MARKUP_FAILED
+     * @see javax.speech.synthesis.SpeakableEvent#SPEAKABLE_FAILURE_UNRECOVERABLE
      * @see javax.speech.synthesis.SpeakableEvent#PROSODY_UPDATED
      */
     public int getType() {
