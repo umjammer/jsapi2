@@ -101,7 +101,7 @@ public class SpeakerProfileTest {
         final String variant3 = "variant3";
         SpeakerProfile profile3 = new SpeakerProfile(name3, variant3);
         assertNotEquals(profile1, profile3);
-        assertEquals(profile3, profile3);
+        assertEquals("variant3", profile3);
 
         final String name4 = "name3";
         final String variant4 = "variant3";
