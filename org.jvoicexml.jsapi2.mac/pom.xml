@@ -11,189 +11,13 @@
 
   <artifactId>org.jvoicexml.jsapi2.mac</artifactId>
 
-  <profiles>
-    <profile>
-      <id>local (not on jitpack)</id>
-      <activation>
-        <os>
-          <family>mac</family>
-          <arch>x86_64</arch>
-        </os>
-        <property>
-          <name>env.JITPACK</name>
-          <value>!true</value>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>native-maven-plugin</artifactId>
-            <version>1.0-alpha-11</version>
-            <extensions>true</extensions>
-            <configuration>
-              <javahClassNames>
-                <javahClassName>org.jvoicexml.jsapi2.mac.MacEngineListFactory</javahClassName>
-                <javahClassName>org.jvoicexml.jsapi2.mac.recognition.MacRecognizer</javahClassName>
-                <javahClassName>org.jvoicexml.jsapi2.mac.synthesis.MacSynthesizer</javahClassName>
-              </javahClassNames>
-              <javahSearchJNIFromDependencies>false</javahSearchJNIFromDependencies>
-              <javahOS>darwin</javahOS>
-              <compilerProvider>generic-classic</compilerProvider>
-              <compilerStartOptions>
-                <compilerStartOption>-g -Wall -O2 -fomit-frame-pointer -fPIC</compilerStartOption>
-                <!-- unless locating jdk includes, cause error why??? -->
-                <compilerStartOption>-arch x86_64
-                  -I${java.home}/../include
-                  -I${java.home}/../include/darwin
-                  -Isrc/main/native/Jsapi2MacBridge
-                  -Isrc/main/native/Jsapi2MacBridge/PublicUtility
-                </compilerStartOption>
-              </compilerStartOptions>
-              <sources>
-                <source>
-                  <directory>src/main/native/Jsapi2MacBridge</directory>
-                  <fileNames>
-                    <fileName>MacEngineListFactory.cpp</fileName>
-                    <fileName>MacRecognizer.cpp</fileName>
-                    <fileName>MacSynthesizer.cpp</fileName>
-                    <fileName>JNIUtils.cpp</fileName>
-                  </fileNames>
-                </source>
-              </sources>
-              <linkerStartOptions>
-                <linkerStartOption>-dynamiclib -arch x86_64 -v
-                  -lc++
-                  -ljvm -L${java.home}/../jre/lib/server
-                  -framework ApplicationServices -framework AudioToolbox</linkerStartOption>
-              </linkerStartOptions>
-              <linkerFinalName/>
-            </configuration>
-            <executions>
-              <execution>
-                <id>test-dylib</id>
-                <phase>test-compile</phase>
-                <goals>
-                  <goal>javah</goal>
-                  <goal>compile</goal>
-                  <goal>link</goal>
-                </goals>
-                <configuration>
-                  <linkerEndOptions>
-                    <linkerEndOption>-o ${project.build.testOutputDirectory}/libJsapi2MacBridge.dylib</linkerEndOption>
-                  </linkerEndOptions>
-                </configuration>
-              </execution>
-              <execution>
-                <id>dylib</id>
-                <phase>compile</phase>
-                <goals>
-                  <goal>javah</goal>
-                  <goal>compile</goal>
-                  <goal>link</goal>
-                </goals>
-                <configuration>
-                  <linkerEndOptions>
-                    <linkerEndOption>-o ${project.build.directory}/libJsapi2MacBridge-${project.version}.dylib</linkerEndOption>
-                  </linkerEndOptions>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-install-plugin</artifactId>
-            <version>3.0.0-M1</version>
-            <executions>
-              <execution>
-                <id>install-library</id>
-                <phase>install</phase>
-                <goals>
-                  <goal>install-file</goal>
-                </goals>
-                <configuration>
-                  <groupId>${project.groupId}</groupId>
-                  <artifactId>${project.artifactId}</artifactId>
-                  <version>${project.version}</version>
-                  <packaging>dylib</packaging>
-                  <file>${project.build.directory}/libJsapi2MacBridge-${project.version}.dylib</file>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-
-          <plugin>
-            <!--
-              because of maven deploy-file uploads source, jar also
-              TODO maven-metadata.xml!/metadata/versioning/latest is not updated
-              TODO how about https://stackoverflow.com/a/37552776/6102938
-             -->
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
-            <version>1.6.0</version>
-            <executions>
-              <execution>
-                <id>deploy-library</id>
-                <phase>deploy</phase>
-                <goals>
-                  <goal>exec</goal>
-                </goals>
-              </execution>
-            </executions>
-            <configuration>
-              <executable>mvn</executable>
-              <arguments>
-                <argument>deploy:deploy-file</argument>
-                <argument>-DgroupId=${project.groupId}</argument>
-                <argument>-DartifactId=${project.artifactId}</argument>
-                <argument>-Dversion=${project.version}</argument>
-                <argument>-Dpackaging=dylib</argument>
-                <argument>-Dfile=${project.build.directory}/libJsapi2MacBridge-${project.version}.dylib</argument>
-                <argument>-DrepositoryId=github</argument>
-                <argument>-Durl=https://maven.pkg.github.com/umjammer/jsapi</argument>
-                <argument>-DgeneratePom=false</argument>
-                <argument>-s</argument>
-                <argument>${env.GITHUB_WORKSPACE}/settings.xml</argument>
-              </arguments>
-            </configuration>
-          </plugin>
-
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M7</version>
-            <configuration>
-              <forkMode>once</forkMode>
-              <argLine>
-                -Djava.util.logging.config.file=${project.build.testOutputDirectory}/logging.properties
-                -Djava.library.path=${project.build.testOutputDirectory}
-              </argLine>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
-
   <build>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.10.1</version>
-        <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
-          <encoding>UTF-8</encoding>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.0.0-M7</version>
         <configuration>
-          <trimStackTrace>false</trimStackTrace>
+          <reuseForks>true</reuseForks>
           <argLine>
             -Djava.util.logging.config.file=${project.build.testOutputDirectory}/logging.properties
           </argLine>
@@ -224,6 +48,11 @@
       <groupId>org.jvoicexml</groupId>
       <artifactId>org.jvoicexml.jsapi2</artifactId>
       <version>0.6.3</version>
+    </dependency>
+    <dependency>
+      <groupId>net.java.dev.jna</groupId>
+      <artifactId>jna</artifactId>
+      <version>5.14.0</version>
     </dependency>
 
     <dependency>
