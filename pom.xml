@@ -8,7 +8,7 @@
 
   <groupId>org.jvoicexml</groupId>
   <artifactId>jsapi</artifactId>
-  <version>0.6.4</version>
+  <version>0.6.5</version>
   <packaging>pom</packaging>
 
   <modules>
@@ -36,9 +36,9 @@
     <system>https//github.com/umjammer/jsapi/issues</system>
   </issueManagement>
 
-  <properties> <!-- TODO temporary cause cyclic dependency -->
-    <freetts.groupId>org.mobicents.external.freetts</freetts.groupId>
-    <freetts.version>1.0</freetts.version>
+  <properties>
+    <freetts.groupId>com.github.umjammer.FreeTTS</freetts.groupId>
+    <freetts.version>1.2.5</freetts.version>
   </properties>
 
   <build>
