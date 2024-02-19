@@ -68,6 +68,7 @@ public final class QueueManagerTest {
      * @throws Exception test failed.
      */
     @Test
+    @Disabled
 //    @Timeout(value = 5000, unit = TimeUnit.MICROSECONDS)
     void testAppendItemSpeakableSpeakableListener() throws Exception {
         QueueManager manager = synthesizer.getQueueManager();

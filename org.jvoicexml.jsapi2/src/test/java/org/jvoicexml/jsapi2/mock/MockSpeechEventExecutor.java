@@ -41,7 +41,7 @@ public class MockSpeechEventExecutor implements SpeechEventExecutor {
         if (command == null) {
             throw new NullPointerException("command must not be null!");
         }
-new Exception().printStackTrace();
+new Exception("***DUMMY***").printStackTrace(System.err);
         Thread thread = new Thread(null, command, "Mock Speech Event");
         thread.start();
     }

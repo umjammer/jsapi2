@@ -41,6 +41,8 @@
 
 package org.jvoicexml.jsapi2;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.util.Collection;
 import javax.speech.AudioException;
 import javax.speech.AudioManager;
@@ -53,7 +55,7 @@ import javax.speech.EngineStateException;
 import javax.speech.SpeechEventExecutor;
 import javax.speech.VocabularyManager;
 
-import vavi.util.Debug;
+import static java.lang.System.getLogger;
 
 
 /**
@@ -78,6 +80,8 @@ import vavi.util.Debug;
  */
 public abstract class BaseEngine implements Engine {
 
+    private static final Logger logger = getLogger(BaseEngine.class.getName());
+    
     /**
      * A bitmask holding the current state of this <code>Engine</code>.
      */
@@ -554,7 +558,7 @@ public abstract class BaseEngine implements Engine {
     protected final void postEngineEvent(EngineEvent event) {
         // Filter all events which are not observable due to the engine mask
         int id = event.getId();
-Debug.printf("event filtered: %s, %s, &: %08x, i: %08x, m: %08x", (engineMask & id) != id, event, engineMask & id, id, engineMask);
+logger.log(Level.TRACE, "event filtered: %s, %s, &: %08x, i: %08x, m: %08x", (engineMask & id) != id, event, engineMask & id, id, engineMask);
         if ((engineMask & id) != id) {
             return;
         }
