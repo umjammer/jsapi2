@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.jvoicexml</groupId>
     <artifactId>jsapi</artifactId>
-    <version>0.6.4</version>
+    <version>0.6.5</version>
   </parent>
 
   <artifactId>org.jvoicexml.jsapi2.freetts</artifactId>
@@ -43,7 +43,7 @@
     <dependency>
       <groupId>org.jvoicexml</groupId>
       <artifactId>org.jvoicexml.jsapi2</artifactId>
-      <version>0.6.4</version>
+      <version>0.6.5</version>
     </dependency>
     <dependency>
       <groupId>${freetts.groupId}</groupId>
