@@ -13,8 +13,8 @@ public final class MacRecognizerMode extends RecognizerMode implements EngineFac
      * Constructs a new object.
      */
     public MacRecognizerMode() {
-        super("Apple MacOSX", "CoreSpeech", Boolean.FALSE, Boolean.TRUE,
-                Boolean.TRUE, RecognizerMode.MEDIUM_SIZE, null, null);
+        super("Apple MacOSX", "CoreSpeech", false, true,
+                true, RecognizerMode.MEDIUM_SIZE, null, null);
     }
 
     /**

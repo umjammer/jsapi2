@@ -20,6 +20,7 @@
           <reuseForks>true</reuseForks>
           <argLine>
             -Djava.util.logging.config.file=${project.build.testOutputDirectory}/logging.properties
+            -Dvavi.util.logging.VaviFormatter.extraClassMethod=sun\\.util\\.logging\\.internal\\.LoggingProviderImpl\\$JULWrapper#log
           </argLine>
         </configuration>
       </plugin>
@@ -50,9 +51,9 @@
       <version>0.6.3</version>
     </dependency>
     <dependency>
-      <groupId>net.java.dev.jna</groupId>
-      <artifactId>jna</artifactId>
-      <version>5.14.0</version>
+      <groupId>com.github.umjammer.rococoa</groupId>
+      <artifactId>rococoa-contrib</artifactId>
+      <version>0.8.7</version>
     </dependency>
 
     <dependency>
@@ -68,6 +69,12 @@
     <dependency>
       <groupId>org.junit.platform</groupId>
       <artifactId>junit-platform-commons</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.github.umjammer</groupId>
+      <artifactId>vavi-commons</artifactId>
       <scope>test</scope>
     </dependency>
 

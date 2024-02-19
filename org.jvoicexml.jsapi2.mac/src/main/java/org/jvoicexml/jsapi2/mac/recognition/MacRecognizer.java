@@ -34,9 +34,6 @@ public final class MacRecognizer extends BaseRecognizer {
     /** Logger for this class. */
     private static final Logger logger = System.getLogger(MacRecognizer.class.getName());
 
-    /** SAPI recognizer Handle. **/
-    private long recognizerHandle;
-
     /**
      * Constructs a new object.
      *
@@ -48,46 +45,27 @@ public final class MacRecognizer extends BaseRecognizer {
 
     @Override
     public Collection<Grammar> getBuiltInGrammars() {
-        return macGetBuildInGrammars(recognizerHandle);
-    }
-
-    private Collection<Grammar> macGetBuildInGrammars(long handle){
-        logger.log(Level.DEBUG, "macGetBuildInGrammars");
+logger.log(Level.DEBUG, "macGetBuildInGrammars");
         return null;
     }
 
     @Override
     public void handleAllocate() throws EngineStateException, EngineException, AudioException, SecurityException {
-        recognizerHandle = macAllocate();
-    }
-
-    private long macAllocate() {
-        logger.log(Level.DEBUG, "macAllocate");
-        return 0L;
+logger.log(Level.DEBUG, "macAllocate");
     }
 
     @Override
     public void handleDeallocate() {
-        macDeallocate(recognizerHandle);
-    }
-
-    private void macDeallocate(long handle) {
         logger.log(Level.DEBUG, "macDeallocate");
     }
+
     @Override
     protected void handlePause() {
-        macPause(recognizerHandle);
-    }
-
-    private void macPause(long handle) {
         logger.log(Level.DEBUG, "macPause");
     }
+
     @Override
     protected void handlePause(int flags) {
-        macPause(recognizerHandle, flags);
-    }
-
-    private void macPause(long handle, int flags) {
         logger.log(Level.DEBUG, "macPause");
     }
 
@@ -118,11 +96,8 @@ public final class MacRecognizer extends BaseRecognizer {
             }
             ++i;
         }
-        return macResume(recognizerHandle, grammarSources);
-    }
 
-    private boolean macResume(long handle, String[] grammars) throws EngineStateException {
-        logger.log(Level.DEBUG, "macResume");
+logger.log(Level.DEBUG, "macResume");
         return false;
     }
 
@@ -132,19 +107,11 @@ public final class MacRecognizer extends BaseRecognizer {
     }
 
     public boolean setGrammar(String grammarPath) {
-        return macSetGrammar(recognizerHandle, grammarPath);
-    }
-
-    private boolean macSetGrammar(long handle, String grammarPath) {
-        logger.log(Level.DEBUG, "macSetGrammar");
+logger.log(Level.DEBUG, "macSetGrammar");
         return false;
     }
 
     void startRecognition() {
-        start(recognizerHandle);
-    }
-
-    private void start(long handle) {
         logger.log(Level.DEBUG, "start");
     }
 

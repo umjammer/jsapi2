@@ -1,20 +1,22 @@
 package org.jvoicexml.jsapi2.mac;
 
 import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
-import javax.speech.EngineException;
 import javax.speech.EngineList;
 import javax.speech.EngineMode;
+import javax.speech.SpeechLocale;
 import javax.speech.spi.EngineListFactory;
 import javax.speech.synthesis.SynthesizerMode;
 import javax.speech.synthesis.Voice;
 
+import org.jvoicexml.jsapi2.mac.rococoa.NSSpeechSynthesizer;
+import org.jvoicexml.jsapi2.mac.rococoa.NSVoice;
 import org.jvoicexml.jsapi2.mac.synthesis.MacSynthesizerMode;
 
 import static java.lang.System.getLogger;
-import static org.jvoicexml.jsapi2.mac.MacNativeLibrary.noErr;
 
 
 /**
@@ -30,15 +32,11 @@ public class MacEngineListFactory implements EngineListFactory {
     public EngineList createEngineList(EngineMode require) {
         if (require instanceof SynthesizerMode) {
             SynthesizerMode mode = (SynthesizerMode) require;
-            Voice[] allVoices = new Voice[0];
-            try {
-                allVoices = macGetVoices();
-            } catch (EngineException e) {
-                throw new RuntimeException(e);
-            }
+            List<Voice> allVoices = getVoices();
+logger.log(Level.INFO, "voices: " + allVoices.size());
             List<Voice> voices = new ArrayList<>();
             if (mode.getVoices() == null) {
-                voices.addAll(Arrays.asList(allVoices));
+                voices.addAll(allVoices);
             } else {
                 for (Voice availableVoice : allVoices) {
                     for (Voice requiredVoice : mode.getVoices()) {
@@ -56,7 +54,7 @@ public class MacEngineListFactory implements EngineListFactory {
         }
         // Mac Recognizer unusable as it is
 //		if (require instanceof RecognizerMode) {
-//			final RecognizerMode[] features = new RecognizerMode[] { new MacRecognizerMode() };
+//			RecognizerMode[] features = new RecognizerMode[] { new MacRecognizerMode() };
 //			return new EngineList(features);
 //		}
 
@@ -68,48 +66,26 @@ public class MacEngineListFactory implements EngineListFactory {
      *
      * @return all voices
      */
-    private Voice[] macGetVoices() throws EngineException {
-
-//  logger.log(Level.DEBUG, "macGetVoices");
-
-        int /* OSErr */ theErr = noErr;
-        short numOfVoices;
-
-        theErr = CountVoices(numOfVoices);
-
-        if (theErr != noErr) {
-            throw new EngineException("No voices found");
+    private static List<Voice> getVoices() {
+        List<Voice> voiceList = new LinkedList<>();
+        for (NSVoice nativeVoice : NSSpeechSynthesizer.availableVoices()) {
+            Voice voice = new Voice(new SpeechLocale(nativeVoice.getLocaleIdentifier()),
+                    nativeVoice.getName(),
+                    toGenger(nativeVoice.getGender()),
+                    nativeVoice.getAge(),
+                    Voice.VARIANT_DONT_CARE);
+            voiceList.add(voice);
         }
+        return voiceList;
+    }
 
-//  logger.log(Level.DEBUG, "Nr. of Voices " << numOfVoices);
-
-        Voice[] jvoices = new Voice[numOfVoices];
-
-        if (jvoices == null) {;
-            throw new NullPointerException("Error creating the voices array!");
-        }
-
-        // iterate all voices - they really do start at index 1
-        int voiceIndex;
-        for (voiceIndex = 1; voiceIndex <= numOfVoices; voiceIndex++) {
-            VoiceDescription voiceDesc;
-            VoiceSpec	theVoiceSpec;
-
-            theErr = GetIndVoice(voiceIndex, theVoiceSpec);
-            if (theErr != noErr)
-                throw new EngineException("Cannot get voice");
-
-            theErr = GetVoiceDescription(theVoiceSpec, voiceDesc, sizeof(voiceDesc));
-            if (theErr != noErr)
-                throw new EngineException("Cannot get voice description");
-
-            byte[] voiceName = voiceDesc.name[1];
-
-            String name = new String(voiceName);
-            Voice voice = new Voice( null, name, -1, -1, -1);
-            jvoices[voiceIndex - 1] = voice;
-        }
-
-        return jvoices;
+    /** */
+    private static int toGenger(NSVoice.VoiceGender gender) {
+        return switch (gender) {
+            case Female -> Voice.GENDER_FEMALE;
+            case Male -> Voice.GENDER_MALE;
+            case Neuter -> Voice.GENDER_NEUTRAL;
+            default -> Voice.GENDER_DONT_CARE;
+        };
     }
 }
