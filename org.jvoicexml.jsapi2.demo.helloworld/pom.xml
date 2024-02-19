@@ -48,6 +48,16 @@
       <groupId>org.jvoicexml</groupId>
       <artifactId>org.jvoicexml.jsapi2.freetts</artifactId>
       <version>0.6.4</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>javax.speech</artifactId>
+          <groupId>com.github.umjammer.jsapi</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>org.jvoicexml.jsapi2.freetts</artifactId>
+          <groupId>com.github.umjammer.jsapi</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <dependency>
