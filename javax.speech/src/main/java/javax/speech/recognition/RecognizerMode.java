@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.speech.EngineMode;
-import javax.speech.JavaSpeechSecurity;
 import javax.speech.SpeechLocale;
 
 // Comp 2.0.6
@@ -222,7 +221,6 @@ public class RecognizerMode extends EngineMode {
      * @see javax.speech.recognition.SpeakerManager#listKnownSpeakers()
      */
     public SpeakerProfile[] getSpeakerProfiles() {
-        JavaSpeechSecurity.checkPermission("javax.speech.recognition.SpeakerProfile");
         return profiles;
     }
 

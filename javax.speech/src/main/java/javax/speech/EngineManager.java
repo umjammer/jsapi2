@@ -399,7 +399,6 @@ public class EngineManager {
      */
     public static void registerEngineListFactory(String className)
             throws IllegalArgumentException, EngineException, SecurityException {
-        JavaSpeechSecurity.checkPermission("javax.speech.EngineManager.registerEngineListFactory");
         Class<?> clazz;
         try {
             clazz = Class.forName(className);
