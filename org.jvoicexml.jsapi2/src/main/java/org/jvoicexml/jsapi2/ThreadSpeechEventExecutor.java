@@ -4,6 +4,7 @@
  * Copyright (C) 2007-2017 JVoiceXML group - http://jvoicexml.sourceforge.net
  *
  */
+
 package org.jvoicexml.jsapi2;
 
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.logging.Logger;
  * There is only one single thread that is responsible to execute the
  * commands asynchronously.
  * </p>
+ *
  * @author Renato Cassaca
  */
 public final class ThreadSpeechEventExecutor implements TerminatableSpeechEventExecutor, Runnable {
@@ -48,7 +50,7 @@ public final class ThreadSpeechEventExecutor implements TerminatableSpeechEventE
 
     /**
      * {@inheritDoc}
-     *
+     * <p>
      * Terminates the execution thread.
      */
     @Override
@@ -64,7 +66,7 @@ public final class ThreadSpeechEventExecutor implements TerminatableSpeechEventE
             commands.notifyAll();
         }
         thread.shutdown();
-logger.finer("shutdown services: " + thread.isShutdown());
+        logger.finer("shutdown services: " + thread.isShutdown());
     }
 
     /**

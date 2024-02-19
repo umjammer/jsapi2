@@ -27,8 +27,7 @@ import org.jvoicexml.jsapi2.BaseEngineProperties;
  * @author Dirk Schnelle-Walka
  * @version $Revision$
  */
-public class BaseSynthesizerProperties extends BaseEngineProperties
-        implements SynthesizerProperties {
+public class BaseSynthesizerProperties extends BaseEngineProperties implements SynthesizerProperties {
 
     /** Name of the interruptibility property in events. */
     public static final String INTERRUPTIBILITY = "interruptibility";

@@ -27,75 +27,65 @@
 package org.jvoicexml.jsapi2;
 
 import java.security.Permission;
-
 import javax.speech.EngineStateException;
 import javax.speech.SpeechLocale;
 import javax.speech.SpeechPermission;
 import javax.speech.VocabularyManager;
 import javax.speech.Word;
 
+
 /**
  * Base implementation of a {@link VocabularyManager}. This implementation is
  * currently empty.
- * @author Dirk Schnelle-Walka
  *
+ * @author Dirk Schnelle-Walka
  */
 public class BaseVocabularyManager implements VocabularyManager {
+
     @Override
-    public void addWord(Word word) throws EngineStateException,
-            SecurityException {
+    public void addWord(Word word) throws EngineStateException, SecurityException {
         SecurityManager security = System.getSecurityManager();
         if (security != null) {
-            Permission permission = new SpeechPermission(
-                    "javax.speech.VocabularyManager.update");
+            Permission permission = new SpeechPermission("javax.speech.VocabularyManager.update");
             security.checkPermission(permission);
         }
     }
 
     @Override
-    public void addWords(Word[] words) throws EngineStateException,
-            SecurityException {
+    public void addWords(Word[] words) throws EngineStateException, SecurityException {
         SecurityManager security = System.getSecurityManager();
         if (security != null) {
-            Permission permission = new SpeechPermission(
-                    "javax.speech.VocabularyManager.update");
+            Permission permission = new SpeechPermission("javax.speech.VocabularyManager.update");
             security.checkPermission(permission);
         }
     }
 
     @Override
-    public String[] getPronounciations(String text,
-                                       SpeechLocale locale)
-            throws EngineStateException {
+    public String[] getPronounciations(String text, SpeechLocale locale) throws EngineStateException {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Word[] getWords(String text, SpeechLocale locale)
-            throws EngineStateException {
+    public Word[] getWords(String text, SpeechLocale locale) throws EngineStateException {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public void removeWord(Word word) throws EngineStateException,
-            IllegalArgumentException, SecurityException {
+    public void removeWord(Word word) throws EngineStateException, IllegalArgumentException, SecurityException {
         SecurityManager security = System.getSecurityManager();
         if (security != null) {
-            Permission permission = new SpeechPermission(
-                    "javax.speech.VocabularyManager.update");
+            Permission permission = new SpeechPermission("javax.speech.VocabularyManager.update");
             security.checkPermission(permission);
         }
     }
 
     @Override
-    public void removeWords(Word[] words) throws EngineStateException,
-            IllegalArgumentException, SecurityException {
+    public void removeWords(Word[] words) throws EngineStateException, IllegalArgumentException, SecurityException {
         SecurityManager security = System.getSecurityManager();
         if (security != null) {
-            Permission permission = new SpeechPermission(
-                    "javax.speech.VocabularyManager.update");
+            Permission permission = new SpeechPermission("javax.speech.VocabularyManager.update");
             security.checkPermission(permission);
         }
     }

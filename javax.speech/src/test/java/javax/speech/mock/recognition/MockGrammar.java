@@ -31,65 +31,49 @@ import javax.speech.recognition.GrammarListener;
 import javax.speech.recognition.GrammarManager;
 import javax.speech.recognition.ResultListener;
 
+
 /**
  * Grammar for test purposes.
- * 
+ *
  * @author Dirk Schnelle-Walka
  */
 public class MockGrammar implements Grammar {
 
     public void addGrammarListener(GrammarListener listener) {
-        // TODO Auto-generated method stub
-        
     }
 
     public void removeGrammarListener(GrammarListener listener) {
-        // TODO Auto-generated method stub
-        
     }
 
     public void addResultListener(ResultListener listener) {
-        // TODO Auto-generated method stub
-        
     }
 
     public void removeResultListener(ResultListener listener) {
-        // TODO Auto-generated method stub
-        
     }
 
     public int getActivationMode() {
-        // TODO Auto-generated method stub
         return 0;
     }
 
     public GrammarManager getGrammarManager() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     public String getReference() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     public void setActivationMode(int mode) throws IllegalArgumentException {
-        // TODO Auto-generated method stub
-        
     }
 
     public boolean isActive() {
-        // TODO Auto-generated method stub
         return false;
     }
 
     public boolean isActivatable() {
-        // TODO Auto-generated method stub
         return false;
     }
 
     public void setActivatable(boolean activatable) {
-        // TODO Auto-generated method stub
-        
     }
-    }
+}

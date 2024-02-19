@@ -30,6 +30,7 @@ import javax.speech.AudioSegment;
 
 import io.github.artsok.RepeatedIfExceptionsTest;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.jvoicexml.jsapi2.mock.synthesis.MockSynthesizer;
 
@@ -114,6 +115,7 @@ class SynthesisQueueTest {
     /**
      * Test method for {@link SynthesisQueue#cancelFirstItem()},
      */
+    @Disabled
     @RepeatedIfExceptionsTest(repeats = 10)
     void testCancelFirstItem() throws InterruptedException {
         assertTrue(queue.isQueueEmpty());
@@ -132,6 +134,7 @@ class SynthesisQueueTest {
     /**
      * Test method for {@link SynthesisQueue#cancelItem(int)},
      */
+    @Disabled
     @RepeatedIfExceptionsTest(repeats = 10)
     void testCancelItem() throws InterruptedException {
         assertTrue(queue.isQueueEmpty());

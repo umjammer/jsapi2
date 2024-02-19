@@ -79,8 +79,7 @@ public abstract class BaseEngineProperties implements EngineProperties {
      * @param eng the engine for which these properties apply.
      */
     protected BaseEngineProperties(BaseEngine eng) {
-        propertyChangeListeners =
-                new java.util.ArrayList<>();
+        propertyChangeListeners = new java.util.ArrayList<>();
         engine = eng;
         priority = EngineProperties.NORM_TRUSTED_PRIORITY;
         base = "";

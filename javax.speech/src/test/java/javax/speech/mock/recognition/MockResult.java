@@ -31,9 +31,10 @@ import javax.speech.recognition.Result;
 import javax.speech.recognition.ResultListener;
 import javax.speech.recognition.ResultToken;
 
+
 /**
  * Result for test purposes.
- * 
+ *
  * @author Dirk Schnelle
  */
 public class MockResult implements Result {

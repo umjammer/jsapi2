@@ -7,7 +7,6 @@
 package org.jvoicexml.jsapi2.synthesis.freetts;
 
 import java.util.Locale;
-
 import javax.speech.SpeechLocale;
 
 /*
@@ -28,9 +27,8 @@ public class FreeTTSVoice extends javax.speech.synthesis.Voice {
 
     /**
      * Constructs a FreeTTSVoice
-     * 
-     * @param voice
-     *                the freetts voice
+     *
+     * @param voice the freetts voice
      */
     public FreeTTSVoice(com.sun.speech.freetts.Voice voice) {
         super(toSpeechLocale(voice.getLocale()), voice.getName(),
@@ -44,6 +42,7 @@ public class FreeTTSVoice extends javax.speech.synthesis.Voice {
 
     /**
      * Converts the given {@link Locale} to a {@link SpeechLocale}.
+     *
      * @param locale the locale to convert
      * @return the converted speech locale
      */
@@ -59,10 +58,8 @@ public class FreeTTSVoice extends javax.speech.synthesis.Voice {
 
     /**
      * Convert a freetts gender to jsapi gender
-     * 
-     * @param gender
-     *                the freetts gender
-     * 
+     *
+     * @param gender the freetts gender
      * @return the jsapi gender
      */
     private static int genderToInt(com.sun.speech.freetts.Gender gender) {
@@ -82,10 +79,8 @@ public class FreeTTSVoice extends javax.speech.synthesis.Voice {
 
     /**
      * Convert a freetts age to jsapi age
-     * 
-     * @param age
-     *                the freetts age
-     * 
+     *
+     * @param age the freetts age
      * @return the jsapi age
      */
     private static int ageToInt(com.sun.speech.freetts.Age age) {
@@ -111,7 +106,7 @@ public class FreeTTSVoice extends javax.speech.synthesis.Voice {
 
     /**
      * Gets a string representation of the object
-     * 
+     *
      * @return the name of this voice
      */
     public String toString() {
@@ -120,7 +115,7 @@ public class FreeTTSVoice extends javax.speech.synthesis.Voice {
 
     /**
      * Gets a FreeTTS com.sun.speech.freetts.Voice from this JSAPI voice
-     * 
+     *
      * @return a FreeTTS Voice or null, if the voice cannot be found
      */
     public synchronized com.sun.speech.freetts.Voice getVoice() {

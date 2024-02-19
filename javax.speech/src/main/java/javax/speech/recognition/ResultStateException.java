@@ -37,5 +37,4 @@ public class ResultStateException extends IllegalStateException {
     public ResultStateException(String message) {
         super(message);
     }
-
 }

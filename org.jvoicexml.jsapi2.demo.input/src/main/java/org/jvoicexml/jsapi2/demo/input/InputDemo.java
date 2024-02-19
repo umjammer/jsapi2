@@ -17,7 +17,6 @@ import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.speech.AudioManager;
 import javax.speech.Engine;
 import javax.speech.EngineManager;
@@ -36,9 +35,9 @@ import javax.speech.synthesis.SynthesizerMode;
 import org.jvoicexml.jsapi2.recognition.sphinx4.SphinxEngineListFactory;
 import org.jvoicexml.jsapi2.synthesis.freetts.FreeTTSEngineListFactory;
 
+
 /**
  * @author Dirk Schnelle-Walka
- * 
  */
 public final class InputDemo implements ResultListener {
     /** The synthesizer to use. */
@@ -55,9 +54,8 @@ public final class InputDemo implements ResultListener {
 
     /**
      * Working method for the demo.
-     * 
-     * @throws Exception
-     *             error running the demo
+     *
+     * @throws Exception error running the demo
      */
     public void run() throws Exception {
         // Create a synthesizer for the default Locale.
@@ -110,9 +108,8 @@ public final class InputDemo implements ResultListener {
 
     /**
      * Starts this demo.
-     * 
-     * @param args
-     *            command line arguments.
+     *
+     * @param args command line arguments.
      */
     public static void main(String[] args) {
         InputDemo demo = new InputDemo();

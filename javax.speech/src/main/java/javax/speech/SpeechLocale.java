@@ -29,15 +29,15 @@ package javax.speech;
 //Comp. 2.0.6
 
 public final class SpeechLocale {
+
     public static final SpeechLocale ENGLISH;
 
     public static final SpeechLocale US;
-    
+
     public static final SpeechLocale FRENCH;
 
     public static final SpeechLocale GERMAN;
 
-    
     /**
      * The default locale. Except for during bootstrapping, this should never be
      * null. Note the logic in the main constructor, to detect when
@@ -66,9 +66,8 @@ public final class SpeechLocale {
 
     /**
      * Convert new iso639 codes to the old ones.
-     * 
-     * @param language
-     *            the language to check
+     *
+     * @param language the language to check
      * @return the appropriate code
      */
     private String convertLanguage(String language) {
@@ -100,7 +99,7 @@ public final class SpeechLocale {
     }
 
     public static SpeechLocale[] getAvailableLocales() {
-        return new SpeechLocale[] { ENGLISH, US, FRENCH, GERMAN };
+        return new SpeechLocale[] {ENGLISH, US, FRENCH, GERMAN};
     }
 
     public String getLanguage() {
@@ -181,7 +180,7 @@ public final class SpeechLocale {
         }
         return true;
     }
-    
+
     public String toString() {
         if ((language.length() == 0) && (country.length() == 0)) {
             return "";
@@ -198,5 +197,4 @@ public final class SpeechLocale {
 
         return str.toString();
     }
-
 }

@@ -28,21 +28,20 @@ package org.jvoicexml.jsapi2.recognition.sphinx4;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.speech.recognition.GrammarException;
 import javax.speech.recognition.ResultEvent;
 import javax.speech.recognition.RuleGrammar;
-
-import org.jvoicexml.jsapi2.recognition.BaseResult;
 
 import edu.cmu.sphinx.decoder.ResultListener;
 import edu.cmu.sphinx.result.Result;
 import edu.cmu.sphinx.util.props.PropertyException;
 import edu.cmu.sphinx.util.props.PropertySheet;
+import org.jvoicexml.jsapi2.recognition.BaseResult;
+
 
 /**
  * Result listener for results from the sphinx recognizer.
- * 
+ *
  * @author Dirk Schnelle
  * @author Stefan Radomski
  * @version $Revision: 608 $
@@ -60,9 +59,8 @@ class Sphinx4ResultListener implements ResultListener {
 
     /**
      * Construct a new result listener.
-     * 
-     * @param rec
-     *            The recognizer.
+     *
+     * @param rec The recognizer.
      */
     public Sphinx4ResultListener(Sphinx4Recognizer rec) {
         recognizer = rec;
@@ -70,9 +68,8 @@ class Sphinx4ResultListener implements ResultListener {
 
     /**
      * Method called when a result is generated.
-     * 
-     * @param result
-     *            The new result.
+     *
+     * @param result The new result.
      */
     @Override
     public void newResult(Result result) {
@@ -83,7 +80,7 @@ class Sphinx4ResultListener implements ResultListener {
             return;
         }
 
-        if(result.toString().contains("<unk>")) {
+        if (result.toString().contains("<unk>")) {
             LOGGER.warning(
                     "result contains <unk> which represents negative result");
             return;

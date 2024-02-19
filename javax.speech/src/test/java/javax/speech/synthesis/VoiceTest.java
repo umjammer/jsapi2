@@ -27,17 +27,21 @@
 package javax.speech.synthesis;
 
 import java.util.Locale;
-
 import javax.speech.SpeechLocale;
 
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 /**
  * Test case for {@link javax.speech.synthesis.Voice}.
- * 
+ *
  * @author Dirk Schnelle-Walka
- * 
  */
 public class VoiceTest {
 

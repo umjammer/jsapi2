@@ -257,7 +257,7 @@ final class Sphinx4Recognizer extends BaseRecognizer {
      * According to JSAPI2 specs, pause is transitioned before dealloc.
      *
      * @throws EngineException if this <code>Engine</code> cannot be deallocated.
-     * TODO Implement this com.sun.speech.engine.BaseEngine method
+     *                         TODO Implement this com.sun.speech.engine.BaseEngine method
      */
     public void handleDeallocate() {
 
@@ -340,6 +340,7 @@ final class Sphinx4Recognizer extends BaseRecognizer {
 
     /**
      * TODO in case of grammarDefinition.size > 1, make <one-of> of all the grammars
+     *
      * @param grammarDefinitions String[]
      * @return boolean
      */

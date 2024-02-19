@@ -23,7 +23,6 @@ import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.speech.Engine;
 import javax.speech.EngineManager;
 import javax.speech.synthesis.SpeakableEvent;
@@ -35,8 +34,10 @@ import javax.speech.synthesis.SynthesizerMode;
 
 import org.jvoicexml.jsapi2.synthesis.freetts.FreeTTSEngineListFactory;
 
+
 /**
  * A demo to output a synthesized text to the speaker.
+ *
  * @author Dirk Schnelle-Walka
  */
 public final class HelloWorldDemo implements SpeakableListener, SynthesizerListener {
@@ -48,6 +49,7 @@ public final class HelloWorldDemo implements SpeakableListener, SynthesizerListe
 
     /**
      * Starts this demo.
+     *
      * @param args command line arguments.
      */
     public static void main(String[] args) {

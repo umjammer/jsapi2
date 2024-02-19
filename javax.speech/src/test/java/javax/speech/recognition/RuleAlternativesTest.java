@@ -1,6 +1,7 @@
 /**
- * 
+ *
  */
+
 package javax.speech.recognition;
 
 import org.junit.jupiter.api.Test;
@@ -9,9 +10,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+
 /**
  * Test case for {@link javax.speech.recognition.RuleAlternatives}.
- * 
+ *
  * @author Dirk Schnelle
  */
 public class RuleAlternativesTest {
@@ -34,7 +36,7 @@ public class RuleAlternativesTest {
         assertEquals(RuleSpecial.VOID.toString(), str2);
 
         RuleComponent[] components3 = new RuleComponent[] {
-                new RuleToken("token"), new RuleTag("tag") };
+                new RuleToken("token"), new RuleTag("tag")};
         RuleAlternatives alternatives3 = new RuleAlternatives(components3);
         String str3 = alternatives3.toString();
         assertEquals("<one-of><item>token</item><item><tag>tag</tag></item>"
@@ -50,8 +52,8 @@ public class RuleAlternativesTest {
         String str5 = alternatives5.toString();
         assertEquals(RuleSpecial.VOID.toString(), str5);
 
-        String[] tokens6 = new String[] { "tokenOne", "tokenTwo",
-                "tokenThree" };
+        String[] tokens6 = new String[] {"tokenOne", "tokenTwo",
+                "tokenThree"};
         RuleAlternatives alternatives6 = new RuleAlternatives(tokens6);
         String str6 = alternatives6.toString();
         assertEquals("<one-of><item>tokenOne</item><item>tokenTwo</item>"
@@ -59,9 +61,9 @@ public class RuleAlternativesTest {
 
         RuleComponent[] components7 = new RuleComponent[] {
                 new RuleToken("token"), new RuleTag("tag"),
-                new RuleToken("otherToken") };
-        int[] weights7 = new int[] { RuleAlternatives.MIN_WEIGHT,
-                RuleAlternatives.NORM_WEIGHT, RuleAlternatives.MAX_WEIGHT };
+                new RuleToken("otherToken")};
+        int[] weights7 = new int[] {RuleAlternatives.MIN_WEIGHT,
+                RuleAlternatives.NORM_WEIGHT, RuleAlternatives.MAX_WEIGHT};
         RuleAlternatives alternatives7 = new RuleAlternatives(
                 components7, weights7);
         String str7 = alternatives7.toString();
@@ -69,12 +71,12 @@ public class RuleAlternativesTest {
                 + "\">token</item>"
                 + "<item><tag>tag</tag></item>"
                 + "<item weight=\""
-                +  RuleAlternatives.MAX_WEIGHT 
+                + RuleAlternatives.MAX_WEIGHT
                 + "\">otherToken</item></one-of>", str7);
 
         RuleComponent[] components8 = new RuleComponent[] {
                 new RuleToken("token"), new RuleTag("tag"),
-                new RuleToken("otherToken") };
+                new RuleToken("otherToken")};
         int[] weights8 = null;
         RuleAlternatives alternatives8 = new RuleAlternatives(
                 components8, weights8);
@@ -92,9 +94,9 @@ public class RuleAlternativesTest {
     void testRuleAlternativesRuleComponentArrayIntArray() {
         RuleComponent[] components1 = new RuleComponent[] {
                 new RuleToken("token"), new RuleTag("tag"),
-                new RuleToken("otherToken") };
-        int[] weights1 = new int[] { RuleAlternatives.MIN_WEIGHT,
-                RuleAlternatives.NORM_WEIGHT, RuleAlternatives.MAX_WEIGHT };
+                new RuleToken("otherToken")};
+        int[] weights1 = new int[] {RuleAlternatives.MIN_WEIGHT,
+                RuleAlternatives.NORM_WEIGHT, RuleAlternatives.MAX_WEIGHT};
         RuleAlternatives alternatives1 = new RuleAlternatives(
                 components1, weights1);
         assertNotNull(alternatives1);
@@ -103,7 +105,7 @@ public class RuleAlternativesTest {
 
         RuleComponent[] components2 = new RuleComponent[] {
                 new RuleToken("token"), new RuleTag("tag"),
-                new RuleToken("otherToken") };
+                new RuleToken("otherToken")};
         int[] weights2 = new int[] {};
         try {
             RuleAlternatives alternatives2 = new RuleAlternatives(
@@ -115,7 +117,7 @@ public class RuleAlternativesTest {
 
         RuleComponent[] components3 = new RuleComponent[] {
                 new RuleToken("token"), new RuleTag("tag"),
-                new RuleToken("otherToken") };
+                new RuleToken("otherToken")};
         int[] weights3 = null;
         RuleAlternatives alternatives3 = new RuleAlternatives(
                 components3, weights3);
@@ -123,8 +125,8 @@ public class RuleAlternativesTest {
 
         RuleComponent[] components4 = new RuleComponent[] {
                 new RuleToken("token"), new RuleTag("tag"),
-                new RuleToken("otherToken") };
-        int[] weights4 = new int[] { RuleAlternatives.NORM_WEIGHT };
+                new RuleToken("otherToken")};
+        int[] weights4 = new int[] {RuleAlternatives.NORM_WEIGHT};
 
         try {
             RuleAlternatives alternatives4 = new RuleAlternatives(
@@ -153,7 +155,7 @@ public class RuleAlternativesTest {
         assertEquals(0, actcomponents2.length);
 
         RuleComponent[] components3 = new RuleComponent[] {
-                new RuleToken("token"), new RuleTag("tag") };
+                new RuleToken("token"), new RuleTag("tag")};
         RuleAlternatives alternatives3 = new RuleAlternatives(components3);
         assertEquals(components3, alternatives3.getRuleComponents());
 
@@ -166,8 +168,8 @@ public class RuleAlternativesTest {
         RuleComponent[] components5 = alternatives5.getRuleComponents();
         assertEquals(0, components5.length);
 
-        String[] tokens6 = new String[] { "tokenOne", "tokenTwo",
-                "tokenThree" };
+        String[] tokens6 = new String[] {"tokenOne", "tokenTwo",
+                "tokenThree"};
         RuleAlternatives alternatives6 = new RuleAlternatives(tokens6);
         RuleComponent[] components6 = alternatives6.getRuleComponents();
         assertEquals(tokens6.length, components6.length);
@@ -179,16 +181,16 @@ public class RuleAlternativesTest {
 
         RuleComponent[] components7 = new RuleComponent[] {
                 new RuleToken("token"), new RuleTag("tag"),
-                new RuleToken("otherToken") };
-        int[] weights7 = new int[] { RuleAlternatives.MIN_WEIGHT,
-                RuleAlternatives.NORM_WEIGHT, RuleAlternatives.MAX_WEIGHT };
+                new RuleToken("otherToken")};
+        int[] weights7 = new int[] {RuleAlternatives.MIN_WEIGHT,
+                RuleAlternatives.NORM_WEIGHT, RuleAlternatives.MAX_WEIGHT};
         RuleAlternatives alternatives7 = new RuleAlternatives(
                 components7, weights7);
         assertEquals(components7, alternatives7.getRuleComponents());
 
         RuleComponent[] components8 = new RuleComponent[] {
                 new RuleToken("token"), new RuleTag("tag"),
-                new RuleToken("otherToken") };
+                new RuleToken("otherToken")};
         int[] weights8 = null;
         RuleAlternatives alternatives8 = new RuleAlternatives(
                 components8, weights8);
@@ -210,7 +212,7 @@ public class RuleAlternativesTest {
         assertNull(alternatives2.getWeights());
 
         RuleComponent[] components3 = new RuleComponent[] {
-                new RuleToken("token"), new RuleTag("tag") };
+                new RuleToken("token"), new RuleTag("tag")};
         RuleAlternatives alternatives3 = new RuleAlternatives(components3);
         assertNull(alternatives3.getWeights());
 
@@ -222,23 +224,23 @@ public class RuleAlternativesTest {
         RuleAlternatives alternatives5 = new RuleAlternatives(tokens5);
         assertNull(alternatives5.getWeights());
 
-        String[] tokens6 = new String[] { "tokenOne", "tokenTwo",
-                "tokenThree" };
+        String[] tokens6 = new String[] {"tokenOne", "tokenTwo",
+                "tokenThree"};
         RuleAlternatives alternatives6 = new RuleAlternatives(tokens6);
         assertNull(alternatives6.getWeights());
 
         RuleComponent[] components7 = new RuleComponent[] {
                 new RuleToken("token"), new RuleTag("tag"),
-                new RuleToken("otherToken") };
-        int[] weights7 = new int[] { RuleAlternatives.MIN_WEIGHT,
-                RuleAlternatives.NORM_WEIGHT, RuleAlternatives.MAX_WEIGHT };
+                new RuleToken("otherToken")};
+        int[] weights7 = new int[] {RuleAlternatives.MIN_WEIGHT,
+                RuleAlternatives.NORM_WEIGHT, RuleAlternatives.MAX_WEIGHT};
         RuleAlternatives alternatives7 = new RuleAlternatives(
                 components7, weights7);
         assertEquals(weights7, alternatives7.getWeights());
 
         RuleComponent[] components8 = new RuleComponent[] {
                 new RuleToken("token"), new RuleTag("tag"),
-                new RuleToken("otherToken") };
+                new RuleToken("otherToken")};
         int[] weights8 = null;
         RuleAlternatives alternatives8 = new RuleAlternatives(
                 components8, weights8);

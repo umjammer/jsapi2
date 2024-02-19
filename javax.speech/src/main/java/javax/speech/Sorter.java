@@ -29,6 +29,7 @@ package javax.speech;
 import java.util.Comparator;
 import java.util.List;
 
+
 class Sorter {
 
     private static <T> void quicksort(Comparator<T> comparator, List<T> vec, int lo0, int hi0) {

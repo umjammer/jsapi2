@@ -26,10 +26,35 @@
 
 package javax.speech.synthesis;
 
-//Comp 2.0.6
+// Comp 2.0.6
 
 import javax.speech.SpeechEventListener;
 
+
+/**
+ * The listener interface for receiving notification of events during
+ * spoken output of a Speakable.
+ * Events are requested by either:
+ * <p>
+ * Providing a SpeakableListener object when calling one of the speak or
+ * speakMarkup methods of a Synthesizer.
+ * <p>
+ * Attaching a SpeakableListener to a Synthesizer with its
+ * addSpeakableListener method.
+ * <p>
+ * The speakable events and the sequencing of events is defined in the
+ * documentation for SpeakableEvent.
+ * @see javax.speech.synthesis.Speakable
+ * @see javax.speech.synthesis.SpeakableEvent
+ * @see javax.speech.synthesis.Synthesizer
+ * @see javax.speech.synthesis.Synthesizer#addSpeakableListener(javax.speech.synthesis.SpeakableListener)
+ */
 public interface SpeakableListener extends SpeechEventListener {
+
+    /**
+     * Method called back to indicate an Speakable update.
+     * @param e a SpeakableEvent object
+     * @see javax.speech.synthesis.SpeakableEvent
+     */
     void speakableUpdate(SpeakableEvent e);
 }

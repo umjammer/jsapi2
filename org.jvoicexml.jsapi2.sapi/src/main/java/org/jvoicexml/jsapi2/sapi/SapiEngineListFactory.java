@@ -1,5 +1,6 @@
 package org.jvoicexml.jsapi2.sapi;
 
+import java.util.ArrayList;
 import javax.speech.EngineList;
 import javax.speech.EngineMode;
 import javax.speech.recognition.RecognizerMode;
@@ -11,12 +12,11 @@ import org.jvoicexml.jsapi2.sapi.logging.Log4CPlus2JavaLoggingAdapter;
 import org.jvoicexml.jsapi2.sapi.recognition.SapiRecognizerMode;
 import org.jvoicexml.jsapi2.sapi.synthesis.SapiSynthesizerMode;
 
-import java.util.ArrayList;
 
 /**
- * Factory for the SAPI engines. 
- * @author Dirk Schnelle-Walka
+ * Factory for the SAPI engines.
  *
+ * @author Dirk Schnelle-Walka
  */
 public final class SapiEngineListFactory implements EngineListFactory {
     static {
@@ -26,10 +26,10 @@ public final class SapiEngineListFactory implements EngineListFactory {
         } else {
             System.loadLibrary("Jsapi2SapiBridge_x64");
         }
-            
+
         // Start the logging adapter
         Log4CPlus2JavaLoggingAdapter adapter =
-            new Log4CPlus2JavaLoggingAdapter();
+                new Log4CPlus2JavaLoggingAdapter();
         adapter.start();
         adapter.waitStarted();
     }
@@ -42,7 +42,7 @@ public final class SapiEngineListFactory implements EngineListFactory {
             if (mode.getVoices() != null) {
                 //If a voice preference was presented
                 ArrayList<Voice> selectedVoices = new ArrayList<>();
-                for (Voice reqVoice: mode.getVoices()) {
+                for (Voice reqVoice : mode.getVoices()) {
                     for (Voice availVoice : voices) {
                         if (availVoice.match(reqVoice)) {
                             selectedVoices.add(availVoice);
@@ -67,19 +67,20 @@ public final class SapiEngineListFactory implements EngineListFactory {
                             mode.getRunning(), voices)
             };
             return new EngineList(features);
-        }            
+        }
         if (require instanceof RecognizerMode) {
-                RecognizerMode[] features = new RecognizerMode[] {
-                        new SapiRecognizerMode()
+            RecognizerMode[] features = new RecognizerMode[] {
+                    new SapiRecognizerMode()
             };
             return new EngineList(features);
         }
-        
+
         return null;
     }
 
     /**
      * Retrieves all voices.
+     *
      * @return all voices
      */
     private native Voice[] sapiGetVoices();

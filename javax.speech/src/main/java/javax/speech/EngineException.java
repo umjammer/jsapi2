@@ -26,15 +26,30 @@
 
 package javax.speech;
 
-//Comp. 2.0.6
+// Comp. 2.0.6
 
+/**
+ * Thrown if a problem is found while trying to create, access or use an
+ * EngineFactory, the EngineManager, or an Engine.
+ * @see javax.speech.spi.EngineFactory
+ * @see javax.speech.EngineManager
+ * @see javax.speech.Engine
+ */
 public class EngineException extends SpeechException {
 
+    /**
+     * Constructs an EngineException with no detail message.
+     */
     public EngineException() {
     }
 
+    /**
+     * Constructs an EngineException with a detail message.
+     * <p>
+     * A detail message is a String that describes this particular exception.
+     * @param s the detail message
+     */
     public EngineException(String s) {
         super(s);
     }
-
 }

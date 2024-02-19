@@ -35,7 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Test case for {@link javax.speech.AudioSegment}.
- * 
+ *
  * @author Dirk Schnelle
  */
 public class AudioSegmentTest {
@@ -74,8 +74,8 @@ public class AudioSegmentTest {
 
     /**
      * Test method for {@link javax.speech.AudioSegment#openInputStream()}.
-     * @throws Exception
-     *         test failed 
+     *
+     * @throws Exception test failed
      */
     @Test
     void testOpenInputStream() throws Exception {

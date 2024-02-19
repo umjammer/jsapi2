@@ -28,8 +28,24 @@ package javax.speech.recognition;
 
 import javax.speech.EngineListener;
 
-//Comp 2.0.6
+// Comp 2.0.6
 
+/**
+ * The listener interface for events associated with a Recognizer.
+ * <p>
+ * A RecognizerListener object is attached to and removed from a Recognizer
+ * by calls to the addRecognizerListener and removeRecognizerListener methods.
+ * @see javax.speech.recognition.Recognizer
+ * @see javax.speech.recognition.RecognizerEvent
+ * @see javax.speech.recognition.Recognizer#addRecognizerListener(javax.speech.recognition.RecognizerListener)
+ * @see javax.speech.recognition.Recognizer#removeRecognizerListener(javax.speech.recognition.RecognizerListener)
+ */
 public interface RecognizerListener extends EngineListener {
+
+    /**
+     * Method called back to indicate a Recognizer update.
+     * @param e a recognizer event
+     * @see javax.speech.recognition.RecognizerEvent
+     */
     void recognizerUpdate(RecognizerEvent e);
 }

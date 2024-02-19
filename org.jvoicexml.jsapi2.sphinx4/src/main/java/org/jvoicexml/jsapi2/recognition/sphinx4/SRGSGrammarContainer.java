@@ -9,12 +9,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.speech.recognition.RuleGrammar;
-
-import org.jvoicexml.jsapi2.recognition.BaseRecognizer;
-import org.jvoicexml.jsapi2.recognition.BaseRuleGrammar;
-import org.jvoicexml.jsapi2.recognition.GrammarDefinition;
 
 import edu.cmu.sphinx.decoder.search.Token;
 import edu.cmu.sphinx.linguist.SearchState;
@@ -25,24 +20,27 @@ import edu.cmu.sphinx.linguist.language.grammar.GrammarNode;
 import edu.cmu.sphinx.util.LogMath;
 import edu.cmu.sphinx.util.props.PropertyException;
 import edu.cmu.sphinx.util.props.PropertySheet;
+import org.jvoicexml.jsapi2.recognition.BaseRecognizer;
+import org.jvoicexml.jsapi2.recognition.BaseRuleGrammar;
+import org.jvoicexml.jsapi2.recognition.GrammarDefinition;
+
 
 /**
  * Sphinx4 SRGS grammar container.
- * 
+ *
  * <p>
  * This is a grammar for a linguist in sphinx4. There can not be more than one
  * grammar per linguist so we cheat by having a single grammar which contains
  * all the active grammars from the GrammarManager.
  * </p>
- * 
+ *
  * @author Stefan Radomski
  * @author Dirk Schnelle-Walka
  */
 
 public class SRGSGrammarContainer extends Grammar {
 
-    private static final Logger LOGGER = Logger
-            .getLogger(Sphinx4Recognizer.class.getName());
+    private static final Logger logger = Logger .getLogger(Sphinx4Recognizer.class.getName());
 
     /**
      * The GrammarDefinitions as set through loadGrammars from the
@@ -67,9 +65,8 @@ public class SRGSGrammarContainer extends Grammar {
 
     /**
      * Sets the recognizer.
-     * 
-     * @param rec
-     *            the recognizer
+     *
+     * @param rec the recognizer
      */
     public void setRecognizer(BaseRecognizer rec) {
         recognizer = rec;
@@ -82,17 +79,14 @@ public class SRGSGrammarContainer extends Grammar {
 
     /**
      * Load all the given grammars into this one.
-     * 
+     * <p>
      * The argument contains all active grammars with their names, their XML
      * representation and an indication whether they have changed.
-     * 
-     * @param grammarDefinitions
-     *            The set of all grammars from the GrammarManager
-     * @throws IOException
-     *             error loading the gramamrs
+     *
+     * @param grammarDefinitions The set of all grammars from the GrammarManager
+     * @throws IOException error loading the gramamrs
      */
-    public synchronized void loadGrammars(
-            Collection<org.jvoicexml.jsapi2.recognition.GrammarDefinition> grammarDefinitions)
+    public synchronized void loadGrammars(Collection<GrammarDefinition> grammarDefinitions)
             throws IOException {
         grammarDefs.clear();
         for (GrammarDefinition definition : grammarDefinitions) {
@@ -103,7 +97,7 @@ public class SRGSGrammarContainer extends Grammar {
 
     /**
      * Create the grammar.
-     * 
+     *
      * @return the initial node of the Grammar
      */
     @Override
@@ -114,11 +108,11 @@ public class SRGSGrammarContainer extends Grammar {
 
     /**
      * Returns the initial node for the grammar.
-     * 
+     * <p>
      * The sphinx4 linguist will rebuild its searchGraph iff this is a different
      * object than last time. It will check for every call to recognize() by the
      * RecognizerThread started in handleResume().
-     * 
+     *
      * @return the initial grammar node
      */
     @Override
@@ -139,9 +133,8 @@ public class SRGSGrammarContainer extends Grammar {
     /**
      * The {@link Sphinx4ResultListener} asked us for the grammar that produced
      * this list of tokens.
-     * 
-     * @param token
-     *            the processed token
+     *
+     * @param token the processed token
      * @return the rule grammar used to produce the list of tokens
      */
     public synchronized RuleGrammar getRuleGrammar(Token token) {
@@ -166,14 +159,13 @@ public class SRGSGrammarContainer extends Grammar {
 
     /**
      * Commit all pending changes.
-     * 
+     * <p>
      * All active grammars are in grammarDefs, if they were changed, they have
      * their hasChanges flag set. See if there is a new grammar, if an existing
      * one was deactivated or there have been changes to an active one. Build
      * new grammars in grammars hash and adapt firstNaode and ruleGrammar.
-     * 
-     * @throws IOException
-     *             error creating the grammar
+     *
+     * @throws IOException error creating the grammar
      */
     public synchronized void commitChanges() throws IOException {
 
@@ -202,7 +194,7 @@ public class SRGSGrammarContainer extends Grammar {
                 // no grammar with that name yet or changes to the grammar
                 existsChanges = true;
 
-                // reload the grammar (TODO: reuse existing object?)
+                // reload the grammar (TODO reuse existing object?)
                 SRGSGrammar grammar = new SRGSGrammar(recognizer, false, false,
                         false, false, dictionary);
                 grammar.setGrammarName(grammarName);
@@ -243,7 +235,7 @@ public class SRGSGrammarContainer extends Grammar {
                 // Gather all grammar nodes
                 grammarNodes.addAll(grammar.getGrammarNodes());
             }
-            
+
         }
 
         // Create an empty grammar if none exists so far since sphinx is not
@@ -254,12 +246,12 @@ public class SRGSGrammarContainer extends Grammar {
             grammarNodes.add(firstNode);
         }
 
-        if (LOGGER.isLoggable(Level.INFO)) {
+        if (logger.isLoggable(Level.INFO)) {
             StringBuilder sb = new StringBuilder();
             for (String activeGrammar : grammars.keySet()) {
                 sb.append(activeGrammar).append(" ");
             }
-            LOGGER.info("Activate grammars: " + sb);
+            logger.info("Activate grammars: " + sb);
         }
     }
 }

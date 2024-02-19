@@ -26,9 +26,26 @@
 
 package javax.speech.recognition;
 
-//Comp 2.0.6
+// Comp 2.0.6
 
+/**
+ * Provides access to a user interface for managing speaker and training data.
+ * <p>
+ * This interface allows a user to interactively provide additional information
+ * and training data to help improve performance.  The interface also provides
+ * a means to store and retrieve this data.
+ * <p>
+ * The documentation for the Thread class contains examples of how to use this
+ * interface in combination with the methods of Thread.
+ * <p>
+ * Not all implementations support this interface.
+ * @see java.lang.Thread
+ * @see java.lang.Runnable
+ * @see javax.speech.recognition.SpeakerManager
+ * @see javax.speech.recognition.SpeakerManager#getSpeakerManagerUI()
+ */
 public interface SpeakerManagerUI {
+
     Object getUI(String uiClassName);
 
     String[] getUIClassNames();

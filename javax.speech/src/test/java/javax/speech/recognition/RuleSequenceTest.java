@@ -1,15 +1,17 @@
 /**
- * 
+ *
  */
+
 package javax.speech.recognition;
 
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+
 /**
  * Test case for {@link javax.speech.recognition.RuleSequence}.
- * 
+ *
  * @author Dirk Schnelle-Walka
  */
 public class RuleSequenceTest {
@@ -28,7 +30,7 @@ public class RuleSequenceTest {
         assertEquals("", sequence2.toString());
 
         RuleComponent[] components3 = new RuleComponent[] {
-                new RuleToken("token"), new RuleTag("tag") };
+                new RuleToken("token"), new RuleTag("tag")};
         RuleSequence sequence3 = new RuleSequence(components3);
         StringBuilder str3 = new StringBuilder();
         for (RuleComponent component : components3) {
@@ -44,8 +46,8 @@ public class RuleSequenceTest {
         RuleSequence sequence5 = new RuleSequence(tokens5);
         assertEquals("", sequence5.toString());
 
-        String[] tokens6 = new String[] { "tokenOne", "tokenTwo",
-                "tokenThree" };
+        String[] tokens6 = new String[] {"tokenOne", "tokenTwo",
+                "tokenThree"};
         RuleSequence sequence6 = new RuleSequence(tokens6);
         StringBuilder str6 = new StringBuilder();
         for (String token : tokens6) {
@@ -71,7 +73,7 @@ public class RuleSequenceTest {
         assertEquals(0, actcomponents2.length);
 
         RuleComponent[] components3 = new RuleComponent[] {
-                new RuleToken("token"), new RuleTag("tag") };
+                new RuleToken("token"), new RuleTag("tag")};
         RuleSequence sequence3 = new RuleSequence(components3);
         assertEquals(components3, sequence3.getRuleComponents());
 
@@ -84,8 +86,8 @@ public class RuleSequenceTest {
         RuleComponent[] components5 = sequence5.getRuleComponents();
         assertEquals(0, components5.length);
 
-        String[] tokens6 = new String[] { "tokenOne", "tokenTwo",
-                "tokenThree" };
+        String[] tokens6 = new String[] {"tokenOne", "tokenTwo",
+                "tokenThree"};
         RuleSequence sequence6 = new RuleSequence(tokens6);
         RuleComponent[] components6 = sequence6.getRuleComponents();
         assertEquals(tokens6.length, components6.length);

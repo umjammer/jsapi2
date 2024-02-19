@@ -1,7 +1,7 @@
-[![GitHub Packages](https://github.com/umjammer/jsapi/actions/workflows/maven-publish.yml/badge.svg)](https://github.com/umjammer/jsapi/actions/workflows/maven-publish.yml)
+[![Release](https://jitpack.io/v/umjammer/jsapi.svg)](https://jitpack.io/#umjammer/jsapi)
 [![Java CI](https://github.com/umjammer/jsapi/actions/workflows/maven.yml/badge.svg)](https://github.com/umjammer/jsapi/actions/workflows/maven.yml)
 [![CodeQL](https://github.com/umjammer/jsapi/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/umjammer/jsapi/actions/workflows/codeql-analysis.yml)
-![Java](https://img.shields.io/badge/Java-8-b07219)
+![Java](https://img.shields.io/badge/Java-17-b07219)
 [![Parent](https://img.shields.io/badge/Parent-vavi--speech2-pink)](https://github.com/umjammer/vavi-speech2)
 
 # JSAPI2
@@ -13,17 +13,21 @@ mavenized JSR-113 fka JSAPI2
 
 ## Install
 
- * [maven](https://github.com/umjammer?tab=packages&repo_name=jsapi)
+ * [maven](https://jitpack.io/#umjammer/jsapi)
 
 ## Usage
 
- * [vavi-speech](https://github.com/umjammer/vavi-speech)
+ * [vavi-speech2](https://github.com/umjammer/vavi-speech2)
 
 ## TODO
 
  * ~~clean up remaining running threads at exiting~~
  * jsapi2 queue tests are not stable
- * jspi2/jse in sphinx4.1
+   * using many mocks, so it's difficult to determine which is wrong (mock or implement)   
+ * jsapi2/jse in sphinx4.1
+ * ~~backport jsapi2 javadoc using codavaj~~
+ * demo
+ * mac module is temporary unavailable (because NSSpeechSynthesizer is deprecated) use rococoa module in [vavi-speech2](https://github.com/umjammer/vavi-speech2)
 
 ---
 

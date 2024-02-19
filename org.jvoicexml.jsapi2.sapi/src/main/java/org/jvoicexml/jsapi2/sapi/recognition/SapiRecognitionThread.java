@@ -28,15 +28,15 @@ package org.jvoicexml.jsapi2.sapi.recognition;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.speech.EngineException;
+
 
 /**
  * Perform the recognition in an own java process.
+ *
  * @author Josua Arndt
  * @author Dirk Schnelle-Walka
  * @author Markus Baumgart
- *
  */
 final class SapiRecognitionThread extends Thread {
     /** Recognition was successful <code>S_OK</code>. */
@@ -53,20 +53,21 @@ final class SapiRecognitionThread extends Thread {
 
     /** Logger for this class. */
     private static final Logger LOGGER =
-        Logger.getLogger(SapiRecognitionThread.class.getName());
+            Logger.getLogger(SapiRecognitionThread.class.getName());
 
-    /** The calling SapiRecognizer.  **/
+    /** The calling SapiRecognizer. **/
     private SapiRecognizer recognizer;
-   
+
     /**
      * Constructs a new object.
+     *
      * @param rec the calling recognizer
      */
     public SapiRecognitionThread(SapiRecognizer rec) {
         recognizer = rec;
         setDaemon(true);
     }
-    
+
     @Override
     public void run() {
         long handle = recognizer.getRecognizerHandle();
@@ -101,7 +102,7 @@ final class SapiRecognitionThread extends Thread {
             break;
         default:
             LOGGER.log(Level.WARNING, "Unknown return value: {0}",
-                   Integer.toHexString(returnValue));
+                    Integer.toHexString(returnValue));
             break;
         }
     }

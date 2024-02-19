@@ -39,6 +39,6 @@ public final class MacEngineListFactoryTest {
         Voice[] voices = mode.getVoices();
         assertTrue(voices.length > 0);
         Voice voice = voices[0];
-        assertEquals("Alex Compact", voice.getName());
+        assertEquals("Albert", voice.getName()); // mhh... os versin dependent
     }
 }

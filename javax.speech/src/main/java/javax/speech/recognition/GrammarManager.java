@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.util.List;
-
 import javax.speech.EngineException;
 import javax.speech.EngineStateException;
 import javax.speech.SpeechLocale;
@@ -17,15 +16,12 @@ public interface GrammarManager {
     void removeGrammarListener(GrammarListener listener);
 
     RuleGrammar createRuleGrammar(String grammarReference, String rootName)
-            throws IllegalArgumentException, EngineStateException,
-            EngineException;
+            throws IllegalArgumentException, EngineStateException, EngineException;
 
-    RuleGrammar createRuleGrammar(String grammarReference, String rootName,
-            SpeechLocale locale) throws IllegalArgumentException,
-            EngineStateException, EngineException;
+    RuleGrammar createRuleGrammar(String grammarReference, String rootName, SpeechLocale locale)
+            throws IllegalArgumentException, EngineStateException, EngineException;
 
-    void deleteGrammar(Grammar grammar) throws IllegalArgumentException,
-            EngineStateException;
+    void deleteGrammar(Grammar grammar) throws IllegalArgumentException, EngineStateException;
 
     Grammar getGrammar(String grammarReference) throws EngineStateException;
 
@@ -40,23 +36,16 @@ public interface GrammarManager {
             EngineStateException, EngineException;
 
     Grammar loadGrammar(String grammarReference, String mediaType,
-            boolean loadReferences, boolean reloadReferences,
-            @SuppressWarnings("rawtypes") List loadedGrammars) throws GrammarException,
-            IllegalArgumentException, IOException, EngineStateException,
-            EngineException;
+                        boolean loadReferences, boolean reloadReferences,
+                        List<?> loadedGrammars) throws GrammarException,
+            IllegalArgumentException, IOException, EngineStateException, EngineException;
 
-    Grammar loadGrammar(String grammarReference, String mediaType,
-            InputStream byteStream, String encoding) throws GrammarException,
-            IllegalArgumentException, IOException, EngineStateException,
-            EngineException;
+    Grammar loadGrammar(String grammarReference, String mediaType, InputStream byteStream, String encoding)
+            throws GrammarException, IllegalArgumentException, IOException, EngineStateException, EngineException;
 
-    Grammar loadGrammar(String grammarReference, String mediaType,
-            Reader charStream) throws GrammarException,
-            IllegalArgumentException, IOException, EngineStateException,
-            EngineException;
+    Grammar loadGrammar(String grammarReference, String mediaType, Reader charStream)
+            throws GrammarException, IllegalArgumentException, IOException, EngineStateException, EngineException;
 
-    Grammar loadGrammar(String grammarReference, String mediaType,
-            String grammarText) throws GrammarException,
-            IllegalArgumentException, IOException, EngineStateException,
-            EngineException;
+    Grammar loadGrammar(String grammarReference, String mediaType, String grammarText)
+            throws GrammarException, IllegalArgumentException, IOException, EngineStateException, EngineException;
 }

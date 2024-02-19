@@ -30,17 +30,52 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-//Comp. 2.0.6
+// Comp. 2.0.6
 
+/**
+ * The root event class for all speech events.
+ * <p>
+ * Events from a speech Engine are
+ * <I>not</I>
+ * synchronized with any other event queues. Synchronization with other event
+ * queues must be implemented by the application.  This root event class helps
+ * with integration of the Java Speech API and other event-driven components.
+ * <p>
+ * The
+ * {@link javax.speech.EngineManager#setSpeechEventExecutor(javax.speech.SpeechEventExecutor)}
+ * method provides examples of event queue integration.
+ * @see javax.speech.Engine
+ * @see javax.speech.EngineManager#setSpeechEventExecutor(javax.speech.SpeechEventExecutor)
+ */
 public abstract class SpeechEvent {
+
     private final Object source;
 
     private final int id;
 
+    /**
+     * A mask helpful in disabling all events in a subclass of SpeechEvent.
+     * <p>
+     * See the list of known subclasses above.
+     */
     public static final int DISABLE_ALL = 0;
 
+    /**
+     * A mask helpful in enabling all events in a subclass of SpeechEvent.
+     * <p>
+     * See the list of known subclasses above.
+     */
     public static final int ENABLE_ALL = -1;
 
+    /**
+     * Constructs a SpeechEvent.
+     * <p>
+     * The source must be non-null.
+     * @param source the object that issued the event.
+     * @param id the identifier for the event type.
+     * @see java.util.EventObject#getSource()
+     * @see javax.speech.SpeechEvent#getId()
+     */
     public SpeechEvent(Object source, int id) {
         this.source = source;
         this.id = id;
@@ -50,6 +85,11 @@ public abstract class SpeechEvent {
         return source;
     }
 
+    /**
+     * Returns the event identifier. Id values are defined for each sub-class
+     * of SpeechEvent.
+     * @return the event identifier.
+     */
     public int getId() {
         return id;
     }
@@ -57,7 +97,8 @@ public abstract class SpeechEvent {
     /**
      * Appends a human readable representation of the id to the given
      * representation.
-     * @param str the current buffer. 
+     *
+     * @param str the current buffer.
      */
     protected void id2String(StringBuffer str) {
         if (str.length() == 0) {
@@ -68,12 +109,13 @@ public abstract class SpeechEvent {
     /**
      * Checks if the given flag is set in the id and adds a human readable
      * description to the existing description if the flag is set.
-     * @param str the existing description
-     * @param flag the flag to check for
+     *
+     * @param str         the existing description
+     * @param flag        the flag to check for
      * @param description the description to add
      */
     protected void maybeAddId(StringBuffer str, int flag, String description) {
-        if ((id & flag) == flag){
+        if ((id & flag) == flag) {
             if (str.length() > 0) {
                 str.append('|');
             }
@@ -83,7 +125,7 @@ public abstract class SpeechEvent {
 
     /**
      * Creates a collection of all parameters.
-     * 
+     *
      * @return collection of all parameters.
      */
     protected List<Object> getParameters() {
@@ -99,11 +141,26 @@ public abstract class SpeechEvent {
         return parameters;
     }
 
+    /**
+     * Returns a parameter string that contains the event ID in text form.
+     * <p>
+     * The method toString may provide more detail.
+     * This method is useful for event-logging and for debugging.
+     * @return A string that contains the event ID in text form.
+     * @see javax.speech.SpeechEvent#toString()
+     */
     public String paramString() {
         // TODO this method should be abstract
         return getParameters().stream().map(String::valueOf).collect(Collectors.joining(","));
     }
 
+    /**
+     * Returns a printable String. Useful for event-logging and debugging.
+     * <p>
+     * The method paramString also provides printable information.
+     * @return A printable string.
+     * @see javax.speech.SpeechEvent#paramString()
+     */
     @Override
     public String toString() {
         return getClass().getName() + "[" + paramString() + "]";

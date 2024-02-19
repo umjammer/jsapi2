@@ -21,6 +21,8 @@
 
 package org.jvoicexml.jsapi2.synthesis;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.util.Collection;
 import javax.sound.sampled.AudioFormat;
 import javax.speech.AudioException;
@@ -48,6 +50,8 @@ import org.jvoicexml.jsapi2.BaseEngine;
 import org.jvoicexml.jsapi2.BaseVocabularyManager;
 import org.jvoicexml.jsapi2.ThreadSpeechEventExecutor;
 
+import static java.lang.System.getLogger;
+
 
 /**
  * Basic synthesizer functions.
@@ -57,6 +61,8 @@ import org.jvoicexml.jsapi2.ThreadSpeechEventExecutor;
  */
 public abstract class BaseSynthesizer extends BaseEngine implements Synthesizer {
 
+    private static final Logger logger = getLogger(BaseSynthesizer.class.getName());
+    
     /** Registered listeners for this synthesizer. */
     private final Collection<SpeakableListener> speakableListeners;
     /** Current synthesizer properties. */
@@ -83,6 +89,7 @@ public abstract class BaseSynthesizer extends BaseEngine implements Synthesizer 
         speakableListeners = new java.util.ArrayList<>();
         synthesizerProperties = createSynthesizerProperties();
         speakableMask = SpeakableEvent.DEFAULT_MASK;
+logger.log(Level.TRACE, "m: %08x, d: %08x, |: %08x", getEngineMask(), SynthesizerEvent.DEFAULT_MASK, getEngineMask() | SynthesizerEvent.DEFAULT_MASK);
         setEngineMask(getEngineMask() | SynthesizerEvent.DEFAULT_MASK);
         queueManager = new QueueManager(this);
     }
@@ -137,6 +144,7 @@ public abstract class BaseSynthesizer extends BaseEngine implements Synthesizer 
      *                               <code>null</code>
      */
     protected final void postSpeakableEvent(SpeakableEvent event, SpeakableListener extraSpeakableListener) {
+new Exception(event.toString() + " ," + extraSpeakableListener).printStackTrace();
         // First, check if the event is filtered by the mask
         int id = event.getId();
         if ((speakableMask & id) != id) {

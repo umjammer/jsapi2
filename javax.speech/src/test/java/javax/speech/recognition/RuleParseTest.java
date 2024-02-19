@@ -1,6 +1,7 @@
 /**
- * 
+ *
  */
+
 package javax.speech.recognition;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -8,9 +9,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+
 /**
  * Test case for {@link javax.speech.recognition.RuleParse}.
- * 
+ *
  * @author Dirk Schnelle
  */
 public class RuleParseTest {
@@ -24,29 +26,29 @@ public class RuleParseTest {
     protected void setUp() throws Exception {
         RuleComponent component1 = new RuleParse(new RuleReference(
                 "action"), new RuleAlternatives(
-                new RuleComponent[] { new RuleSequence(new RuleComponent[] {
-                        new RuleToken("close"), new RuleTag("CL") }) }));
+                new RuleComponent[] {new RuleSequence(new RuleComponent[] {
+                        new RuleToken("close"), new RuleTag("CL")})}));
         RuleComponent component2 = new RuleParse(new RuleReference(
                 "object"), new RuleSequence(new RuleComponent[] {
                 new RuleCount(
-                        new RuleSequence(new RuleComponent[] { new RuleParse(
+                        new RuleSequence(new RuleComponent[] {new RuleParse(
                                 new RuleReference("determiner"),
                                 new RuleAlternatives(
-                                        new RuleComponent[] { new RuleToken(
-                                                "the") })) }), 1, 1),
+                                        new RuleComponent[] {new RuleToken(
+                                                "the")}))}), 1, 1),
                 new RuleAlternatives(
-                        new RuleComponent[] { new RuleToken("door") }) }));
+                        new RuleComponent[] {new RuleToken("door")})}));
         RuleComponent component3 = new RuleCount(
                 new RuleSequence(
-                        new RuleComponent[] { new RuleParse(new RuleReference(
+                        new RuleComponent[] {new RuleParse(new RuleReference(
                                 "polite"),
                                 new RuleAlternatives(
-                                        new RuleComponent[] { new RuleToken(
-                                                "please") })) }), 1, 1);
+                                        new RuleComponent[] {new RuleToken(
+                                                "please")}))}), 1, 1);
 
         reference = new RuleReference("command");
-        parse = new RuleSequence(new RuleComponent[] { component1, component2,
-                component3 });
+        parse = new RuleSequence(new RuleComponent[] {component1, component2,
+                component3});
         ruleParse = new RuleParse(reference, parse);
     }
 
@@ -72,7 +74,7 @@ public class RuleParseTest {
     @Test
     void testGetTags() {
         Object[] tags = ruleParse.getTags();
-        Object[] expected = new String[] { "CL" };
+        Object[] expected = new String[] {"CL"};
         assertEquals(expected.length, tags.length);
         for (int i = 0; i < tags.length; i++) {
             Object tag = tags[i];

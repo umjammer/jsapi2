@@ -27,7 +27,6 @@ import java.io.StringReader;
 import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.sound.sampled.AudioFormat;
 import javax.speech.AudioException;
 import javax.speech.EngineEvent;
@@ -51,17 +50,17 @@ import org.jvoicexml.jsapi2.BaseEngineProperties;
 import org.jvoicexml.jsapi2.recognition.BaseRecognizer;
 import org.jvoicexml.jsapi2.recognition.GrammarDefinition;
 
+
 /**
  * A SAPI recognizer.
- * 
+ *
  * @author Dirk Schnelle-Walka
  * @author Markus Baumgart
- * 
  */
 public final class SapiRecognizer extends BaseRecognizer {
+
     /** Logger for this class. */
-    private static final Logger LOGGER = Logger.getLogger(SapiRecognizer.class
-            .getName());
+    private static final Logger LOGGER = Logger.getLogger(SapiRecognizer.class.getName());
 
     /** SAPI recognizer Handle. **/
     private long recognizerHandle;
@@ -74,9 +73,8 @@ public final class SapiRecognizer extends BaseRecognizer {
 
     /**
      * Constructs a new object.
-     * 
-     * @param mode
-     *            the recognizer mode.
+     *
+     * @param mode the recognizer mode.
      */
     public SapiRecognizer(SapiRecognizerMode mode) {
         super(mode);
@@ -105,10 +103,10 @@ public final class SapiRecognizer extends BaseRecognizer {
     /**
      * Sets the input stream for the recognizer to the default input stream
      * from the {@link javax.speech.AudioManager}.
-     * 
+     *
      * @return {@code true} if the stream has been set
      */
-    protected boolean setRecognizerInputStream() {
+    boolean setRecognizerInputStream() {
         // Get the source audioStream
         BaseAudioManager audioManager = (BaseAudioManager) getAudioManager();
         // audioManager.audioStart();
@@ -118,6 +116,7 @@ public final class SapiRecognizer extends BaseRecognizer {
 
     /**
      * Sets the input stream for the recognizer.
+     *
      * @param in the input stream
      * @return {@code true} if the stream has been set
      */
@@ -174,23 +173,19 @@ public final class SapiRecognizer extends BaseRecognizer {
 
     /**
      * Start recognition.
-     * 
-     * @param handle
-     *            the recognizer handle
+     *
+     * @param handle the recognizer handle
      * @return recognition result
-     * @exception EngineException
-     *                if there were errors during recognition
+     * @throws EngineException if there were errors during recognition
      */
-    native int sapiRecognize(long handle, String[] result)
-            throws EngineException;
+    native int sapiRecognize(long handle, String[] result) throws EngineException;
 
     public long getRecognizerHandle() {
         return recognizerHandle;
     }
 
     @Override
-    protected boolean handleResume(InputStream in)
-            throws EngineStateException {
+    protected boolean handleResume(InputStream in) throws EngineStateException {
         setRecognizerInputStream(in);
 
         GrammarManager manager = getGrammarManager();
@@ -201,8 +196,7 @@ public final class SapiRecognizer extends BaseRecognizer {
 
         if (LOGGER.isLoggable(Level.FINE)) {
             for (Grammar grammar : grammars) {
-                LOGGER.log(Level.FINE, "Activate Grammar: {0}",
-                        grammar.getReference());
+                LOGGER.log(Level.FINE, "Activate Grammar: {0}", grammar.getReference());
             }
         }
 
@@ -219,12 +213,11 @@ public final class SapiRecognizer extends BaseRecognizer {
         return true;
     }
 
-    private native boolean sapiResume(long handle, String[] grammars,
-            String[] references) throws EngineStateException;
+    private native boolean sapiResume(
+            long handle, String[] grammars, String[] references) throws EngineStateException;
 
     @Override
-    protected boolean setGrammars(
-            Collection<GrammarDefinition> grammarDefinition) {
+    protected boolean setGrammars(Collection<GrammarDefinition> grammarDefinition) {
         return false;
     }
 
@@ -232,17 +225,13 @@ public final class SapiRecognizer extends BaseRecognizer {
         return sapiSetGrammar(recognizerHandle, grammarPath, reference);
     }
 
-    private native boolean sapiSetGrammar(long handle, String grammarPath,
-            String reference);
+    private native boolean sapiSetGrammar(long handle, String grammarPath, String reference);
 
-    public boolean setGrammarContent(String grammarContent,
-                                     String reference) {
-        return sapiSetGrammarContent(recognizerHandle, grammarContent,
-                reference);
+    public boolean setGrammarContent(String grammarContent, String reference) {
+        return sapiSetGrammarContent(recognizerHandle, grammarContent, reference);
     }
 
-    private native boolean sapiSetGrammarContent(long handle,
-            String grammarPath, String reference);
+    private native boolean sapiSetGrammarContent(long handle, String grammarPath, String reference);
 
     private native void start(long handle);
 
@@ -256,16 +245,13 @@ public final class SapiRecognizer extends BaseRecognizer {
             LOGGER.fine("No Match Recognized => False Recognition ...");
         }
         postResultRejected();
-
     }
 
     /**
      * Callback of the SAPI recognizer if the recognition succeeded.
-     * 
-     * @param ruleName
-     *            name of the rule matching the utterance
-     * @param utterance
-     *            the utterance
+     *
+     * @param ruleName  name of the rule matching the utterance
+     * @param utterance the utterance
      */
     public void reportResult(String ruleName, String utterance) {
         postResultCreated();
@@ -281,8 +267,7 @@ public final class SapiRecognizer extends BaseRecognizer {
         }
         SapiResult result = new SapiResult(grammar);
         if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.log(Level.FINE, "reporting SML Result String : {0}",
-                    utterance);
+            LOGGER.log(Level.FINE, "reporting SML Result String : {0}", utterance);
         }
 
         try {
@@ -307,15 +292,14 @@ public final class SapiRecognizer extends BaseRecognizer {
         if (LOGGER.isLoggable(Level.FINE)) {
             LOGGER.log(Level.FINE,
                     "Recognized utterance : ''{0}'' Confidence : ''{1}''",
-                    new Object[] { utterance, result.getConfidence() });
+                    new Object[] {utterance, result.getConfidence()});
         }
 
         ResultEvent tokensUpdated = new ResultEvent(result,
                 ResultEvent.RESULT_UPDATED, true, false);
         postResultEvent(tokensUpdated);
 
-        ResultEvent grammarFinalized = new ResultEvent(result,
-                ResultEvent.GRAMMAR_FINALIZED);
+        ResultEvent grammarFinalized = new ResultEvent(result, ResultEvent.GRAMMAR_FINALIZED);
         postResultEvent(grammarFinalized);
 
         // set the confidenceLevel
@@ -327,13 +311,11 @@ public final class SapiRecognizer extends BaseRecognizer {
         // [because +2 is 2/5th of the complete RecognizerProperties' range]
 
         // get the whole range (in the example above => 20 - -10 = 30;
-        int range = RecognizerProperties.MAX_CONFIDENCE
-                - RecognizerProperties.MIN_CONFIDENCE;
+        int range = RecognizerProperties.MAX_CONFIDENCE - RecognizerProperties.MIN_CONFIDENCE;
 
         // set the value and shift it (again, with the sample above: set the
         // value to +12 from [0; 30] and shift it to +2 [-10; 20]
-        float confTmp = (result.getConfidence() * range)
-                + RecognizerProperties.MIN_CONFIDENCE;
+        float confTmp = (result.getConfidence() * range) + RecognizerProperties.MIN_CONFIDENCE;
         int resultconfidenceLevel = Math.round(confTmp);
         result.setConfidenceLevel(resultconfidenceLevel);
 
@@ -343,9 +325,7 @@ public final class SapiRecognizer extends BaseRecognizer {
         if (resultconfidenceLevel < minConfidenceLevel) {
             result.setResultState(Result.REJECTED);
             if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.log(Level.FINE,
-                        "Result confidence too low, new ResultState: ''{0}''",
-                        result.getResultState());
+                LOGGER.log(Level.FINE, "Result confidence too low, new ResultState: ''{0}''", result.getResultState());
             }
         }
 
@@ -362,6 +342,7 @@ public final class SapiRecognizer extends BaseRecognizer {
 
     /**
      * Obtain the grammar from the grammar manager.
+     *
      * @param ruleName name of the rule
      * @return determined grammar, maybe {@code null}
      */
@@ -376,15 +357,12 @@ public final class SapiRecognizer extends BaseRecognizer {
 
     /**
      * Parses the given SML string.
-     * 
-     * @param sml
-     *            the SML to parse
+     *
+     * @param sml the SML to parse
      * @return the parsed information
-     * @throws TransformerException
-     *             error parsing
+     * @throws TransformerException error parsing
      */
-    private SmlInterpretationExtractor parseSml(String sml)
-            throws TransformerException {
+    private SmlInterpretationExtractor parseSml(String sml) throws TransformerException {
         TransformerFactory factory = TransformerFactory.newInstance();
         Transformer transformer = factory.newTransformer();
         Reader reader = new StringReader(sml);
@@ -417,9 +395,8 @@ public final class SapiRecognizer extends BaseRecognizer {
 
     /**
      * Notifies all listeners that a recognition result has been created.
-     * 
-     * @param result
-     *            the current result.
+     *
+     * @param result the current result.
      */
     private void postResultRejected(SapiResult result) {
         result.setResultState(Result.REJECTED);
@@ -428,7 +405,7 @@ public final class SapiRecognizer extends BaseRecognizer {
         postResultEvent(rejected);
     }
 
-    protected void postEngineException(EngineException exc) {
+    void postEngineException(EngineException exc) {
         long oldEngineState = getEngineState();
         setEngineState(~CLEAR_ALL_STATE, ERROR_OCCURRED);
         long newEngineState = getEngineState();
@@ -456,9 +433,8 @@ public final class SapiRecognizer extends BaseRecognizer {
 
     /**
      * Retrieves the default audio format.
-     * 
-     * @param handle
-     *            recognizer handle.
+     *
+     * @param handle recognizer handle.
      * @return native audio format
      */
     private native AudioFormat sapiGetAudioFormat(long handle);

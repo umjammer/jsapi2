@@ -1,6 +1,7 @@
 /**
- * 
+ *
  */
+
 package javax.speech.recognition;
 
 import org.junit.jupiter.api.Test;
@@ -9,9 +10,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+
 /**
  * Test case for {@link javax.speech.recognition.RuleTag}.
- * 
+ *
  * @author Dirk Schnelle
  */
 public class RuleTagTest {

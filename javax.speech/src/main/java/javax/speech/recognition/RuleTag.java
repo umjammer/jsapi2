@@ -26,9 +26,26 @@
 
 package javax.speech.recognition;
 
-//Comp. 2.0.6
+// Comp. 2.0.6
 
+/**
+ * Defines a tag to be used within a RuleGrammar.
+ * <p>
+ * A tag is a special kind of RuleComponent that can be used
+ * for semantic interpretation.
+ * The tag does not affect the recognition of a RuleGrammar in which it is used.
+ * Instead, tags are used to embed information into a RuleGrammar
+ * that helps with processing of recognition results.
+ * Tags are
+ * <p>
+ * Used in the definition of a RuleGrammar,
+ * Included in parse output (RuleParse objects).
+ *
+ * @see javax.speech.recognition.RuleGrammar
+ * @see javax.speech.recognition.RuleParse
+ */
 public class RuleTag extends RuleComponent {
+
     private Object tag;
 
     public RuleTag(Object tag) {
@@ -39,14 +56,20 @@ public class RuleTag extends RuleComponent {
         return tag;
     }
 
+    /**
+     * Returns a String representing this RuleComponent as grammar text.
+     * <p>
+     * The String represents a portion of a grammar that could appear
+     * on the right hand side of a Rule definition.
+     * @return printable String representing grammar text.
+     * @see javax.speech.recognition.RuleComponent
+     * @see javax.speech.recognition.Rule
+     */
     public String toString() {
         if (tag == null) {
-            throw new IllegalArgumentException(
-                    "null can not be represented in XML");
+            throw new IllegalArgumentException("null can not be represented in XML");
         }
-        String str = "<tag>" +
-                tag +
-                "</tag>";
+        String str = "<tag>" + tag + "</tag>";
 
         return str;
     }

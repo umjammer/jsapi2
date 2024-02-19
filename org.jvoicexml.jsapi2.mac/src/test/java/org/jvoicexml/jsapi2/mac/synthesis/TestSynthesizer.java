@@ -29,6 +29,9 @@ import org.jvoicexml.jsapi2.mac.MacEngineListFactory;
 @EnabledOnOs(OS.MAC)
 public final class TestSynthesizer {
 
+    static {
+        System.setProperty("vavi.util.logging.VaviFormatter.extraClassMethod", "sun\\.util\\.logging\\.internal\\..+#log");
+    }
     /** The test object. */
     private Synthesizer synthesizer;
 
@@ -56,7 +59,7 @@ public final class TestSynthesizer {
      */
     @BeforeEach
     public void setUp() throws Exception {
-        Voice alex = new Voice(null, "Alex Compact", Voice.GENDER_DONT_CARE, Voice.AGE_DONT_CARE, Voice.VARIANT_DONT_CARE);
+        Voice alex = new Voice(null, "Albert", Voice.GENDER_DONT_CARE, Voice.AGE_DONT_CARE, Voice.VARIANT_DONT_CARE);
         MacSynthesizerMode msm = new MacSynthesizerMode(null, null, null, null, false, new Voice[] {alex});
         synthesizer = (Synthesizer) EngineManager.createEngine(msm);
         synthesizer.allocate();

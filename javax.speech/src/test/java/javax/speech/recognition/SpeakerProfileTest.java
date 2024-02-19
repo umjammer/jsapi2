@@ -35,9 +35,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+
 /**
  * Test case for {@link javax.speech.recognition.SpeakerProfile}.
- * 
+ *
  * @author Dirk Schnelle-Walka
  */
 public class SpeakerProfileTest {
@@ -100,7 +101,7 @@ public class SpeakerProfileTest {
         final String variant3 = "variant3";
         SpeakerProfile profile3 = new SpeakerProfile(name3, variant3);
         assertNotEquals(profile1, profile3);
-        assertEquals(profile3, profile3);
+        assertEquals("variant3", profile3.getVariant());
 
         final String name4 = "name3";
         final String variant4 = "variant3";

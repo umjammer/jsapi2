@@ -28,8 +28,10 @@ package javax.speech.mock;
 
 import javax.speech.EngineMode;
 
+
 /**
  * An engine mode for test purpose.
+ *
  * @author Dirk Schnelle-Walka
  */
 public class MockEngineMode extends EngineMode {
@@ -41,7 +43,7 @@ public class MockEngineMode extends EngineMode {
     }
 
     public MockEngineMode(String engineName, String modeName, Boolean running,
-            Boolean supportsLetterToSound, Boolean supportsMarkup) {
+                          Boolean supportsLetterToSound, Boolean supportsMarkup) {
         super(engineName, modeName, running, supportsLetterToSound, supportsMarkup);
     }
 }

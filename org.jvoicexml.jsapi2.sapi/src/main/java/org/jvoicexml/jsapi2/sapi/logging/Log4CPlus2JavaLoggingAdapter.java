@@ -29,17 +29,18 @@ package org.jvoicexml.jsapi2.sapi.logging;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
+
 /**
  * A simple wrapper for log4cplus or similar native logging frameworks.
  * This thread retrieves the next {@link LogRecord} and forwards it to
  * the Java logging framework.
- * @author Dirk Schnelle-Walka
  *
+ * @author Dirk Schnelle-Walka
  */
 public final class Log4CPlus2JavaLoggingAdapter extends Thread {
     /** Logger for this class. */
     private static final Logger LOGGER =
-        Logger.getLogger(Log4CPlus2JavaLoggingAdapter.class.getName());
+            Logger.getLogger(Log4CPlus2JavaLoggingAdapter.class.getName());
 
     /** Handle for the native logging adapter. */
     private long handle;
@@ -85,12 +86,14 @@ public final class Log4CPlus2JavaLoggingAdapter extends Thread {
 
     /**
      * Native method call to initialize the logging.
+     *
      * @return logging handle
      */
     public native long initLogging();
 
     /**
      * Retrieves the next log record.
+     *
      * @param loggingHandle the native handle
      * @return the next log record.
      */

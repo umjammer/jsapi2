@@ -1,6 +1,3 @@
 # JSAPI2 JSR-113
 
-This project is being built using
-- eclipse 3.5
-- mtj 1.0.x http://www.eclipse.org/dsdp/mtj/
-- SUN Wireless Toolkit 3.0
+ * 0.6.3 doesn't support midp (cldc)

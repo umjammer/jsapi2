@@ -26,8 +26,17 @@
 
 package javax.speech;
 
-//Comp. 2.0.6
+// Comp. 2.0.6
 
+/**
+ * A tagging interface for EngineEvent listeners.
+ * Interfaces that extend this interface can listen for state-change events
+ * in a speech engine.
+ * <p>
+ * The event dispatch policy is defined in the documentation for the
+ * SpeechEvent class.
+ * @see javax.speech.SpeechEvent
+ * @see javax.speech.EngineEvent
+ */
 public interface EngineListener extends SpeechEventListener {
-
 }

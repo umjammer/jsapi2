@@ -8,7 +8,7 @@
 
   <groupId>org.jvoicexml</groupId>
   <artifactId>jsapi</artifactId>
-  <version>0.6.3</version>
+  <version>0.6.4</version>
   <packaging>pom</packaging>
 
   <modules>
@@ -19,9 +19,9 @@
     <module>org.jvoicexml.jsapi2.demo.helloworld</module>
     <module>org.jvoicexml.jsapi2.demo.input</module>
     <module>org.jvoicexml.jsapi2.demo.rtp</module>
-    <module>org.jvoicexml.jsapi2.mac</module>
     <module>org.jvoicexml.jsapi2.sapi</module>
 <!--
+    <module>org.jvoicexml.jsapi2.mac</module>
     <module>org.jvoicexml.jsapi2.sapi.jsapi2speechserverbridge</module>
 -->
   </modules>
@@ -36,12 +36,10 @@
     <system>https//github.com/umjammer/jsapi/issues</system>
   </issueManagement>
 
-  <distributionManagement>
-    <repository>
-      <id>github</id>
-      <url>https://maven.pkg.github.com/umjammer/jsapi</url>
-    </repository>
-  </distributionManagement>
+  <properties> <!-- TODO temporary cause cyclic dependency -->
+    <freetts.groupId>org.mobicents.external.freetts</freetts.groupId>
+    <freetts.version>1.0</freetts.version>
+  </properties>
 
   <build>
     <pluginManagement>
@@ -49,12 +47,15 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.10.1</version>
+          <version>3.11.0</version>
+          <configuration>
+            <release>17</release>
+          </configuration>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>3.0.0-M7</version>
+          <version>3.2.2</version>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -65,9 +66,15 @@
       <dependency>
         <groupId>org.junit</groupId>
         <artifactId>junit-bom</artifactId>
-        <version>5.9.1</version>
+        <version>5.10.1</version>
         <type>pom</type>
         <scope>import</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>com.github.umjammer</groupId>
+        <artifactId>vavi-commons</artifactId>
+        <version>1.1.10</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

@@ -27,9 +27,11 @@ import javax.speech.EngineException;
 import javax.speech.spi.EngineFactory;
 import javax.speech.synthesis.SynthesizerMode;
 
+
 /**
  * Represents a SynthesizerMode for the FreeTTSSynthesizer. A
  * FreeTTSSynthesizerMode adds an audio player to the standard mode items.
+ *
  * @author Dirk Schnelle-Walka
  */
 public class FreeTTSSynthesizerMode extends SynthesizerMode
@@ -44,17 +46,13 @@ public class FreeTTSSynthesizerMode extends SynthesizerMode
      * Creates a fully-specified descriptor. Any of the features may be
      * <code>null</code>.
      *
-     * @param engineName
-     *            the name of the engine
-     * @param modeName
-     *            the name of the mode
-     * @param locale
-     *            the locale associated with this mode
-     * @param voices
-     *            the known voices
+     * @param engineName the name of the engine
+     * @param modeName   the name of the mode
+     * @param locale     the locale associated with this mode
+     * @param voices     the known voices
      */
     public FreeTTSSynthesizerMode(String engineName, String modeName,
-            Locale locale, FreeTTSVoice[] voices) {
+                                  Locale locale, FreeTTSVoice[] voices) {
         super(engineName, modeName, null, null, null, voices);
     }
 
@@ -63,15 +61,11 @@ public class FreeTTSSynthesizerMode extends SynthesizerMode
      * descriptor.
      *
      * @return a synthesizer that matches the mode
-     *
-     * @throws IllegalArgumentException
-     *             if the properties of this descriptor do not match any known
-     *             engine or mode
-     * @throws EngineException
-     *             if the engine could not be created
-     * @throws SecurityException
-     *             if the caller does not have permission to use the speech
-     *             engine
+     * @throws IllegalArgumentException if the properties of this descriptor do not match any known
+     *                                  engine or mode
+     * @throws EngineException          if the engine could not be created
+     * @throws SecurityException        if the caller does not have permission to use the speech
+     *                                  engine
      */
     @Override
     public Engine createEngine() throws IllegalArgumentException,

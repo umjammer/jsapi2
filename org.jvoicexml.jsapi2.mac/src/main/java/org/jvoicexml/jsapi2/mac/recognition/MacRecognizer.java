@@ -4,9 +4,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.System.Logger.Level;
 import java.util.Collection;
-import java.util.logging.Logger;
-
+import java.lang.System.Logger;
 import javax.sound.sampled.AudioFormat;
 import javax.speech.AudioException;
 import javax.speech.EngineException;
@@ -23,29 +23,21 @@ import org.jvoicexml.jsapi2.recognition.BaseRecognizer;
 import org.jvoicexml.jsapi2.recognition.BaseResult;
 import org.jvoicexml.jsapi2.recognition.GrammarDefinition;
 
+
 /**
  * A SAPI recognizer.
- * 
+ *
  * @author Dirk Schnelle-Walka
- * 
  */
 public final class MacRecognizer extends BaseRecognizer {
+
     /** Logger for this class. */
-    private static final Logger LOGGER = Logger.getLogger(MacRecognizer.class
-            .getName());
-
-    static {
-        System.loadLibrary("Jsapi2MacBridge");
-    }
-
-    /** SAPI recognizer Handle. **/
-    private long recognizerHandle;
+    private static final Logger logger = System.getLogger(MacRecognizer.class.getName());
 
     /**
      * Constructs a new object.
-     * 
-     * @param mode
-     *            the recognizer mode.
+     *
+     * @param mode the recognizer mode.
      */
     public MacRecognizer(MacRecognizerMode mode) {
         super(mode);
@@ -53,39 +45,29 @@ public final class MacRecognizer extends BaseRecognizer {
 
     @Override
     public Collection<Grammar> getBuiltInGrammars() {
-        return macGetBuildInGrammars(recognizerHandle);
+logger.log(Level.DEBUG, "macGetBuildInGrammars");
+        return null;
     }
-
-    private native Collection<Grammar> macGetBuildInGrammars(long handle);
 
     @Override
-    public void handleAllocate() throws EngineStateException, EngineException,
-            AudioException, SecurityException {
-        recognizerHandle = macAllocate();
+    public void handleAllocate() throws EngineStateException, EngineException, AudioException, SecurityException {
+logger.log(Level.DEBUG, "macAllocate");
     }
-
-    private native long macAllocate();
 
     @Override
     public void handleDeallocate() {
-        macDeallocate(recognizerHandle);
+        logger.log(Level.DEBUG, "macDeallocate");
     }
-
-    private native void macDeallocate(long handle);
 
     @Override
     protected void handlePause() {
-        macPause(recognizerHandle);
+        logger.log(Level.DEBUG, "macPause");
     }
-
-    private native void macPause(long handle);
 
     @Override
     protected void handlePause(int flags) {
-        macPause(recognizerHandle, flags);
+        logger.log(Level.DEBUG, "macPause");
     }
-
-    private native void macPause(long handle, int flags);
 
     @Override
     protected boolean handleResume(InputStream in) throws EngineStateException {
@@ -106,44 +88,37 @@ public final class MacRecognizer extends BaseRecognizer {
                 out.write(xml.toString().getBytes());
                 out.close();
                 grammarSources[i] = file.getCanonicalPath();
-//                System.out.println(xml);
-//                System.out.println(grammarSources[i]);
+//                logger.log(Level.DEBUG, xml);
+//                logger.log(Level.DEBUG, grammarSources[i]);
 
             } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                logger.log(Level.ERROR, e.getMessage(), e);
             }
             ++i;
         }
-        return macResume(recognizerHandle, grammarSources);
+
+logger.log(Level.DEBUG, "macResume");
+        return false;
     }
 
-    private native boolean macResume(long handle, String[] grammars)
-            throws EngineStateException;
-
     @Override
-    protected boolean setGrammars(
-            Collection<GrammarDefinition> grammarDefinition) {
+    protected boolean setGrammars(Collection<GrammarDefinition> grammarDefinition) {
         return false;
     }
 
     public boolean setGrammar(String grammarPath) {
-        return macSetGrammar(recognizerHandle, grammarPath);
+logger.log(Level.DEBUG, "macSetGrammar");
+        return false;
     }
-
-    private native boolean macSetGrammar(long handle, String grammarPath);
 
     void startRecognition() {
-        start(recognizerHandle);
+        logger.log(Level.DEBUG, "start");
     }
-
-    private native void start(long handle);
 
     /**
      * Notification from the SAPI recognizer about a recognition result.
-     * 
-     * @param utterance
-     *            the detected utterance
+     *
+     * @param utterance the detected utterance
      */
     @SuppressWarnings("unused")
     private void reportResult(String utterance) {
@@ -151,46 +126,38 @@ public final class MacRecognizer extends BaseRecognizer {
         System.out.println("Java Code " + utterance);
 
         RuleGrammar grammar = currentGrammar; // current grammar is not
-                                                    // available
+        // available
         System.out.println(grammar);
 
         BaseResult result;
         try {
             result = new BaseResult(grammar, utterance);
         } catch (GrammarException e) {
-            LOGGER.warning(e.getMessage());
+            logger.log(Level.WARNING, e.getMessage());
             return;
         }
 
-        ResultEvent created = new ResultEvent(result,
-                ResultEvent.RESULT_CREATED, false, false);
+        ResultEvent created = new ResultEvent(result, ResultEvent.RESULT_CREATED, false, false);
         postResultEvent(created);
 
-        ResultEvent grammarFinalized = new ResultEvent(result,
-                ResultEvent.GRAMMAR_FINALIZED);
+        ResultEvent grammarFinalized = new ResultEvent(result, ResultEvent.GRAMMAR_FINALIZED);
         postResultEvent(grammarFinalized);
 
         if (result.getResultState() == Result.REJECTED) {
-            ResultEvent rejected = new ResultEvent(result,
-                    ResultEvent.RESULT_REJECTED, false, false);
+            ResultEvent rejected = new ResultEvent(result, ResultEvent.RESULT_REJECTED, false, false);
             postResultEvent(rejected);
         } else {
-            ResultEvent accepted = new ResultEvent(result,
-                    ResultEvent.RESULT_ACCEPTED, false, false);
+            ResultEvent accepted = new ResultEvent(result, ResultEvent.RESULT_ACCEPTED, false, false);
             postResultEvent(accepted);
         }
     }
 
     @Override
     protected void handleReleaseFocus() {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     protected void handleRequestFocus() {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
@@ -203,7 +170,6 @@ public final class MacRecognizer extends BaseRecognizer {
             BaseEngineProperties properties,
             String propName, Object oldValue,
             Object newValue) {
-        LOGGER.warning("changing property '" + propName
-                + "' to '" + newValue + "' ignored");
+logger.log(Level.WARNING, "changing property '" + propName + "' to '" + newValue + "' ignored");
     }
 }

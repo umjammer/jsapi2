@@ -43,22 +43,23 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Test cases for {@link BaseResult}.
- * @author Dirk Schnelle-Walka
  *
+ * @author Dirk Schnelle-Walka
  */
 public final class BaseResultTest {
 
     /**
      * Test method for {@link org.jvoicexml.jsapi2.recognition.BaseResult#getTags(int)}.
-     * @exception Exception test failed
+     *
+     * @throws Exception test failed
      */
     @Test
     void testGetTags() throws Exception {
         BaseRecognizer recognizer = new MockRecognizer();
         GrammarManager manager = recognizer.getGrammarManager();
         RuleGrammar grammar =
-            manager.createRuleGrammar("grammar:test", "test");
-        RuleComponent[] components = new RuleComponent[]  {
+                manager.createRuleGrammar("grammar:test", "test");
+        RuleComponent[] components = new RuleComponent[] {
                 new RuleToken("test"),
                 new RuleTag("T")
         };

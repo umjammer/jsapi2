@@ -40,7 +40,6 @@ import org.jvoicexml.jsapi2.BaseAudioManager;
 import org.jvoicexml.jsapi2.BaseAudioSegment;
 import org.jvoicexml.jsapi2.BaseEngineProperties;
 import org.jvoicexml.jsapi2.synthesis.BaseSynthesizer;
-import org.jvoicexml.jsapi2.synthesis.BaseSynthesizerProperties;
 import org.w3c.dom.Document;
 
 

@@ -55,9 +55,9 @@ import javax.speech.recognition.RuleGrammar;
  * @author Dirk Schnelle-Walka
  */
 public class BaseGrammarManager implements GrammarManager {
+
     /** Logger for this class. */
-    private static final Logger LOGGER = Logger
-            .getLogger(BaseGrammarManager.class.getName());
+    private static final Logger logger = Logger.getLogger(BaseGrammarManager.class.getName());
 
     /** The listeners of grammar events. */
     protected final List<GrammarListener> grammarListeners;
@@ -101,30 +101,25 @@ public class BaseGrammarManager implements GrammarManager {
     }
 
     @Override
-    public RuleGrammar createRuleGrammar(String grammarReference,
-                                         String rootName) throws IllegalArgumentException,
-            EngineStateException, EngineException {
+    public RuleGrammar createRuleGrammar(String grammarReference, String rootName)
+            throws IllegalArgumentException, EngineStateException, EngineException {
         SpeechLocale locale = SpeechLocale.getDefault();
         return createRuleGrammar(grammarReference, rootName, locale);
     }
 
     @Override
-    public RuleGrammar createRuleGrammar(String grammarReference,
-                                         String rootName, SpeechLocale locale)
-            throws IllegalArgumentException, EngineStateException,
-            EngineException {
+    public RuleGrammar createRuleGrammar(String grammarReference, String rootName, SpeechLocale locale)
+            throws IllegalArgumentException, EngineStateException, EngineException {
 
         // Validate current state
         ensureValidEngineState();
 
         if (grammars.containsKey(grammarReference)) {
-            throw new IllegalArgumentException(
-                    "Duplicate grammar name: " + grammarReference);
+            throw new IllegalArgumentException("Duplicate grammar name: " + grammarReference);
         }
 
         // Create grammar
-        BaseRuleGrammar grammar = new BaseRuleGrammar(recognizer,
-                grammarReference);
+        BaseRuleGrammar grammar = new BaseRuleGrammar(recognizer, grammarReference);
         grammar.setAttribute("xml:lang", locale.toString());
         grammar.setRoot(rootName);
 
@@ -142,8 +137,7 @@ public class BaseGrammarManager implements GrammarManager {
      * @throws EngineStateException     if the current engine state does not allow deleting the
      *                                  grammar
      */
-    public void deleteGrammar(Grammar grammar)
-            throws IllegalArgumentException, EngineStateException {
+    public void deleteGrammar(Grammar grammar) throws IllegalArgumentException, EngineStateException {
 
         // Validate current state
         ensureValidEngineState();
@@ -155,11 +149,11 @@ public class BaseGrammarManager implements GrammarManager {
         // Remove the grammar
         Grammar key = grammars.remove(grammar.getReference());
 
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.log(Level.FINE, "Removed grammar :{0}", key.getReference());
+        if (logger.isLoggable(Level.FINE)) {
+            logger.log(Level.FINE, "Removed grammar :{0}", key.getReference());
 
             for (String s : grammars.keySet()) {
-                LOGGER.log(Level.FINE, "Grammar :{0}", s);
+                logger.log(Level.FINE, "Grammar :{0}", s);
             }
         }
 
@@ -181,8 +175,7 @@ public class BaseGrammarManager implements GrammarManager {
 
         // Get engine built-in grammars
         if (recognizer != null) {
-            Collection<Grammar> builtInGrammars = recognizer
-                    .getBuiltInGrammars();
+            Collection<Grammar> builtInGrammars = recognizer.getBuiltInGrammars();
             if (builtInGrammars != null) {
                 allGrammars.addAll(builtInGrammars);
             }
@@ -204,8 +197,7 @@ public class BaseGrammarManager implements GrammarManager {
      * @return referenced garamamr
      * @throws EngineStateException if the engine state does not allow obtaining the grammar
      */
-    public Grammar getGrammar(String grammarReference)
-            throws EngineStateException {
+    public Grammar getGrammar(String grammarReference) throws EngineStateException {
 
         // Validate current state
         ensureValidEngineState();
@@ -214,13 +206,12 @@ public class BaseGrammarManager implements GrammarManager {
     }
 
     @Override
-    public Grammar loadGrammar(String grammarReference,
-                               String mediaType)
+    public Grammar loadGrammar(String grammarReference, String mediaType)
             throws GrammarException, IllegalArgumentException, IOException,
             EngineStateException, EngineException {
 
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.log(Level.FINE, "Load Grammar : {0} with media Type:{1}",
+        if (logger.isLoggable(Level.FINE)) {
+            logger.log(Level.FINE, "Load Grammar : {0} with media Type:{1}",
                     new Object[] {grammarReference, mediaType});
         }
 
@@ -235,13 +226,12 @@ public class BaseGrammarManager implements GrammarManager {
             throws GrammarException, IllegalArgumentException, IOException,
             EngineStateException, EngineException {
 
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.log(Level.FINE, "Load Grammar : {0} with media Type:{1}",
+        if (logger.isLoggable(Level.FINE)) {
+            logger.log(Level.FINE, "Load Grammar : {0} with media Type:{1}",
                     new Object[] {grammarReference, mediaType});
-            LOGGER.log(Level.FINE, "loadReferences : {0} reloadGrammars:{1}",
+            logger.log(Level.FINE, "loadReferences : {0} reloadGrammars:{1}",
                     new Object[] {loadReferences, reloadGrammars});
-            LOGGER.log(Level.FINE, "there are {0} loaded grammars:",
-                    loadedGrammars.size());
+            logger.log(Level.FINE, "there are {0} loaded grammars:", loadedGrammars.size());
         }
 
         // Validate current state
@@ -264,8 +254,7 @@ public class BaseGrammarManager implements GrammarManager {
         Rule[] rules = srgsParser.load(grammarStream);
         if (rules != null) {
             // Initialize rule grammar
-            BaseRuleGrammar brg = new BaseRuleGrammar(recognizer,
-                    grammarReference);
+            BaseRuleGrammar brg = new BaseRuleGrammar(recognizer, grammarReference);
             brg.addRules(rules);
             Map<String, String> attributes = srgsParser.getAttributes();
             brg.setAttributes(attributes);
@@ -294,14 +283,12 @@ public class BaseGrammarManager implements GrammarManager {
      * @throws EngineStateException     when not in the standard Conditions for Operation
      * @throws EngineException          if {@link RuleGrammar}s are not supported
      */
-    public Grammar loadGrammar(String grammarReference,
-                               String mediaType, Reader reader)
+    public Grammar loadGrammar(String grammarReference, String mediaType, Reader reader)
             throws GrammarException, IllegalArgumentException, IOException,
             EngineStateException, EngineException {
 
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.log(Level.FINE,
-                    "Load Grammar : {0} with media Type:{1} and Reader :{2}",
+        if (logger.isLoggable(Level.FINE)) {
+            logger.log(Level.FINE, "Load Grammar : {0} with media Type:{1} and Reader :{2}",
                     new Object[] {grammarReference, mediaType, reader});
         }
 
@@ -321,14 +308,13 @@ public class BaseGrammarManager implements GrammarManager {
         SrgsRuleGrammarParser parser = new SrgsRuleGrammarParser();
         Rule[] rules = parser.load(reader);
         if (rules == null) {
-            throw new IOException(
-                    "Unable to load grammar '" + grammarReference + "'");
+            throw new IOException("Unable to load grammar '" + grammarReference + "'");
         }
 
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine("SrgsRuleGrammarParser parsed rules:");
+        if (logger.isLoggable(Level.FINE)) {
+            logger.fine("SrgsRuleGrammarParser parsed rules:");
             for (Rule rule : rules) {
-                LOGGER.fine(rule.getRuleName());
+                logger.fine(rule.getRuleName());
             }
         }
 
@@ -336,9 +322,8 @@ public class BaseGrammarManager implements GrammarManager {
         BaseRuleGrammar grammar = new BaseRuleGrammar(recognizer,
                 grammarReference);
 
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.log(Level.FINE, "new BaseRuleGrammar:{0}",
-                    grammar.getReference());
+        if (logger.isLoggable(Level.FINE)) {
+            logger.log(Level.FINE, "new BaseRuleGrammar:{0}", grammar.getReference());
         }
 
         grammar.addRules(rules);
@@ -358,25 +343,21 @@ public class BaseGrammarManager implements GrammarManager {
     }
 
     @Override
-    public Grammar loadGrammar(String grammarReference,
-                               String mediaType, String grammarText)
+    public Grammar loadGrammar(String grammarReference, String mediaType, String grammarText)
             throws GrammarException, IllegalArgumentException, IOException,
             EngineStateException, EngineException {
-        return loadGrammar(grammarReference, mediaType,
-                new StringReader(grammarText));
+        return loadGrammar(grammarReference, mediaType, new StringReader(grammarText));
     }
 
     @Override
-    public Grammar loadGrammar(String grammarReference,
-                               String mediaType, InputStream byteStream,
+    public Grammar loadGrammar(String grammarReference, String mediaType, InputStream byteStream,
                                String encoding)
             throws GrammarException, IllegalArgumentException, IOException,
             EngineStateException, EngineException {
         if (byteStream == null) {
             throw new IOException("Unable to read from a null stream!");
         }
-        InputStreamReader reader = new InputStreamReader(byteStream,
-                encoding);
+        InputStreamReader reader = new InputStreamReader(byteStream, encoding);
         return loadGrammar(grammarReference, mediaType, reader);
     }
 
@@ -402,12 +383,9 @@ public class BaseGrammarManager implements GrammarManager {
             return;
         }
         // Validate current state
-        if (recognizer.testEngineState(
-                Recognizer.DEALLOCATED | Recognizer.DEALLOCATING_RESOURCES)) {
-            throw new EngineStateException(
-                    "Cannot execute GrammarManager operation: invalid engine state: "
-                            + recognizer.stateToString(
-                            recognizer.getEngineState()));
+        if (recognizer.testEngineState(Recognizer.DEALLOCATED | Recognizer.DEALLOCATING_RESOURCES)) {
+            throw new EngineStateException("Cannot execute GrammarManager operation: invalid engine state: "
+                            + recognizer.stateToString(recognizer.getEngineState()));
         }
 
         // Wait until end of allocating (if it's currently allocating)

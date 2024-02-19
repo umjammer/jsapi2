@@ -1,10 +1,12 @@
 /**
- * 
+ *
  */
+
 package org.jvoicexml.jsapi2.mock;
 
 import javax.speech.Engine;
 import javax.speech.EngineEvent;
+
 
 /**
  * Dummy implementation of an engine event for engine-type independent tests.
@@ -22,7 +24,7 @@ public class MockEngineEvent extends EngineEvent {
      * @throws IllegalArgumentException
      */
     public MockEngineEvent(Engine source, int id, long oldEngineState,
-            long newEngineState, Throwable problem)
+                           long newEngineState, Throwable problem)
             throws IllegalArgumentException {
         super(source, id, oldEngineState, newEngineState, problem);
     }

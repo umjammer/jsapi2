@@ -26,19 +26,31 @@
 
 package javax.speech.recognition;
 
-//Comp 2.0.6
+// Comp 2.0.6
 
+/**
+ * Represents the different components
+ * that may appear on the right-hand side of a Rule definition
+ * in a RuleGrammar
+ * <p>
+ * Most RuleComponent subclasses help define the components of a Rule.
+ * However, the RuleParse subclass is returned by the parse method
+ * of RuleGrammar to represent the structure of parsed text.
+ * <p>
+ * Any RuleComponent object can be converted to a partial grammar text
+ * String using its toString method.
+ * @see javax.speech.recognition.RuleGrammar
+ */
 public class RuleComponent {
+
     /**
      * Checks if the given text is a valid grammar text.
-     * 
-     * @param text
-     *            the text to check.
+     *
+     * @param text the text to check.
      */
     protected static void checkValidGrammarText(String text) {
         if ((text == null) || (text.length() == 0)) {
-            throw new IllegalArgumentException(
-                    "No text is not a valid for a grammar ");
+            throw new IllegalArgumentException("No text is not a valid for a grammar ");
         }
 
         char[] chars = text.toCharArray();
@@ -46,26 +58,23 @@ public class RuleComponent {
         char first = chars[0];
         if (!isLetter(first) && (first != '_')) {
             throw new IllegalArgumentException("'" + text
-                    + "' is not a valid grammar text: '"
-                    + first + "' Element is not a valid first symbol");
+                    + "' is not a valid grammar text: '" + first + "' Element is not a valid first symbol");
         }
         // Following symbols must be a character or a digit.
         for (int i = 1; i < chars.length; i++) {
             char ch = chars[i];
-            if (!isLetter(ch) && !Character.isDigit(ch)
-                    && (ch != '_')) {
+            if (!isLetter(ch) && !Character.isDigit(ch) && (ch != '_')) {
                 throw new IllegalArgumentException("'" + text
-                        + "' is not a valid grammar tex: '"
-                        + ch + "' Element is not a valid symbol");
+                        + "' is not a valid grammar tex: '" + ch + "' Element is not a valid symbol");
             }
         }
     }
 
     static boolean isLetter(char ch) {
-        return isUpperCase(ch) || isLowerCase(ch) || 
-            (ch >= '\u00c0' && ch != '\u00d7' && ch != '\u00f7' && ch != '\u0006');
+        return isUpperCase(ch) || isLowerCase(ch) ||
+                (ch >= '\u00c0' && ch != '\u00d7' && ch != '\u00f7' && ch != '\u0006');
     }
-    
+
     static boolean isUpperCase(char ch) {
         return (ch >= 'A') && (ch <= 'Z');
     }
@@ -75,15 +84,24 @@ public class RuleComponent {
     }
 
     static boolean isWhitespace(char ch) {
-        switch (ch) {
-        case ' ':
-        case '\t':
-            return true;
-        default:
-            return false;
+        switch(ch) {
+            case ' ':
+            case '\t':
+                return true;
+            default:
+                return false;
         }
     }
-    
+
+    /**
+     * Returns a String representing this RuleComponent as grammar text.
+     * <p>
+     * The String represents a portion of a grammar that could appear
+     * on the right hand side of a Rule definition.
+     * @return printable String representing grammar text.
+     * @see javax.speech.recognition.RuleComponent
+     * @see javax.speech.recognition.Rule
+     */
     public String toString() {
         return null;
     }

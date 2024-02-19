@@ -34,11 +34,11 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+
 /**
  * Test case for {@link javax.speech.synthesis.SynthesizerEvent}.
- * 
+ *
  * @author Dirk Schnelle
- * 
  */
 public class SynthesizerEventTest {
 

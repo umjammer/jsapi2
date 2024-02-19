@@ -313,7 +313,7 @@ public class BaseResult implements Result, FinalResult, FinalRuleResult, Seriali
         if (nBest == 0) {
             return getBestTokens();
         }
-        // [[[WDW - throw InvalidArgumentException?]]]
+        // WDW - throw InvalidArgumentException?
         return null;
     }
 
@@ -326,7 +326,7 @@ public class BaseResult implements Result, FinalResult, FinalRuleResult, Seriali
         if (nBest == 0) {
             return grammar;
         }
-        // [[[WDW - throw InvalidArgumentException?]]]
+        // WDW - throw InvalidArgumentException?
         return null;
     }
 
@@ -445,7 +445,7 @@ public class BaseResult implements Result, FinalResult, FinalRuleResult, Seriali
      * Utility function to set the resultTokens. Does nothing if no tokens are
      * provided.
      *
-     * @param rt the tokens
+     * @param rt          the tokens
      * @param replaceTags if true, tokens must be replaced by tags content.
      */
     public void setTokens(ResultToken[] rt, boolean replaceTags) {

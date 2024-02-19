@@ -28,8 +28,29 @@ package javax.speech.recognition;
 
 import javax.speech.SpeechEventListener;
 
-//Comp 2.0.6
+// Comp 2.0.6
 
+/**
+ * The listener interface for receiving notifications of
+ * status change events for a Grammar.
+ * <p>
+ * A GrammarListener is attached to and removed from a Grammar with its
+ * addGrammarListener and removeGrammarListener methods.
+ * Multiple grammars can share a GrammarListener object and one grammar can
+ * have multiple GrammarListener objects attached.
+ * @see javax.speech.recognition.Grammar
+ * @see javax.speech.recognition.RuleGrammar
+ * @see javax.speech.recognition.GrammarEvent
+ * @see javax.speech.recognition.Grammar#addGrammarListener(javax.speech.recognition.GrammarListener)
+ * @see javax.speech.recognition.Grammar#removeGrammarListener(javax.speech.recognition.GrammarListener)
+ */
 public interface GrammarListener extends SpeechEventListener {
+
+    /**
+     * Method called back to indicate a Grammar update.
+     * @param e the GrammarEvent
+     * @see javax.speech.recognition.GrammarEvent
+     * @see javax.speech.recognition.Grammar
+     */
     void grammarUpdate(GrammarEvent e);
 }

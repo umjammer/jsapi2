@@ -28,37 +28,98 @@ package javax.speech.synthesis;
 
 import javax.speech.SpeechLocale;
 
-//Comp 2.0.6
+// Comp 2.0.6
 
+/**
+ * Describes one output voice of a speech Synthesizer.
+ * <p>
+ * Voice objects can be used in selection of synthesis engines
+ * through SynthesizerMode.
+ * From the SynthesizerProperties object
+ * (returned for a Synthesizer with the getSynthesizerProperties method),
+ * the current speaking Voice of a Synthesizer
+ * can be retrieved using the getVoice method and
+ * can be changed during operation with the setVoice method.
+ * @see javax.speech.synthesis.Synthesizer
+ * @see javax.speech.synthesis.SynthesizerMode
+ * @see javax.speech.synthesis.Synthesizer#getSynthesizerProperties()
+ * @see javax.speech.synthesis.SynthesizerProperties
+ * @see javax.speech.synthesis.SynthesizerProperties#getVoice()
+ * @see javax.speech.synthesis.SynthesizerProperties#setVoice(javax.speech.synthesis.Voice)
+ */
 public class Voice {
 
+    /**
+     * Age representing a child.
+     */
     public static final int AGE_CHILD = 0x80010000;
 
+    /**
+     * Age representing a teenager.
+     */
     public static final int AGE_TEENAGER = 0x80020000;
 
+    /**
+     * Age representing a younger adult.
+     */
     public static final int AGE_YOUNGER_ADULT = 0x80040000;
 
+    /**
+     * Age representing a middle-aged adult.
+     */
     public static final int AGE_MIDDLE_ADULT = 0x80080000;
 
+    /**
+     * Age representing an older adult.
+     */
     public static final int AGE_OLDER_ADULT = 0x80100000;
 
     public static final int AGE_SPECIFIC = 0xC0000000;
 
+    /**
+     * Ignore age when performing a match.
+     * <p>
+     * Synthesizers never provide a voice with AGE_DONT_CARE.
+     */
     public static final int AGE_DONT_CARE = -1;
 
+    /**
+     * Female voice.
+     */
     public static final int GENDER_FEMALE = 0x1;
 
+    /**
+     * Male voice.
+     */
     public static final int GENDER_MALE = 0x2;
 
-    /** Neutral voice that is neither male or female. Examples include artificial voices and robotic voices. */
+    /**
+     * Neutral voice that is neither male or female.
+     * <p>
+     * Examples include artificial voices and robotic voices.
+     */
     public static final int GENDER_NEUTRAL = 0x4;
 
+    /**
+     * Ignore gender when performing a match of voices.
+     * <p>
+     * Synthesizers never provide a voice with GENDER_DONT_CARE.
+     */
     public static final int GENDER_DONT_CARE = -1;
 
-    /** The default variant for a Voice. */
+    /**
+     * The default variant for a Voice.
+     * <p>
+     * Variants returned from a Synthesizer begin with VARIANT_DEFAULT.
+     */
     public static final int VARIANT_DEFAULT = 1;
 
-    /** Ignore the variant when performing a match of voices. */
+    /**
+     * Ignore the variant when performing a match of voices.
+     * <p>
+     * Synthesizers never provide a voice with VARIANT_DONT_CARE.
+     * Variants returned from a Synthesizer begin with VARIANT_DEFAULT.
+     */
     public static final int VARIANT_DONT_CARE = -1;
 
     private final SpeechLocale locale;
@@ -71,6 +132,10 @@ public class Voice {
 
     private final int variant;
 
+    /**
+     * Constructs a Voice with locale, name, gender, age, and variant
+     * set to "don't care" values.
+     */
     public Voice() {
         gender = GENDER_DONT_CARE;
         age = AGE_DONT_CARE;
@@ -101,10 +166,38 @@ public class Voice {
         this.variant = variant;
     }
 
+    /**
+     * Gets the voice age.
+     * <p>
+     * When matching a Voice, the closest age is selected
+     * (unless the age is AGE_DONT_CARE).
+     * A Voice for a Synthesizer will return a specific age.
+     * <p>
+     * Several age constants are provided for convenience.
+     * @return the age of the voice
+     * @see javax.speech.synthesis.Voice#match(javax.speech.synthesis.Voice)
+     * @see javax.speech.synthesis.Voice#AGE_DONT_CARE
+     * @see javax.speech.synthesis.Voice#AGE_CHILD
+     * @see javax.speech.synthesis.Voice#AGE_TEENAGER
+     * @see javax.speech.synthesis.Voice#AGE_YOUNGER_ADULT
+     * @see javax.speech.synthesis.Voice#AGE_MIDDLE_ADULT
+     * @see javax.speech.synthesis.Voice#AGE_OLDER_ADULT
+     */
     public int getAge() {
         return age;
     }
 
+    /**
+     * Gets the voice gender.
+     * <p>
+     * Gender values may be OR'ed to select or match a voice.
+     * @return the gender of this voice
+     * @see javax.speech.synthesis.Voice#match(javax.speech.synthesis.Voice)
+     * @see javax.speech.synthesis.Voice#GENDER_DONT_CARE
+     * @see javax.speech.synthesis.Voice#GENDER_MALE
+     * @see javax.speech.synthesis.Voice#GENDER_FEMALE
+     * @see javax.speech.synthesis.Voice#GENDER_NEUTRAL
+     */
     public int getGender() {
         return gender;
     }
@@ -113,14 +206,42 @@ public class Voice {
         return locale;
     }
 
+    /**
+     * Gets the voice name.
+     * <p>
+     * May return null.
+     * <p>
+     * A null or "" string in voice match means don't care.
+     * @return the name of this voice
+     * @see javax.speech.synthesis.Voice#match(javax.speech.synthesis.Voice)
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Gets the voice variant.
+     * <p>
+     * This can indicate a variation of the other voice characteristics.
+     * For example, if there are two male child voices then the variant
+     * can be used to select the second one.
+     * <p>
+     * If the variant does not matter during selection, use VARIANT_DONT_CARE.
+     * Variants returned from a Synthesizer begin with VARIANT_DEFAULT.
+     * @return the voice variant
+     * @see javax.speech.synthesis.Voice#match(javax.speech.synthesis.Voice)
+     * @see javax.speech.synthesis.Voice#VARIANT_DEFAULT
+     * @see javax.speech.synthesis.Voice#VARIANT_DONT_CARE
+     */
     public int getVariant() {
         return variant;
     }
 
+    /**
+     * Returns a hash code value for the object.
+     * <p>
+     * This method is supported for the benefit of hashtables.
+     */
     public int hashCode() {
         final int prime = 31;
         int result = 1;
@@ -132,6 +253,12 @@ public class Voice {
         return result;
     }
 
+    /**
+     * Returns true if and only if the parameter is not null and is a Voice
+     * with equal values.
+     * @param obj a Voice object to compare
+     * @return true if the Voice objects compare
+     */
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -169,6 +296,10 @@ public class Voice {
         return true;
     }
 
+    /**
+     * Returns a String representation of this Voice.
+     * @return a String representation of this Voice
+     */
     @Override
     public String toString() {
 
@@ -189,26 +320,34 @@ public class Voice {
     }
 
     /**
-     * Determines whether a Voice has all the features defined in the require object. Strings in require which are
-     * null are ignored. All string comparisons are exact matches (case-sensitive). A null locale in the require object
-     * is ignored. Otherwise, all Strings in the require locale must match.
-     * <code>GENDER_DONT_CARE</code>, <code>AGE_DONT_CARE</code>, and <code>VARIANT_DONT_CARE</code> values in the
-     * require object are ignored. The gender parameters are OR'able. The age parameter finds the closest one.
+     * Determines whether a Voice has all the features defined in the require object.
      * <p>
-     * The following example shows how to test for a male and/or neutral Voice:
+     * Strings in require which are
+     * null are ignored. All string comparisons are exact matches (case-sensitive).
+     * A null locale in the require object is ignored. Otherwise, all Strings
+     * in the require locale must match.
+     * <p>
+     * <code>GENDER_DONT_CARE</code>, <code>AGE_DONT_CARE</code>, and <code>VARIANT_DONT_CARE</code>
+     * values in the require object are ignored. The gender parameters are OR'able.
+     * The age parameter finds the closest one.
+     * <p>
+     * The following example shows how to test for a
+     * male and/or neutral Voice:
      * </p>
      * <pre>
-     *  Voice aVoice = ...;
-     *  Voice maleishVoice =
-     *      new Voice(null, null, Voice.GENDER_MALE | Voice.GENDER_NEUTRAL,
-     *                Voice.AGE_DONT_CARE, Voice.VARIANT_DONT_CARE);
-     *  if (aVoice.match(maleishVoice)) ...
+     *
+     * Voice aVoice = ...;
+     * Voice maleishVoice =
+     *   new Voice(null, null, Voice.GENDER_MALE | Voice.GENDER_NEUTRAL,
+     *     Voice.AGE_DONT_CARE, Voice.VARIANT_DONT_CARE);
+     * if (aVoice.match(maleishVoice)) ...
      * </pre>
+     *
      * @param require the required features to match this voice
      * @return true if all the required features match
-     * @see #GENDER_DONT_CARE
-     * @see #AGE_DONT_CARE
-     * @see #VARIANT_DONT_CARE
+     * @see javax.speech.synthesis.Voice#GENDER_DONT_CARE
+     * @see javax.speech.synthesis.Voice#AGE_DONT_CARE
+     * @see javax.speech.synthesis.Voice#VARIANT_DONT_CARE
      */
     public boolean match(Voice require) {
         if (require == null) {

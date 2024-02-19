@@ -26,9 +26,42 @@
 
 package javax.speech.recognition;
 
-//Comp 2.0.6
+// Comp 2.0.6
 
+/**
+ * Identifies each enrollment by a user to a Recognizer.
+ * <p>
+ * SpeakerProfile objects are used in management of speaker data through
+ * the SpeakerManager interface for a Recognizer and in selection of
+ * Recognizers through the RecognizerMode class.
+ * <p>
+ * A user may have single or multiple profiles associated with a Recognizer.
+ * Examples of multiple profiles include a user who enrolls and trains
+ * the recognizer separately for different microphones or for different
+ * application domains (e.g. name dialing and command and control).
+ * <p>
+ * Each SpeakerProfile object has a unique identifier
+ * (unique to the Recognizer), plus a user name and optionally a variant
+ * name that identifies each separate profile for a user (per-user unique).
+ * All three identifying properties should be human-readable strings.
+ * The identifier is often the concatenation of the user name and variant.
+ * <p>
+ * The user name may be the same as the "user.name" property stored in
+ * the java.lang.System properties. However, access to system properties may be
+ * restricted by security policies.
+ * Appropriate naming of profiles is the joint responsibility of users
+ * and recognizers.
+ * @see javax.speech.recognition.Recognizer
+ * @see javax.speech.recognition.RecognizerMode
+ * @see javax.speech.recognition.SpeakerManager
+ * @see java.lang.System
+ */
 public class SpeakerProfile {
+
+    /**
+     * The default SpeakerProfile used if no other speaker has been set.
+     * @see javax.speech.recognition.SpeakerManager#setCurrentSpeaker(javax.speech.recognition.SpeakerProfile)
+     */
     public static SpeakerProfile DEFAULT = new SpeakerProfile(null, null);
 
     private String name;
@@ -40,18 +73,32 @@ public class SpeakerProfile {
         this.variant = variant;
     }
 
+    /**
+     * Returns the speaker name.
+     * <p>
+     * Should be unique for a user.
+     * @return the speaker's name.
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Gets the variant description.
+     * <p>
+     * Should be unique for a user.
+     * @return the variant description for the profile.
+     */
     public String getVariant() {
         return variant;
     }
-    
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#hashCode()
+    /**
+     * Returns a hash code value for the object.
+     * <p>
+     * This method is supported for the benefit of hashtables.
      */
+    @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
@@ -60,9 +107,14 @@ public class SpeakerProfile {
         return result;
     }
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
+    /**
+     * Returns true if and only if the input parameter is a non-null
+     * SpeakerProfile with equal values of all properties.
+     * profile a SpeakerProfile object
+     * @return true if the SpeakerProfiles are equal
+     * @see javax.speech.recognition.SpeakerProfile#match(javax.speech.recognition.SpeakerProfile)
      */
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -91,8 +143,11 @@ public class SpeakerProfile {
         return true;
     }
 
+    /**
+     * Returns a String representation of this SpeakerProfile.
+     * @return a String representation of this SpeakerProfile
+     */
     public String toString() {
-
         String str = getClass().getName() +
                 "[" +
                 name +
@@ -103,6 +158,16 @@ public class SpeakerProfile {
         return str;
     }
 
+    /**
+     * Returns true if this object matches the require object.
+     * <p>
+     * A match requires that each non-null or non-zero-length string
+     * property of the required object be an exact string match to
+     * the properties of this object.
+     * @param require a profile with the required values
+     * @return true if the profiles match
+     * @see javax.speech.recognition.SpeakerProfile#equals(java.lang.Object)
+     */
     public boolean match(SpeakerProfile require) {
         if (require == null) {
             return true;

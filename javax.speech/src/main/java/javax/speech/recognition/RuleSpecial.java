@@ -26,13 +26,53 @@
 
 package javax.speech.recognition;
 
-//Comp. 2.0.6
+// Comp. 2.0.6
 
+/**
+ * Defines special RuleReferences defined as constants.
+ * <p>
+ * The special RuleReferences NULL, VOID and GARBAGE may be used within
+ * RuleGrammar definitions as RuleComponents.
+ * <p>
+ * Special Rule references for SRGS are
+ * <p>
+ * ruleref special="NULL"/
+ * <p>
+ * ruleref special="VOID"/
+ * <p>
+ * ruleref special="GARBAGE"/
+ *
+ * @see javax.speech.recognition.RuleGrammar
+ * @see javax.speech.recognition.RuleReference
+ */
 public class RuleSpecial extends RuleComponent {
+
+    /**
+     * Special GARBAGE RuleComponent that may match any speech up
+     * until the next RuleComponent match, the next token or until the
+     * end of spoken input.
+     * <p>
+     * A RuleGrammar processor must accept RuleGrammars that contain GARBAGE.
+     * However, the behavior of GARBAGE is implementation-specific.
+     * A user agent should be capable of matching arbitrary spoken input up
+     * to the next token, but may treat GARBAGE as equivalent to
+     * NULL (match no spoken input).
+     * @see javax.speech.recognition.RuleSpecial#NULL
+     * @see javax.speech.recognition.RuleGrammar
+     */
     public static RuleSpecial GARBAGE = new RuleSpecial("GARBAGE");
 
+    /**
+     * Special NULL RuleComponent that always matches.
+     * <p>
+     * Unlike GARBAGE, the match succeeds independent of speech input.
+     * @see javax.speech.recognition.RuleSpecial#GARBAGE
+     */
     public static RuleSpecial NULL = new RuleSpecial("NULL");
 
+    /**
+     * Special VOID RuleComponent that never matches.
+     */
     public static RuleSpecial VOID = new RuleSpecial("VOID");
 
     private String special;
@@ -41,6 +81,15 @@ public class RuleSpecial extends RuleComponent {
         this.special = special;
     }
 
+    /**
+     * Returns a String representing this RuleComponent as grammar text.
+     * <p>
+     * The String represents a portion of a grammar that could appear
+     * on the right hand side of a Rule definition.
+     * @return printable String representing grammar text.
+     * @see javax.speech.recognition.RuleComponent
+     * @see javax.speech.recognition.Rule
+     */
     public String toString() {
         return "<ruleref special=\"" + special + "\"/>";
     }

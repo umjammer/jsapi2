@@ -13,8 +13,8 @@
 package org.jvoicexml.jsapi2.synthesis.freetts;
 
 import java.util.ArrayList;
-import java.util.Locale;
 import java.util.List;
+import java.util.Locale;
 
 import com.sun.speech.freetts.Voice;
 
@@ -50,7 +50,6 @@ class DomainLocale {
      * The voices are NOT compared.
      *
      * @param o, the object to compare to
-     *
      * @return true if the domain and locale are both equal, else
      * false
      */
@@ -64,6 +63,7 @@ class DomainLocale {
 
     /**
      * Gets the domain.
+     *
      * @return the domain
      */
     public String getDomain() {
@@ -72,6 +72,7 @@ class DomainLocale {
 
     /**
      * Gets the locale.
+     *
      * @return the locale
      */
     public Locale getLocale() {
@@ -94,7 +95,7 @@ class DomainLocale {
      * instance.
      */
     public Voice[] getVoices() {
-        Voice[] voiceArray =  new Voice[voices.size()];
+        Voice[] voiceArray = new Voice[voices.size()];
         return voices.toArray(voiceArray);
     }
 }

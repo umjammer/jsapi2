@@ -28,16 +28,18 @@ package javax.speech.mock;
 
 import javax.speech.SpeechEvent;
 
+
 /**
  * A speech event for test purpose.
- * @author Dirk Schnelle-Walka
  *
+ * @author Dirk Schnelle-Walka
  */
 public class MockSpeechEvent extends SpeechEvent {
     /**
      * Constructs a new object.
+     *
      * @param source the source of this event
-     * @param id the event id
+     * @param id     the event id
      */
     public MockSpeechEvent(Object source, int id) {
         super(source, id);

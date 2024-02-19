@@ -39,8 +39,7 @@ public final class BaseAudioManagerTest {
 
 //    /**
 //     * Test method for {@link org.jvoicexml.jsapi2.BaseAudioManager#setMediaLocator(java.lang.String)}.
-//     * @throws Exception
-//     *         test failed
+//     * @throws Exception test failed
 //     */
 //    @Test
 //    void testSetMediaLocatorSecurityException() throws Exception {

@@ -28,9 +28,11 @@ package org.jvoicexml.jsapi2.sapi.recognition;
 
 import java.util.StringTokenizer;
 
+
 /**
  * Part of an interpretation result, consisting of a tag, an associated value
  * and a confidence value.
+ *
  * @author Josua Arndt
  * @author Dirk Schnelle-Walka
  * @author Markus Baumgart
@@ -45,8 +47,9 @@ public final class SmlInterpretation {
 
     /**
      * Constructs a new object.
+     *
      * @param tagValue the tag
-     * @param conf confidence n the result
+     * @param conf     confidence n the result
      */
     SmlInterpretation(String tagValue, float conf) {
         tag = tagValue;
@@ -55,9 +58,10 @@ public final class SmlInterpretation {
 
     /**
      * Constructs a new object.
+     *
      * @param tagValue the tag
-     * @param val the associated value
-     * @param conf confidence n the result
+     * @param val      the associated value
+     * @param conf     confidence n the result
      */
     SmlInterpretation(String tagValue, String val,
                       float conf) {
@@ -68,15 +72,17 @@ public final class SmlInterpretation {
 
     /**
      * Retrieves the level within a nested object hierarchy.
+     *
      * @return level
      */
     public int getObjectHierachyLevel() {
         StringTokenizer tokenizer = new StringTokenizer(tag, ".");
         return tokenizer.countTokens() - 1;
     }
-    
+
     /**
      * Retrieves the tag.
+     *
      * @return the tag
      */
     public String getTag() {
@@ -85,6 +91,7 @@ public final class SmlInterpretation {
 
     /**
      * Sets the associated value.
+     *
      * @param val the associated value.
      */
     public void setValue(String val) {
@@ -93,6 +100,7 @@ public final class SmlInterpretation {
 
     /**
      * Retrieves the associated value.
+     *
      * @return the associated value
      */
     public String getValue() {
@@ -104,6 +112,7 @@ public final class SmlInterpretation {
 
     /**
      * Appends the given string to the value.
+     *
      * @param str the string to append
      */
     public void appendValue(String str) {
@@ -116,6 +125,7 @@ public final class SmlInterpretation {
 
     /**
      * Retrieves the confidence value.
+     *
      * @return confidence value.
      */
     public float getConfidence() {
