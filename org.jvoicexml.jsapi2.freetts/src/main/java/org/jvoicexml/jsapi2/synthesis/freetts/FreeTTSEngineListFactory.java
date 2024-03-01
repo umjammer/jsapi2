@@ -71,6 +71,7 @@ public class FreeTTSEngineListFactory implements EngineListFactory {
      * @return an engineList containing matching engines, or null if
      * no matching engines are found
      */
+    @Override
     public EngineList createEngineList(EngineMode require) {
         // Must be a synthesizer.
         if (!(require instanceof SynthesizerMode)) {
@@ -124,7 +125,7 @@ public class FreeTTSEngineListFactory implements EngineListFactory {
         }
 
         EngineList el;
-        if (synthesizerModes.size() == 0) {
+        if (synthesizerModes.isEmpty()) {
             el = null;
         } else {
             el = new EngineList(synthesizerModes.toArray(new EngineMode[] {}));

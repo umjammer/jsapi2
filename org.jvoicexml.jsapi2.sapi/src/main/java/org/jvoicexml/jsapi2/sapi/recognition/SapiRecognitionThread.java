@@ -39,13 +39,16 @@ import javax.speech.EngineException;
  * @author Markus Baumgart
  */
 final class SapiRecognitionThread extends Thread {
+
     /** Recognition was successful <code>S_OK</code>. */
     private static final int RECOGNITION_SUCCESSFULL = 0;
+
     /**
      * Recognition did not match a grammar
      * <code>SPEVENTENUM::SPEI_FALSE_RECOGNITION</code>.
      */
     private static final int RECOGNITION_NOMATCH = 43;
+
     /**
      * Recognition process was aborted because of an error <code>S_FALSE</code>.
      */
@@ -56,7 +59,7 @@ final class SapiRecognitionThread extends Thread {
             Logger.getLogger(SapiRecognitionThread.class.getName());
 
     /** The calling SapiRecognizer. **/
-    private SapiRecognizer recognizer;
+    private final SapiRecognizer recognizer;
 
     /**
      * Constructs a new object.

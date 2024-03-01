@@ -51,6 +51,7 @@ public interface FinalRuleResult extends FinalResult {
     RuleReference getRuleReference(int nBest) throws ResultStateException,
             IllegalArgumentException, IllegalStateException;
 
+    @Override
     Object[] getTags(int nBest) throws ResultStateException,
             IllegalArgumentException, IllegalStateException;
 

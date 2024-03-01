@@ -48,17 +48,6 @@ public final class ThreadSpeechEventExecutor implements TerminatableSpeechEventE
         thread.submit(this);
     }
 
-    /**
-     * {@inheritDoc}
-     * <p>
-     * Terminates the execution thread.
-     */
-    @Override
-    protected void finalize() throws Throwable {
-        terminate();
-        super.finalize();
-    }
-
     @Override
     public void terminate() {
         shouldRun = false;
@@ -74,6 +63,7 @@ public final class ThreadSpeechEventExecutor implements TerminatableSpeechEventE
      *
      * @param command the command to execute.
      */
+    @Override
     public void execute(Runnable command) {
         if (command == null) {
             throw new NullPointerException("Command must not be null!");

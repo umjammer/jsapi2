@@ -39,41 +39,52 @@ import javax.speech.recognition.ResultListener;
  */
 public class MockGrammar implements Grammar {
 
+    @Override
     public void addGrammarListener(GrammarListener listener) {
     }
 
+    @Override
     public void removeGrammarListener(GrammarListener listener) {
     }
 
+    @Override
     public void addResultListener(ResultListener listener) {
     }
 
+    @Override
     public void removeResultListener(ResultListener listener) {
     }
 
+    @Override
     public int getActivationMode() {
         return 0;
     }
 
+    @Override
     public GrammarManager getGrammarManager() {
         return null;
     }
 
+    @Override
     public String getReference() {
         return null;
     }
 
+    @Override
     public void setActivationMode(int mode) throws IllegalArgumentException {
     }
 
+    @Override
     public boolean isActive() {
         return false;
     }
 
+    @Override
     public boolean isActivatable() {
         return false;
     }
 
+    @Override
     public void setActivatable(boolean activatable) {
     }
 }

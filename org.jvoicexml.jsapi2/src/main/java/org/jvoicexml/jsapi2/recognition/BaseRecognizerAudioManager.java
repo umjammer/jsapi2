@@ -115,8 +115,7 @@ public class BaseRecognizerAudioManager extends BaseAudioManager {
     @Override
     public final void handleAudioStart() throws AudioException {
         // Just convert samples if we already have the correct stream
-        if (inputStream instanceof AudioInputStream) {
-            AudioInputStream stream = (AudioInputStream) inputStream;
+        if (inputStream instanceof AudioInputStream stream) {
             inputStream = handleAudioStart(stream);
         } else {
             String locator = getMediaLocator();
@@ -235,6 +234,7 @@ public class BaseRecognizerAudioManager extends BaseAudioManager {
      * Throws an {@link IllegalArgumentException} since output streams are not
      * supported.
      */
+    @Override
     public void setMediaLocator(String locator, OutputStream stream)
             throws AudioException, EngineStateException, IllegalArgumentException, SecurityException {
         throw new IllegalArgumentException("output streams are not supported");

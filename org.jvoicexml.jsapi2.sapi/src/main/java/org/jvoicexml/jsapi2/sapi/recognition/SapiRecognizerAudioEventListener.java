@@ -17,6 +17,7 @@ import javax.speech.Engine;
  * @author Dirk Schnelle-Walka
  */
 public final class SapiRecognizerAudioEventListener implements AudioListener {
+
     /** Logger instance. */
     private static final Logger LOGGER = Logger.getLogger(
             SapiRecognizerAudioEventListener.class.getCanonicalName());

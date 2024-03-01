@@ -114,7 +114,7 @@ public final class SmlInterpretationExtractor implements ContentHandler {
                 }
                 tag.append(tagprefix);
             }
-            if (tag.length() != 0) {
+            if (!tag.isEmpty()) {
                 tag.append('.');
             }
             tag.append(localName);

@@ -67,7 +67,7 @@ public final class PlaybackURLConnection extends URLConnection {
     /**
      * Closes any open line.
      */
-    private void finalize_() {
+    private void dispose() {
         if (outputStream != null) {
             try {
                 outputStream.close();
@@ -113,7 +113,7 @@ public final class PlaybackURLConnection extends URLConnection {
             throw new IOException("Line is unavailable: " + ex.getMessage(), ex);
         }
 
-        Runtime.getRuntime().addShutdownHook(new Thread(this::finalize_));
+        Runtime.getRuntime().addShutdownHook(new Thread(this::dispose));
 
         // Marks this URLConnection as connected
         connected = true;
@@ -144,6 +144,7 @@ public final class PlaybackURLConnection extends URLConnection {
      *
      * @throws IOException input streams are not supported by the capture protocol.
      */
+    @Override
     public InputStream getInputStream() throws IOException {
         throw new UnknownServiceException("Cannot read from a playback device");
     }

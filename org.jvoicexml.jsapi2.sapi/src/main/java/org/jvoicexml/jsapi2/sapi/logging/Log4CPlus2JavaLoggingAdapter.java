@@ -38,6 +38,7 @@ import java.util.logging.Logger;
  * @author Dirk Schnelle-Walka
  */
 public final class Log4CPlus2JavaLoggingAdapter extends Thread {
+
     /** Logger for this class. */
     private static final Logger LOGGER =
             Logger.getLogger(Log4CPlus2JavaLoggingAdapter.class.getName());

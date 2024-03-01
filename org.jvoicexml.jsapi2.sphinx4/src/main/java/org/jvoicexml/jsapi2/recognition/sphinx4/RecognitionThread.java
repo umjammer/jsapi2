@@ -34,6 +34,7 @@ import edu.cmu.sphinx.api.SpeechResult;
  * @author Stefan Radomski
  */
 final class RecognitionThread extends Thread {
+
     /** Logger for this class. */
     private static final Logger LOGGER = Logger
             .getLogger(RecognitionThread.class.getName());

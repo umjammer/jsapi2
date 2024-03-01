@@ -106,6 +106,7 @@ public class BaseSynthesizerAudioManager extends BaseAudioManager {
      *
      * @return the output stream.
      */
+    @Override
     public final OutputStream getOutputStream() {
         return outputStream;
     }

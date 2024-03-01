@@ -1,5 +1,6 @@
 package javax.speech;
 
+import java.io.Serial;
 import java.security.Permission;
 import java.util.Map;
 
@@ -12,6 +13,7 @@ import java.util.Map;
 public final class SpeechPermission extends Permission {
 
     /** The serial version UID. */
+    @Serial
     private static final long serialVersionUID = 2261631202702374405L;
 
     /** Mapping of permissions to actions. */
@@ -42,10 +44,9 @@ public final class SpeechPermission extends Permission {
 
     @Override
     public boolean equals(Object object) {
-        if (!(object instanceof SpeechPermission)) {
+        if (!(object instanceof SpeechPermission permission)) {
             return false;
         }
-        SpeechPermission permission = (SpeechPermission) object;
         String name = getName();
         String otherName = permission.getName();
         return name.equals(otherName);

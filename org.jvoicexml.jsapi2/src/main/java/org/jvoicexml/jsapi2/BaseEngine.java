@@ -169,6 +169,7 @@ public abstract class BaseEngine implements Engine {
      * @see #getEngineState
      * @see #waitEngineState
      */
+    @Override
     public final long getEngineState() {
         return engineState;
     }
@@ -232,6 +233,7 @@ public abstract class BaseEngine implements Engine {
      * <p>
      * {@inheritDoc}
      */
+    @Override
     public final boolean testEngineState(long state) {
         return (getEngineState() & state) == state;
     }
@@ -472,6 +474,7 @@ public abstract class BaseEngine implements Engine {
      *
      * @return the operating mode of this <code>Engine</code>
      */
+    @Override
     public final EngineMode getEngineMode() {
         return engineMode;
     }
@@ -508,8 +511,7 @@ public abstract class BaseEngine implements Engine {
     }
 
     private void terminateSpeechEventExecutor() {
-        if (speechEventExecutor instanceof TerminatableSpeechEventExecutor) {
-            TerminatableSpeechEventExecutor baseExecutor = (TerminatableSpeechEventExecutor) speechEventExecutor;
+        if (speechEventExecutor instanceof TerminatableSpeechEventExecutor baseExecutor) {
             baseExecutor.terminate();
         }
     }
@@ -606,43 +608,43 @@ logger.log(Level.TRACE, "event filtered: %s, %s, &: %08x, i: %08x, m: %08x", (en
             buf.append("DEALLOCATED");
         }
         if ((state & Engine.ALLOCATING_RESOURCES) != 0) {
-            if (buf.length() > 0) {
+            if (!buf.isEmpty()) {
                 buf.append(' ');
             }
             buf.append("ALLOCATING_RESOURCES");
         }
         if ((state & Engine.ALLOCATED) != 0) {
-            if (buf.length() > 0) {
+            if (!buf.isEmpty()) {
                 buf.append(' ');
             }
             buf.append("ALLOCATED");
         }
         if ((state & Engine.DEALLOCATING_RESOURCES) != 0) {
-            if (buf.length() > 0) {
+            if (!buf.isEmpty()) {
                 buf.append(' ');
             }
             buf.append("DEALLOCATING_RESOURCES");
         }
         if ((state & Engine.PAUSED) != 0) {
-            if (buf.length() > 0) {
+            if (!buf.isEmpty()) {
                 buf.append(' ');
             }
             buf.append("PAUSED");
         }
         if ((state & Engine.RESUMED) != 0) {
-            if (buf.length() > 0) {
+            if (!buf.isEmpty()) {
                 buf.append(' ');
             }
             buf.append("RESUMED");
         }
         if ((state & Engine.FOCUSED) != 0) {
-            if (buf.length() > 0) {
+            if (!buf.isEmpty()) {
                 buf.append(' ');
             }
             buf.append("FOCUSED");
         }
         if ((state & Engine.DEFOCUSED) != 0) {
-            if (buf.length() > 0) {
+            if (!buf.isEmpty()) {
                 buf.append(' ');
             }
             buf.append("DEFOCUSED");

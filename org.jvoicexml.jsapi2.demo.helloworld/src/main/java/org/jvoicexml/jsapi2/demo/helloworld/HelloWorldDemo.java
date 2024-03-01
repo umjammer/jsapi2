@@ -60,12 +60,9 @@ public final class HelloWorldDemo implements SpeakableListener, SynthesizerListe
         Logger.getLogger("").setLevel(Level.ALL);
 
         try {
-            EngineManager
-                    .registerEngineListFactory(FreeTTSEngineListFactory.class
-                            .getName());
+            EngineManager.registerEngineListFactory(FreeTTSEngineListFactory.class.getName());
             // Create a synthesizer for the default Locale
-            Synthesizer synthesizer = (Synthesizer) EngineManager
-                    .createEngine(SynthesizerMode.DEFAULT);
+            Synthesizer synthesizer = (Synthesizer) EngineManager.createEngine(SynthesizerMode.DEFAULT);
             HelloWorldDemo demo = new HelloWorldDemo();
             synthesizer.addSynthesizerListener(demo);
             // Get it ready to speak

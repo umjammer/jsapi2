@@ -182,7 +182,7 @@ public class RuleParser {
                 parsed.add(element);
             }
         }
-        if (parsed.size() == 0) {
+        if (parsed.isEmpty()) {
             // No parse is available
             return null;
         }
@@ -278,7 +278,7 @@ public class RuleParser {
         }
         if (ruleref == null) {
             String gname = reference.getGrammarReference();
-            if ((gname != null) && (gname.length() > 0)) {
+            if ((gname != null) && (!gname.isEmpty())) {
                 RuleGrammar rg1 = null;
                 try {
                     rg1 = (RuleGrammar) grammarManager.getGrammar(gname);

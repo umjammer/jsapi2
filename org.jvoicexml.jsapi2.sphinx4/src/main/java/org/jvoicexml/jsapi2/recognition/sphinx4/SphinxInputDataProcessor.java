@@ -93,6 +93,7 @@ public class SphinxInputDataProcessor extends BaseDataProcessor
     public SphinxInputDataProcessor() {
     }
 
+    @Override
     public void newProperties(PropertySheet ps) throws PropertyException {
         super.newProperties(ps);
         int samplingRate = ps.getInt(SAMPLING_RATE);

@@ -36,8 +36,7 @@ public final class SapiEngineListFactory implements EngineListFactory {
 
     @Override
     public EngineList createEngineList(EngineMode require) {
-        if (require instanceof SynthesizerMode) {
-            SynthesizerMode mode = (SynthesizerMode) require;
+        if (require instanceof SynthesizerMode mode) {
             Voice[] voices = sapiGetVoices();
             if (mode.getVoices() != null) {
                 //If a voice preference was presented
@@ -52,7 +51,7 @@ public final class SapiEngineListFactory implements EngineListFactory {
                 }
 
                 //Update voices array
-                if (selectedVoices.size() > 0) {
+                if (!selectedVoices.isEmpty()) {
                     voices = selectedVoices.toArray(new Voice[] {});
                 } else {
                     //A requested voice was not found...

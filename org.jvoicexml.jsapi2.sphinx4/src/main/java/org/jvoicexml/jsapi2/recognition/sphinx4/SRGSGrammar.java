@@ -139,16 +139,14 @@ public class SRGSGrammar extends Grammar {
     @Override
     public void newProperties(PropertySheet ps) throws PropertyException {
         super.newProperties(ps);
-        baseURL = ConfigurationManagerUtils.getResource(PROP_BASE_GRAMMAR_URL,
-                ps);
+        baseURL = ConfigurationManagerUtils.getResource(PROP_BASE_GRAMMAR_URL, ps);
         grammarName = ps.getString(PROP_GRAMMAR_NAME);
 
         try {
             grammarURL = new URL(baseURL.toString() + grammarName);
             grammarURL.openStream();
         } catch (MalformedURLException ex) {
-            throw new PropertyException(ex, null, PROP_GRAMMAR_NAME,
-                    ex.getMessage());
+            throw new PropertyException(ex, null, PROP_GRAMMAR_NAME, ex.getMessage());
         } catch (IOException e) {
             // there is no grammar at the given location or no location is given
         }
@@ -209,6 +207,7 @@ public class SRGSGrammar extends Grammar {
      * @return the initial node of the Grammar
      * @throws IOException error creating the grammar
      */
+    @Override
     protected GrammarNode createGrammar() throws IOException {
         commitChanges();
         return firstNode;
@@ -219,6 +218,7 @@ public class SRGSGrammar extends Grammar {
      *
      * @return the initial grammar node
      */
+    @Override
     public GrammarNode getInitialNode() {
         return firstNode;
     }

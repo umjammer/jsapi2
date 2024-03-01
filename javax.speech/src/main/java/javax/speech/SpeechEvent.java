@@ -101,7 +101,7 @@ public abstract class SpeechEvent {
      * @param str the current buffer.
      */
     protected void id2String(StringBuffer str) {
-        if (str.length() == 0) {
+        if (str.isEmpty()) {
             str.append(id);
         }
     }
@@ -116,7 +116,7 @@ public abstract class SpeechEvent {
      */
     protected void maybeAddId(StringBuffer str, int flag, String description) {
         if ((id & flag) == flag) {
-            if (str.length() > 0) {
+            if (!str.isEmpty()) {
                 str.append('|');
             }
             str.append(description);

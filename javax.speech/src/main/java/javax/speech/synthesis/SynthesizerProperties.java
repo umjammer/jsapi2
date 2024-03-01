@@ -349,6 +349,7 @@ public interface SynthesizerProperties extends EngineProperties {
      */
     int getVolume();
 
+    @Override
     int getPriority();
 
     /**

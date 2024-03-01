@@ -177,8 +177,7 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
 
         voice.speak(speakElement);
 
-        if (audioPlayer instanceof FreeTTSAudioPlayer) {
-            FreeTTSAudioPlayer player = (FreeTTSAudioPlayer) audioPlayer;
+        if (audioPlayer instanceof FreeTTSAudioPlayer player) {
             InputStream in;
             try {
                 in = player.getAudioBytes();

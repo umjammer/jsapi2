@@ -20,15 +20,14 @@
 
 package org.jvoicexml.jsapi2.recognition;
 
+import java.io.Serial;
 import java.io.Serializable;
-import java.security.Permission;
 import java.util.Collection;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.speech.AudioSegment;
 import javax.speech.SpeechEventExecutor;
-import javax.speech.SpeechPermission;
 import javax.speech.recognition.FinalResult;
 import javax.speech.recognition.FinalRuleResult;
 import javax.speech.recognition.Grammar;
@@ -59,6 +58,7 @@ import javax.speech.recognition.RuleToken;
 public class BaseResult implements Result, FinalResult, FinalRuleResult, Serializable, Cloneable {
 
     /** The serial version UID. */
+    @Serial
     private static final long serialVersionUID = -7742652622067884474L;
 
     /** Logger for this class. */
@@ -259,11 +259,6 @@ public class BaseResult implements Result, FinalResult, FinalRuleResult, Seriali
 
     @Override
     public void tokenCorrection(String[] correctTokens, ResultToken fromToken, ResultToken toToken, int correctionType) throws ResultStateException, IllegalArgumentException {
-        SecurityManager security = System.getSecurityManager();
-        if (security != null) {
-            Permission permission = new SpeechPermission("javax.speech.recognition.FinalResult.tokenCorrection");
-            security.checkPermission(permission);
-        }
         validateResultState(UNFINALIZED);
     }
 
@@ -522,8 +517,7 @@ public class BaseResult implements Result, FinalResult, FinalRuleResult, Seriali
             return false;
         }
 
-        if (gram instanceof RuleGrammar) {
-            RuleGrammar rule = (RuleGrammar) gram;
+        if (gram instanceof RuleGrammar rule) {
             return tryTokens(rule, result);
         }
         return false;
@@ -561,6 +555,7 @@ public class BaseResult implements Result, FinalResult, FinalRuleResult, Seriali
         return true;
     }
 
+    @Override
     public RuleParse parse(int nBest) throws IllegalArgumentException, ResultStateException {
         ResultToken[] rt = getAlternativeTokens(0);
         String[] tokens = new String[rt.length];
@@ -582,10 +577,12 @@ public class BaseResult implements Result, FinalResult, FinalRuleResult, Seriali
         this.confidenceLevel = confidenceLevel;
     }
 
+    @Override
     public int getConfidenceLevel() throws ResultStateException {
         return getConfidenceLevel(0);
     }
 
+    @Override
     public int getConfidenceLevel(int nBest) throws IllegalArgumentException, ResultStateException {
         // uncommented - see JSAPI2/FinalResult#getConfidenceLevel
         // quote: "For a REJECTED result, a useful confidence level

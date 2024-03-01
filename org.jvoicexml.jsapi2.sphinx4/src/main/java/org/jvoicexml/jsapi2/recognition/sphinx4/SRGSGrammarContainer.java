@@ -145,8 +145,7 @@ public class SRGSGrammarContainer extends Grammar {
             Collection<GrammarNode> nodes = grammar.getGrammarNodes();
             if (nodes != null) {
                 SearchState state = token.getSearchState();
-                if (state instanceof GrammarState) {
-                    GrammarState grammarState = (GrammarState) state;
+                if (state instanceof GrammarState grammarState) {
                     GrammarNode node = grammarState.getGrammarNode();
                     if (nodes.contains(node)) {
                         return grammar.getRuleGrammar();

@@ -60,6 +60,7 @@ import org.jvoicexml.jsapi2.recognition.GrammarDefinition;
  * languages)
  */
 final class Sphinx4Recognizer extends BaseRecognizer {
+
     /** Logger for this class. */
     private static final Logger LOGGER = Logger
             .getLogger(Sphinx4Recognizer.class.getName());
@@ -96,8 +97,7 @@ final class Sphinx4Recognizer extends BaseRecognizer {
     public Sphinx4Recognizer(SphinxRecognizerMode recognizerMode) {
         super(recognizerMode);
         // First check the system setting that may override any other setting
-        String resource = System.getProperty(
-                "org.jvoicexml.jsapi2.recognition.sphinx4.configPath");
+        String resource = System.getProperty("org.jvoicexml.jsapi2.recognition.sphinx4.configPath");
         // There is no config, call dynamic URL handler
         if (resource == null) {
             resource = getConfiguration(recognizerMode);
@@ -105,14 +105,11 @@ final class Sphinx4Recognizer extends BaseRecognizer {
         configuration = new Configuration();
 
         // Set path to acoustic model.
-        configuration.setAcousticModelPath(
-                "resource:/edu/cmu/sphinx/models/en-us/en-us");
+        configuration.setAcousticModelPath("resource:/edu/cmu/sphinx/models/en-us/en-us");
         // Set path to dictionary.
-        configuration.setDictionaryPath(
-                "resource:/edu/cmu/sphinx/models/en-us/cmudict-en-us.dict");
+        configuration.setDictionaryPath("resource:/edu/cmu/sphinx/models/en-us/cmudict-en-us.dict");
         // Set language model.
-        configuration.setLanguageModelPath(
-                "resource:/edu/cmu/sphinx/models/en-us/en-us.lm.bin");
+        configuration.setLanguageModelPath("resource:/edu/cmu/sphinx/models/en-us/en-us.lm.bin");
 
         try {
             Context context = new Context("resource:/default-EN.config.xml",
@@ -144,8 +141,7 @@ final class Sphinx4Recognizer extends BaseRecognizer {
     private String getConfiguration(SphinxRecognizerMode recognizerMode) {
         // Determine the speech locale to use
         SpeechLocale[] speechLocales = recognizerMode.getSpeechLocales();
-        if (speechLocales == null
-                && recognizerMode.getSpeakerProfiles() != null) {
+        if (speechLocales == null && recognizerMode.getSpeakerProfiles() != null) {
             speechLocales = recognizerMode.getSpeechLocales();
         }
 
@@ -158,8 +154,7 @@ final class Sphinx4Recognizer extends BaseRecognizer {
         // Determine the name from the locale
         SpeechLocale speechLocale = speechLocales[0];
         String selectedLanguage = speechLocale.getLanguage();
-        return "resource:/default-" + selectedLanguage.toUpperCase()
-                + ".config.xml";
+        return "resource:/default-" + selectedLanguage.toUpperCase() + ".config.xml";
     }
 
     /**
@@ -167,8 +162,8 @@ final class Sphinx4Recognizer extends BaseRecognizer {
      *
      * @throws EngineException if problems are encountered
      */
-    public void handleAllocate() throws AudioException, EngineException,
-            EngineStateException, SecurityException {
+    @Override
+    public void handleAllocate() throws AudioException, EngineException, EngineStateException, SecurityException {
         if (error != null) {
             throw new EngineException(error.getMessage());
         }
@@ -178,18 +173,14 @@ final class Sphinx4Recognizer extends BaseRecognizer {
         configuration = new Configuration();
 
         // Set path to acoustic model.
-        configuration.setAcousticModelPath(
-                "resource:/edu/cmu/sphinx/models/en-us/en-us");
+        configuration.setAcousticModelPath("resource:/edu/cmu/sphinx/models/en-us/en-us");
         // Set path to dictionary.
-        configuration.setDictionaryPath(
-                "resource:/edu/cmu/sphinx/models/en-us/cmudict-en-us.dict");
+        configuration.setDictionaryPath("resource:/edu/cmu/sphinx/models/en-us/cmudict-en-us.dict");
         // Set language model.
-        configuration.setLanguageModelPath(
-                "resource:/edu/cmu/sphinx/models/en-us/en-us.lm.bin");
+        configuration.setLanguageModelPath("resource:/edu/cmu/sphinx/models/en-us/en-us.lm.bin");
 
         try {
-            Context context = new Context(
-                    "resource:/default-EN.config.xml", configuration);
+            Context context = new Context("resource:/default-EN.config.xml", configuration);
             recognizer = new Jsapi2Recognizer(context);
             recognizer.allocate();
         } catch (IOException e) {
@@ -231,6 +222,7 @@ final class Sphinx4Recognizer extends BaseRecognizer {
     /**
      * Called from the <code>pause</code> method.
      */
+    @Override
     public void handlePause() {
         if (recognitionThread == null) {
             throw new EngineStateException("Cannot pause, no decoder started");
@@ -247,6 +239,7 @@ final class Sphinx4Recognizer extends BaseRecognizer {
     /**
      * TODO Correctly implement this
      */
+    @Override
     public void handlePause(int flags) {
         handlePause();
     }
@@ -259,6 +252,7 @@ final class Sphinx4Recognizer extends BaseRecognizer {
      * @throws EngineException if this <code>Engine</code> cannot be deallocated.
      *                         TODO Implement this com.sun.speech.engine.BaseEngine method
      */
+    @Override
     public void handleDeallocate() {
 
         if (LOGGER.isLoggable(Level.FINE)) {
@@ -345,8 +339,7 @@ final class Sphinx4Recognizer extends BaseRecognizer {
      * @return boolean
      */
     @Override
-    protected boolean setGrammars(
-            Collection<GrammarDefinition> grammarDefinitions) {
+    protected boolean setGrammars(Collection<GrammarDefinition> grammarDefinitions) {
         return recognizer.setGrammars(grammarDefinitions);
     }
 

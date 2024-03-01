@@ -49,14 +49,10 @@ public final class RTPDemo {
         Logger.getLogger("").setLevel(Level.ALL);
 
         try {
-            EngineManager
-                    .registerEngineListFactory(FreeTTSEngineListFactory.class
-                            .getName());
-            System.setProperty("java.protocol.handler.pkgs",
-                    "org.jlibrtp.protocols");
+            EngineManager.registerEngineListFactory(FreeTTSEngineListFactory.class.getName());
+            System.setProperty("java.protocol.handler.pkgs", "org.jlibrtp.protocols");
             // Create a synthesizer for the default Locale
-            Synthesizer synth = (Synthesizer) EngineManager
-                    .createEngine(SynthesizerMode.DEFAULT);
+            Synthesizer synth = (Synthesizer) EngineManager.createEngine(SynthesizerMode.DEFAULT);
             AudioManager manager = synth.getAudioManager();
             manager.setMediaLocator("rtp://test:4343/audio?"
                     + "participant=localhost:16384&rate=8000&encoding=ulaw"

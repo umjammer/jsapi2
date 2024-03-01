@@ -220,32 +220,32 @@ public class BaseSynthesizerProperties extends BaseEngineProperties implements S
 
     @Override
     protected boolean setProperty(String propName, Object value) {
-        switch (propName) {
-        case INTERRUPTIBILITY: {
-            interruptibility = (Integer) value;
-            return true;
-        }
-        case PITCH: {
-            pitch = (Integer) value;
-            return true;
-        }
-        case PITCH_RANGE: {
-            pitchRange = (Integer) value;
-            return true;
-        }
-        case SPEAKING_RATE: {
-            speakingRate = (Integer) value;
-            return true;
-        }
-        case VOICE:
-            voice = (Voice) value;
-            return true;
-        case VOLUME: {
-            volume = (Integer) value;
-            return true;
-        }
-        default:
-            return false;
-        }
+        return switch (propName) {
+            case INTERRUPTIBILITY -> {
+                interruptibility = (Integer) value;
+                yield true;
+            }
+            case PITCH -> {
+                pitch = (Integer) value;
+                yield true;
+            }
+            case PITCH_RANGE -> {
+                pitchRange = (Integer) value;
+                yield true;
+            }
+            case SPEAKING_RATE -> {
+                speakingRate = (Integer) value;
+                yield true;
+            }
+            case VOICE -> {
+                voice = (Voice) value;
+                yield true;
+            }
+            case VOLUME -> {
+                volume = (Integer) value;
+                yield true;
+            }
+            default -> false;
+        };
     }
 }

@@ -27,7 +27,6 @@ import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.security.Permission;
 import java.util.Collection;
 import javax.sound.sampled.AudioFormat;
 import javax.speech.AudioEvent;
@@ -37,7 +36,6 @@ import javax.speech.AudioManager;
 import javax.speech.Engine;
 import javax.speech.EngineStateException;
 import javax.speech.SpeechEventExecutor;
-import javax.speech.SpeechPermission;
 
 
 /**
@@ -105,6 +103,7 @@ public abstract class BaseAudioManager implements AudioManager {
      *
      * @param listener the listener to add
      */
+    @Override
     public final void addAudioListener(AudioListener listener) {
         synchronized (audioListeners) {
             if (!audioListeners.contains(listener)) {
@@ -119,6 +118,7 @@ public abstract class BaseAudioManager implements AudioManager {
      *
      * @param listener the listener to remove
      */
+    @Override
     public final void removeAudioListener(AudioListener listener) {
         synchronized (audioListeners) {
             audioListeners.remove(listener);
@@ -136,13 +136,7 @@ public abstract class BaseAudioManager implements AudioManager {
     }
 
     @Override
-    public final void audioStart() throws SecurityException, AudioException, EngineStateException {
-        SecurityManager security = System.getSecurityManager();
-        if (security != null) {
-            Permission permission = new SpeechPermission("javax.speech.AudioManager.control");
-            security.checkPermission(permission);
-        }
-
+    public final void audioStart() throws AudioException, EngineStateException {
         validatePaused();
 
         handleAudioStart();
@@ -162,13 +156,7 @@ public abstract class BaseAudioManager implements AudioManager {
     protected abstract void handleAudioStart() throws AudioException;
 
     @Override
-    public final void audioStop() throws SecurityException, AudioException, EngineStateException {
-        SecurityManager security = System.getSecurityManager();
-        if (security != null) {
-            Permission permission = new SpeechPermission("javax.speech.AudioManager.control");
-            security.checkPermission(permission);
-        }
-
+    public final void audioStop() throws AudioException, EngineStateException {
         validatePaused();
 
         handleAudioStop();
@@ -216,14 +204,7 @@ public abstract class BaseAudioManager implements AudioManager {
 
     @Override
     public final void setMediaLocator(String locator)
-            throws AudioException, EngineStateException,
-            IllegalArgumentException, SecurityException {
-        // Check audio permission
-        SecurityManager security = System.getSecurityManager();
-        if (security != null) {
-            Permission permission = new SpeechPermission("javax.speech.AudioManager.control");
-            security.checkPermission(permission);
-        }
+            throws AudioException, EngineStateException, IllegalArgumentException {
 
         // Ensure that media locator is supported
         if (!isSupportedMediaLocator(locator)) {
@@ -246,11 +227,8 @@ public abstract class BaseAudioManager implements AudioManager {
         return mediaLocator;
     }
 
-    /**
-     * {@inheritDoc}
-     * <p>
-     * TODO This is just a dummy implementation
-     */
+    // TODO This is just a dummy implementation
+    @Override
     public String[] getSupportedMediaLocators(String locator) throws IllegalArgumentException {
         return new String[] {mediaLocator};
     }
@@ -264,11 +242,7 @@ public abstract class BaseAudioManager implements AudioManager {
         return supportedMediaLocators != null;
     }
 
-    /**
-     * {@inheritDoc}
-     * <p>
-     * TODO: This implementation checks only for equal media locators.
-     */
+    // TODO: This implementation checks only for equal media locators.
     @Override
     public boolean isSameChannel(AudioManager audioManager) {
         if (audioManager == null) {

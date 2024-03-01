@@ -26,17 +26,13 @@
 
 package org.jvoicexml.jsapi2.synthesis;
 
-import java.util.Arrays;
-import java.util.concurrent.TimeUnit;
 import javax.speech.AudioSegment;
 import javax.speech.synthesis.SpeakableEvent;
-import javax.speech.synthesis.SynthesizerEvent;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Timeout;
 import org.jvoicexml.jsapi2.mock.synthesis.MockSpeakableListener;
 import org.jvoicexml.jsapi2.mock.synthesis.MockSynthesizer;
 

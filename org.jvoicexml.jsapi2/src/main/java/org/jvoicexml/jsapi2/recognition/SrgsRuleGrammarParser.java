@@ -185,7 +185,7 @@ public class SrgsRuleGrammarParser {
         if (nodeName.equalsIgnoreCase("#text")) {
             Text textNode = (Text) node;
             String text = textNode.getWholeText().trim();
-            if (text.length() > 0) {
+            if (!text.isEmpty()) {
                 RuleToken ruleToken = new RuleToken(text);
                 ruleComponents.add(ruleToken);
             }
@@ -209,10 +209,10 @@ public class SrgsRuleGrammarParser {
                 } else {
                     String minStr = repeatStr.substring(0, toIndex);
                     String maxStr = repeatStr.substring(toIndex + 1);
-                    if (minStr.trim().length() > 0) {
+                    if (!minStr.trim().isEmpty()) {
                         repeatMin = Integer.parseInt(minStr);
                     }
-                    if (maxStr.trim().length() > 0) {
+                    if (!maxStr.trim().isEmpty()) {
                         repeatMax = Integer.parseInt(maxStr);
                     }
                 }

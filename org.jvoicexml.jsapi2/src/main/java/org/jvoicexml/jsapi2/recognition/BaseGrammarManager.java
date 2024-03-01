@@ -137,6 +137,7 @@ public class BaseGrammarManager implements GrammarManager {
      * @throws EngineStateException     if the current engine state does not allow deleting the
      *                                  grammar
      */
+    @Override
     public void deleteGrammar(Grammar grammar) throws IllegalArgumentException, EngineStateException {
 
         // Validate current state
@@ -165,6 +166,7 @@ public class BaseGrammarManager implements GrammarManager {
      * @return kown gramamrs
      * @throws EngineStateException if the engine state does not allow listing the grammars
      */
+    @Override
     public Grammar[] listGrammars() throws EngineStateException {
 
         // Validate current state
@@ -197,6 +199,7 @@ public class BaseGrammarManager implements GrammarManager {
      * @return referenced garamamr
      * @throws EngineStateException if the engine state does not allow obtaining the grammar
      */
+    @Override
     public Grammar getGrammar(String grammarReference) throws EngineStateException {
 
         // Validate current state
@@ -283,9 +286,9 @@ public class BaseGrammarManager implements GrammarManager {
      * @throws EngineStateException     when not in the standard Conditions for Operation
      * @throws EngineException          if {@link RuleGrammar}s are not supported
      */
+    @Override
     public Grammar loadGrammar(String grammarReference, String mediaType, Reader reader)
-            throws GrammarException, IllegalArgumentException, IOException,
-            EngineStateException, EngineException {
+            throws GrammarException, IllegalArgumentException, IOException, EngineStateException, EngineException {
 
         if (logger.isLoggable(Level.FINE)) {
             logger.log(Level.FINE, "Load Grammar : {0} with media Type:{1} and Reader :{2}",
@@ -344,16 +347,13 @@ public class BaseGrammarManager implements GrammarManager {
 
     @Override
     public Grammar loadGrammar(String grammarReference, String mediaType, String grammarText)
-            throws GrammarException, IllegalArgumentException, IOException,
-            EngineStateException, EngineException {
+            throws GrammarException, IllegalArgumentException, IOException, EngineStateException, EngineException {
         return loadGrammar(grammarReference, mediaType, new StringReader(grammarText));
     }
 
     @Override
-    public Grammar loadGrammar(String grammarReference, String mediaType, InputStream byteStream,
-                               String encoding)
-            throws GrammarException, IllegalArgumentException, IOException,
-            EngineStateException, EngineException {
+    public Grammar loadGrammar(String grammarReference, String mediaType, InputStream byteStream, String encoding)
+            throws GrammarException, IllegalArgumentException, IOException, EngineStateException, EngineException {
         if (byteStream == null) {
             throw new IOException("Unable to read from a null stream!");
         }
