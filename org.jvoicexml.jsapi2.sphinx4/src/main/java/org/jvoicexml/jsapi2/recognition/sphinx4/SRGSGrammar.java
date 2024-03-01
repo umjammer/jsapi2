@@ -25,13 +25,13 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.speech.EngineStateException;
 import javax.speech.recognition.GrammarException;
 import javax.speech.recognition.GrammarExceptionDetail;
@@ -94,7 +94,7 @@ import org.jvoicexml.jsapi2.recognition.SrgsRuleGrammarParser;
 public class SRGSGrammar extends Grammar {
 
     /** Logger for this class. */
-    private static final Logger logger = Logger.getLogger(Sphinx4Recognizer.class.getName());
+    private static final Logger logger = System.getLogger(Sphinx4Recognizer.class.getName());
 
     /** Sphinx property that defines the location of the JSGF grammar file. */
     @S4String(defaultValue = "")
@@ -233,8 +233,8 @@ public class SRGSGrammar extends Grammar {
         GrammarGraph result;
 
         if (rule != null) {
-            if (logger.isLoggable(Level.FINE)) {
-                logger.fine("parseRule: " + rule);
+            if (logger.isLoggable(Level.DEBUG)) {
+                logger.log(Level.DEBUG, "parseRule: " + rule);
             }
         }
 
@@ -255,7 +255,7 @@ public class SRGSGrammar extends Grammar {
         } else if (rule instanceof RuleParse) {
             throw new IllegalArgumentException("Unsupported Rule type: RuleParse: " + rule);
         } else {
-            throw new IllegalArgumentException("Unsupported Rule type: " + rule.toString());
+            throw new IllegalArgumentException("Unsupported Rule type: " + rule);
         }
         return result;
     }
@@ -274,7 +274,7 @@ public class SRGSGrammar extends Grammar {
             }
             grammarStream = url.openStream();
         } catch (IOException ex) {
-            ex.printStackTrace();
+            logger.log(Level.ERROR, ex.getMessage(), ex);
         }
 
         Rule[] rules = srgsRuleGrammarParser.load(grammarStream);
@@ -308,8 +308,8 @@ public class SRGSGrammar extends Grammar {
      * @return a grammar graph
      */
     private GrammarGraph parseRuleReference(RuleReference initialRule) throws GrammarException {
-        if (logger.isLoggable(Level.FINE)) {
-            logger.fine("parseRuleName: " + initialRule.toString());
+        if (logger.isLoggable(Level.DEBUG)) {
+            logger.log(Level.DEBUG, "parseRuleName: " + initialRule.toString());
         }
         GrammarGraph result = ruleStack.contains(initialRule.getRuleName());
 
@@ -350,8 +350,8 @@ public class SRGSGrammar extends Grammar {
      * @return a grammar graph
      */
     private GrammarGraph parseRuleCount(RuleCount ruleCount) throws GrammarException {
-        if (logger.isLoggable(Level.FINE)) {
-            logger.fine("parseRuleCount: " + ruleCount);
+        if (logger.isLoggable(Level.DEBUG)) {
+            logger.log(Level.DEBUG, "parseRuleCount: " + ruleCount);
         }
         GrammarGraph result = new GrammarGraph();
         int minRepeat = ruleCount.getRepeatMin();
@@ -424,8 +424,8 @@ public class SRGSGrammar extends Grammar {
      * @return a grammar graph
      */
     private GrammarGraph parseRuleAlternatives(RuleAlternatives ruleAlternatives) throws GrammarException {
-        if (logger.isLoggable(Level.FINE)) {
-            logger.fine("parseRuleAlternatives: " + ruleAlternatives.toString());
+        if (logger.isLoggable(Level.DEBUG)) {
+            logger.log(Level.DEBUG, "parseRuleAlternatives: " + ruleAlternatives.toString());
         }
         GrammarGraph result = new GrammarGraph();
 
@@ -441,8 +441,8 @@ public class SRGSGrammar extends Grammar {
             if (weights != null) {
                 weight = weights[i];
             }
-            if (logger.isLoggable(Level.FINE)) {
-                logger.fine("Alternative: " + rule.toString());
+            if (logger.isLoggable(Level.DEBUG)) {
+                logger.log(Level.DEBUG, "Alternative: " + rule.toString());
             }
             GrammarGraph newNodes = parseRule(rule);
 
@@ -474,8 +474,8 @@ public class SRGSGrammar extends Grammar {
 
         GrammarNode startNode = null;
         GrammarNode endNode = null;
-        if (logger.isLoggable(Level.FINE)) {
-            logger.fine("parseRuleSequence: " + ruleSequence);
+        if (logger.isLoggable(Level.DEBUG)) {
+            logger.log(Level.DEBUG, "parseRuleSequence: " + ruleSequence);
         }
 
         RuleComponent[] rules = ruleSequence.getRuleComponents();
@@ -518,8 +518,8 @@ public class SRGSGrammar extends Grammar {
      * @return the first and last GrammarNodes of the network
      */
     private GrammarGraph parseRuleTag(RuleTag ruleTag) throws GrammarException {
-        if (logger.isLoggable(Level.FINE)) {
-            logger.fine("parseRuleTag: " + ruleTag);
+        if (logger.isLoggable(Level.DEBUG)) {
+            logger.log(Level.DEBUG, "parseRuleTag: " + ruleTag);
         }
         GrammarNode node = createGrammarNode(false);
         return new GrammarGraph(node, node);
@@ -563,17 +563,17 @@ public class SRGSGrammar extends Grammar {
      * @param ge the grammar exception
      */
     private void dumpGrammarException(GrammarException ge) {
-        logger.warning("Grammar exception " + ge);
+        logger.log(Level.WARNING, "Grammar exception " + ge);
         GrammarExceptionDetail[] gsd = ge.getDetails();
         if (gsd != null) {
             for (GrammarExceptionDetail grammarExceptionDetail : gsd) {
-                logger.warning("Grammar Name: " + grammarExceptionDetail.getGrammarReference());
-                logger.warning("Line number : " + grammarExceptionDetail.getLineNumber());
-                logger.warning("char number : " + grammarExceptionDetail.getCharNumber());
-                logger.warning("Rule name   : " + grammarExceptionDetail.getRuleName());
-                logger.warning("Message     : " + grammarExceptionDetail.getMessage());
-                logger.warning("Text Info     : " + grammarExceptionDetail.getTextInfo());
-                logger.warning("Type        : " + grammarExceptionDetail.getType());
+                logger.log(Level.WARNING, "Grammar Name: " + grammarExceptionDetail.getGrammarReference());
+                logger.log(Level.WARNING, "Line number : " + grammarExceptionDetail.getLineNumber());
+                logger.log(Level.WARNING, "char number : " + grammarExceptionDetail.getCharNumber());
+                logger.log(Level.WARNING, "Rule name   : " + grammarExceptionDetail.getRuleName());
+                logger.log(Level.WARNING, "Message     : " + grammarExceptionDetail.getMessage());
+                logger.log(Level.WARNING, "Text Info     : " + grammarExceptionDetail.getTextInfo());
+                logger.log(Level.WARNING, "Type        : " + grammarExceptionDetail.getType());
             }
         }
     }

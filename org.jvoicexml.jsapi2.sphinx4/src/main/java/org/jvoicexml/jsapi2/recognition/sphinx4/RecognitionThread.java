@@ -21,8 +21,8 @@
 
 package org.jvoicexml.jsapi2.recognition.sphinx4;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 
 import edu.cmu.sphinx.api.SpeechResult;
 
@@ -36,8 +36,7 @@ import edu.cmu.sphinx.api.SpeechResult;
 final class RecognitionThread extends Thread {
 
     /** Logger for this class. */
-    private static final Logger LOGGER = Logger
-            .getLogger(RecognitionThread.class.getName());
+    private static final Logger logger = System.getLogger(RecognitionThread.class.getName());
 
     /** The wrapper for the sphinx4 recognizer. */
     private Sphinx4Recognizer recognizer;
@@ -59,9 +58,7 @@ final class RecognitionThread extends Thread {
      */
     @Override
     public void run() {
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine("recognition thread started");
-        }
+        logger.log(Level.DEBUG, "recognition thread started");
 
         // Start the Sphinx recognizer
         Jsapi2Recognizer rec = recognizer.getRecognizer();
@@ -72,14 +69,10 @@ final class RecognitionThread extends Thread {
         recognizer.postStartOfSpeechEvent();
         recognizer.postProcessingEvent();
         while (started) {
-            if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine("obtaining a result ..");
-            }
+            logger.log(Level.DEBUG, "obtaining a result ..");
             SpeechResult speechResult = rec.getResult();
             String hypothesis = speechResult.getHypothesis();
-            if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine("received result " + hypothesis);
-            }
+            logger.log(Level.DEBUG, "received result " + hypothesis);
             if (!hypothesis.equalsIgnoreCase("<sil>")) {
                 recognizer.postEndOfSpeechEvent();
                 recognizer.postListeningEvent();
@@ -89,9 +82,7 @@ final class RecognitionThread extends Thread {
         // send end of speech and listening event
         // @todo change this;
 
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine("recognition thread terminated");
-        }
+        logger.log(Level.DEBUG, "recognition thread terminated");
     }
 
     /**

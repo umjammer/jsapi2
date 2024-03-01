@@ -24,9 +24,9 @@ package org.jvoicexml.jsapi2.sapi.recognition;
 import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringReader;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.util.Collection;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.sound.sampled.AudioFormat;
 import javax.speech.AudioException;
 import javax.speech.EngineEvent;
@@ -60,7 +60,7 @@ import org.jvoicexml.jsapi2.recognition.GrammarDefinition;
 public final class SapiRecognizer extends BaseRecognizer {
 
     /** Logger for this class. */
-    private static final Logger LOGGER = Logger.getLogger(SapiRecognizer.class.getName());
+    private static final Logger logger = System.getLogger(SapiRecognizer.class.getName());
 
     /** SAPI recognizer Handle. **/
     private long recognizerHandle;
@@ -91,12 +91,12 @@ public final class SapiRecognizer extends BaseRecognizer {
     public void handleAllocate() throws EngineStateException, EngineException,
             AudioException, SecurityException {
         // allocate the CPP-Recognizer
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine("Allocationg SAPI-recognizer...");
+        if (logger.isLoggable(Level.DEBUG)) {
+            logger.log(Level.DEBUG, "Allocationg SAPI-recognizer...");
         }
         recognizerHandle = sapiAllocate();
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine("... allocated SAPI-recognizer");
+        if (logger.isLoggable(Level.DEBUG)) {
+            logger.log(Level.DEBUG, "... allocated SAPI-recognizer");
         }
     }
 
@@ -194,9 +194,9 @@ public final class SapiRecognizer extends BaseRecognizer {
         String[] grammarReferences = new String[grammars.length];
         int i = 0;
 
-        if (LOGGER.isLoggable(Level.FINE)) {
+        if (logger.isLoggable(Level.DEBUG)) {
             for (Grammar grammar : grammars) {
-                LOGGER.log(Level.FINE, "Activate Grammar: {0}", grammar.getReference());
+                logger.log(Level.DEBUG, "Activate Grammar: {0}", grammar.getReference());
             }
         }
 
@@ -241,8 +241,8 @@ public final class SapiRecognizer extends BaseRecognizer {
     public void reportResultRejected() {
         postResultCreated();
 
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine("No Match Recognized => False Recognition ...");
+        if (logger.isLoggable(Level.DEBUG)) {
+            logger.log(Level.DEBUG, "No Match Recognized => False Recognition ...");
         }
         postResultRejected();
     }
@@ -257,8 +257,8 @@ public final class SapiRecognizer extends BaseRecognizer {
         postResultCreated();
         Grammar grammar = getGrammar(ruleName);
         if (grammar == null) {
-            if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine("Could not find the RuleGrammar");
+            if (logger.isLoggable(Level.DEBUG)) {
+                logger.log(Level.DEBUG, "Could not find the RuleGrammar");
             }
             SapiResult result = new SapiResult();
             postResultRejected(result);
@@ -266,14 +266,14 @@ public final class SapiRecognizer extends BaseRecognizer {
             return;
         }
         SapiResult result = new SapiResult(grammar);
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.log(Level.FINE, "reporting SML Result String : {0}", utterance);
+        if (logger.isLoggable(Level.DEBUG)) {
+            logger.log(Level.DEBUG, "reporting SML Result String : {0}", utterance);
         }
 
         try {
             result.setSml(utterance);
         } catch (TransformerException ex) {
-            LOGGER.log(Level.WARNING, "error parsing SML: {0}", ex.getMessage());
+            logger.log(Level.WARNING, "error parsing SML: {0}", ex.getMessage());
             EngineException ee = new EngineException(ex.getMessage());
             postEngineException(ee);
             return;
@@ -281,16 +281,16 @@ public final class SapiRecognizer extends BaseRecognizer {
 
         // Check if the utterance was only noise
         if (utterance.equals("...")) {
-            if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine("Single Garbage Recognized ...");
+            if (logger.isLoggable(Level.DEBUG)) {
+                logger.log(Level.DEBUG, "Single Garbage Recognized ...");
             }
             postResultRejected(result);
 
             return;
         }
 
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.log(Level.FINE,
+        if (logger.isLoggable(Level.DEBUG)) {
+            logger.log(Level.DEBUG,
                     "Recognized utterance : ''{0}'' Confidence : ''{1}''",
                     new Object[] {utterance, result.getConfidence()});
         }
@@ -324,8 +324,8 @@ public final class SapiRecognizer extends BaseRecognizer {
         int minConfidenceLevel = recognizerProperties.getConfidenceThreshold();
         if (resultconfidenceLevel < minConfidenceLevel) {
             result.setResultState(Result.REJECTED);
-            if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.log(Level.FINE, "Result confidence too low, new ResultState: ''{0}''", result.getResultState());
+            if (logger.isLoggable(Level.DEBUG)) {
+                logger.log(Level.DEBUG, "Result confidence too low, new ResultState: ''{0}''", result.getResultState());
             }
         }
 
@@ -443,7 +443,7 @@ public final class SapiRecognizer extends BaseRecognizer {
     protected void handlePropertyChangeRequest(
             BaseEngineProperties properties, String propName,
             Object oldValue, Object newValue) {
-        LOGGER.warning("changing property '" + propName + "' to '" + newValue
+        logger.log(Level.WARNING, "changing property '" + propName + "' to '" + newValue
                 + "' ignored");
     }
 }

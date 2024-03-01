@@ -26,6 +26,8 @@
 
 package org.jvoicexml.jsapi2.recognition;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.util.List;
 import javax.speech.SpeechEventExecutor;
 import javax.speech.SpeechLocale;
@@ -37,6 +39,8 @@ import javax.speech.recognition.Recognizer;
 import javax.speech.recognition.RecognizerMode;
 import javax.speech.recognition.ResultEvent;
 import javax.speech.recognition.ResultListener;
+
+import static java.lang.System.getLogger;
 
 
 /**
@@ -53,6 +57,8 @@ import javax.speech.recognition.ResultListener;
  * @version $Revision: 1370 $
  */
 public class BaseGrammar implements Grammar, ResultListener {
+
+    private static final Logger logger = getLogger(BaseGrammar.class.getName());
 
     /** Reference to the recognizer. */
     private transient Recognizer recognizer;
@@ -218,7 +224,7 @@ public class BaseGrammar implements Grammar, ResultListener {
         try {
             executor.execute(runnable);
         } catch (RuntimeException ex) {
-            ex.printStackTrace();
+            logger.log(Level.ERROR, ex.getMessage(), ex);
         }
     }
 

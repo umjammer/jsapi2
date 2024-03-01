@@ -24,6 +24,8 @@ package org.jvoicexml.jsapi2;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -37,6 +39,8 @@ import javax.speech.Engine;
 import javax.speech.EngineStateException;
 import javax.speech.SpeechEventExecutor;
 
+import static java.lang.System.getLogger;
+
 
 /**
  * Supports the JSAPI 2.0 {@link AudioManager} interface. Actual JSAPI
@@ -47,6 +51,8 @@ import javax.speech.SpeechEventExecutor;
  * (via {@link #getInputStream()}) respectively.
  */
 public abstract class BaseAudioManager implements AudioManager {
+
+    private static final Logger logger = getLogger(BaseAudioManager.class.getName());
 
     /**
      * List of <code>AudioListeners</code> registered for
@@ -282,7 +288,7 @@ public abstract class BaseAudioManager implements AudioManager {
             executor.execute(runnable);
         } catch (RuntimeException ex) {
             // Ignore exception
-            ex.printStackTrace();
+            logger.log(Level.ERROR, ex.getMessage(), ex);
         }
     }
 

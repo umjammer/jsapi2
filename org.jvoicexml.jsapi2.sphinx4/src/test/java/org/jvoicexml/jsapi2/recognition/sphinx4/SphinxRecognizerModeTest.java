@@ -81,7 +81,7 @@ public class SphinxRecognizerModeTest {
 //                        }
 //                    } while (read > 0);
 //                } catch (IOException e) {
-//                    e.printStackTrace();
+//                    logger.log(Level.ERROR, e.getMessage(), e);
 //                }
 //                
 //            }
@@ -101,7 +101,7 @@ public class SphinxRecognizerModeTest {
             } catch (InterruptedException e) {
 //            } catch (IOException e) {
 //                // TODO Auto-generated catch block
-//                e.printStackTrace();
+//                logger.log(Level.ERROR, e.getMessage(), e);
             }
         }, "JSAPI2 Sphinx Mic");
         micThread.start();

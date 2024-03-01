@@ -15,11 +15,12 @@ package org.jvoicexml.jsapi2.protocols.playback;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.UnknownServiceException;
-import java.util.logging.Logger;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
@@ -39,7 +40,7 @@ import org.jvoicexml.jsapi2.protocols.JavaSoundParser;
 public final class PlaybackURLConnection extends URLConnection {
 
     /** Logger for this class. */
-    private static final Logger logger = Logger.getLogger(PlaybackURLConnection.class.getName());
+    private static final Logger logger = System.getLogger(PlaybackURLConnection.class.getName());
 
     /** Microphone access point. */
     private SourceDataLine line;
@@ -72,14 +73,14 @@ public final class PlaybackURLConnection extends URLConnection {
             try {
                 outputStream.close();
             } catch (IOException e) {
-                logger.fine(e.getMessage());
+                logger.log(Level.DEBUG, e.getMessage());
             }
             outputStream = null;
         }
         if (line != null) {
             if (line.isOpen()) {
                 line.close();
-                logger.fine("line close: " + line.hashCode());
+                logger.log(Level.DEBUG, "line close: " + line.hashCode());
             }
             line = null;
         }
@@ -105,7 +106,7 @@ public final class PlaybackURLConnection extends URLConnection {
         try {
             line = (SourceDataLine) AudioSystem.getLine(info);
             line.open(format, AudioSystem.NOT_SPECIFIED);
-            logger.fine("line open: " + line.hashCode());
+            logger.log(Level.DEBUG, "line open: " + line.hashCode());
 
             // Starts the line
             line.start();

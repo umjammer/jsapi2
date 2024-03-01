@@ -22,10 +22,9 @@ package org.jvoicexml.jsapi2.recognition;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.lang.System.Logger.Level;
 import java.util.Collection;
 import java.util.StringTokenizer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.speech.AudioSegment;
 import javax.speech.SpeechEventExecutor;
 import javax.speech.recognition.FinalResult;
@@ -48,6 +47,8 @@ import javax.speech.recognition.RuleSequence;
 import javax.speech.recognition.RuleTag;
 import javax.speech.recognition.RuleToken;
 
+import static java.lang.System.getLogger;
+
 
 /**
  * Very simple implementation of JSAPI Result, FinalResult, FinalRuleResult, and
@@ -57,12 +58,11 @@ import javax.speech.recognition.RuleToken;
  */
 public class BaseResult implements Result, FinalResult, FinalRuleResult, Serializable, Cloneable {
 
+    private static final System.Logger logger = getLogger(BaseResult.class.getName());
+    
     /** The serial version UID. */
     @Serial
     private static final long serialVersionUID = -7742652622067884474L;
-
-    /** Logger for this class. */
-    private static final Logger LOGGER = Logger.getLogger(BaseResult.class.getName());
 
     /** Registered result listeners. */
     private Collection<ResultListener> resultListeners;
@@ -144,7 +144,7 @@ public class BaseResult implements Result, FinalResult, FinalRuleResult, Seriali
             try {
                 copy = (BaseResult) ((BaseResult) result).clone();
             } catch (CloneNotSupportedException e) {
-                LOGGER.warning("ERROR: " + e);
+                logger.log(Level.WARNING, "ERROR: " + e);
             }
             return copy;
         } else {
@@ -354,13 +354,13 @@ public class BaseResult implements Result, FinalResult, FinalRuleResult, Seriali
     public void postResultEvent(SpeechEventExecutor speechEventExecutor, ResultEvent event) {
         try {
             speechEventExecutor.execute(() -> {
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine("notifying event " + event);
+                if (logger.isLoggable(Level.DEBUG)) {
+                    logger.log(Level.DEBUG, "notifying event " + event);
                 }
                 fireResultEvent(event);
             });
         } catch (RuntimeException ex) {
-            LOGGER.warning(ex.getLocalizedMessage());
+            logger.log(Level.WARNING, ex.getLocalizedMessage());
         }
     }
 
@@ -566,7 +566,7 @@ public class BaseResult implements Result, FinalResult, FinalRuleResult, Seriali
         try {
             return ((RuleGrammar) getGrammar()).parse(tokens, ((BaseRuleGrammar) getGrammar()).getRoot());
         } catch (GrammarException e) {
-            e.printStackTrace();
+            logger.log(System.Logger.Level.ERROR, e.getMessage(), e);
         }
         return null;
     }

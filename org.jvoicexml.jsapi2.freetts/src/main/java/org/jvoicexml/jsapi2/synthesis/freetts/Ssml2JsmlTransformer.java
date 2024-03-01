@@ -29,6 +29,8 @@ package org.jvoicexml.jsapi2.synthesis.freetts;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -44,8 +46,12 @@ import javax.xml.transform.stream.StreamSource;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
+import static java.lang.System.getLogger;
+
 
 public class Ssml2JsmlTransformer {
+
+    private static final Logger logger = getLogger(Ssml2JsmlTransformer.class.getName());
 
     private TransformerFactory tfactory;
     private DOMSource xmlDomSource;
@@ -64,7 +70,7 @@ public class Ssml2JsmlTransformer {
         try {
             domBuilder = domFactory.newDocumentBuilder();
         } catch (ParserConfigurationException ex) {
-            ex.printStackTrace();
+            logger.log(Level.ERROR, ex.getMessage(), ex);
         }
 
         // create a template from a xsl file
@@ -72,13 +78,13 @@ public class Ssml2JsmlTransformer {
             InputStream in = Ssml2JsmlTransformer.class.getResourceAsStream("/ssml2jsml.xsl");
             template = tfactory.newTemplates(new StreamSource(in));
         } catch (TransformerConfigurationException ex2) {
-            ex2.printStackTrace();
+            logger.log(Level.ERROR, ex2.getMessage(), ex2);
         }
 
         try {
             serializer = template.newTransformer();
         } catch (TransformerConfigurationException ex3) {
-            ex3.printStackTrace();
+            logger.log(Level.ERROR, ex3.getMessage(), ex3);
         }
     }
 
@@ -88,17 +94,17 @@ public class Ssml2JsmlTransformer {
             xmlDomSource = new DOMSource(domBuilder.parse(bais));
 
         } catch (IOException | SAXException ex1) {
-            ex1.printStackTrace();
+            logger.log(Level.ERROR, ex1.getMessage(), ex1);
         }
 
         Document resDocument = domBuilder.newDocument();
         xmlDomResult = new DOMResult(resDocument);
 
-        /* transform to a Document */
+        // transform to a Document
         try {
             serializer.transform(xmlDomSource, xmlDomResult);
         } catch (TransformerException ex4) {
-            ex4.printStackTrace();
+            logger.log(Level.ERROR, ex4.getMessage(), ex4);
         }
 
         return resDocument;

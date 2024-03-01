@@ -30,11 +30,15 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 
 import com.sun.speech.freetts.audio.AudioPlayer;
 import org.jvoicexml.jsapi2.BaseAudioManager;
+
+import static java.lang.System.getLogger;
 
 
 /**
@@ -49,6 +53,8 @@ import org.jvoicexml.jsapi2.BaseAudioManager;
  * @version 1.0
  */
 public final class FreeTTSAudioPlayer implements AudioPlayer {
+
+    private static final Logger logger = getLogger(FreeTTSAudioPlayer.class.getName());
 
     /** The collected audio data. */
     private final ByteArrayOutputStream buffer;
@@ -150,7 +156,7 @@ public final class FreeTTSAudioPlayer implements AudioPlayer {
                 buffer.write(audioData);
             }
         } catch (IOException ex) {
-            ex.printStackTrace();
+            logger.log(Level.ERROR, ex.getMessage(), ex);
         }
         return true;
     }

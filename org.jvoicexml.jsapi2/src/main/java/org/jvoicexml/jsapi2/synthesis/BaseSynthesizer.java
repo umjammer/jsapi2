@@ -89,7 +89,7 @@ public abstract class BaseSynthesizer extends BaseEngine implements Synthesizer 
         speakableListeners = new java.util.ArrayList<>();
         synthesizerProperties = createSynthesizerProperties();
         speakableMask = SpeakableEvent.DEFAULT_MASK;
-logger.log(Level.TRACE, "m: %08x, d: %08x, |: %08x", getEngineMask(), SynthesizerEvent.DEFAULT_MASK, getEngineMask() | SynthesizerEvent.DEFAULT_MASK);
+logger.log(Level.TRACE, String.format("m: %08x, d: %08x, |: %08x", getEngineMask(), SynthesizerEvent.DEFAULT_MASK, getEngineMask() | SynthesizerEvent.DEFAULT_MASK));
         setEngineMask(getEngineMask() | SynthesizerEvent.DEFAULT_MASK);
         queueManager = new QueueManager(this);
     }
@@ -144,7 +144,7 @@ logger.log(Level.TRACE, "m: %08x, d: %08x, |: %08x", getEngineMask(), Synthesize
      *                               <code>null</code>
      */
     protected final void postSpeakableEvent(SpeakableEvent event, SpeakableListener extraSpeakableListener) {
-new Exception(event.toString() + " ," + extraSpeakableListener).printStackTrace();
+logger.log(Level.TRACE, event.toString() + " ," + extraSpeakableListener, new Exception("***DUMMY***"));
         // First, check if the event is filtered by the mask
         int id = event.getId();
         if ((speakableMask & id) != id) {

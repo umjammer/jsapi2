@@ -26,8 +26,8 @@
 
 package org.jvoicexml.jsapi2.sapi.recognition;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import javax.speech.EngineException;
 
 
@@ -55,8 +55,7 @@ final class SapiRecognitionThread extends Thread {
     private static final int RECOGNITION_ABORTED = 1;
 
     /** Logger for this class. */
-    private static final Logger LOGGER =
-            Logger.getLogger(SapiRecognitionThread.class.getName());
+    private static final Logger logger = System.getLogger(SapiRecognitionThread.class.getName());
 
     /** The calling SapiRecognizer. **/
     private final SapiRecognizer recognizer;
@@ -75,19 +74,16 @@ final class SapiRecognitionThread extends Thread {
     public void run() {
         long handle = recognizer.getRecognizerHandle();
         //start recognition and get the recognition result
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine("Starting recognition process");
+        if (logger.isLoggable(Level.DEBUG)) {
+            logger.log(Level.DEBUG, "Starting recognition process");
         }
         String[] tmp = {null, null};
         int returnValue = -1;
         try {
             returnValue = recognizer.sapiRecognize(handle, tmp);
-            if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine("Recognitionprocess ended");
-            }
+            logger.log(Level.DEBUG, "Recognitionprocess ended");
         } catch (EngineException e) {
-            LOGGER.log(Level.WARNING, "Error in recognition process: {0}",
-                    e.getMessage());
+            logger.log(Level.WARNING, "Error in recognition process: {0}", e.getMessage());
             recognizer.postEngineException(e);
             return;
         }
@@ -104,8 +100,7 @@ final class SapiRecognitionThread extends Thread {
         case RECOGNITION_ABORTED:
             break;
         default:
-            LOGGER.log(Level.WARNING, "Unknown return value: {0}",
-                    Integer.toHexString(returnValue));
+            logger.log(Level.WARNING, "Unknown return value: {0}", Integer.toHexString(returnValue));
             break;
         }
     }
@@ -114,13 +109,9 @@ final class SapiRecognitionThread extends Thread {
      * Stops the recognition process.
      */
     public void stopRecognition() {
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine("Issuing Interrupt to Recognition-Thread...");
-        }
+        logger.log(Level.DEBUG, "Issuing Interrupt to Recognition-Thread...");
         interrupt();
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine("...issued Interrupt to Recognition-Thread");
-        }
+        logger.log(Level.DEBUG, "...issued Interrupt to Recognition-Thread");
         long handle = recognizer.getRecognizerHandle();
         recognizer.sapiAbortRecognition(handle);
     }

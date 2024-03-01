@@ -26,9 +26,10 @@
 
 package org.jvoicexml.jsapi2.recognition;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.util.List;
 import java.util.Stack;
-import java.util.logging.Logger;
 import javax.speech.EngineStateException;
 import javax.speech.recognition.Grammar;
 import javax.speech.recognition.GrammarManager;
@@ -53,7 +54,7 @@ import javax.speech.recognition.RuleToken;
 public class RuleParser {
 
     /** Logger for this class. */
-    private static final Logger logger = Logger.getLogger(RuleParser.class.getName());
+    private static final Logger logger = System.getLogger(RuleParser.class.getName());
 
     /** the grammarManager that contains all the grammars. */
     private GrammarManager grammarManager;
@@ -171,7 +172,7 @@ public class RuleParser {
             Rule currentRule = grammar.getRule(currentRuleName);
             RuleComponent startRule = currentRule.getRuleComponent();
             if (startRule == null) {
-                logger.severe("Bad rulename '" + currentRuleName + "'");
+                logger.log(Level.ERROR, "Bad rulename '" + currentRuleName + "'");
                 continue;
             }
             GrammarGraph grammarGraph = parse.buildGrammarGraph(grammar,
@@ -283,17 +284,17 @@ public class RuleParser {
                 try {
                     rg1 = (RuleGrammar) grammarManager.getGrammar(gname);
                 } catch (EngineStateException ex) {
-                    ex.printStackTrace();
+                    logger.log(Level.ERROR, ex.getMessage(), ex);
                 }
                 if (rg1 != null) {
                     ruleref = rg1.getRule(simpleName).getRuleComponent();
                     currentRuleGrammar = rg1;
                 } else {
-                    logger.severe("ERROR: UNKNOWN GRAMMAR " + gname);
+                    logger.log(Level.ERROR, "ERROR: UNKNOWN GRAMMAR " + gname);
                 }
             }
             if (ruleref == null) {
-                logger.severe("ERROR: UNKNOWN RULE NAME " + reference.getRuleName() + " " + reference);
+                logger.log(Level.ERROR, "ERROR: UNKNOWN RULE NAME " + reference.getRuleName() + " " + reference);
                 return null;
             }
         }

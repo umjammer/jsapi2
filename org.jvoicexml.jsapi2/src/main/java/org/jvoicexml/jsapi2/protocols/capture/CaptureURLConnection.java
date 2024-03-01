@@ -16,13 +16,13 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLDecoder;
 import java.net.UnknownServiceException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.nio.charset.StandardCharsets;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -46,7 +46,7 @@ import org.jvoicexml.jsapi2.protocols.JavaSoundParser;
 public final class CaptureURLConnection extends URLConnection {
 
     /** Logger for this class. */
-    private static final Logger LOGGER = Logger.getLogger(CaptureURLConnection.class.getName());
+    private static final Logger logger = System.getLogger(CaptureURLConnection.class.getName());
 
     /** Device that this URLConnection will connect to. */
     private final String deviceName;
@@ -69,7 +69,7 @@ public final class CaptureURLConnection extends URLConnection {
         super(url);
 
         // Initialize the device that will be connecting to
-            String authority = url.getAuthority();
+        String authority = url.getAuthority();
         deviceName = URLDecoder.decode(authority, StandardCharsets.UTF_8);
     }
 
@@ -78,8 +78,8 @@ public final class CaptureURLConnection extends URLConnection {
             try {
                 inputStream.close();
             } catch (IOException e) {
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine(e.getMessage());
+                if (logger.isLoggable(Level.DEBUG)) {
+                    logger.log(Level.DEBUG, e.getMessage());
                 }
             }
             inputStream = null;

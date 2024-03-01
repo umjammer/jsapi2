@@ -25,12 +25,12 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -54,7 +54,7 @@ import org.jvoicexml.jsapi2.protocols.JavaSoundParser;
 public class BaseRecognizerAudioManager extends BaseAudioManager {
 
     /** Logger instance. */
-    private static final Logger LOGGER = Logger.getLogger(BaseRecognizerAudioManager.class.getCanonicalName());
+    private static final Logger logger = System.getLogger(BaseRecognizerAudioManager.class.getCanonicalName());
 
     /** The input stream for the recognizer. */
     private InputStream inputStream;
@@ -87,9 +87,7 @@ public class BaseRecognizerAudioManager extends BaseAudioManager {
         // Clear a possible previous audio format
         setTargetAudioFormat(null);
 
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.log(Level.FINE, "opening locator at: '" + locator + "'");
-        }
+        logger.log(Level.DEBUG, "opening locator at: '" + locator + "'");
 
         // Determine the audio format
         AudioFormat targetFormat = null;
@@ -166,9 +164,7 @@ public class BaseRecognizerAudioManager extends BaseAudioManager {
             inputStream = openUrl(locator);
             format = getTargetAudioFormat();
         }
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.log(Level.FINE, "using target audio format {0}", format);
-        }
+        logger.log(Level.DEBUG, "using target audio format {0}", format);
         AudioInputStream stream = new AudioInputStream(inputStream, format, AudioSystem.NOT_SPECIFIED);
         AudioFormat engineFormat = getEngineAudioFormat();
         inputStream = AudioSystem.getAudioInputStream(engineFormat, stream);
@@ -200,9 +196,7 @@ public class BaseRecognizerAudioManager extends BaseAudioManager {
         URI uri = new URI(locator);
         AudioFormat format = JavaSoundParser.parse(uri);
         setTargetAudioFormat(format);
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.log(Level.FINE, "Got AudioFormat: {0}", format.toString());
-        }
+        logger.log(Level.DEBUG, "Got AudioFormat: {0}", format.toString());
         return format;
     }
 

@@ -7,10 +7,11 @@
 
 package org.jvoicexml.jsapi2;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.logging.Logger;
 
 
 /**
@@ -25,7 +26,7 @@ import java.util.logging.Logger;
  */
 public final class ThreadSpeechEventExecutor implements TerminatableSpeechEventExecutor, Runnable {
 
-    private static final Logger logger = Logger.getLogger(ThreadSpeechEventExecutor.class.getName());
+    private static final Logger logger = System.getLogger(ThreadSpeechEventExecutor.class.getName());
 
     /** Number of msec to wait before inspecting the command queue. */
     private static final int COMMAND_POLL_INTERVALL = 1000;
@@ -55,7 +56,7 @@ public final class ThreadSpeechEventExecutor implements TerminatableSpeechEventE
             commands.notifyAll();
         }
         thread.shutdown();
-        logger.finer("shutdown services: " + thread.isShutdown());
+        logger.log(Level.TRACE, "shutdown services: " + thread.isShutdown());
     }
 
     /**

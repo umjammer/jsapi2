@@ -42,6 +42,8 @@
 package org.jvoicexml.jsapi2.recognition;
 
 import java.io.InputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.util.ArrayList;
 import java.util.Collection;
 import javax.sound.sampled.AudioFormat;
@@ -72,6 +74,8 @@ import org.jvoicexml.jsapi2.BaseEngine;
 import org.jvoicexml.jsapi2.BaseVocabularyManager;
 import org.jvoicexml.jsapi2.ThreadSpeechEventExecutor;
 
+import static java.lang.System.getLogger;
+
 
 /**
  * Skeletal Implementation of the JSAPI Recognizer interface.
@@ -88,6 +92,8 @@ import org.jvoicexml.jsapi2.ThreadSpeechEventExecutor;
  */
 public abstract class BaseRecognizer extends BaseEngine implements Recognizer {
 
+    private static final Logger logger = getLogger(BaseRecognizer.class.getName());
+    
     /** Registered result listeners. */
     private Collection<ResultListener> resultListeners;
 
@@ -266,7 +272,7 @@ public abstract class BaseRecognizer extends BaseEngine implements Recognizer {
         try {
             executor.execute(() -> fireResultEvent(event));
         } catch (RuntimeException e) {
-            e.printStackTrace();
+            logger.log(Level.ERROR, e.getMessage(), e);
         }
         Result result = (Result) event.getSource();
         postResultEvent(result, event, executor);

@@ -9,13 +9,13 @@
 package org.jvoicexml.jsapi2.recognition;
 
 import java.io.StringReader;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.speech.SpeechLocale;
 import javax.speech.recognition.GrammarException;
 import javax.speech.recognition.GrammarManager;
@@ -38,7 +38,7 @@ import javax.speech.recognition.RuleToken;
 public class BaseRuleGrammar extends BaseGrammar implements RuleGrammar {
 
     /** Logger for this class. */
-    private static final Logger LOGGER = Logger.getLogger(BaseRuleGrammar.class.getName());
+    private static final Logger LOGGER = System.getLogger(BaseRuleGrammar.class.getName());
 
     protected Map<String, InternalRule> rules;
     protected List<RuleGrammarOperation> uncommitedChanges = new java.util.ArrayList<>();
@@ -251,11 +251,11 @@ public class BaseRuleGrammar extends BaseGrammar implements RuleGrammar {
 //                throw new GrammarException("Cannot set a PRIVATE_SCOPE rule as root");
 //            } catch (GrammarException e) {
 //                // TODO Auto-generated catch block
-//                e.printStackTrace();
+//                logger.log(Level.ERROR, e.getMessage(), e);
 //            }
 
-            if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.log(Level.FINE, "Set RootRuleName : {0}", rootRuleName);
+            if (LOGGER.isLoggable(Level.DEBUG)) {
+                LOGGER.log(Level.DEBUG, "Set RootRuleName : {0}", rootRuleName);
             }
         }
 
@@ -363,16 +363,12 @@ public class BaseRuleGrammar extends BaseGrammar implements RuleGrammar {
         RootSetterOperation rsgo = new RootSetterOperation(rulename);
         uncommitedChanges.add(rsgo);
 
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.log(Level.FINE, "added RootRule : {0}", rulename);
-        }
+        LOGGER.log(Level.DEBUG, "added RootRule : {0}", rulename);
     }
 
     protected void setAttributes(Map<String, String> attributes) {
 
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.log(Level.FINE, "Try to set Attributes for Grammar rule :{0}", attributes.get("root"));
-        }
+        LOGGER.log(Level.DEBUG, "Try to set Attributes for Grammar rule :{0}", attributes.get("root"));
 
         for (String name : attributes.keySet()) {
             String value = attributes.get(name);

@@ -26,6 +26,8 @@
 
 package org.jvoicexml.jsapi2.synthesis;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.util.List;
 import javax.speech.AudioSegment;
 import javax.speech.synthesis.Speakable;
@@ -35,6 +37,8 @@ import javax.speech.synthesis.SpeakableListener;
 import javax.speech.synthesis.Synthesizer;
 import javax.speech.synthesis.SynthesizerEvent;
 
+import static java.lang.System.getLogger;
+
 
 /**
  * Synthesis thread. Queues all speakable and calls the synthesizer to
@@ -43,6 +47,8 @@ import javax.speech.synthesis.SynthesizerEvent;
  * @author Dirk Schnelle-Walka
  */
 final class SynthesisQueue implements Runnable {
+
+    private static final Logger logger = getLogger(SynthesisQueue.class.getName());
 
     /** Reference to the queue manager. */
     private final QueueManager queueManager;
@@ -300,7 +306,7 @@ final class SynthesisQueue implements Runnable {
                 try {
                     synthesize(item);
                 } catch (SpeakableException e) {
-                    e.printStackTrace();
+                    logger.log(Level.ERROR, e.getMessage(), e);
                     int id = item.getId();
                     Speakable speakable = item.getSpeakable();
                     String textInfo = speakable.getMarkupText();
