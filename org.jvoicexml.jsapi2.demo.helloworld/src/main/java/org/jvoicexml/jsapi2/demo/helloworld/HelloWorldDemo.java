@@ -19,10 +19,9 @@
 
 package org.jvoicexml.jsapi2.demo.helloworld;
 
+import java.lang.System.Logger.Level;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.speech.Engine;
 import javax.speech.EngineManager;
 import javax.speech.synthesis.SpeakableEvent;
@@ -34,6 +33,8 @@ import javax.speech.synthesis.SynthesizerMode;
 
 import org.jvoicexml.jsapi2.synthesis.freetts.FreeTTSEngineListFactory;
 
+import static java.lang.System.getLogger;
+
 
 /**
  * A demo to output a synthesized text to the speaker.
@@ -41,6 +42,9 @@ import org.jvoicexml.jsapi2.synthesis.freetts.FreeTTSEngineListFactory;
  * @author Dirk Schnelle-Walka
  */
 public final class HelloWorldDemo implements SpeakableListener, SynthesizerListener {
+
+    private static final System.Logger logger = getLogger(HelloWorldDemo.class.getName());
+
     /**
      * Do not create from outside.
      */
@@ -55,17 +59,14 @@ public final class HelloWorldDemo implements SpeakableListener, SynthesizerListe
     public static void main(String[] args) {
         // Enable logging at all levels.
         Handler handler = new ConsoleHandler();
-        handler.setLevel(Level.ALL);
-        Logger.getLogger("").addHandler(handler);
-        Logger.getLogger("").setLevel(Level.ALL);
+        handler.setLevel(java.util.logging.Level.ALL);
+        java.util.logging.Logger.getLogger("").addHandler(handler);
+        java.util.logging.Logger.getLogger("").setLevel(java.util.logging.Level.ALL);
 
         try {
-            EngineManager
-                    .registerEngineListFactory(FreeTTSEngineListFactory.class
-                            .getName());
+            EngineManager.registerEngineListFactory(FreeTTSEngineListFactory.class.getName());
             // Create a synthesizer for the default Locale
-            Synthesizer synthesizer = (Synthesizer) EngineManager
-                    .createEngine(SynthesizerMode.DEFAULT);
+            Synthesizer synthesizer = (Synthesizer) EngineManager.createEngine(SynthesizerMode.DEFAULT);
             HelloWorldDemo demo = new HelloWorldDemo();
             synthesizer.addSynthesizerListener(demo);
             // Get it ready to speak
@@ -85,7 +86,7 @@ public final class HelloWorldDemo implements SpeakableListener, SynthesizerListe
             synthesizer.deallocate();
             System.exit(0);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.ERROR, e.getMessage(), e);
         }
     }
 

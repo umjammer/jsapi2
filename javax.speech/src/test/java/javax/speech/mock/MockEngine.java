@@ -43,71 +43,88 @@ import javax.speech.VocabularyManager;
  */
 public class MockEngine implements Engine {
 
+    @Override
     public void allocate() throws AudioException, EngineException,
             EngineStateException, SecurityException {
     }
 
+    @Override
     public void allocate(int mode) throws IllegalArgumentException,
             AudioException, EngineException, EngineStateException,
             SecurityException {
     }
 
+    @Override
     public void deallocate() throws AudioException, EngineException,
             EngineStateException {
     }
 
+    @Override
     public void deallocate(int mode) throws IllegalArgumentException,
             AudioException, EngineException, EngineStateException {
     }
 
+    @Override
     public void pause() throws EngineStateException {
     }
 
+    @Override
     public boolean resume() throws EngineStateException {
         return false;
     }
 
+    @Override
     public boolean testEngineState(long state) throws IllegalArgumentException {
         return false;
     }
 
+    @Override
     public long waitEngineState(long state) throws InterruptedException,
             IllegalArgumentException, IllegalStateException {
         return 0;
     }
 
+    @Override
     public long waitEngineState(long state, long timeout)
             throws InterruptedException, IllegalArgumentException, IllegalStateException {
         return 0;
     }
 
+    @Override
     public AudioManager getAudioManager() {
         return null;
     }
 
+    @Override
     public EngineMode getEngineMode() {
         return null;
     }
 
+    @Override
     public long getEngineState() {
         return 0;
     }
 
+    @Override
     public VocabularyManager getVocabularyManager() {
         return null;
     }
 
+    @Override
     public void setEngineMask(int mask) {
     }
 
+    @Override
     public int getEngineMask() {
         return 0;
     }
 
+    @Override
     public SpeechEventExecutor getSpeechEventExecutor() {
         return new MockSpeechEventExecutor();
     }
 
+    @Override
     public void setSpeechEventExecutor(SpeechEventExecutor speechEventExecutor) {
     }
 }

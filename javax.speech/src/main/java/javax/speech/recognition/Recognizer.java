@@ -614,6 +614,7 @@ public interface Recognizer extends Engine {
      */
     void requestFocus() throws EngineStateException;
 
+    @Override
     boolean resume() throws EngineStateException;
 
     void setResultMask(int mask);

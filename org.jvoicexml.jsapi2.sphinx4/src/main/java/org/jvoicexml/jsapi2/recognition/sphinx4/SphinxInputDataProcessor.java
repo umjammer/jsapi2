@@ -23,8 +23,8 @@ package org.jvoicexml.jsapi2.recognition.sphinx4;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import javax.sound.sampled.AudioFormat;
 
 import edu.cmu.sphinx.frontend.BaseDataProcessor;
@@ -49,11 +49,10 @@ import edu.cmu.sphinx.util.props.S4Integer;
  * @author Stefan Radomski
  * @author Dirk Schnelle-Walka
  */
-public class SphinxInputDataProcessor extends BaseDataProcessor
-        implements Configurable {
+public class SphinxInputDataProcessor extends BaseDataProcessor implements Configurable {
+
     /** Logger for this class. */
-    private static final Logger LOGGER = Logger
-            .getLogger(SphinxInputDataProcessor.class.getName());
+    private static final Logger LOGGER = System.getLogger(SphinxInputDataProcessor.class.getName());
 
     @S4Integer(defaultValue = 16000)
     public static final String SAMPLING_RATE = "samplingRate";
@@ -93,6 +92,7 @@ public class SphinxInputDataProcessor extends BaseDataProcessor
     public SphinxInputDataProcessor() {
     }
 
+    @Override
     public void newProperties(PropertySheet ps) throws PropertyException {
         super.newProperties(ps);
         int samplingRate = ps.getInt(SAMPLING_RATE);
@@ -167,8 +167,8 @@ public class SphinxInputDataProcessor extends BaseDataProcessor
             sentEnded = true;
             long duration = (long) (((double) totalSamplesRead
                     / (double) sampleRate * 1000.0));
-            if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine("Sending end signal");
+            if (LOGGER.isLoggable(Level.DEBUG)) {
+                LOGGER.log(Level.DEBUG, "Sending end signal");
             }
             totalSamplesRead = 0;
             return new DataEndSignal(duration);
@@ -177,16 +177,16 @@ public class SphinxInputDataProcessor extends BaseDataProcessor
         // we are running, but have not sent DataStart yet
         if (running && !sentStarted) {
             sentStarted = true;
-            if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine("Sending start signal");
+            if (LOGGER.isLoggable(Level.DEBUG)) {
+                LOGGER.log(Level.DEBUG, "Sending start signal");
             }
             return new DataStartSignal(sampleRate);
         }
 
         // we are not running at all
         if (!running) {
-            if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine("Sending null");
+            if (LOGGER.isLoggable(Level.DEBUG)) {
+                LOGGER.log(Level.DEBUG, "Sending null");
             }
             return null;
         }

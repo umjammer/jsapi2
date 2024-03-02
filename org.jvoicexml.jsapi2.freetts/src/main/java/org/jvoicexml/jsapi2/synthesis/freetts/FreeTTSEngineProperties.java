@@ -37,8 +37,7 @@ public class FreeTTSEngineProperties extends BaseSynthesizerProperties {
 
     @Override
     public void setVoice(Voice voice) {
-        if (voice instanceof FreeTTSVoice) {
-            FreeTTSVoice freettsVoice = (FreeTTSVoice) voice;
+        if (voice instanceof FreeTTSVoice freettsVoice) {
             FreeTTSSynthesizer engine = (FreeTTSSynthesizer) getEngine();
             boolean ok = engine.setCurrentVoice(freettsVoice);
             if (!ok) {

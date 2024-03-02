@@ -26,6 +26,7 @@
 
 package org.jvoicexml.jsapi2.sapi.logging;
 
+import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
@@ -38,9 +39,9 @@ import java.util.logging.Logger;
  * @author Dirk Schnelle-Walka
  */
 public final class Log4CPlus2JavaLoggingAdapter extends Thread {
+
     /** Logger for this class. */
-    private static final Logger LOGGER =
-            Logger.getLogger(Log4CPlus2JavaLoggingAdapter.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(Log4CPlus2JavaLoggingAdapter.class.getName());
 
     /** Handle for the native logging adapter. */
     private long handle;
@@ -79,7 +80,7 @@ public final class Log4CPlus2JavaLoggingAdapter extends Thread {
             try {
                 lock.wait();
             } catch (InterruptedException e) {
-                LOGGER.warning(e.getMessage());
+                LOGGER.log(Level.WARNING, e.getMessage());
             }
         }
     }

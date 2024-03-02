@@ -71,7 +71,7 @@ public final class SpeechLocale {
      * @return the appropriate code
      */
     private String convertLanguage(String language) {
-        if (language.equals(""))
+        if (language.isEmpty())
             return language;
         language = language.toLowerCase();
         int index = "he,id,yi".indexOf(language);
@@ -163,17 +163,17 @@ public final class SpeechLocale {
         if (require == null) {
             return true;
         }
-        if (require.country.length() > 0) {
+        if (!require.country.isEmpty()) {
             if (!require.country.equals(country)) {
                 return false;
             }
         }
-        if (require.language.length() > 0) {
+        if (!require.language.isEmpty()) {
             if (!require.language.equals(language)) {
                 return false;
             }
         }
-        if (require.variant.length() > 0) {
+        if (!require.variant.isEmpty()) {
             if (!require.variant.equals(variant)) {
                 return false;
             }
@@ -182,16 +182,16 @@ public final class SpeechLocale {
     }
 
     public String toString() {
-        if ((language.length() == 0) && (country.length() == 0)) {
+        if ((language.isEmpty()) && (country.isEmpty())) {
             return "";
         }
 
         StringBuilder str = new StringBuilder();
         str.append(language);
-        if (country.length() != 0) {
+        if (!country.isEmpty()) {
             str.append('_').append(country);
         }
-        if (variant.length() != 0) {
+        if (!variant.isEmpty()) {
             str.append('_').append(variant);
         }
 

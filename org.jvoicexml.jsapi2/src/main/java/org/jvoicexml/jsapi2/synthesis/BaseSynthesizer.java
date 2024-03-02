@@ -89,7 +89,7 @@ public abstract class BaseSynthesizer extends BaseEngine implements Synthesizer 
         speakableListeners = new java.util.ArrayList<>();
         synthesizerProperties = createSynthesizerProperties();
         speakableMask = SpeakableEvent.DEFAULT_MASK;
-logger.log(Level.TRACE, "m: %08x, d: %08x, |: %08x", getEngineMask(), SynthesizerEvent.DEFAULT_MASK, getEngineMask() | SynthesizerEvent.DEFAULT_MASK);
+logger.log(Level.TRACE, String.format("m: %08x, d: %08x, |: %08x", getEngineMask(), SynthesizerEvent.DEFAULT_MASK, getEngineMask() | SynthesizerEvent.DEFAULT_MASK));
         setEngineMask(getEngineMask() | SynthesizerEvent.DEFAULT_MASK);
         queueManager = new QueueManager(this);
     }
@@ -144,7 +144,7 @@ logger.log(Level.TRACE, "m: %08x, d: %08x, |: %08x", getEngineMask(), Synthesize
      *                               <code>null</code>
      */
     protected final void postSpeakableEvent(SpeakableEvent event, SpeakableListener extraSpeakableListener) {
-new Exception(event.toString() + " ," + extraSpeakableListener).printStackTrace();
+logger.log(Level.TRACE, event.toString() + " ," + extraSpeakableListener, new Exception("***DUMMY***"));
         // First, check if the event is filtered by the mask
         int id = event.getId();
         if ((speakableMask & id) != id) {
@@ -237,6 +237,7 @@ new Exception(event.toString() + " ," + extraSpeakableListener).printStackTrace(
         return queueManager.cancelAllItems();
     }
 
+    @Override
     public String getPhonemes(String text) throws EngineStateException {
         return "";
     }
@@ -257,20 +258,24 @@ new Exception(event.toString() + " ," + extraSpeakableListener).printStackTrace(
         return synthesizerProperties;
     }
 
+    @Override
     public void setSpeakableMask(int mask) {
         speakableMask = mask;
     }
 
+    @Override
     public int getSpeakableMask() {
         return speakableMask;
     }
 
+    @Override
     public int speak(AudioSegment audio, SpeakableListener listener)
             throws EngineStateException, IllegalArgumentException {
         return queueManager.appendItem(audio, listener);
     }
 
 
+    @Override
     public int speak(Speakable speakable, SpeakableListener listener)
             throws EngineStateException, SpeakableException, IllegalArgumentException {
 
@@ -377,6 +382,7 @@ new Exception(event.toString() + " ," + extraSpeakableListener).printStackTrace(
      *
      * @return {@code true} if the synthesizer was resumed
      */
+    @Override
     protected boolean baseResume() {
         return handleResume();
     }
@@ -438,6 +444,7 @@ new Exception(event.toString() + " ," + extraSpeakableListener).printStackTrace(
      * @return a <code>String</code> containing the names of all the states
      * set in <code>state</code>
      */
+    @Override
     public String stateToString(long state) {
         String stateString = super.stateToString(state);
         StringBuilder buf = new StringBuilder(stateString);

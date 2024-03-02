@@ -354,26 +354,21 @@ public class RuleParse extends RuleComponent {
     }
 
     private void addTags(List<Object> tags, RuleComponent component) {
-        if (component instanceof RuleTag) {
-            RuleTag tag = (RuleTag) component;
+        if (component instanceof RuleTag tag) {
             Object tagName = tag.getTag();
             tags.add(tagName);
-        } else if (component instanceof RuleAlternatives) {
-            RuleAlternatives alternatives = (RuleAlternatives) component;
+        } else if (component instanceof RuleAlternatives alternatives) {
             RuleComponent[] components = alternatives.getRuleComponents();
             for (RuleComponent actComponent : components) {
                 addTags(tags, actComponent);
             }
-        } else if (component instanceof RuleCount) {
-            RuleCount count = (RuleCount) component;
+        } else if (component instanceof RuleCount count) {
             RuleComponent actComponent = count.getRuleComponent();
             addTags(tags, actComponent);
-        } else if (component instanceof RuleParse) {
-            RuleParse parse = (RuleParse) component;
+        } else if (component instanceof RuleParse parse) {
             RuleComponent actComponent = parse.getParse();
             addTags(tags, actComponent);
-        } else if (component instanceof RuleSequence) {
-            RuleSequence sequence = (RuleSequence) component;
+        } else if (component instanceof RuleSequence sequence) {
             RuleComponent[] components = sequence.getRuleComponents();
             for (RuleComponent actComponent : components) {
                 addTags(tags, actComponent);

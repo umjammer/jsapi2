@@ -23,7 +23,8 @@ package org.jvoicexml.jsapi2.synthesis.freetts;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.logging.Logger;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import javax.sound.sampled.AudioFormat;
 import javax.speech.AudioException;
 import javax.speech.AudioManager;
@@ -52,7 +53,7 @@ import org.w3c.dom.Document;
 public class FreeTTSSynthesizer extends BaseSynthesizer {
 
     /** Logger for this class. */
-    private static final Logger LOGGER = Logger.getLogger(FreeTTSSynthesizer.class.getName());
+    private static final Logger logger = System.getLogger(FreeTTSSynthesizer.class.getName());
 
     /**
      * The currently active voice for this synthesizer.
@@ -177,13 +178,12 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
 
         voice.speak(speakElement);
 
-        if (audioPlayer instanceof FreeTTSAudioPlayer) {
-            FreeTTSAudioPlayer player = (FreeTTSAudioPlayer) audioPlayer;
+        if (audioPlayer instanceof FreeTTSAudioPlayer player) {
             InputStream in;
             try {
                 in = player.getAudioBytes();
             } catch (IOException e) {
-                LOGGER.warning(e.getLocalizedMessage());
+                logger.log(Level.WARNING, e.getLocalizedMessage());
                 return null;
             } finally {
                 player.reset();
@@ -247,6 +247,6 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
 //            com.sun.speech.freetts.Voice freettsVoice = curVoice.getVoice();
 //        }
         properties.commitPropertyChange(propName, oldValue, newValue);
-//        LOGGER.warning("changing property '" + propName + "' to '" + newValue + "' ignored");
+//        logger.log(Level.WARNING, "changing property '" + propName + "' to '" + newValue + "' ignored");
     }
 }

@@ -23,9 +23,10 @@ package org.jvoicexml.jsapi2.synthesis;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.logging.Logger;
 import javax.speech.AudioSegment;
 import javax.speech.EngineStateException;
 import javax.speech.synthesis.PhoneInfo;
@@ -46,7 +47,7 @@ import org.jvoicexml.jsapi2.BaseAudioManager;
  */
 public class QueueManager {
 
-    private static final Logger logger = Logger.getLogger(QueueManager.class.getName());
+    private static final Logger logger = System.getLogger(QueueManager.class.getName());
 
     /** Reference to the synthesizer. */
     private BaseSynthesizer synthesizer;
@@ -117,7 +118,7 @@ public class QueueManager {
         // the synthQueue terminates
         playThread.shutdownNow();
         synthThread.shutdown();
-        logger.finer("shutdown services: " + playThread.isShutdown() + ", " + synthThread.isShutdown());
+        logger.log(Level.TRACE, "shutdown services: " + playThread.isShutdown() + ", " + synthThread.isShutdown());
     }
 
     /**

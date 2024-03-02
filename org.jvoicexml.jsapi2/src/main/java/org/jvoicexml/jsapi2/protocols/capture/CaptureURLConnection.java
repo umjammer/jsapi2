@@ -16,14 +16,14 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLDecoder;
 import java.net.UnknownServiceException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.nio.charset.StandardCharsets;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -46,7 +46,7 @@ import org.jvoicexml.jsapi2.protocols.JavaSoundParser;
 public final class CaptureURLConnection extends URLConnection {
 
     /** Logger for this class. */
-    private static final Logger LOGGER = Logger.getLogger(CaptureURLConnection.class.getName());
+    private static final Logger logger = System.getLogger(CaptureURLConnection.class.getName());
 
     /** Device that this URLConnection will connect to. */
     private final String deviceName;
@@ -69,26 +69,17 @@ public final class CaptureURLConnection extends URLConnection {
         super(url);
 
         // Initialize the device that will be connecting to
-        try {
-            String authority = url.getAuthority();
-            deviceName = URLDecoder.decode(authority, "UTF-8");
-        } catch (UnsupportedEncodingException ex) {
-            throw new UnsupportedOperationException(ex);
-        }
+        String authority = url.getAuthority();
+        deviceName = URLDecoder.decode(authority, StandardCharsets.UTF_8);
     }
 
-    /**
-     * {@inheritDoc}
-     * <p>
-     * Closes any open line.
-     */
-    protected void finalize() throws Throwable {
+    private void dispose() {
         if (inputStream != null) {
             try {
                 inputStream.close();
             } catch (IOException e) {
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine(e.getMessage());
+                if (logger.isLoggable(Level.DEBUG)) {
+                    logger.log(Level.DEBUG, e.getMessage());
                 }
             }
             inputStream = null;
@@ -107,6 +98,7 @@ public final class CaptureURLConnection extends URLConnection {
      *
      * @throws IOException if an I/O error occurs while opening the connection.
      */
+    @Override
     public synchronized void connect() throws IOException {
         if (connected) {
             return;
@@ -126,6 +118,8 @@ public final class CaptureURLConnection extends URLConnection {
         } catch (LineUnavailableException ex) {
             throw new IOException("Line is unavailable for " + audioFormat);
         }
+
+        Runtime.getRuntime().addShutdownHook(new Thread(this::dispose));
 
         // Marks this URLConnection as connected
         connected = true;
@@ -227,8 +221,8 @@ public final class CaptureURLConnection extends URLConnection {
      *
      * @throws UnknownServiceException output streams are not supported by the capture protocol.
      */
+    @Override
     public OutputStream getOutputStream() throws UnknownServiceException {
         throw new UnknownServiceException("Cannot write to a capture device");
     }
-
 }

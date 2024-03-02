@@ -26,6 +26,8 @@
 
 package org.jvoicexml.jsapi2.synthesis;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.util.List;
 import javax.speech.AudioSegment;
 import javax.speech.synthesis.Speakable;
@@ -35,6 +37,8 @@ import javax.speech.synthesis.SpeakableListener;
 import javax.speech.synthesis.Synthesizer;
 import javax.speech.synthesis.SynthesizerEvent;
 
+import static java.lang.System.getLogger;
+
 
 /**
  * Synthesis thread. Queues all speakable and calls the synthesizer to
@@ -43,6 +47,8 @@ import javax.speech.synthesis.SynthesizerEvent;
  * @author Dirk Schnelle-Walka
  */
 final class SynthesisQueue implements Runnable {
+
+    private static final Logger logger = getLogger(SynthesisQueue.class.getName());
 
     /** Reference to the queue manager. */
     private final QueueManager queueManager;
@@ -165,7 +171,7 @@ final class SynthesisQueue implements Runnable {
      */
     public boolean isQueueEmpty() {
         synchronized (queue) {
-            return queue.size() == 0;
+            return queue.isEmpty();
         }
     }
 
@@ -176,7 +182,7 @@ final class SynthesisQueue implements Runnable {
      */
     boolean cancelFirstItem() {
         synchronized (queue) {
-            if (queue.size() == 0) {
+            if (queue.isEmpty()) {
                 return false;
             }
             // Get the data of the first item for the notification
@@ -246,7 +252,7 @@ final class SynthesisQueue implements Runnable {
     QueueItem getNextQueueItem() {
         synchronized (queue) {
 //Debug.println("queue.size(): " + queue.size() + ", queueManager.isDone(): " + queueManager.isDone());
-            while (queue.size() == 0 && !queueManager.isDone()) {
+            while (queue.isEmpty() && !queueManager.isDone()) {
                 try {
                     queue.wait();
                 } catch (InterruptedException e) {
@@ -279,6 +285,7 @@ final class SynthesisQueue implements Runnable {
     /**
      * Gets the next item from the queue and outputs it.
      */
+    @Override
     public void run() {
         long lastFocusEvent = Synthesizer.DEFOCUSED;
 
@@ -299,7 +306,7 @@ final class SynthesisQueue implements Runnable {
                 try {
                     synthesize(item);
                 } catch (SpeakableException e) {
-                    e.printStackTrace();
+                    logger.log(Level.ERROR, e.getMessage(), e);
                     int id = item.getId();
                     Speakable speakable = item.getSpeakable();
                     String textInfo = speakable.getMarkupText();
@@ -326,11 +333,9 @@ final class SynthesisQueue implements Runnable {
         AudioSegment segment;
         // TODO this won't work for queued audio segments
         BaseSynthesizer synthesizer = queueManager.getSynthesizer();
-        if (itemSource instanceof String) {
-            String text = (String) itemSource;
+        if (itemSource instanceof String text) {
             segment = synthesizer.handleSpeak(id, text);
-        } else if (itemSource instanceof Speakable) {
-            Speakable speakable = (Speakable) itemSource;
+        } else if (itemSource instanceof Speakable speakable) {
             segment = synthesizer.handleSpeak(id, speakable);
         } else {
             throw new RuntimeException("WTF! It could only be text or speakable but was "

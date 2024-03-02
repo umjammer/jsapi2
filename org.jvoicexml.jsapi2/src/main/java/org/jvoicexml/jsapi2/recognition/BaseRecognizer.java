@@ -42,7 +42,8 @@
 package org.jvoicexml.jsapi2.recognition;
 
 import java.io.InputStream;
-import java.security.Permission;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.util.ArrayList;
 import java.util.Collection;
 import javax.sound.sampled.AudioFormat;
@@ -53,7 +54,6 @@ import javax.speech.EngineException;
 import javax.speech.EngineListener;
 import javax.speech.EngineStateException;
 import javax.speech.SpeechEventExecutor;
-import javax.speech.SpeechPermission;
 import javax.speech.VocabularyManager;
 import javax.speech.recognition.Grammar;
 import javax.speech.recognition.GrammarException;
@@ -74,6 +74,8 @@ import org.jvoicexml.jsapi2.BaseEngine;
 import org.jvoicexml.jsapi2.BaseVocabularyManager;
 import org.jvoicexml.jsapi2.ThreadSpeechEventExecutor;
 
+import static java.lang.System.getLogger;
+
 
 /**
  * Skeletal Implementation of the JSAPI Recognizer interface.
@@ -90,6 +92,8 @@ import org.jvoicexml.jsapi2.ThreadSpeechEventExecutor;
  */
 public abstract class BaseRecognizer extends BaseEngine implements Recognizer {
 
+    private static final Logger logger = getLogger(BaseRecognizer.class.getName());
+    
     /** Registered result listeners. */
     private Collection<ResultListener> resultListeners;
 
@@ -268,7 +272,7 @@ public abstract class BaseRecognizer extends BaseEngine implements Recognizer {
         try {
             executor.execute(() -> fireResultEvent(event));
         } catch (RuntimeException e) {
-            e.printStackTrace();
+            logger.log(Level.ERROR, e.getMessage(), e);
         }
         Result result = (Result) event.getSource();
         postResultEvent(result, event, executor);
@@ -310,6 +314,7 @@ public abstract class BaseRecognizer extends BaseEngine implements Recognizer {
      *
      * @param listener the listener to add.
      */
+    @Override
     public void addResultListener(ResultListener listener) {
         if (!resultListeners.contains(listener)) {
             resultListeners.add(listener);
@@ -322,6 +327,7 @@ public abstract class BaseRecognizer extends BaseEngine implements Recognizer {
      *
      * @param listener the listener to remove.
      */
+    @Override
     public void removeResultListener(ResultListener listener) {
         resultListeners.remove(listener);
     }
@@ -330,6 +336,7 @@ public abstract class BaseRecognizer extends BaseEngine implements Recognizer {
      * Get the RecognizerProperties of this Recognizer. From
      * javax.speech.recognition.Recognizer.
      */
+    @Override
     public RecognizerProperties getRecognizerProperties() {
         return recognizerProperties;
     }
@@ -345,11 +352,6 @@ public abstract class BaseRecognizer extends BaseEngine implements Recognizer {
 
     @Override
     public final SpeakerManager getSpeakerManager() {
-        SecurityManager security = System.getSecurityManager();
-        if (security != null) {
-            Permission permission = new SpeechPermission("javax.speech.recognition.SpeakerManager");
-            security.checkPermission(permission);
-        }
         return speakerManager;
     }
 
@@ -418,8 +420,7 @@ public abstract class BaseRecognizer extends BaseEngine implements Recognizer {
      * @throws GrammarException error processing the grammar
      */
     protected boolean processGrammar(Grammar grammar) throws GrammarException {
-        if (grammar instanceof BaseRuleGrammar) {
-            BaseRuleGrammar baseRuleGrammar = (BaseRuleGrammar) grammar;
+        if (grammar instanceof BaseRuleGrammar baseRuleGrammar) {
             return baseRuleGrammar.commitChanges();
         }
         return false;
@@ -452,6 +453,7 @@ public abstract class BaseRecognizer extends BaseEngine implements Recognizer {
      * @throws SecurityException    if the application does not have permission for this Engine
      * @see #allocate
      */
+    @Override
     protected final void baseAllocate() throws EngineStateException,
             EngineException, AudioException, SecurityException {
         // start audio processing
@@ -492,6 +494,7 @@ public abstract class BaseRecognizer extends BaseEngine implements Recognizer {
      *
      * @throws EngineException if this {@link javax.speech.Engine} cannot be deallocated.
      */
+    @Override
     protected final void baseDeallocate() throws EngineStateException, EngineException, AudioException {
 
         // Proceed to real engine deallocation
@@ -528,6 +531,7 @@ public abstract class BaseRecognizer extends BaseEngine implements Recognizer {
      * @throws EngineStateException when not in the standard Conditions for operation TODO
      *                              Handle grammar updates
      */
+    @Override
     protected final boolean baseResume() throws EngineStateException {
         // Process grammars
         processGrammars();
@@ -535,8 +539,7 @@ public abstract class BaseRecognizer extends BaseEngine implements Recognizer {
 
         // resume streaming of audio
         InputStream in = null;
-        if (manager instanceof BaseAudioManager) {
-            BaseAudioManager baseManager = (BaseAudioManager) manager;
+        if (manager instanceof BaseAudioManager baseManager) {
             in = baseManager.getInputStream();
         }
         boolean status = handleResume(in);

@@ -9,13 +9,13 @@
 package org.jvoicexml.jsapi2.recognition;
 
 import java.io.StringReader;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.speech.SpeechLocale;
 import javax.speech.recognition.GrammarException;
 import javax.speech.recognition.GrammarManager;
@@ -38,7 +38,7 @@ import javax.speech.recognition.RuleToken;
 public class BaseRuleGrammar extends BaseGrammar implements RuleGrammar {
 
     /** Logger for this class. */
-    private static final Logger LOGGER = Logger.getLogger(BaseRuleGrammar.class.getName());
+    private static final Logger LOGGER = System.getLogger(BaseRuleGrammar.class.getName());
 
     protected Map<String, InternalRule> rules;
     protected List<RuleGrammarOperation> uncommitedChanges = new java.util.ArrayList<>();
@@ -157,6 +157,7 @@ public class BaseRuleGrammar extends BaseGrammar implements RuleGrammar {
             this.rule = rule;
         }
 
+        @Override
         public void execute() throws GrammarException {
             if (rule != null) {
                 rules.put(rule.getRulename(), rule);
@@ -176,6 +177,7 @@ public class BaseRuleGrammar extends BaseGrammar implements RuleGrammar {
             this.name = name;
         }
 
+        @Override
         public void execute() throws GrammarException {
             InternalRule rule = rules.remove(name);
             if (rule == null) {
@@ -198,6 +200,7 @@ public class BaseRuleGrammar extends BaseGrammar implements RuleGrammar {
             this.status = status;
         }
 
+        @Override
         public void execute() throws GrammarException {
             boolean activatable = isActivatable();
             if (status != activatable) {
@@ -221,6 +224,7 @@ public class BaseRuleGrammar extends BaseGrammar implements RuleGrammar {
             this.status = status;
         }
 
+        @Override
         public void execute() throws GrammarException {
             for (String ruleName : ruleNames) {
                 InternalRule iRule = rules.get(ruleName);
@@ -247,14 +251,15 @@ public class BaseRuleGrammar extends BaseGrammar implements RuleGrammar {
 //                throw new GrammarException("Cannot set a PRIVATE_SCOPE rule as root");
 //            } catch (GrammarException e) {
 //                // TODO Auto-generated catch block
-//                e.printStackTrace();
+//                logger.log(Level.ERROR, e.getMessage(), e);
 //            }
 
-            if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.log(Level.FINE, "Set RootRuleName : {0}", rootRuleName);
+            if (LOGGER.isLoggable(Level.DEBUG)) {
+                LOGGER.log(Level.DEBUG, "Set RootRuleName : {0}", rootRuleName);
             }
         }
 
+        @Override
         public void execute() throws GrammarException {
             if (rootRuleName == null) {
                 updateRootRule();
@@ -280,8 +285,7 @@ public class BaseRuleGrammar extends BaseGrammar implements RuleGrammar {
 //     * Set the enabled property of the Grammar. From
 //     * javax.speech.recognition.Grammar.
 //     *
-//     * @param enabled
-//     *            the new desired state of the enabled property.
+//     * @param enabled the new desired state of the enabled property.
 //     */
 //    public void setEnabled(boolean enabled) {
 //        GrammarEnablerOperation geo = new GrammarEnablerOperation(enabled);
@@ -302,6 +306,7 @@ public class BaseRuleGrammar extends BaseGrammar implements RuleGrammar {
      *
      * @param rule the definition of the rule.
      */
+    @Override
     public void addRule(Rule rule) {
         InternalRule iRule = new InternalRule(rule, ruleId);
         AddRuleOperation aro = new AddRuleOperation(iRule);
@@ -358,16 +363,12 @@ public class BaseRuleGrammar extends BaseGrammar implements RuleGrammar {
         RootSetterOperation rsgo = new RootSetterOperation(rulename);
         uncommitedChanges.add(rsgo);
 
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.log(Level.FINE, "added RootRule : {0}", rulename);
-        }
+        LOGGER.log(Level.DEBUG, "added RootRule : {0}", rulename);
     }
 
     protected void setAttributes(Map<String, String> attributes) {
 
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.log(Level.FINE, "Try to set Attributes for Grammar rule :{0}", attributes.get("root"));
-        }
+        LOGGER.log(Level.DEBUG, "Try to set Attributes for Grammar rule :{0}", attributes.get("root"));
 
         for (String name : attributes.keySet()) {
             String value = attributes.get(name);
@@ -375,6 +376,7 @@ public class BaseRuleGrammar extends BaseGrammar implements RuleGrammar {
         }
     }
 
+    @Override
     public void setAttribute(String attribute, String value) throws IllegalArgumentException {
         switch (attribute) {
         case "root":
@@ -415,48 +417,39 @@ public class BaseRuleGrammar extends BaseGrammar implements RuleGrammar {
             // Visit: http://www.w3.org/TR/voicexml20/vxml.dtd
             break;
         default:
-            throw new IllegalArgumentException("Unknown atribute name: " + attribute);
+            throw new IllegalArgumentException("Unknown attribute name: " + attribute);
         }
     }
 
+    @Override
     public String getAttribute(String attribute) throws IllegalArgumentException {
-        switch (attribute) {
-        case "root":
-            return getRoot();
-        case "version":
-            return version;
-        case "xmlns":
-            return xmlns;
-        case "xml:lang":
-            return getSpeechLocale().toString();
-        case "xml:base":
-            return xmlBase;
-        case "mode":
-            return mode;
-        case "tag-format":
-            return tagFormat;
-        case "xmlns:xsi":
-            return xmlnsXsi;
-        case "xsi:schemaLocation":
-            return xsiSchemaLocation;
-        default:
-            throw new IllegalArgumentException("Unknow atribute: " + attribute);
-        }
+        return switch (attribute) {
+            case "root" -> getRoot();
+            case "version" -> version;
+            case "xmlns" -> xmlns;
+            case "xml:lang" -> getSpeechLocale().toString();
+            case "xml:base" -> xmlBase;
+            case "mode" -> mode;
+            case "tag-format" -> tagFormat;
+            case "xmlns:xsi" -> xmlnsXsi;
+            case "xsi:schemaLocation" -> xsiSchemaLocation;
+            default -> throw new IllegalArgumentException("Unknown attribute: " + attribute);
+        };
     }
 
     @Override
     public void addElement(String element) throws IllegalArgumentException {
-        throw new RuntimeException("NOT IMPLEMENTED");
+        throw new UnsupportedOperationException("NOT IMPLEMENTED");
     }
 
     @Override
     public void removeElement(String element) throws IllegalArgumentException {
-        throw new RuntimeException("NOT IMPLEMENTED");
+        throw new UnsupportedOperationException("NOT IMPLEMENTED");
     }
 
     @Override
     public String[] getElements() {
-        throw new RuntimeException("NOT IMPLEMENTED");
+        throw new UnsupportedOperationException("NOT IMPLEMENTED");
     }
 
     /**
@@ -487,6 +480,7 @@ public class BaseRuleGrammar extends BaseGrammar implements RuleGrammar {
      * @return named rule or {@code null} if a rule with the given name does
      * not exist
      */
+    @Override
     public Rule getRule(String name) {
         InternalRule rule = rules.get(name);
         return rule != null ? rule.getRule() : null;
@@ -795,8 +789,7 @@ public class BaseRuleGrammar extends BaseGrammar implements RuleGrammar {
             return;
         }
 
-        if (component instanceof RuleAlternatives) {
-            RuleAlternatives ra = (RuleAlternatives) component;
+        if (component instanceof RuleAlternatives ra) {
             RuleComponent[] array = ra.getRuleComponents();
             for (RuleComponent ruleComponent : array) {
                 resolveRule(ruleComponent);
@@ -804,8 +797,7 @@ public class BaseRuleGrammar extends BaseGrammar implements RuleGrammar {
             return;
         }
 
-        if (component instanceof RuleSequence) {
-            RuleSequence rs = (RuleSequence) component;
+        if (component instanceof RuleSequence rs) {
             RuleComponent[] array = rs.getRuleComponents();
             for (RuleComponent ruleComponent : array) {
                 resolveRule(ruleComponent);
@@ -813,8 +805,7 @@ public class BaseRuleGrammar extends BaseGrammar implements RuleGrammar {
             return;
         }
 
-        if (component instanceof RuleCount) {
-            RuleCount rc = (RuleCount) component;
+        if (component instanceof RuleCount rc) {
             resolveRule(rc.getRuleComponent());
             return;
         }
@@ -851,9 +842,9 @@ public class BaseRuleGrammar extends BaseGrammar implements RuleGrammar {
      * @throws GrammarException if there is an error in the grammar
      */
     public boolean commitChanges() throws GrammarException {
-        boolean existChanges = uncommitedChanges.size() > 0;
+        boolean existChanges = !uncommitedChanges.isEmpty();
         RootSetterOperation rootSetter = null;
-        while (uncommitedChanges.size() > 0) {
+        while (!uncommitedChanges.isEmpty()) {
             RuleGrammarOperation operation = uncommitedChanges.remove(0);
             if (operation instanceof RootSetterOperation) {
                 rootSetter = (RootSetterOperation) operation;

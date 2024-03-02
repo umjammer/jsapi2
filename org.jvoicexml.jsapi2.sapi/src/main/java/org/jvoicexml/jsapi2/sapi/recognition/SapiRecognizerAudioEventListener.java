@@ -1,6 +1,7 @@
 package org.jvoicexml.jsapi2.sapi.recognition;
 
-import java.util.logging.Logger;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import javax.speech.AudioEvent;
 import javax.speech.AudioListener;
 import javax.speech.Engine;
@@ -17,9 +18,9 @@ import javax.speech.Engine;
  * @author Dirk Schnelle-Walka
  */
 public final class SapiRecognizerAudioEventListener implements AudioListener {
+
     /** Logger instance. */
-    private static final Logger LOGGER = Logger.getLogger(
-            SapiRecognizerAudioEventListener.class.getCanonicalName());
+    private static final Logger logger = System.getLogger(SapiRecognizerAudioEventListener.class.getCanonicalName());
 
     /**
      * The associated recognizer.
@@ -49,14 +50,14 @@ public final class SapiRecognizerAudioEventListener implements AudioListener {
     public void audioUpdate(AudioEvent e) {
         switch (e.getId()) {
         case AudioEvent.AUDIO_CHANGED:
-            LOGGER.fine("AudioEvent: Audio Changed!");
+            logger.log(Level.DEBUG, "AudioEvent: Audio Changed!");
             if (!audioChanged) {
                 recognizer.pause();
                 audioChanged = true;
             }
             break;
         case AudioEvent.AUDIO_STARTED:
-            LOGGER.fine("AudioEvent: Audio Started!");
+            logger.log(Level.DEBUG, "AudioEvent: Audio Started!");
 
             if (recognizer.testEngineState(Engine.ALLOCATING_RESOURCES)) {
                 try {
@@ -64,7 +65,7 @@ public final class SapiRecognizerAudioEventListener implements AudioListener {
                     recognizer.waitEngineState(Engine.PAUSED);
                     recognizer.pause();
                 } catch (InterruptedException e1) {
-                    e1.printStackTrace();
+                    logger.log(Level.ERROR, e1.getMessage(), e1);
                 }
             }
 

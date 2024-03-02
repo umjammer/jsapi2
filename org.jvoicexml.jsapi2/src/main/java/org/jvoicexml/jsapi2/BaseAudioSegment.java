@@ -29,9 +29,7 @@ package org.jvoicexml.jsapi2;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.security.Permission;
 import javax.speech.AudioSegment;
-import javax.speech.SpeechPermission;
 
 
 /**
@@ -96,15 +94,6 @@ public class BaseAudioSegment extends AudioSegment {
      */
     @Override
     public final InputStream openInputStream() throws IOException, SecurityException {
-        // Firstly check the security settings
-        if (!isGettable()) {
-            SecurityManager security = System.getSecurityManager();
-            if (security != null) {
-                Permission permission = new SpeechPermission("javax.speech.AudioSegment.openInputStream");
-                security.checkPermission(permission);
-            }
-        }
-
         if (is == null) {
             String locator = getMediaLocator();
             URL url = new URL(locator);
@@ -116,15 +105,6 @@ public class BaseAudioSegment extends AudioSegment {
 
     @Override
     public final boolean isGettable() {
-        SecurityManager security = System.getSecurityManager();
-        if (security != null) {
-            Permission permission = new SpeechPermission("javax.speech.AudioSegment.openInputStream");
-            try {
-                security.checkPermission(permission);
-            } catch (SecurityException e) {
-                return false;
-            }
-        }
         return super.isGettable();
     }
 }

@@ -30,6 +30,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringReader;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -55,6 +57,8 @@ import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import static java.lang.System.getLogger;
+
 
 /**
  * A parser for SRGS grammars.
@@ -64,6 +68,8 @@ import org.xml.sax.SAXException;
  * @version $Revision: 1370 $
  */
 public class SrgsRuleGrammarParser {
+
+    private static final Logger logger = getLogger(SrgsRuleGrammarParser.class.getName());
 
     private static EntityResolver entityResolver = new EmptyEntityResolver();
     private Map<String, String> attributes;
@@ -96,7 +102,7 @@ public class SrgsRuleGrammarParser {
             InputSource source = new InputSource(reader);
             return parseGrammar(builder.parse(source));
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.ERROR, e.getMessage(), e);
             return null;
         }
     }
@@ -108,7 +114,7 @@ public class SrgsRuleGrammarParser {
             builder.setEntityResolver(entityResolver);
             return parseGrammar(builder.parse(new InputSource(stream)));
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.ERROR, e.getMessage(), e);
             return null;
         }
     }
@@ -134,7 +140,7 @@ public class SrgsRuleGrammarParser {
             }
             return rules;
         } catch (ParserConfigurationException | SAXException | IOException ex) {
-            ex.printStackTrace();
+            logger.log(Level.ERROR, ex.getMessage(), ex);
             return null;
         }
     }
@@ -185,7 +191,7 @@ public class SrgsRuleGrammarParser {
         if (nodeName.equalsIgnoreCase("#text")) {
             Text textNode = (Text) node;
             String text = textNode.getWholeText().trim();
-            if (text.length() > 0) {
+            if (!text.isEmpty()) {
                 RuleToken ruleToken = new RuleToken(text);
                 ruleComponents.add(ruleToken);
             }
@@ -209,10 +215,10 @@ public class SrgsRuleGrammarParser {
                 } else {
                     String minStr = repeatStr.substring(0, toIndex);
                     String maxStr = repeatStr.substring(toIndex + 1);
-                    if (minStr.trim().length() > 0) {
+                    if (!minStr.trim().isEmpty()) {
                         repeatMin = Integer.parseInt(minStr);
                     }
-                    if (maxStr.trim().length() > 0) {
+                    if (!maxStr.trim().isEmpty()) {
                         repeatMax = Integer.parseInt(maxStr);
                     }
                 }

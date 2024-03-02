@@ -6,8 +6,8 @@ package org.jvoicexml.jsapi2.recognition;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
@@ -23,7 +23,7 @@ import javax.sound.sampled.TargetDataLine;
 public final class LineInputStream extends InputStream {
 
     /** Logger for this class. */
-    private static final Logger logger = Logger.getLogger(LineInputStream.class.getName());
+    private static final Logger logger = System.getLogger(LineInputStream.class.getName());
 
     /** The line to read the audio from. */
     private TargetDataLine line;
@@ -76,8 +76,8 @@ public final class LineInputStream extends InputStream {
             DataLine.Info info = new DataLine.Info(TargetDataLine.class, format);
 
             line = (TargetDataLine) AudioSystem.getLine(info);
-            if (logger.isLoggable(Level.FINE)) {
-                logger.fine("opened line " + line + " with format " + format);
+            if (logger.isLoggable(Level.DEBUG)) {
+                logger.log(Level.DEBUG, "opened line " + line + " with format " + format);
             }
             line.open();
             line.start();

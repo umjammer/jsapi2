@@ -49,7 +49,7 @@ public class RuleComponent {
      * @param text the text to check.
      */
     protected static void checkValidGrammarText(String text) {
-        if ((text == null) || (text.length() == 0)) {
+        if ((text == null) || (text.isEmpty())) {
             throw new IllegalArgumentException("No text is not a valid for a grammar ");
         }
 
@@ -84,13 +84,10 @@ public class RuleComponent {
     }
 
     static boolean isWhitespace(char ch) {
-        switch(ch) {
-            case ' ':
-            case '\t':
-                return true;
-            default:
-                return false;
-        }
+        return switch (ch) {
+            case ' ', '\t' -> true;
+            default -> false;
+        };
     }
 
     /**

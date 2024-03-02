@@ -12,16 +12,17 @@
 
 package org.jvoicexml.jsapi2.demo.rtpdemo;
 
+import java.lang.System.Logger.Level;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.speech.AudioManager;
 import javax.speech.EngineManager;
 import javax.speech.synthesis.Synthesizer;
 import javax.speech.synthesis.SynthesizerMode;
 
 import org.jvoicexml.jsapi2.synthesis.freetts.FreeTTSEngineListFactory;
+
+import static java.lang.System.getLogger;
 
 
 /**
@@ -30,6 +31,9 @@ import org.jvoicexml.jsapi2.synthesis.freetts.FreeTTSEngineListFactory;
  * @author Dirk Schnelle-Walka
  */
 public final class RTPDemo {
+
+    private static final System.Logger logger = getLogger(RTPDemo.class.getName());
+
     /**
      * Do not create from outside.
      */
@@ -44,19 +48,15 @@ public final class RTPDemo {
     public static void main(String[] args) {
         // Enable logging at all levels.
         Handler handler = new ConsoleHandler();
-        handler.setLevel(Level.ALL);
-        Logger.getLogger("").addHandler(handler);
-        Logger.getLogger("").setLevel(Level.ALL);
+        handler.setLevel(java.util.logging.Level.ALL);
+        java.util.logging.Logger.getLogger("").addHandler(handler);
+        java.util.logging.Logger.getLogger("").setLevel(java.util.logging.Level.ALL);
 
         try {
-            EngineManager
-                    .registerEngineListFactory(FreeTTSEngineListFactory.class
-                            .getName());
-            System.setProperty("java.protocol.handler.pkgs",
-                    "org.jlibrtp.protocols");
+            EngineManager.registerEngineListFactory(FreeTTSEngineListFactory.class.getName());
+            System.setProperty("java.protocol.handler.pkgs", "org.jlibrtp.protocols");
             // Create a synthesizer for the default Locale
-            Synthesizer synth = (Synthesizer) EngineManager
-                    .createEngine(SynthesizerMode.DEFAULT);
+            Synthesizer synth = (Synthesizer) EngineManager.createEngine(SynthesizerMode.DEFAULT);
             AudioManager manager = synth.getAudioManager();
             manager.setMediaLocator("rtp://test:4343/audio?"
                     + "participant=localhost:16384&rate=8000&encoding=ulaw"
@@ -79,7 +79,7 @@ public final class RTPDemo {
             synth.deallocate();
             System.exit(0);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.ERROR, e.getMessage(), e);
         }
     }
 }

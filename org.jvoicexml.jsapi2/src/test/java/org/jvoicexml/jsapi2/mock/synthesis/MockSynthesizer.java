@@ -25,22 +25,17 @@ import javax.sound.sampled.AudioFormat;
 import javax.speech.AudioException;
 import javax.speech.AudioManager;
 import javax.speech.AudioSegment;
-import javax.speech.EngineEvent;
 import javax.speech.EngineException;
 import javax.speech.EngineStateException;
 import javax.speech.SpeechEventExecutor;
 import javax.speech.VocabularyManager;
 import javax.speech.synthesis.Speakable;
-import javax.speech.synthesis.SpeakableEvent;
 import javax.speech.synthesis.SynthesizerEvent;
-import javax.speech.synthesis.SynthesizerMode;
 
 import org.jvoicexml.jsapi2.BaseEngineProperties;
 import org.jvoicexml.jsapi2.mock.MockAudioManager;
 import org.jvoicexml.jsapi2.mock.MockSpeechEventExecutor;
 import org.jvoicexml.jsapi2.synthesis.BaseSynthesizer;
-import org.jvoicexml.jsapi2.synthesis.QueueManager;
-import vavi.util.Debug;
 
 
 /**

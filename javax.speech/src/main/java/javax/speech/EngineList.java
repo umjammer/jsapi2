@@ -245,6 +245,7 @@ public class EngineList {
             this.require = require;
         }
 
+        @Override
         public int compare(EngineMode mode1, EngineMode mode2) {
             boolean object1Matches = mode1.match(require);
             boolean object2Matches = mode2.match(require);

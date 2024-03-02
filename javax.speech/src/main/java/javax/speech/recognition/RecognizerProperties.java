@@ -335,6 +335,7 @@ public interface RecognizerProperties extends EngineProperties {
      * @see javax.speech.EngineProperties#MAX_UNTRUSTED_PRIORITY
      * @see javax.speech.EngineProperties#MAX_PRIORITY
      */
+    @Override
     void setPriority(int priority) throws IllegalArgumentException;
 
     /**
@@ -342,6 +343,7 @@ public interface RecognizerProperties extends EngineProperties {
      * @return the priority value
      * @see javax.speech.recognition.RecognizerProperties#setPriority(int)
      */
+    @Override
     int getPriority();
 
     /**

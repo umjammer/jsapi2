@@ -356,7 +356,7 @@ public class Voice {
 
         boolean namesMatch;
         String requiredName = require.getName();
-        if ((requiredName == null) || (requiredName.length() == 0)) {
+        if ((requiredName == null) || (requiredName.isEmpty())) {
             namesMatch = true;
         } else {
             namesMatch = requiredName.equals(name);

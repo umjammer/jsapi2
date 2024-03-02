@@ -239,13 +239,13 @@ public class SynthesizerMode extends EngineMode {
      * @see javax.speech.synthesis.Voice
      * @see javax.speech.synthesis.Voice#match(javax.speech.synthesis.Voice)
      */
+    @Override
     public boolean match(EngineMode require) {
         if (!super.match(require)) {
             return false;
         }
 
-        if (require instanceof SynthesizerMode) {
-            SynthesizerMode mode = (SynthesizerMode) require;
+        if (require instanceof SynthesizerMode mode) {
             Voice[] otherVoices = mode.getVoices();
             if (otherVoices != null) {
                 if (voices == null) {
@@ -276,6 +276,7 @@ public class SynthesizerMode extends EngineMode {
      *
      * @return collection of all parameters.
      */
+    @Override
     protected List<Object> getParameters() {
         List<Object> parameters = super.getParameters();
 

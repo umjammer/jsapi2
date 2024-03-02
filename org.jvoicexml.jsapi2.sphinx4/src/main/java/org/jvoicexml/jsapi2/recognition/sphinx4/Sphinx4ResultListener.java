@@ -26,8 +26,8 @@
 
 package org.jvoicexml.jsapi2.recognition.sphinx4;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import javax.speech.recognition.GrammarException;
 import javax.speech.recognition.ResultEvent;
 import javax.speech.recognition.RuleGrammar;
@@ -47,9 +47,9 @@ import org.jvoicexml.jsapi2.recognition.BaseResult;
  * @version $Revision: 608 $
  */
 class Sphinx4ResultListener implements ResultListener {
+
     /** Logger for this class. */
-    private static final Logger LOGGER = Logger
-            .getLogger(Sphinx4ResultListener.class.getName());
+    private static final Logger logger = System.getLogger(Sphinx4ResultListener.class.getName());
 
     /** The recognizer which is notified when a result is obtained. */
     private final Sphinx4Recognizer recognizer;
@@ -73,15 +73,15 @@ class Sphinx4ResultListener implements ResultListener {
      */
     @Override
     public void newResult(Result result) {
-        LOGGER.log(Level.INFO, "received result: {0}", result);
-        LOGGER.log(Level.INFO, "isFinal: {0}", result.isFinal());
+        logger.log(Level.INFO, "received result: {0}", result);
+        logger.log(Level.INFO, "isFinal: {0}", result.isFinal());
         if (!result.isFinal() || "<sil>".equalsIgnoreCase(result.toString())) {
-            LOGGER.warning("result is not final or <sil>. forget about it.");
+            logger.log(Level.WARNING, "result is not final or <sil>. forget about it.");
             return;
         }
 
         if (result.toString().contains("<unk>")) {
-            LOGGER.warning(
+            logger.log(Level.WARNING,
                     "result contains <unk> which represents negative result");
             return;
         }

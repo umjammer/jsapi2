@@ -54,7 +54,7 @@ public class RuleToken extends RuleComponent {
      * @see javax.speech.VocabularyManager
      */
     public RuleToken(String text) throws IllegalArgumentException {
-        if ((text == null) || (text.length() == 0)) {
+        if ((text == null) || (text.isEmpty())) {
             throw new IllegalArgumentException("'" + text + "'" + " is not a valid grammar text");
         }
 
@@ -68,7 +68,7 @@ public class RuleToken extends RuleComponent {
                 ++pos;
             }
 
-            if ((pos < chars.length) && (str.length() > 0)) {
+            if ((pos < chars.length) && (!str.isEmpty())) {
                 str.append(' ');
             }
 

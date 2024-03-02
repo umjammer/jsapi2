@@ -73,6 +73,7 @@ public class BaseResultToken implements ResultToken {
      * <code>RecognizerProperties.UNKNOWN_CONFIDENCE</code> if the
      * result was not accepted.
      */
+    @Override
     public int getConfidenceLevel() {
         if (result.getResultState() == Result.ACCEPTED) {
             return confidenceLevel;
@@ -108,6 +109,7 @@ public class BaseResultToken implements ResultToken {
      *
      * @return the start time
      */
+    @Override
     public long getStartTime() {
         return startTime;
     }
@@ -126,6 +128,7 @@ public class BaseResultToken implements ResultToken {
      *
      * @return the end time.
      */
+    @Override
     public long getEndTime() {
         return endTime;
     }
@@ -135,6 +138,7 @@ public class BaseResultToken implements ResultToken {
      *
      * @return the result.
      */
+    @Override
     public Result getResult() {
         return result;
     }
@@ -144,6 +148,7 @@ public class BaseResultToken implements ResultToken {
      *
      * @return the token
      */
+    @Override
     public String getText() {
         return token;
     }

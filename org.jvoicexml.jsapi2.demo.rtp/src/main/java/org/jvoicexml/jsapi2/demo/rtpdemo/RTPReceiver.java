@@ -14,19 +14,20 @@ package org.jvoicexml.jsapi2.demo.rtpdemo;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.System.Logger.Level;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine.Info;
 import javax.sound.sampled.SourceDataLine;
+
+import static java.lang.System.getLogger;
 
 
 /**
@@ -35,6 +36,8 @@ import javax.sound.sampled.SourceDataLine;
  * @author Dirk Schnelle-Walka
  */
 public final class RTPReceiver {
+
+    private static final System.Logger logger = getLogger(RTPReceiver.class.getName());
 
     /**
      * Do not create from outside.
@@ -50,9 +53,9 @@ public final class RTPReceiver {
     public static void main(String[] args) {
         // Enable logging at all levels.
         Handler handler = new ConsoleHandler();
-        handler.setLevel(Level.ALL);
-        Logger.getLogger("").addHandler(handler);
-        Logger.getLogger("").setLevel(Level.ALL);
+        handler.setLevel(java.util.logging.Level.ALL);
+        java.util.logging.Logger.getLogger("").addHandler(handler);
+        java.util.logging.Logger.getLogger("").setLevel(java.util.logging.Level.ALL);
 
         System.setProperty("java.protocol.handler.pkgs", "org.jlibrtp.protocols");
 
@@ -113,7 +116,7 @@ public final class RTPReceiver {
 
             System.out.println("Finished Receiver");
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logger.log(Level.ERROR, ex.getMessage(), ex);
         }
     }
 }

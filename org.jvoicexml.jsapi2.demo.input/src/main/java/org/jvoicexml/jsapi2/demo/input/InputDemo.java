@@ -13,10 +13,10 @@
 package org.jvoicexml.jsapi2.demo.input;
 
 import java.io.InputStream;
+import java.lang.System.Logger.Level;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.speech.AudioManager;
 import javax.speech.Engine;
 import javax.speech.EngineManager;
@@ -35,11 +35,16 @@ import javax.speech.synthesis.SynthesizerMode;
 import org.jvoicexml.jsapi2.recognition.sphinx4.SphinxEngineListFactory;
 import org.jvoicexml.jsapi2.synthesis.freetts.FreeTTSEngineListFactory;
 
+import static java.lang.System.getLogger;
+
 
 /**
  * @author Dirk Schnelle-Walka
  */
 public final class InputDemo implements ResultListener {
+
+    private static final System.Logger logger = getLogger(InputDemo.class.getName());
+
     /** The synthesizer to use. */
     private Synthesizer synthesizer;
 
@@ -59,15 +64,12 @@ public final class InputDemo implements ResultListener {
      */
     public void run() throws Exception {
         // Create a synthesizer for the default Locale.
-        synthesizer = (Synthesizer) EngineManager
-                .createEngine(SynthesizerMode.DEFAULT);
+        synthesizer = (Synthesizer) EngineManager.createEngine(SynthesizerMode.DEFAULT);
         // Create a recognizer for the default Locale.
-        recognizer = (Recognizer) EngineManager
-                .createEngine(new RecognizerMode(SpeechLocale.ENGLISH));
+        recognizer = (Recognizer) EngineManager.createEngine(new RecognizerMode(SpeechLocale.ENGLISH));
 
         AudioManager manager = recognizer.getAudioManager();
-        manager.setMediaLocator(
-                "capture://audio?rate=16000&bits=16&channels=2&endian=big&encoding=pcm&signed=true");
+        manager.setMediaLocator("capture://audio?rate=16000&bits=16&channels=2&endian=big&encoding=pcm&signed=true");
         // Get it ready to speak
         synthesizer.allocate();
         synthesizer.resume();
@@ -77,10 +79,9 @@ public final class InputDemo implements ResultListener {
         recognizer.addResultListener(this);
 
         GrammarManager grammarManager = recognizer.getGrammarManager();
-        InputStream in = InputDemo.class
-                .getResourceAsStream("/yesno.srgs");
+        InputStream in = InputDemo.class.getResourceAsStream("/yesno.srgs");
         Grammar grammar = grammarManager.loadGrammar("grammar:greeting",
-                null, in, "UTF-8");
+                null, in, StandardCharsets.UTF_8.name());
         grammar.setActivatable(true);
         recognizer.processGrammars();
 
@@ -116,9 +117,9 @@ public final class InputDemo implements ResultListener {
 
         // Enable logging at all levels.
         Handler handler = new ConsoleHandler();
-        handler.setLevel(Level.ALL);
-        Logger.getLogger("").addHandler(handler);
-        Logger.getLogger("").setLevel(Level.ALL);
+        handler.setLevel(java.util.logging.Level.ALL);
+        java.util.logging.Logger.getLogger("").addHandler(handler);
+        java.util.logging.Logger.getLogger("").setLevel(java.util.logging.Level.ALL);
 
         try {
             EngineManager.registerEngineListFactory(
@@ -129,7 +130,7 @@ public final class InputDemo implements ResultListener {
 
             demo.run();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.ERROR, e.getMessage(), e);
             System.exit(-1);
         }
 
@@ -147,5 +148,4 @@ public final class InputDemo implements ResultListener {
             // synthesizer.speak("I did not understand what you said", null);
         }
     }
-
 }

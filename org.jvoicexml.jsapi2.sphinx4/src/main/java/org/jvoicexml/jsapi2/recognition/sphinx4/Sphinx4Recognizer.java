@@ -23,9 +23,9 @@ package org.jvoicexml.jsapi2.recognition.sphinx4;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.util.Collection;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.sound.sampled.AudioFormat;
 import javax.speech.AudioException;
 import javax.speech.EngineException;
@@ -60,9 +60,9 @@ import org.jvoicexml.jsapi2.recognition.GrammarDefinition;
  * languages)
  */
 final class Sphinx4Recognizer extends BaseRecognizer {
+
     /** Logger for this class. */
-    private static final Logger LOGGER = Logger
-            .getLogger(Sphinx4Recognizer.class.getName());
+    private static final Logger logger = System.getLogger(Sphinx4Recognizer.class.getName());
 
     /**
      * Msecs to sleep before the status of the recognizer thread is checked
@@ -96,8 +96,7 @@ final class Sphinx4Recognizer extends BaseRecognizer {
     public Sphinx4Recognizer(SphinxRecognizerMode recognizerMode) {
         super(recognizerMode);
         // First check the system setting that may override any other setting
-        String resource = System.getProperty(
-                "org.jvoicexml.jsapi2.recognition.sphinx4.configPath");
+        String resource = System.getProperty("org.jvoicexml.jsapi2.recognition.sphinx4.configPath");
         // There is no config, call dynamic URL handler
         if (resource == null) {
             resource = getConfiguration(recognizerMode);
@@ -105,22 +104,18 @@ final class Sphinx4Recognizer extends BaseRecognizer {
         configuration = new Configuration();
 
         // Set path to acoustic model.
-        configuration.setAcousticModelPath(
-                "resource:/edu/cmu/sphinx/models/en-us/en-us");
+        configuration.setAcousticModelPath("resource:/edu/cmu/sphinx/models/en-us/en-us");
         // Set path to dictionary.
-        configuration.setDictionaryPath(
-                "resource:/edu/cmu/sphinx/models/en-us/cmudict-en-us.dict");
+        configuration.setDictionaryPath("resource:/edu/cmu/sphinx/models/en-us/cmudict-en-us.dict");
         // Set language model.
-        configuration.setLanguageModelPath(
-                "resource:/edu/cmu/sphinx/models/en-us/en-us.lm.bin");
+        configuration.setLanguageModelPath("resource:/edu/cmu/sphinx/models/en-us/en-us.lm.bin");
 
         try {
             Context context = new Context("resource:/default-EN.config.xml",
                     configuration);
             recognizer = new Jsapi2Recognizer(context);
         } catch (IOException e) {
-            LOGGER.log(Level.WARNING, "error creating engine properties {0}",
-                    e.getMessage());
+            logger.log(Level.WARNING, "error creating engine properties {0}", e.getMessage());
             error = e;
         }
 
@@ -144,22 +139,20 @@ final class Sphinx4Recognizer extends BaseRecognizer {
     private String getConfiguration(SphinxRecognizerMode recognizerMode) {
         // Determine the speech locale to use
         SpeechLocale[] speechLocales = recognizerMode.getSpeechLocales();
-        if (speechLocales == null
-                && recognizerMode.getSpeakerProfiles() != null) {
+        if (speechLocales == null && recognizerMode.getSpeakerProfiles() != null) {
             speechLocales = recognizerMode.getSpeechLocales();
         }
 
         // None given: use default
         if (speechLocales == null) {
-            LOGGER.info("Sphinx4Recognizer using default configuration.");
+            logger.log(Level.INFO, "Sphinx4Recognizer using default configuration.");
             return "resource:/default-EN.config.xml";
         }
 
         // Determine the name from the locale
         SpeechLocale speechLocale = speechLocales[0];
         String selectedLanguage = speechLocale.getLanguage();
-        return "resource:/default-" + selectedLanguage.toUpperCase()
-                + ".config.xml";
+        return "resource:/default-" + selectedLanguage.toUpperCase() + ".config.xml";
     }
 
     /**
@@ -167,29 +160,25 @@ final class Sphinx4Recognizer extends BaseRecognizer {
      *
      * @throws EngineException if problems are encountered
      */
-    public void handleAllocate() throws AudioException, EngineException,
-            EngineStateException, SecurityException {
+    @Override
+    public void handleAllocate() throws AudioException, EngineException, EngineStateException, SecurityException {
         if (error != null) {
             throw new EngineException(error.getMessage());
         }
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine("allocating recognizer...");
+        if (logger.isLoggable(Level.DEBUG)) {
+            logger.log(Level.DEBUG, "allocating recognizer...");
         }
         configuration = new Configuration();
 
         // Set path to acoustic model.
-        configuration.setAcousticModelPath(
-                "resource:/edu/cmu/sphinx/models/en-us/en-us");
+        configuration.setAcousticModelPath("resource:/edu/cmu/sphinx/models/en-us/en-us");
         // Set path to dictionary.
-        configuration.setDictionaryPath(
-                "resource:/edu/cmu/sphinx/models/en-us/cmudict-en-us.dict");
+        configuration.setDictionaryPath("resource:/edu/cmu/sphinx/models/en-us/cmudict-en-us.dict");
         // Set language model.
-        configuration.setLanguageModelPath(
-                "resource:/edu/cmu/sphinx/models/en-us/en-us.lm.bin");
+        configuration.setLanguageModelPath("resource:/edu/cmu/sphinx/models/en-us/en-us.lm.bin");
 
         try {
-            Context context = new Context(
-                    "resource:/default-EN.config.xml", configuration);
+            Context context = new Context("resource:/default-EN.config.xml", configuration);
             recognizer = new Jsapi2Recognizer(context);
             recognizer.allocate();
         } catch (IOException e) {
@@ -198,8 +187,8 @@ final class Sphinx4Recognizer extends BaseRecognizer {
 
         // Register result listener
         recognizer.addResultListener(resultListener);
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine("...allocated");
+        if (logger.isLoggable(Level.DEBUG)) {
+            logger.log(Level.DEBUG, "...allocated");
         }
 
         setEngineState(CLEAR_ALL_STATE, ALLOCATED);
@@ -208,12 +197,12 @@ final class Sphinx4Recognizer extends BaseRecognizer {
     @Override
     public boolean handleResume(InputStream in) {
         if (recognizer == null) {
-            LOGGER.warning("no recognizer: cannot resume!");
+            logger.log(Level.WARNING, "no recognizer: cannot resume!");
             return false;
         }
 
         if (recognitionThread != null) {
-            LOGGER.warning("recognition thread already started.");
+            logger.log(Level.WARNING, "recognition thread already started.");
             return false;
         }
         recognizer.startRecognition(in);
@@ -221,8 +210,8 @@ final class Sphinx4Recognizer extends BaseRecognizer {
         // start the recognizer thread and wait for the recognizer to recognize
         recognitionThread = new RecognitionThread(this);
         recognitionThread.start();
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine("recognition started");
+        if (logger.isLoggable(Level.DEBUG)) {
+            logger.log(Level.DEBUG, "recognition started");
         }
 
         return true;
@@ -231,6 +220,7 @@ final class Sphinx4Recognizer extends BaseRecognizer {
     /**
      * Called from the <code>pause</code> method.
      */
+    @Override
     public void handlePause() {
         if (recognitionThread == null) {
             throw new EngineStateException("Cannot pause, no decoder started");
@@ -247,6 +237,7 @@ final class Sphinx4Recognizer extends BaseRecognizer {
     /**
      * TODO Correctly implement this
      */
+    @Override
     public void handlePause(int flags) {
         handlePause();
     }
@@ -259,10 +250,11 @@ final class Sphinx4Recognizer extends BaseRecognizer {
      * @throws EngineException if this <code>Engine</code> cannot be deallocated.
      *                         TODO Implement this com.sun.speech.engine.BaseEngine method
      */
+    @Override
     public void handleDeallocate() {
 
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine("deallocating recognizer...");
+        if (logger.isLoggable(Level.DEBUG)) {
+            logger.log(Level.DEBUG, "deallocating recognizer...");
         }
 
         // pause is not called before dealloc obviously
@@ -272,8 +264,8 @@ final class Sphinx4Recognizer extends BaseRecognizer {
         recognizer.deallocate();
         recognizer.removeResultListener(resultListener);
 
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine("...deallocated");
+        if (logger.isLoggable(Level.DEBUG)) {
+            logger.log(Level.DEBUG, "...deallocated");
         }
     }
 
@@ -291,12 +283,12 @@ final class Sphinx4Recognizer extends BaseRecognizer {
      */
     private void stopRecognitionThread() {
         if (recognitionThread == null) {
-            LOGGER.fine("recognition thread already stopped");
+            logger.log(Level.DEBUG, "recognition thread already stopped");
             return;
         }
 
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine("stopping recognition thread...");
+        if (logger.isLoggable(Level.DEBUG)) {
+            logger.log(Level.DEBUG, "stopping recognition thread...");
         }
         recognitionThread.stopRecognition();
 
@@ -308,17 +300,13 @@ final class Sphinx4Recognizer extends BaseRecognizer {
                 Thread.sleep(SLEEP_MSEC);
                 sleepTime += SLEEP_MSEC;
             } catch (InterruptedException ie) {
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine("recognition thread interrupted");
-                }
+                logger.log(Level.DEBUG, "recognition thread interrupted");
             }
         }
 
         recognitionThread = null;
 
-        if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine("recognition thread stopped");
-        }
+        logger.log(Level.DEBUG, "recognition thread stopped");
     }
 
     /**
@@ -345,8 +333,7 @@ final class Sphinx4Recognizer extends BaseRecognizer {
      * @return boolean
      */
     @Override
-    protected boolean setGrammars(
-            Collection<GrammarDefinition> grammarDefinitions) {
+    protected boolean setGrammars(Collection<GrammarDefinition> grammarDefinitions) {
         return recognizer.setGrammars(grammarDefinitions);
     }
 
@@ -370,14 +357,12 @@ final class Sphinx4Recognizer extends BaseRecognizer {
 
     public void postProcessingEvent() {
         long[] states = setEngineState(LISTENING, PROCESSING);
-        postEngineEvent(states[0], states[1],
-                RecognizerEvent.RECOGNIZER_PROCESSING, 0);
+        postEngineEvent(states[0], states[1], RecognizerEvent.RECOGNIZER_PROCESSING, 0);
     }
 
     public void postListeningEvent() {
         long[] states = setEngineState(PROCESSING, LISTENING);
-        postEngineEvent(states[0], states[1],
-                RecognizerEvent.RECOGNIZER_LISTENING, 0);
+        postEngineEvent(states[0], states[1], RecognizerEvent.RECOGNIZER_LISTENING, 0);
 
     }
 
@@ -404,7 +389,6 @@ final class Sphinx4Recognizer extends BaseRecognizer {
     protected void handlePropertyChangeRequest(
             BaseEngineProperties properties, String propName,
             Object oldValue, Object newValue) {
-        LOGGER.warning("changing property '" + propName + "' to '" + newValue
-                + "' ignored");
+        logger.log(Level.WARNING, "changing property '" + propName + "' to '" + newValue + "' ignored");
     }
 }

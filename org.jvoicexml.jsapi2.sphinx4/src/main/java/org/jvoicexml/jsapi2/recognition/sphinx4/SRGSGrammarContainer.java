@@ -1,14 +1,14 @@
 package org.jvoicexml.jsapi2.recognition.sphinx4;
 
 import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.speech.recognition.RuleGrammar;
 
 import edu.cmu.sphinx.decoder.search.Token;
@@ -23,6 +23,8 @@ import edu.cmu.sphinx.util.props.PropertySheet;
 import org.jvoicexml.jsapi2.recognition.BaseRecognizer;
 import org.jvoicexml.jsapi2.recognition.BaseRuleGrammar;
 import org.jvoicexml.jsapi2.recognition.GrammarDefinition;
+
+import static java.lang.System.getLogger;
 
 
 /**
@@ -40,7 +42,7 @@ import org.jvoicexml.jsapi2.recognition.GrammarDefinition;
 
 public class SRGSGrammarContainer extends Grammar {
 
-    private static final Logger logger = Logger .getLogger(Sphinx4Recognizer.class.getName());
+    private static final Logger logger = getLogger(Sphinx4Recognizer.class.getName());
 
     /**
      * The GrammarDefinitions as set through loadGrammars from the
@@ -145,8 +147,7 @@ public class SRGSGrammarContainer extends Grammar {
             Collection<GrammarNode> nodes = grammar.getGrammarNodes();
             if (nodes != null) {
                 SearchState state = token.getSearchState();
-                if (state instanceof GrammarState) {
-                    GrammarState grammarState = (GrammarState) state;
+                if (state instanceof GrammarState grammarState) {
                     GrammarNode node = grammarState.getGrammarNode();
                     if (nodes.contains(node)) {
                         return grammar.getRuleGrammar();
@@ -251,7 +252,7 @@ public class SRGSGrammarContainer extends Grammar {
             for (String activeGrammar : grammars.keySet()) {
                 sb.append(activeGrammar).append(" ");
             }
-            logger.info("Activate grammars: " + sb);
+            logger.log(Level.INFO, "Activate grammars: " + sb);
         }
     }
 }

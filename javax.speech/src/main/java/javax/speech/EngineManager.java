@@ -28,6 +28,7 @@ package javax.speech;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -276,8 +277,7 @@ public class EngineManager {
         Boolean preferredFactoryRunning = null;
         while (enumeration.hasMoreElements()) {
             EngineMode mode = enumeration.nextElement();
-            if (mode instanceof EngineFactory) {
-                EngineFactory factory = (EngineFactory) mode;
+            if (mode instanceof EngineFactory factory) {
                 if (preferredFactory == null) {
                     preferredFactory = factory;
                     preferredFactoryRunning = mode.getRunning();
@@ -408,8 +408,8 @@ public class EngineManager {
 
         EngineListFactory engineListFactory;
         try {
-            engineListFactory = (EngineListFactory) clazz.newInstance();
-        } catch (InstantiationException e) {
+            engineListFactory = (EngineListFactory) clazz.getDeclaredConstructor().newInstance();
+        } catch (InstantiationException | NoSuchMethodException | InvocationTargetException e) {
             throw new IllegalArgumentException("'" + className + "' cannot be created!");
         } catch (IllegalAccessException e) {
             throw new SecurityException("'" + className + "' cannot be created!");

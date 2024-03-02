@@ -28,7 +28,8 @@ package org.jvoicexml.jsapi2.synthesis;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.logging.Logger;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
@@ -48,7 +49,7 @@ import org.jvoicexml.jsapi2.BaseAudioManager;
  */
 public final class SpeakerOutputStream extends OutputStream implements LineListener {
 
-    private static final Logger logger = Logger.getLogger(SpeakerOutputStream.class.getName());
+    private static final Logger logger = System.getLogger(SpeakerOutputStream.class.getName());
 
     /** The audio manager to use. */
     private final BaseAudioManager manager;
@@ -80,7 +81,7 @@ public final class SpeakerOutputStream extends OutputStream implements LineListe
             line = (SourceDataLine) AudioSystem.getLine(info);
             line.addLineListener(this);
             line.open(format);
-            logger.finer("line open: " + line.hashCode());
+            logger.log(Level.TRACE, "line open: " + line.hashCode());
         } catch (LineUnavailableException e) {
             throw new IOException(e.getMessage(), e);
         }
@@ -89,7 +90,7 @@ public final class SpeakerOutputStream extends OutputStream implements LineListe
         FloatControl gainControl = (FloatControl) line.getControl(FloatControl.Type.MASTER_GAIN);
         double gain = ((BaseSynthesizerAudioManager) manager).getVolume(); // number between 0 and 1 (loudest)
         float dB = (float) (Math.log(gain) / Math.log(10.0) * 20.0);
-        logger.finer("volume: " + gain + ", dB: " + dB);
+        logger.log(Level.TRACE, "volume: " + gain + ", dB: " + dB);
         gainControl.setValue(dB);
     }
 
@@ -121,7 +122,7 @@ public final class SpeakerOutputStream extends OutputStream implements LineListe
     @Override
     public void close() throws IOException {
         if (line != null) {
-            logger.finer("line close: " + line.hashCode());
+            logger.log(Level.TRACE, "line close: " + line.hashCode());
             line.close();
         }
         super.close();

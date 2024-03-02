@@ -27,8 +27,8 @@ import org.junit.jupiter.api.Test;
 import org.jvoicexml.jsapi2.mock.recognition.MockRecognizer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -82,6 +82,6 @@ public final class BaseGrammarManagerTest {
         Reader reader = new InputStreamReader(in);
         Grammar grammar = manager.loadGrammar("test",
                 "application/srgs+xml", reader);
-        assertTrue(grammar instanceof RuleGrammar);
+        assertInstanceOf(RuleGrammar.class, grammar);
     }
 }

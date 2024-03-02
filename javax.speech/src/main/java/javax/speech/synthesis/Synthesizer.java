@@ -388,8 +388,10 @@ public interface Synthesizer extends Engine {
      * @see javax.speech.Engine#getEngineState()
      * @see javax.speech.EngineEvent#ENGINE_PAUSED
      */
+    @Override
     void pause() throws EngineStateException;
 
+    @Override
     boolean resume() throws EngineStateException;
 
     /**

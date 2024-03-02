@@ -23,9 +23,9 @@ package org.jvoicexml.jsapi2.recognition.sphinx4;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.util.Collection;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.sound.sampled.AudioFormat;
 
 import edu.cmu.sphinx.api.AbstractSpeechRecognizer;
@@ -47,7 +47,7 @@ import org.jvoicexml.jsapi2.recognition.GrammarDefinition;
 public class Jsapi2Recognizer extends AbstractSpeechRecognizer implements StateListener {
 
     /** Logger for this class. */
-    private static final Logger LOGGER = Logger.getLogger(Jsapi2Recognizer.class.getName());
+    private static final Logger logger = System.getLogger(Jsapi2Recognizer.class.getName());
 
     private final Object stateMonitor;
 
@@ -83,7 +83,7 @@ public class Jsapi2Recognizer extends AbstractSpeechRecognizer implements StateL
         try {
             grammar.loadGrammars(grammarDefinitions);
         } catch (IOException ex) {
-            System.err.println(ex);
+            logger.log(Level.ERROR, ex.getMessage(), ex);
             return false;
         }
         return true;
@@ -145,9 +145,9 @@ public class Jsapi2Recognizer extends AbstractSpeechRecognizer implements StateL
                     stateMonitor.wait();
                 }
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                logger.log(Level.ERROR, e.getMessage(), e);
             }
         }
-        LOGGER.log(Level.INFO, "Sphinx4Recognizer in state: {0}", status);
+        logger.log(Level.INFO, "Sphinx4Recognizer in state: {0}", status);
     }
 }

@@ -298,13 +298,13 @@ public class RecognizerMode extends EngineMode {
      * @param require an EngineMode to compare
      * @return true if all defined features match
      */
+    @Override
     public boolean match(EngineMode require) {
         if (!super.match(require)) {
             return false;
         }
 
-        if (require instanceof RecognizerMode) {
-            RecognizerMode mode = (RecognizerMode) require;
+        if (require instanceof RecognizerMode mode) {
             SpeechLocale[] otherLocales = mode.getSpeechLocales();
             if (otherLocales != null) {
                 if (locales == null) {
@@ -358,6 +358,7 @@ public class RecognizerMode extends EngineMode {
      *
      * @return collection of all parameters.
      */
+    @Override
     protected List<Object> getParameters() {
         List<Object> parameters = super.getParameters();
 

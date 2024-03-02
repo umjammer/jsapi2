@@ -5,13 +5,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.System.Logger.Level;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.speech.Engine;
 import javax.speech.EngineManager;
 import javax.speech.recognition.Grammar;
@@ -36,6 +35,7 @@ import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
 import org.jvoicexml.jsapi2.sapi.SapiEngineListFactory;
 
+import static java.lang.System.getLogger;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -52,6 +52,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 @EnabledOnOs(OS.WINDOWS)
 public final class TestRecognizer implements ResultListener {
+
+    private static final System.Logger logger = getLogger(TestRecognizer.class.getName());
+
     /** The test object. */
     private Recognizer recognizer;
 
@@ -68,14 +71,13 @@ public final class TestRecognizer implements ResultListener {
      */
     @BeforeAll
     public static void init() throws Exception {
-        EngineManager.registerEngineListFactory(
-                SapiEngineListFactory.class.getCanonicalName());
+        EngineManager.registerEngineListFactory(SapiEngineListFactory.class.getCanonicalName());
         Locale.setDefault(new Locale("en"));
         // Enable logging at all levels.
         Handler handler = new ConsoleHandler();
-        handler.setLevel(Level.ALL);
-        Logger.getLogger("").addHandler(handler);
-        Logger.getLogger("").setLevel(Level.ALL);
+        handler.setLevel(java.util.logging.Level.ALL);
+        java.util.logging.Logger.getLogger("").addHandler(handler);
+        java.util.logging.Logger.getLogger("").setLevel(java.util.logging.Level.ALL);
     }
 
     /**
@@ -85,12 +87,11 @@ public final class TestRecognizer implements ResultListener {
      */
     @BeforeEach
     public void setUp() throws Exception {
-        System.out.println("Allocating ASR Engine");
-        recognizer =
-                (Recognizer) EngineManager.createEngine(RecognizerMode.DEFAULT);
+        logger.log(Level.DEBUG, "Allocating ASR Engine");
+        recognizer = (Recognizer) EngineManager.createEngine(RecognizerMode.DEFAULT);
         recognizer.allocate();
         recognizer.waitEngineState(Engine.ALLOCATED);
-        System.out.println("ASR Engine allocated");
+        logger.log(Level.DEBUG, "ASR Engine allocated");
     }
 
     /**
@@ -100,14 +101,14 @@ public final class TestRecognizer implements ResultListener {
      */
     @AfterEach
     public void tearDown() throws Exception {
-        System.out.println("Deallocating ASR Engine");
+        logger.log(Level.DEBUG, "Deallocating ASR Engine");
         if (recognizer != null) {
             recognizer.pause();
             recognizer.waitEngineState(Engine.PAUSED);
             recognizer.deallocate();
             recognizer.waitEngineState(Engine.DEALLOCATED);
         }
-        System.out.println("ASR Engine deallocated");
+        logger.log(Level.DEBUG, "ASR Engine deallocated");
     }
 
     /**
@@ -122,25 +123,25 @@ public final class TestRecognizer implements ResultListener {
 
         GrammarManager grammarManager = recognizer.getGrammarManager();
         String name = getLocaleGrammarName("hello");
-        System.out.println(name);
+        logger.log(Level.DEBUG, name);
         InputStream in = TestRecognizer.class.getResourceAsStream(name);
         grammarManager.loadGrammar("grammar:greeting", null, in, "UTF-8");
         recognizer.requestFocus();
         recognizer.resume();
         recognizer.waitEngineState(Engine.RESUMED);
-        System.out.println("Test1 Please say something...");
+        logger.log(Level.DEBUG, "Test1 Please say something...");
 
         synchronized (lock) {
             lock.wait();
         }
 
-        System.out.print("Recognized: ");
+        StringBuilder sb = new StringBuilder("Recognized: ");
         ResultToken[] tokens = result.getBestTokens();
 
         for (ResultToken token : tokens) {
-            System.out.print(token.getText() + " ");
+            sb.append(token.getText()).append(" ");
         }
-        System.out.println();
+        logger.log(Level.DEBUG, sb.toString());
     }
 
     /**
@@ -176,27 +177,23 @@ public final class TestRecognizer implements ResultListener {
         recognizer.requestFocus();
         recognizer.resume();
         recognizer.waitEngineState(Engine.RESUMED, timeOut);
-        assertTrue(recognizer.testEngineState(Engine.RESUMED),
-                "Enginestate should be RESUMED."
-        );
+        assertTrue(recognizer.testEngineState(Engine.RESUMED), "Enginestate should be RESUMED.");
 
-        System.out.println("delaying...");
+        logger.log(Level.DEBUG, "delaying...");
         Thread.sleep(500);
-        System.out.println("...delayed");
+        logger.log(Level.DEBUG, "...delayed");
 
         // test pause
         recognizer.pause();
         recognizer.waitEngineState(Engine.PAUSED, timeOut);
-        assertTrue(recognizer.testEngineState(Engine.PAUSED),
-                "Enginestate should be PAUSED.");
+        assertTrue(recognizer.testEngineState(Engine.PAUSED), "Enginestate should be PAUSED.");
 
         // test resume after pause
         recognizer.resume();
         recognizer.waitEngineState(Engine.RESUMED, timeOut);
-        assertTrue(recognizer.testEngineState(Engine.RESUMED),
-                "Enginestate should be RESUMED.");
-//        
-//        System.out.println("Say something");
+        assertTrue(recognizer.testEngineState(Engine.RESUMED), "Enginestate should be RESUMED.");
+//
+//        logger.log(Level.DEBUG, "Say something");
 //        synchronized (lock) {
 //            lock.wait();
 //        }
@@ -207,7 +204,7 @@ public final class TestRecognizer implements ResultListener {
 //        for (int i = 0; i < tokens.length; i++) {
 //            System.out.print(tokens[i].getText() + " ");
 //        }
-//        System.out.println();
+//        logger.log(Level.DEBUG, );
     }
 
     /**
@@ -222,61 +219,60 @@ public final class TestRecognizer implements ResultListener {
         GrammarManager grammarManager = recognizer.getGrammarManager();
         String name = getLocaleGrammarName("hello");
         InputStream in = TestRecognizer.class.getResourceAsStream(name);
-        System.out.println("Try to load Grammar");
+        logger.log(Level.DEBUG, "Try to load Grammar");
         Grammar hello =
                 grammarManager.loadGrammar("grammar:greeting", null, in, "UTF-8");
         recognizer.requestFocus();
         recognizer.resume();
         recognizer.waitEngineState(Engine.RESUMED);
-        System.out.println("Please say a greeting...");
+        logger.log(Level.DEBUG, "Please say a greeting...");
 
         synchronized (lock) {
             lock.wait();
         }
 
-        System.out.print("Recognized: ");
+        StringBuilder sb = new StringBuilder("Recognized: ");
         ResultToken[] tokens = result.getBestTokens();
 
         for (ResultToken token : tokens) {
-            System.out.print(token.getText() + " ");
+            sb.append(token.getText()).append(" ");
         }
-        System.out.println();
+        logger.log(Level.DEBUG, sb.toString());
 
 //        Object obj = ((SapiResult)result).getSemanticInterpretation();
 
-        System.out.println("Recognizer wait for Enginestate PAUSED");
+        logger.log(Level.DEBUG, "Recognizer wait for Enginestate PAUSED");
         recognizer.pause();
         recognizer.waitEngineState(Engine.PAUSED);
         grammarManager.deleteGrammar(hello);
 
-        System.out.println("List grammars after delete... ");
+        logger.log(Level.DEBUG, "List grammars after delete... ");
 
         Grammar[] grams = grammarManager.listGrammars();
-        System.out.println("count: " + grams.length);
+        logger.log(Level.DEBUG, "count: " + grams.length);
 
         for (Grammar gram : grams) {
-            System.out.println(gram.getReference());
+            logger.log(Level.DEBUG, gram.getReference());
         }
-        System.out.println("Load new grammar... ");
-        InputStream in2 =
-                TestRecognizer.class.getResourceAsStream("Licht.xml");
+        logger.log(Level.DEBUG, "Load new grammar... ");
+        InputStream in2 = TestRecognizer.class.getResourceAsStream("Licht.xml");
         grammarManager.loadGrammar("grammar:LIGHT", null, in2, "UTF-8");
-        System.out.println("Resume... ");
+        logger.log(Level.DEBUG, "Resume... ");
         recognizer.resume();
         recognizer.waitEngineState(Engine.RESUMED);
-        System.out.println("Please say a command...");
+        logger.log(Level.DEBUG, "Please say a command...");
 
         synchronized (lock) {
             lock.wait();
         }
 
-        System.out.print("Recognized: ");
+        StringBuilder sb2 = new StringBuilder("Recognized: ");
         ResultToken[] tokens2 = result.getBestTokens();
 
         for (ResultToken resultToken : tokens2) {
-            System.out.print(resultToken.getText() + " ");
+            sb2.append(resultToken.getText()).append(" ");
         }
-        System.out.println();
+        logger.log(Level.DEBUG, sb.toString());
     }
 
     /**
@@ -306,19 +302,19 @@ public final class TestRecognizer implements ResultListener {
         recognizer.requestFocus();
         recognizer.resume();
         recognizer.waitEngineState(Engine.RESUMED);
-        System.out.println("Test2.1 Please say something...");
+        logger.log(Level.DEBUG, "Test2.1 Please say something...");
 
         synchronized (lock) {
             lock.wait();
         }
 
-        System.out.print("Recognized: ");
+        StringBuilder sb = new StringBuilder("Recognized: ");
         ResultToken[] tokens = result.getBestTokens();
 
         for (ResultToken resultToken : tokens) {
-            System.out.print(resultToken.getText() + " ");
+            sb.append(resultToken.getText()).append(" ");
         }
-        System.out.println();
+        logger.log(Level.DEBUG, sb.toString());
 
         Grammar gram = grammarManager.getGrammar("grammar:LIGHT");
         grammarManager.deleteGrammar(gram);
@@ -327,17 +323,17 @@ public final class TestRecognizer implements ResultListener {
         recognizer.requestFocus();
         recognizer.resume();
         recognizer.waitEngineState(Engine.RESUMED);
-        System.out.println("Test2.2 Please say something...");
+        logger.log(Level.DEBUG, "Test2.2 Please say something...");
 
         Thread.sleep(3000);
 
-        System.out.print("Recognized: ");
+        StringBuilder sb2 = new StringBuilder("Recognized: ");
         tokens = result.getBestTokens();
 
         for (ResultToken token : tokens) {
-            System.out.print(token.getText() + " ");
+            sb2.append(token.getText()).append(" ");
         }
-        System.out.println();
+        logger.log(Level.DEBUG, sb2.toString());
     }
 
     /**
@@ -359,26 +355,26 @@ public final class TestRecognizer implements ResultListener {
 
         String grammar = new String(buffer);
 
-        //System.out.println( grammar );
+        //logger.log(Level.DEBUG,  grammar );
 
         if (((SapiRecognizer) recognizer).setGrammarContent(grammar, "foobar")) {
 
             SapiRecognitionThread recognitionThread = new SapiRecognitionThread(((SapiRecognizer) recognizer));
             recognitionThread.start();
 
-            System.out.println("Test1 Please say something...");
+            logger.log(Level.DEBUG, "Test1 Please say something...");
 
             synchronized (lock) {
                 lock.wait();
             }
 
-            System.out.print("Recognized: ");
+            StringBuilder sb = new StringBuilder("Recognized: ");
             ResultToken[] tokens = result.getBestTokens();
 
             for (ResultToken token : tokens) {
-                System.out.print(token.getText() + " ");
+                sb.append(token.getText()).append(" ");
             }
-            System.out.println();
+            logger.log(Level.DEBUG, sb.toString());
 
         } else {
             System.err.println("Activating Grammar failed");
@@ -389,7 +385,7 @@ public final class TestRecognizer implements ResultListener {
 
     @Override
     public void resultUpdate(ResultEvent event) {
-        System.out.println(event);
+        logger.log(Level.DEBUG, event);
         if (event.getId() == ResultEvent.RESULT_ACCEPTED) {
             result = (Result) (event.getSource());
             synchronized (lock) {
@@ -401,7 +397,7 @@ public final class TestRecognizer implements ResultListener {
             recognizer.pause();
             recognizer.requestFocus();
             recognizer.resume();
-            System.out.println("Recognition confidence was too low. Please try again ...");
+            logger.log(Level.DEBUG, "Recognition confidence was too low. Please try again ...");
         }
     }
 
