@@ -36,7 +36,6 @@ import java.util.Properties;
 import javax.speech.spi.EngineFactory;
 import javax.speech.spi.EngineListFactory;
 
-// Comp. 2.0.6
 
 /**
  * The initial access point to all speech
@@ -61,21 +60,18 @@ import javax.speech.spi.EngineListFactory;
  * the EngineManager creates an instance of the specific Engine
  * identified by the EngineMode.
  * These EngineModes implement the EngineFactory interface.
- * <p>
- * <A/>
- * <p>
- * <A/>
- * <p>
+ * </p>
+ * <pre>
  * // Create a synthesizer for the default Locale
  * Synthesizer synth = (Synthesizer)
  * EngineManager.createEngine(SynthesizerMode.DEFAULT);
- * <p>
+ *
  * // Create a recognizer for British English
  * // Note: the UK locale is English spoken in Britain
  * // Can use Locale.UK on J2SE
  * RecognizerMode mode = new RecognizerMode(new Locale("en", "UK"));
  * Recognizer rec = (Recognizer) EngineManager.createEngine(mode);
- * <p>
+ *
  * // Obtain a list of all German recognizers
  * RecognizerMode mode = new RecognizerMode(new Locale("de"));
  * EngineList list = EngineManager.availableEngines(mode);
@@ -83,7 +79,7 @@ import javax.speech.spi.EngineListFactory;
  * RecognizerMode chosen = ...
  * // create an engine from "chosen" - an engine-provided descriptor
  * Recognizer rec = (Recognizer) EngineManager.createEngine(chosen);
- * <p>
+ * </pre>
  * For cases 1 and 2 there is a defined procedure for selecting an
  * Engine to be created.
  * (For case 3, the application can apply it's own selection procedure.)
@@ -143,8 +139,9 @@ import javax.speech.spi.EngineListFactory;
  * <p>
  * <A/>
  * EngineManager looks for properties of the form
- * <p>
+ * <pre>
  * com.acme.recognizer.EngineListFactory=com.acme.recognizer.AcmeEngineListFactory
+ * </pre>
  * <p>
  * This line is interpreted as "the EngineListFactory object for the
  * com.acme.recognizer engine is the class called
@@ -161,6 +158,7 @@ import javax.speech.spi.EngineListFactory;
  * @see javax.speech.recognition.RecognizerMode
  * @see javax.speech.synthesis.SynthesizerMode
  * @see java.lang.Class#getResourceAsStream(java.lang.String)
+ * @since 2.0.6
  */
 public class EngineManager {
 
@@ -236,7 +234,7 @@ public class EngineManager {
             }
         }
 
-        EngineMode[] foundModes = modes.toArray(new EngineMode[0]);
+        EngineMode[] foundModes = modes.toArray(EngineMode[]::new);
 
         return new EngineList(foundModes);
     }
@@ -333,28 +331,28 @@ public class EngineManager {
      * This allows applications to synchronize SpeechEvents with,
      * for example, user interface events on the deployment platform.
      * <p>
-     * <A/>
+     *
      * A MIDlet developer might use the following to synchronize event delivery
      * with the UI thread:
-     * <p>
+     * <pre>
      * // Ensure speech events arrive on a MIDlet's UI thread
      * EngineManager.setSpeechEventExecutor(new SpeechEventExecutor() {
      * public void execute(Runnable r) {
      * javax.microedition.lcdui.Display.getDisplay(this).callSerially(r);
      * }
      * });
-     * <p>
-     * <A/>
+     * </pre>
+     *
      * Whereas an AWT or Swing developer might want to synchronize with
      * the AWT/Swing Event Thread:
-     * <p>
+     * <pre>
      * // Ensure speech events arrive on an AWT or Swing UI thread
      * EngineManager.setSpeechEventExecutor(new SpeechEventExecutor() {
      * public void execute(Runnable a_r) {
      * java.awt.EventQueue.invokeLater(a_r);
      * }
      * });
-     * <p>
+     * </pre>
      * A server-side developer might use this feature to control the
      * Thread pool used to deliver events.
      * <p>

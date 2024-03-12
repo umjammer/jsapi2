@@ -29,8 +29,6 @@ package javax.speech.recognition;
 import javax.speech.Engine;
 import javax.speech.EngineStateException;
 
-// Comp. 2.0.6
-
 /**
  * Provides access to speech recognition capabilities.
  * <p>
@@ -154,12 +152,9 @@ import javax.speech.EngineStateException;
  * <p>
  * The Recognizer interface adds one more independent substate system
  * to the ALLOCATED state:
- * <p>
- * {@link javax.speech.recognition.Recognizer#LISTENING}
- * ,
- * {@link javax.speech.recognition.Recognizer#PROCESSING}
- * , and
- * {@link javax.speech.recognition.Recognizer#RESUMED}
+ *
+ * {@link javax.speech.recognition.Recognizer#LISTENING}, {@link javax.speech.recognition.Recognizer#PROCESSING}
+ * , and {@link javax.speech.recognition.Recognizer#RESUMED}
  *
  * The initial state is listening, but no processing takes place
  * until the Recognizer is in the RESUMED state.
@@ -361,9 +356,7 @@ import javax.speech.EngineStateException;
  * commitChanges to apply the changes.
  * <p>
  * The effect is that the CHANGES_COMMITTED event that would normally occur
- * in the
- * <p>
- * <A href="#TypicalEventCycle">normal event cycle</A>
+ * in the <A href="#TypicalEventCycle">normal event cycle</A>
  * may be delayed until the commitChanges method
  * is explicitly called and that the commit applies changes made in response
  * to both the speech and non-speech events.
@@ -377,10 +370,7 @@ import javax.speech.EngineStateException;
  * that speech is buffered, and the speech event is actually delayed until
  * the Recognizer returns to the LISTENING state.
  * Once the Recognizer returns to the LISTENING state, the incoming speech
- * is processed with the
- * <p>
- * <A href="#TypicalEventCycle">normal event cycle</A>
- * .
+ * is processed with the <A href="#TypicalEventCycle">normal event cycle</A>.
  *
  * @see javax.speech.EngineManager
  * @see javax.speech.EngineManager#createEngine(javax.speech.EngineMode)
@@ -390,6 +380,7 @@ import javax.speech.EngineStateException;
  * @see javax.speech.recognition.RuleGrammar
  * @see javax.speech.recognition.Result
  * @see javax.speech.recognition.FinalResult
+ * @since 2.0.6
  */
 public interface Recognizer extends Engine {
 

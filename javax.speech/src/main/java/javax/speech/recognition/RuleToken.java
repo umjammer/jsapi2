@@ -26,8 +26,6 @@
 
 package javax.speech.recognition;
 
-// Comp. 2.0.6
-
 /**
  * Represents speakable text in a RuleGrammar.
  * <p>
@@ -35,8 +33,10 @@ package javax.speech.recognition;
  * eventually any Rule must break down
  * into a sequence of RuleTokens that may be spoken.
  * This is also the primitive type of a RuleParse.
+ *
  * @see javax.speech.recognition.RuleGrammar
  * @see javax.speech.recognition.RuleParse
+ * @since 2.0.6
  */
 public class RuleToken extends RuleComponent {
 

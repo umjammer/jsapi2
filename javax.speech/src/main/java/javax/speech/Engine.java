@@ -26,8 +26,6 @@
 
 package javax.speech;
 
-// Comp. 2.0.6
-
 /**
  * Parent interface for all speech Engines.
  * <p>
@@ -137,6 +135,7 @@ package javax.speech;
  * @see javax.speech.EngineManager
  * @see javax.speech.synthesis.Synthesizer
  * @see javax.speech.recognition.Recognizer
+ * @since 2.0.6
  */
 public interface Engine {
 

@@ -28,8 +28,6 @@ package javax.speech;
 
 import java.util.List;
 
-// Comp. 2.0.6
-
 /**
  * Provides information to applications about changes in the state
  * of a speech Engine.
@@ -39,6 +37,7 @@ import java.util.List;
  * provide specific events for the associated types of Engines.
  * @see javax.speech.Engine
  * @see javax.speech.EngineListener
+ * @since 2.0.6
  */
 public class EngineEvent extends SpeechEvent {
 

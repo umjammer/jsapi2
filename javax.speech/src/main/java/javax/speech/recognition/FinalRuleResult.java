@@ -26,8 +26,6 @@
 
 package javax.speech.recognition;
 
-// Comp. 2.0.6
-
 /**
  * Provides information on a finalized Result for
  * an utterance that matches a RuleGrammar.
@@ -46,6 +44,7 @@ package javax.speech.recognition;
  * @see javax.speech.recognition.Result#getGrammar()
  * @see javax.speech.recognition.ResultEvent#RESULT_ACCEPTED
  * @see javax.speech.recognition.ResultEvent#RESULT_REJECTED
+ * @since 2.0.6
  */
 public interface FinalRuleResult extends FinalResult {
     RuleReference getRuleReference(int nBest) throws ResultStateException,

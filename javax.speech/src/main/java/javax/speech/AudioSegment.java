@@ -29,31 +29,30 @@ package javax.speech;
 import java.io.IOException;
 import java.io.InputStream;
 
-// Comp. 2.0.6
-
 /**
  * Associates audio data with a representation of the audio format.
  * <p>
  * The format of the audio data is described by a media locator String.
- * Use
- * {@link javax.speech.AudioSegment#getMediaLocator()}
+ * Use {@link javax.speech.AudioSegment#getMediaLocator()}
  * to get the format.
  * Media locators are described in the AudioManager.
  * Examples of media locators include:
- * <p>
+ * <pre>
  * "segment://audio?encoding=pcm
  * rate=11025
  * bits=16
  * channels=1"
  * "file:///user/smith/audio.wav"
- * <p>
+ * </pre>
  * {@link javax.speech.AudioSegment#openInputStream()}
  * provides a means to get the audio data.
  * Some implementations may limit the capability to get the audio data.
  * The capabilities may depend on security settings on the device.
+ *
  * @see javax.speech.AudioSegment#openInputStream()
  * @see javax.speech.AudioSegment#getMediaLocator()
  * @see javax.speech.AudioManager
+ * @since 2.0.6
  */
 public class AudioSegment {
 

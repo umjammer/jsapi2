@@ -29,8 +29,6 @@ package javax.speech.recognition;
 import java.util.List;
 import javax.speech.EngineEvent;
 
-// Comp. 2.0.6
-
 /**
  * Event issued by a Recognizer to indicate a change in state or other activity.
  * <p>
@@ -41,6 +39,7 @@ import javax.speech.EngineEvent;
  * @see javax.speech.recognition.RecognizerListener
  * @see javax.speech.recognition.Recognizer#addRecognizerListener(javax.speech.recognition.RecognizerListener)
  * @see javax.speech.recognition.Recognizer#removeRecognizerListener(javax.speech.recognition.RecognizerListener)
+ * @since 2.0.6
  */
 public class RecognizerEvent extends EngineEvent {
 

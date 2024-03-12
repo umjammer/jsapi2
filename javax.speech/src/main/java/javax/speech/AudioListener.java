@@ -26,16 +26,16 @@
 
 package javax.speech;
 
-// Comp. 2.0.6
-
 /**
  * The listener interface for receiving events associated with the audio
  * input or output of an Engine.
  * <p>
  * An AudioListener is attached to an Engine by the addAudioListener
  * method of the engine's AudioManager.
+ *
  * @see javax.speech.AudioEvent
  * @see javax.speech.AudioManager#addAudioListener(javax.speech.AudioListener)
+ * @since 2.0.6
  */
 public interface AudioListener extends SpeechEventListener {
 

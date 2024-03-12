@@ -30,8 +30,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-// Comp. 2.0.6
-
 /**
  * The root event class for all speech events.
  * <p>
@@ -41,11 +39,12 @@ import java.util.stream.Collectors;
  * queues must be implemented by the application.  This root event class helps
  * with integration of the Java Speech API and other event-driven components.
  * <p>
- * The
- * {@link javax.speech.EngineManager#setSpeechEventExecutor(javax.speech.SpeechEventExecutor)}
+ * The {@link javax.speech.EngineManager#setSpeechEventExecutor(javax.speech.SpeechEventExecutor)}
  * method provides examples of event queue integration.
+ *
  * @see javax.speech.Engine
  * @see javax.speech.EngineManager#setSpeechEventExecutor(javax.speech.SpeechEventExecutor)
+ * @since 2.0.6
  */
 public abstract class SpeechEvent {
 

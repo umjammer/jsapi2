@@ -29,8 +29,6 @@ package javax.speech.spi;
 import javax.speech.Engine;
 import javax.speech.EngineException;
 
-// Comp. 2.0.6
-
 /**
  * Implemented by EngineMode objects obtained
  * through calls to the EngineListFactory objects of each speech
@@ -42,15 +40,15 @@ import javax.speech.EngineException;
  * <p>
  * Each Engine implementation must sub-class either RecognizerMode
  * or SynthesizerMode to implement the EngineFactory interface. For example:
- * <p>
+ * <pre>
  * public MyRecognizerMode extends RecognizerMode implements EngineFactory
  * {
  * ...
- * public Engine createEngine() {
- * // Use mode properties to create an appropriate Engine
+ *   public Engine createEngine() {
+ *     // Use mode properties to create an appropriate Engine
+ *   }
  * }
- * }
- * <p>
+ * </pre>
  * This implementation mechanism allows the Engine to embed additional mode
  * information (engine-specific mode identifiers, GUIDs etc) that
  * simplify creation of the Engine if requested by the EngineManager class.
@@ -59,11 +57,13 @@ import javax.speech.EngineException;
  * <p>
  * The Engine must perform the same security checks on access to speech
  * Engines as the EngineManager class.
+ *
  * @see javax.speech.EngineManager
  * @see javax.speech.spi.EngineListFactory
  * @see javax.speech.EngineMode
  * @see javax.speech.recognition.RecognizerMode
  * @see javax.speech.synthesis.SynthesizerMode
+ * @since 2.0.6
  */
 public interface EngineFactory {
 

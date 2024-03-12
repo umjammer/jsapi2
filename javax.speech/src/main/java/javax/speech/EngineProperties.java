@@ -26,8 +26,6 @@
 
 package javax.speech;
 
-// Comp. 2.0.6
-
 /**
  * Defines the set of run-time properties of an Engine.
  * <p>
@@ -94,6 +92,7 @@ package javax.speech;
  * @see javax.speech.Engine
  * @see java.beans.PropertyChangeListener
  * @see java.beans.PropertyChangeEvent
+ * @since 2.0.6
  */
 public interface EngineProperties {
 

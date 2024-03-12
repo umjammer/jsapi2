@@ -26,8 +26,6 @@
 
 package javax.speech;
 
-// Comp. 2.0.6
-
 /**
  * Thrown when a Java Speech API exception occurs.
  * <p>
@@ -37,6 +35,8 @@ package javax.speech;
  * some methods
  * throw other Java Exceptions and Errors such as IllegalArgumentException
  * and SecurityException.
+ *
+ * @since 2.0.6
  */
 public class SpeechException extends Exception {
 

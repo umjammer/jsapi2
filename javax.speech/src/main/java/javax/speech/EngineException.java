@@ -26,14 +26,14 @@
 
 package javax.speech;
 
-// Comp. 2.0.6
-
 /**
  * Thrown if a problem is found while trying to create, access or use an
  * EngineFactory, the EngineManager, or an Engine.
+ *
  * @see javax.speech.spi.EngineFactory
  * @see javax.speech.EngineManager
  * @see javax.speech.Engine
+ * @since 2.0.6
  */
 public class EngineException extends SpeechException {
 

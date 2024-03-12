@@ -26,11 +26,11 @@
 
 package javax.speech;
 
-// Comp. 2.0.6
-
 /**
  * Thrown when a problem is encountered connecting audio
  * to or from a speech Engine.
+ *
+ * @since 2.0.6
  */
 public class AudioException extends SpeechException {
 

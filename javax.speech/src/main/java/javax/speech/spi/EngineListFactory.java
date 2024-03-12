@@ -29,8 +29,6 @@ package javax.speech.spi;
 import javax.speech.EngineList;
 import javax.speech.EngineMode;
 
-// Comp. 2.0.6
-
 /**
  * Provides a list of EngineMode objects that define the available
  * operating modes of a speech Engine.
@@ -56,11 +54,13 @@ import javax.speech.EngineMode;
  * <p>
  * The speech engine implementation must perform the same security checks on
  * access to speech Engines as the EngineManager class.
+ *
  * @see javax.speech.Engine
  * @see javax.speech.EngineManager
  * @see javax.speech.EngineManager#registerEngineListFactory(java.lang.String)
  * @see javax.speech.spi.EngineFactory
  * @see javax.speech.EngineMode
+ * @since 2.0.6
  */
 public interface EngineListFactory {
 
@@ -78,6 +78,7 @@ public interface EngineListFactory {
      * time of the call (the list may change over time).
      * An implementation can create the list at the time of the call or it
      * may be pre-stored.
+     *
      * @param require a required set of features
      * @return the EngineList with matching EngineMode descriptions
      * @throws java.lang.SecurityException if the caller does not have permission

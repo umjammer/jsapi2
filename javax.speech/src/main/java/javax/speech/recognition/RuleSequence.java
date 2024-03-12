@@ -26,15 +26,15 @@
 
 package javax.speech.recognition;
 
-// Comp. 2.0.6
-
 /**
  * Specifies a RuleComponent composed of a sequence of sub-RuleComponents
  * that must each be spoken in order.
  * <p>
  * If there are zero RuleComponents in the sequence,
  * the sequence behaves the same as NULL.
+ *
  * @see javax.speech.recognition.RuleSpecial#NULL
+ * @since 2.0.6
  */
 public class RuleSequence extends RuleComponent {
 

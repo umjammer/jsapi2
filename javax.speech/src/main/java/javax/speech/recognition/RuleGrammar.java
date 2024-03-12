@@ -26,8 +26,6 @@
 
 package javax.speech.recognition;
 
-// Comp. 2.0.6
-
 /**
  * Defines a Grammar that specifies what users may
  * say by a set of Rules.
@@ -45,12 +43,14 @@ package javax.speech.recognition;
  * A RuleGrammar may be created
  * programmatically using the createRuleGrammar method or
  * created from grammar text with the one of the loadRuleGrammar methods.
+ *
  * @see <A href="http://www.w3.org/TR/speech-grammar/" target="_blank">
  *       SRGS specification</A>,
  * @see javax.speech.recognition.Rule
  * @see javax.speech.recognition.Recognizer
  * @see javax.speech.recognition.GrammarManager#createRuleGrammar(java.lang.String, java.lang.String)
  * @see javax.speech.recognition.GrammarManager#loadGrammar(java.lang.String, java.lang.String, java.io.Reader)
+ * @since 2.0.6
  */
 public interface RuleGrammar extends Grammar {
 
