@@ -55,4 +55,16 @@ public class SpeechException extends Exception {
     public SpeechException(String s) {
         super(s);
     }
+
+    /**
+     * Constructs a SpeechException with the specified detail message and cause.
+     * <p>
+     * A detail message is a String that describes this particular exception.
+     * @param s the detail message
+     * @param cause cause of this exception
+     * @since 2.2.0
+     */
+    public SpeechException(String s, Throwable cause) {
+        super(s, cause);
+    }
 }

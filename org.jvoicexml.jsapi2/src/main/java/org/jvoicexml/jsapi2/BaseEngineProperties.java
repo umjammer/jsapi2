@@ -115,8 +115,7 @@ public abstract class BaseEngineProperties implements EngineProperties {
         if (prio == priority) {
             return;
         }
-        engine.handlePropertyChangeRequest(this, PRIORITY,
-                priority, prio);
+        engine.handlePropertyChangeRequest(this, PRIORITY, priority, prio);
     }
 
     @Override
@@ -219,14 +218,9 @@ public abstract class BaseEngineProperties implements EngineProperties {
 
         // Fire the event asynchronously
         EnginePropertyEvent event = new EnginePropertyEvent(this, propName, oldValue, newValue);
-        Runnable runnable = () -> {
-            for (EnginePropertyListener listener : propertyChangeListeners) {
-                listener.propertyUpdate(event);
-            }
-        };
 
         // Use the configured speech event executor...
         SpeechEventExecutor executor = engine.getSpeechEventExecutor();
-        executor.execute(runnable);
+        executor.execute(() -> propertyChangeListeners.forEach(l -> l.propertyUpdate(event)));
     }
 }

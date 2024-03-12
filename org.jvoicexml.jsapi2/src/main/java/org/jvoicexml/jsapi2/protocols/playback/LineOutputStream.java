@@ -30,7 +30,7 @@ public final class LineOutputStream extends OutputStream implements Closeable {
     private static final Logger logger = System.getLogger(LineOutputStream.class.getName());
 
     /** The source data line. */
-    private SourceDataLine line;
+    private final SourceDataLine line;
 
     /**
      * Constructs a new object.

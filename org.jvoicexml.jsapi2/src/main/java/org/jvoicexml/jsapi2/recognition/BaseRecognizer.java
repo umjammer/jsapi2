@@ -46,6 +46,7 @@ import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Enumeration;
 import javax.sound.sampled.AudioFormat;
 import javax.speech.AudioException;
 import javax.speech.AudioManager;
@@ -95,7 +96,7 @@ public abstract class BaseRecognizer extends BaseEngine implements Recognizer {
     private static final Logger logger = getLogger(BaseRecognizer.class.getName());
     
     /** Registered result listeners. */
-    private Collection<ResultListener> resultListeners;
+    private final Collection<ResultListener> resultListeners;
 
     protected boolean hasModalGrammars;
 
@@ -219,20 +220,24 @@ public abstract class BaseRecognizer extends BaseEngine implements Recognizer {
      * Notify any grammars if their activation state has been changed.
      */
     protected void notifyGrammarActivation() {
-        /*
-         * if (grammars == null) { return; }
-         */
-        /*
-         * Enumeration e = grammars.elements(); while (e.hasMoreElements()) {
-         * RuleGrammar rg = (RuleGrammar) e.nextElement(); boolean active =
-         * isActive(rg);
-         */
-        /*
-         * if (active != rg.isActive()) { rg.grammarActive = active; if (active)
-         * { rg.postGrammarActivated(); } else { rg.postGrammarDeactivated(); }
-         * }
-         */
-        // }
+//        if (grammars == null) {
+//            return;
+//        }
+//
+//        Enumeration<?> e = grammars.elements();
+//        while (e.hasMoreElements()) {
+//            RuleGrammar rg = (RuleGrammar) e.nextElement();
+//            boolean active = isActive(rg);
+//
+//            if (active != rg.isActive()) {
+//                rg.grammarActive = active;
+//                if (active) {
+//                    rg.postGrammarActivated();
+//                } else {
+//                    rg.postGrammarDeactivated();
+//                }
+//            }
+//        }
     }
 
     @Override
@@ -518,7 +523,7 @@ public abstract class BaseRecognizer extends BaseEngine implements Recognizer {
         setEngineState(BUFFERING, NOT_BUFFERING);
     }
 
-    /**  */
+    /** */
     protected final void basePause(int flags) {
         handlePause(flags);
         setEngineState(LISTENING | PROCESSING, getEngineState() & ~LISTENING & ~PROCESSING);
@@ -527,9 +532,10 @@ public abstract class BaseRecognizer extends BaseEngine implements Recognizer {
     /**
      * Called from the {@link #resume()} method.
      *
+     * TODO Handle grammar updates
+     *
      * @return {@code true} if resuming was successful
-     * @throws EngineStateException when not in the standard Conditions for operation TODO
-     *                              Handle grammar updates
+     * @throws EngineStateException when not in the standard Conditions for operation
      */
     @Override
     protected final boolean baseResume() throws EngineStateException {

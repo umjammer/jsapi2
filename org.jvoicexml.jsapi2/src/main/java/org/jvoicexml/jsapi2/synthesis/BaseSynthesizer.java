@@ -274,7 +274,6 @@ logger.log(Level.TRACE, event.toString() + " ," + extraSpeakableListener, new Ex
         return queueManager.appendItem(audio, listener);
     }
 
-
     @Override
     public int speak(Speakable speakable, SpeakableListener listener)
             throws EngineStateException, SpeakableException, IllegalArgumentException {
@@ -351,7 +350,6 @@ logger.log(Level.TRACE, event.toString() + " ," + extraSpeakableListener, new Ex
      */
     protected abstract void handleAllocate()
             throws EngineStateException, EngineException, AudioException, SecurityException;
-
 
     @Override
     protected void baseDeallocate() throws EngineStateException, EngineException, AudioException {

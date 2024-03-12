@@ -37,7 +37,7 @@ import org.jvoicexml.jsapi2.protocols.JavaSoundParser;
 
 
 /**
- * A {@link URLConnection} for the capture protool.
+ * A {@link URLConnection} for the capture protocol.
  *
  * @author Renato Cassaca
  * @author Dirk Schnelle-Walka

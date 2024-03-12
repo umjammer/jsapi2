@@ -8,7 +8,7 @@ package org.jvoicexml.jsapi2.recognition;
 public class GrammarArc {
 
     /** the destination node. */
-    private GrammarNode grammarNode;
+    private final GrammarNode grammarNode;
 
     /**
      * Constructs a new grammar arc.
@@ -27,5 +27,4 @@ public class GrammarArc {
     public final GrammarNode getGrammarNode() {
         return grammarNode;
     }
-
 }

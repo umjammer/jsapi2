@@ -49,4 +49,16 @@ public class AudioException extends SpeechException {
     public AudioException(String s) {
         super(s);
     }
+
+    /**
+     * Constructs an AudioException with the specified detail message and cause.
+     * <p>
+     * The string describes this particular exception.
+     * @param s the detail message
+     * @param cause cause of this exception
+     * @since 2.2.0
+     */
+    public AudioException(String s, Throwable cause) {
+        super(s, cause);
+    }
 }

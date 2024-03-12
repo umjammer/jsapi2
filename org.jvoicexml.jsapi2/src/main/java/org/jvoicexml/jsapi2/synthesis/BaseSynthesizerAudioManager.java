@@ -66,7 +66,7 @@ public class BaseSynthesizerAudioManager extends BaseAudioManager {
                 AudioFormat format = JavaSoundParser.parse(url);
                 setTargetAudioFormat(format);
             } catch (MalformedURLException | URISyntaxException e) {
-                throw new AudioException(e.getMessage());
+                throw new AudioException(e.getMessage(), e);
             }
 
             // Gets IO from that connection if not already present
@@ -76,8 +76,8 @@ public class BaseSynthesizerAudioManager extends BaseAudioManager {
                     URLConnection urlConnection = openURLConnection(true);
                     outputStream = urlConnection.getOutputStream();
                     logger.log(Level.TRACE, "open: " + outputStream);
-                } catch (IOException ex) {
-                    throw new AudioException("Cannot get OutputStream from URL: " + ex.getMessage());
+                } catch (NullPointerException | IOException ex) {
+                    throw new AudioException("Cannot get OutputStream from URL: " + ex.getMessage(), ex);
                 }
             }
         }
@@ -95,7 +95,7 @@ public class BaseSynthesizerAudioManager extends BaseAudioManager {
                 logger.log(Level.TRACE, "close: " + outputStream);
                 outputStream.close();
             } catch (IOException ex) {
-                throw new AudioException(ex.getMessage());
+                throw new AudioException(ex.getMessage(), ex);
             } finally {
                 outputStream = null;
             }

@@ -14,8 +14,8 @@ package org.jvoicexml.jsapi2.recognition;
  */
 public class GrammarDefinition {
 
-    private String grammar;
-    private String name;
+    private final String grammar;
+    private final String name;
     private boolean changed = false;
 
     public GrammarDefinition() {

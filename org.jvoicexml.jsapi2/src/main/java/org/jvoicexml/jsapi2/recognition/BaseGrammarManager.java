@@ -162,7 +162,7 @@ public class BaseGrammarManager implements GrammarManager {
     /**
      * Lists the Grammars known to this Recognizer.
      *
-     * @return kown gramamrs
+     * @return known grammars
      * @throws EngineStateException if the engine state does not allow listing the grammars
      */
     @Override
@@ -195,7 +195,7 @@ public class BaseGrammarManager implements GrammarManager {
      * Gets the RuleGrammar with the specified grammarReference.
      *
      * @param grammarReference String
-     * @return referenced garamamr
+     * @return referenced grammar
      * @throws EngineStateException if the engine state does not allow obtaining the grammar
      */
     @Override
@@ -245,7 +245,7 @@ public class BaseGrammarManager implements GrammarManager {
             }
         }
 
-        // Proccess grammar
+        // Process grammar
         URL url = new URL(grammarReference);
         InputStream grammarStream = url.openStream();
 

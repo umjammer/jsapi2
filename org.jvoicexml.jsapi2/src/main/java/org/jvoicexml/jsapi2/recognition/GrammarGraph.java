@@ -10,7 +10,7 @@ package org.jvoicexml.jsapi2.recognition;
 public class GrammarGraph {
 
     /** the start node of the graph. */
-    private GrammarNode startNode;
+    private final GrammarNode startNode;
 
     /** the end node of the graph. */
     private GrammarNode endNode;
