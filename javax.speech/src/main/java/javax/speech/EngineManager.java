@@ -28,13 +28,18 @@ package javax.speech;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
+import java.util.ServiceLoader;
 import javax.speech.spi.EngineFactory;
 import javax.speech.spi.EngineListFactory;
+
+import static java.lang.System.getLogger;
 
 
 /**
@@ -159,8 +164,11 @@ import javax.speech.spi.EngineListFactory;
  * @see javax.speech.synthesis.SynthesizerMode
  * @see java.lang.Class#getResourceAsStream(java.lang.String)
  * @since 2.0.6
+ * @since 2.2.0 use service loader mechanism
  */
 public class EngineManager {
+
+    private static final Logger logger = getLogger(EngineManager.class.getName());
 
     private static final List<EngineListFactory> ENGINE_LIST_FACTORIES;
 
@@ -168,6 +176,10 @@ public class EngineManager {
 
     static {
         ENGINE_LIST_FACTORIES = new ArrayList<>();
+
+        // since 2.2.0
+        ServiceLoader.load(EngineListFactory.class).forEach(ENGINE_LIST_FACTORIES::add);
+logger.log(Level.TRACE, "factory: by service loader" + ENGINE_LIST_FACTORIES.size());
 
         InputStream input;
         try {
@@ -198,6 +210,7 @@ public class EngineManager {
                 }
             }
         }
+logger.log(Level.TRACE, "factory: total: " + ENGINE_LIST_FACTORIES.size());
     }
 
     /**
@@ -225,6 +238,7 @@ public class EngineManager {
 
         for (EngineListFactory factory : ENGINE_LIST_FACTORIES) {
             EngineList list = factory.createEngineList(require);
+logger.log(Level.TRACE, "FACTORY: " + factory.getClass().getSimpleName() + (list == null ? "" : ": MODES[" + list.size() + "]: " + list));
             if (list != null) {
                 Enumeration<EngineMode> currentModes = list.elements();
                 while (currentModes.hasMoreElements()) {
@@ -270,6 +284,8 @@ public class EngineManager {
         SpeechLocale defaultLocale = SpeechLocale.getDefault();
         // TODO Evaluate the default Locale
         EngineList list = availableEngines(require);
+logger.log(Level.TRACE, "TOTAL MODES[" + list.size() + "]: " + list);
+
         Enumeration<EngineMode> enumeration = list.elements();
         EngineFactory preferredFactory = null;
         Boolean preferredFactoryRunning = null;
@@ -288,6 +304,8 @@ public class EngineManager {
                         preferredFactory = factory;
                     }
                 }
+            } else {
+logger.log(Level.WARNING, "EngineFactory is not implemented for " + mode.getClass().getName());
             }
         }
 
@@ -337,9 +355,9 @@ public class EngineManager {
      * <pre>
      * // Ensure speech events arrive on a MIDlet's UI thread
      * EngineManager.setSpeechEventExecutor(new SpeechEventExecutor() {
-     * public void execute(Runnable r) {
-     * javax.microedition.lcdui.Display.getDisplay(this).callSerially(r);
-     * }
+     *   public void execute(Runnable r) {
+     *     javax.microedition.lcdui.Display.getDisplay(this).callSerially(r);
+     *   }
      * });
      * </pre>
      *
@@ -348,9 +366,9 @@ public class EngineManager {
      * <pre>
      * // Ensure speech events arrive on an AWT or Swing UI thread
      * EngineManager.setSpeechEventExecutor(new SpeechEventExecutor() {
-     * public void execute(Runnable a_r) {
-     * java.awt.EventQueue.invokeLater(a_r);
-     * }
+     *   public void execute(Runnable a_r) {
+     *     java.awt.EventQueue.invokeLater(a_r);
+     *   }
      * });
      * </pre>
      * A server-side developer might use this feature to control the
@@ -368,11 +386,11 @@ public class EngineManager {
     /**
      * Returns the version of this API.
      * <p>
-     * The components are major.minor.build.revision.  An example is "2.0.0.0".
+     * The components are major.minor.build.revision.  An example is "2.0.0".
      * @return textual version information for this API.
      */
     public static String getVersion() {
-        return "2.0.6.0";
+        return "2.2.0";
     }
 
     /**

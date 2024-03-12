@@ -20,6 +20,7 @@
           <trimStackTrace>false</trimStackTrace>
           <argLine>
             -Djava.util.logging.config.file=${project.build.testOutputDirectory}/logging.properties
+            -Dvavi.util.logging.VaviFormatter.extraClassMethod=sun\.util\.logging\.internal\.LoggingProviderImpl\$JULWrapper#log
           </argLine>
         </configuration>
       </plugin>
@@ -62,6 +63,31 @@
     </dependency>
 
     <dependency>
+      <groupId>${freetts.groupId}</groupId>
+      <artifactId>en_us</artifactId>
+      <version>${freetts.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>${freetts.groupId}</groupId>
+      <artifactId>cmulex</artifactId>
+      <version>${freetts.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>${freetts.groupId}</groupId>
+      <artifactId>cmudict04</artifactId>
+      <version>${freetts.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>${freetts.groupId}</groupId>
+      <artifactId>cmu_us_kal</artifactId>
+      <version>${freetts.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+
+    <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
       <scope>test</scope>
@@ -74,6 +100,12 @@
     <dependency>
       <groupId>org.junit.platform</groupId>
       <artifactId>junit-platform-commons</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.github.umjammer</groupId>
+      <artifactId>vavi-commons</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>

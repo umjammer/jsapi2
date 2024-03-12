@@ -8,6 +8,8 @@
 
 package org.jvoicexml.jsapi2.synthesis.freetts;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.util.ArrayList;
 import java.util.List;
 import javax.speech.EngineList;
@@ -16,6 +18,8 @@ import javax.speech.spi.EngineListFactory;
 import javax.speech.synthesis.SynthesizerMode;
 
 import com.sun.speech.freetts.VoiceManager;
+
+import static java.lang.System.getLogger;
 
 
 /**
@@ -28,6 +32,8 @@ import com.sun.speech.freetts.VoiceManager;
  * </pre>
  */
 public class FreeTTSEngineListFactory implements EngineListFactory {
+
+    private static final Logger logger = getLogger(FreeTTSEngineListFactory.class.getName());
 
     /**
      * Creates a FreeTTSEngineCentral.
@@ -74,19 +80,19 @@ public class FreeTTSEngineListFactory implements EngineListFactory {
     @Override
     public EngineList createEngineList(EngineMode require) {
         // Must be a synthesizer.
-        if (!(require instanceof SynthesizerMode)) {
+        if (require != null && !(require instanceof SynthesizerMode)) {
             return null;
         }
 
         // Instantiate FreeTTS VoiceManager to get all voices available
         VoiceManager voiceManager = VoiceManager.getInstance();
         com.sun.speech.freetts.Voice[] voices = voiceManager.getVoices();
+logger.log(Level.TRACE, "voices: " + voices.length);
 
         // We want to get all combinations of domains and locales
         List<DomainLocale> domainLocaleList = new ArrayList<>();
         for (com.sun.speech.freetts.Voice value : voices) {
-            DomainLocale dl =
-                    new DomainLocale(value.getDomain(), value.getLocale());
+            DomainLocale dl = new DomainLocale(value.getDomain(), value.getLocale());
             // If we find the domain locale in the set, add the existing one
             // otherwise add the template
             DomainLocale dlentry = getItem(domainLocaleList, dl);
@@ -99,8 +105,7 @@ public class FreeTTSEngineListFactory implements EngineListFactory {
 
         // SynthesizerModes that will be created from combining domain/locale
         // with voice names
-        List<FreeTTSSynthesizerMode> synthesizerModes =
-                new ArrayList<>();
+        List<FreeTTSSynthesizerMode> synthesizerModes = new ArrayList<>();
 
         // build list of SynthesizerModeDesc's for each domain/locale
         // combination
@@ -121,6 +126,7 @@ public class FreeTTSEngineListFactory implements EngineListFactory {
 
             if (require == null || mode.match(require)) {
                 synthesizerModes.add(mode);
+logger.log(Level.TRACE, "MODE: " + mode);
             }
         }
 
@@ -128,7 +134,7 @@ public class FreeTTSEngineListFactory implements EngineListFactory {
         if (synthesizerModes.isEmpty()) {
             el = null;
         } else {
-            el = new EngineList(synthesizerModes.toArray(new EngineMode[] {}));
+            el = new EngineList(synthesizerModes.toArray(EngineMode[]::new));
         }
         return el;
     }

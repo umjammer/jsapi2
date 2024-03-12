@@ -26,10 +26,13 @@
 
 package javax.speech;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.lang.System.getLogger;
 
 /**
  * Provides information about a specific operating
@@ -113,8 +116,11 @@ import java.util.stream.Collectors;
  * @see javax.speech.EngineManager
  * @see javax.speech.EngineManager#availableEngines(javax.speech.EngineMode)
  * @see javax.speech.EngineManager#createEngine(javax.speech.EngineMode)
+ * @since 2.0.6
  */
 public abstract class EngineMode {
+
+    private static final Logger logger = getLogger(EngineMode.class.getName());
 
     public static final Integer FULL = Integer.MAX_VALUE;
 
@@ -273,6 +279,7 @@ public abstract class EngineMode {
         } else {
             namesMatch = otherEngineName.equals(engineName);
         }
+logger.log(Level.TRACE, "otherEngineName: " + otherEngineName + ", " + namesMatch);
 
         String otherModeName = require.getModeName();
         boolean modesMatch;
@@ -281,6 +288,7 @@ public abstract class EngineMode {
         } else {
             modesMatch = otherModeName.equals(modeName);
         }
+logger.log(Level.TRACE, "otherModeName: " + otherModeName + ", " + modesMatch);
 
         Boolean otherModeRunning = require.getRunning();
         boolean runningsMatch;
@@ -289,6 +297,7 @@ public abstract class EngineMode {
         } else {
             runningsMatch = otherModeRunning.equals(running);
         }
+logger.log(Level.TRACE, "otherModeRunning: " + otherModeRunning + ", " + runningsMatch);
 
         Boolean otherSupportsLetterToSound = require.getSupportsLetterToSound();
         boolean supportsLetterToSoundMatch;
@@ -297,6 +306,7 @@ public abstract class EngineMode {
         } else {
             supportsLetterToSoundMatch = otherSupportsLetterToSound.equals(supportsLetterToSound);
         }
+logger.log(Level.TRACE, "otherSupportsLetterToSound: " + otherSupportsLetterToSound + ", " + supportsLetterToSoundMatch);
 
         Boolean otherMarkupSupport = require.getSupportsMarkup();
         boolean markupSupportMatch;
@@ -305,7 +315,9 @@ public abstract class EngineMode {
         } else {
             markupSupportMatch = otherMarkupSupport.equals(supportsMarkup);
         }
+logger.log(Level.TRACE, "otherMarkupSupport: " + otherMarkupSupport + ", " + markupSupportMatch);
 
+logger.log(Level.TRACE, "total matches: " + (namesMatch && modesMatch && runningsMatch && supportsLetterToSoundMatch && markupSupportMatch));
         return namesMatch && modesMatch && runningsMatch && supportsLetterToSoundMatch && markupSupportMatch;
     }
 

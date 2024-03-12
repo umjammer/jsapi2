@@ -13,14 +13,10 @@
 package org.jvoicexml.jsapi2.demo.rtpdemo;
 
 import java.lang.System.Logger.Level;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.Handler;
 import javax.speech.AudioManager;
 import javax.speech.EngineManager;
 import javax.speech.synthesis.Synthesizer;
 import javax.speech.synthesis.SynthesizerMode;
-
-import org.jvoicexml.jsapi2.synthesis.freetts.FreeTTSEngineListFactory;
 
 import static java.lang.System.getLogger;
 
@@ -46,14 +42,7 @@ public final class RTPDemo {
      * @param args command line arguments.
      */
     public static void main(String[] args) {
-        // Enable logging at all levels.
-        Handler handler = new ConsoleHandler();
-        handler.setLevel(java.util.logging.Level.ALL);
-        java.util.logging.Logger.getLogger("").addHandler(handler);
-        java.util.logging.Logger.getLogger("").setLevel(java.util.logging.Level.ALL);
-
         try {
-            EngineManager.registerEngineListFactory(FreeTTSEngineListFactory.class.getName());
             System.setProperty("java.protocol.handler.pkgs", "org.jlibrtp.protocols");
             // Create a synthesizer for the default Locale
             Synthesizer synth = (Synthesizer) EngineManager.createEngine(SynthesizerMode.DEFAULT);

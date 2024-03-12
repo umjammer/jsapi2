@@ -101,7 +101,7 @@ public class EngineManagerTest {
      */
     @Test
     void testGetVersion() {
-        assertEquals("2.1.0", EngineManager.getVersion());
+        assertEquals("2.2.0", EngineManager.getVersion());
     }
 
     /**

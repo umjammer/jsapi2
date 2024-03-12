@@ -9,6 +9,9 @@
 mavenized JSR-113 fka JSAPI2
 
  * this JSAPI 2.0 implementation DOES NOT support the J2ME platform (like CLDC 1.0, MIDP 1.0)
+ * this JSAPI version 2.2.0 (**CAUTION** from 2.2.0 are my original versions, modified from SUN's original)
+   * since 2.2.0 support service loader mechanism.
+     * `speech.properties` and `EngineManager#registerEngineListFactory` works, but no more needed
  * volume property is enabled
 
 ## Install
@@ -28,6 +31,7 @@ mavenized JSR-113 fka JSAPI2
  * ~~backport jsapi2 javadoc using codavaj~~
  * demo
  * mac module is temporary unavailable (because NSSpeechSynthesizer is deprecated) use rococoa module in [vavi-speech2](https://github.com/umjammer/vavi-speech2)
+ * ~~match mechanism~~
 
 ---
 

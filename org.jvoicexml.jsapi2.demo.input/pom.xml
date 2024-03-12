@@ -70,5 +70,11 @@
       <artifactId>junit-platform-commons</artifactId>
       <scope>test</scope>
     </dependency>
+
+    <dependency>
+      <groupId>com.github.umjammer</groupId>
+      <artifactId>vavi-commons</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 </project>

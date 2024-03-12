@@ -71,7 +71,6 @@ public final class TestRecognizer implements ResultListener {
      */
     @BeforeAll
     public static void init() throws Exception {
-        EngineManager.registerEngineListFactory(SapiEngineListFactory.class.getCanonicalName());
         Locale.setDefault(new Locale("en"));
         // Enable logging at all levels.
         Handler handler = new ConsoleHandler();

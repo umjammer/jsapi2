@@ -49,7 +49,6 @@ public final class TestSynthesizer {
         //
 //		System.setProperty("com.apple.javaws.usingSWT", Boolean.TRUE.toString());
         System.setProperty("java.awt.headless", Boolean.TRUE.toString());
-        EngineManager.registerEngineListFactory(MacEngineListFactory.class.getCanonicalName());
     }
 
     /**

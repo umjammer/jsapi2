@@ -51,7 +51,6 @@ public final class TestRecognizer implements ResultListener {
      */
     @BeforeAll
     public static void init() throws Exception {
-        EngineManager.registerEngineListFactory(MacEngineListFactory.class.getCanonicalName());
         System.err.println(EngineManager.availableEngines(RecognizerMode.DEFAULT));
     }
 
