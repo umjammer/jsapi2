@@ -5,8 +5,8 @@
 
   <parent>
     <groupId>org.jvoicexml</groupId>
-    <version>0.6.6</version>
     <artifactId>jsapi2</artifactId>
+    <version>0.6.7</version>
   </parent>
 
   <artifactId>org.jvoicexml.jsapi2.demo.rtp</artifactId>
@@ -37,17 +37,17 @@
     <dependency>
       <groupId>org.jvoicexml</groupId>
       <artifactId>javax.speech</artifactId>
-      <version>0.6.6</version>
+      <version>0.6.7</version>
     </dependency>
     <dependency>
       <groupId>org.jvoicexml</groupId>
       <artifactId>org.jvoicexml.jsapi2</artifactId>
-      <version>0.6.6</version>
+      <version>0.6.7</version>
     </dependency>
     <dependency>
       <groupId>org.jvoicexml</groupId>
       <artifactId>org.jvoicexml.jsapi2.freetts</artifactId>
-      <version>0.6.6</version>
+      <version>0.6.7</version>
     </dependency>
 
     <dependency>
