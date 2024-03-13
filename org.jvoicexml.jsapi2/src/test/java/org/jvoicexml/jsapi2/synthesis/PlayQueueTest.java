@@ -70,6 +70,7 @@ Debug.println("pretend done");
                 cdl1.countDown();
             } else if (e.getRequestId() == item2.getId()) {
                 cdl2.countDown();
+Debug.println("cdl2: " + cdl2.getCount());
             } else {
 Debug.println("eventId: " + Integer.toHexString(e.getId()));
             }
@@ -83,8 +84,12 @@ Debug.println("eventId: " + Integer.toHexString(e.getId()));
         assertEquals(item2, queue.getQueueItem(item2.getId()), "1st is playing, so in queue");
         cdl.countDown();
         queue.cancelItemAtTopOfQueue();
+Debug.println("testCancelItemAtTopOfQueue::cdl1 start waiting");
         cdl1.await();
-        cdl2.await();
+        if (cdl2.getCount() != 0) {
+Debug.println("testCancelItemAtTopOfQueue::cdl2 start waiting");
+            cdl2.await();
+        }
         assertNull(queue.getQueueItem(item2.getId()), "1st is canceled, so not in queue, it's consumed");
     }
 
@@ -126,9 +131,11 @@ Debug.println("eventId: " + Integer.toHexString(e.getId()));
         assertEquals(item2, queue.getQueueItem(item2.getId()), "1st is playing, so in queue");
         cdl.countDown();
         queue.cancelItem(item2.getId());
+Debug.println("testCancelItem::cdl2 start waiting");
         cdl2.await();
         queue.cancelItemAtTopOfQueue();
+Debug.println("testCancelItem::cdl1 start waiting");
         cdl1.await();
-        assertTrue(queue.isQueueEmpty(), "");
+        assertTrue(queue.isQueueEmpty(), "cancelled all");
     }
 }
