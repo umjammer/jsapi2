@@ -227,7 +227,7 @@ Debug.println("eventId: " + Integer.toHexString(e.getId()));
         zerothId.set(queue.appendItem(segment0, null)); // takes long time
         firstId.set(queue.appendItem(segment1, null));
         secondId.set(queue.appendItem(segment2, null));
-        assertFalse(queue.isQueueEmpty(), "because of 0th takes long time");
+        assertFalse(queue.isQueueEmpty(), "because of 0th takes long time"); // TODO ci error
         assertTrue(queue.cancelItem(firstId.get()), "1st is in queue because 0th takes long time");
         assertTrue(queue.cancelItem(secondId.get()), "2nd is in queue because 0th takes long time");
         cdl.await();

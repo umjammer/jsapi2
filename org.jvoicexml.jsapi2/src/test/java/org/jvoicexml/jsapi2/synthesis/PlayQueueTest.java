@@ -116,6 +116,7 @@ Debug.println("pretend done");
         synthesizer.addSpeakableListener(e -> {
             if (e.getRequestId() == item1.getId() && e.getId() == SpeakableEvent.SPEAKABLE_CANCELLED) {
                 cdl1.countDown();
+Debug.println("cdl1: " + cdl1.getCount());
             } else if (e.getRequestId() == item2.getId()) {
                 cdl2.countDown();
             } else {
@@ -134,8 +135,10 @@ Debug.println("eventId: " + Integer.toHexString(e.getId()));
 Debug.println("testCancelItem::cdl2 start waiting");
         cdl2.await();
         queue.cancelItemAtTopOfQueue();
+        if (cdl1.getCount() != 0) {
 Debug.println("testCancelItem::cdl1 start waiting");
-        cdl1.await();
+            cdl1.await();
+        }
         assertTrue(queue.isQueueEmpty(), "cancelled all");
     }
 }
