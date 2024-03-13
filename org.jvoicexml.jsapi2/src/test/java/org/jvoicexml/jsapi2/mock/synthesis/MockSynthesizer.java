@@ -21,6 +21,7 @@
 
 package org.jvoicexml.jsapi2.mock.synthesis;
 
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import javax.sound.sampled.AudioFormat;
 import javax.speech.AudioException;
@@ -63,6 +64,13 @@ public final class MockSynthesizer extends BaseSynthesizer {
         this.speakHandler = speakHandler;
     }
 
+    /** user defined speaking routine */
+    private BiFunction<Integer, String, AudioSegment> audioSegmentMaker;
+
+    public void setAudioSegmentMaker(BiFunction<Integer, String, AudioSegment> audioSegmentMaker) {
+        this.audioSegmentMaker = audioSegmentMaker;
+    }
+
     @Override
     protected void handleAllocate() throws EngineStateException,
             EngineException, AudioException, SecurityException {
@@ -98,6 +106,7 @@ public final class MockSynthesizer extends BaseSynthesizer {
 
     @Override
     protected AudioSegment handleSpeak(int id, String item) {
+        if (audioSegmentMaker != null) return audioSegmentMaker.apply(id, item);
         if (speakHandler != null) speakHandler.accept(id);
         return new AudioSegment(
                 "stream://audio?encoding=pcm&rate=11025&bits=16&channels=1",
@@ -106,6 +115,7 @@ public final class MockSynthesizer extends BaseSynthesizer {
 
     @Override
     protected AudioSegment handleSpeak(int id, Speakable item) {
+        if (audioSegmentMaker != null) return audioSegmentMaker.apply(id, item.getMarkupText());
         if (speakHandler != null) speakHandler.accept(id);
         String text = item.getMarkupText();
         return new AudioSegment(
