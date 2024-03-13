@@ -4,6 +4,8 @@
 
 package org.jvoicexml.jsapi2.synthesis;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.concurrent.CountDownLatch;
 import javax.speech.AudioSegment;
 import javax.speech.synthesis.SpeakableEvent;
@@ -48,7 +50,16 @@ public class PlayQueueTest {
      */
     @Test
     void testCancelItemAtTopOfQueue() throws Exception {
-        AudioSegment segment1 = new AudioSegment("http://localhost", "test");
+        CountDownLatch cdl = new CountDownLatch(1);
+        AudioSegment segment1 = new AudioSegment("http://localhost", "test") {
+            @Override
+            public InputStream openInputStream() throws IOException, SecurityException {
+Debug.println("pretend taking long time when open id");
+                try { cdl.await(); } catch (InterruptedException ignore) {}
+Debug.println("pretend done");
+                return super.openInputStream();
+            }
+        };
         AudioSegment segment2 = new AudioSegment("http://foreignhost", "test2");
         QueueItem item1 = new QueueItem(1, segment1, null);
         QueueItem item2 = new QueueItem(2, segment2, null);
@@ -69,6 +80,7 @@ Debug.println("eventId: " + Integer.toHexString(e.getId()));
         queue.addQueueItem(item2);
         assertNull(queue.getQueueItem(item1.getId()), "already out of queue, now playing");
         assertEquals(item2, queue.getQueueItem(item2.getId()), "1st is playing, so in queue");
+        cdl.countDown();
         queue.cancelItemAtTopOfQueue();
         cdl1.await();
         cdl2.await();
@@ -80,7 +92,16 @@ Debug.println("eventId: " + Integer.toHexString(e.getId()));
      */
     @Test
     void testCancelItem() throws Exception {
-        AudioSegment segment1 = new AudioSegment("http://localhost", "test");
+        CountDownLatch cdl = new CountDownLatch(1);
+        AudioSegment segment1 = new AudioSegment("http://localhost", "test") {
+            @Override
+            public InputStream openInputStream() throws IOException, SecurityException {
+Debug.println("pretend taking long time when open id");
+                try { cdl.await(); } catch (InterruptedException ignore) {}
+Debug.println("pretend done");
+                return super.openInputStream();
+            }
+        };
         AudioSegment segment2 = new AudioSegment("http://foreignhost", "test2");
         QueueItem item1 = new QueueItem(1, segment1, null);
         QueueItem item2 = new QueueItem(2, segment2, null);
@@ -101,6 +122,7 @@ Debug.println("eventId: " + Integer.toHexString(e.getId()));
         queue.addQueueItem(item2);
         assertNull(queue.getQueueItem(item1.getId()), "already out of queue, now playing");
         assertEquals(item2, queue.getQueueItem(item2.getId()), "1st is playing, so in queue");
+        cdl.countDown();
         queue.cancelItem(item2.getId());
         cdl2.await();
         queue.cancelItemAtTopOfQueue();
