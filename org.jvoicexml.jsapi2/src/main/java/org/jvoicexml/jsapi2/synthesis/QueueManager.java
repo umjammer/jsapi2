@@ -283,7 +283,7 @@ public class QueueManager {
      * @return the first queue item
      */
     protected QueueItem getQueueItem() {
-        return synthQueue.getNextQueueItem();
+        return synthQueue.getCurrentQueueItem();
     }
 
     /**

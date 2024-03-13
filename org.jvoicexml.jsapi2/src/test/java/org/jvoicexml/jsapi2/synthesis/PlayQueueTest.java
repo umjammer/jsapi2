@@ -4,13 +4,17 @@
 
 package org.jvoicexml.jsapi2.synthesis;
 
+import java.util.concurrent.CountDownLatch;
 import javax.speech.AudioSegment;
+import javax.speech.synthesis.SpeakableEvent;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.jvoicexml.jsapi2.mock.synthesis.MockSynthesizer;
+import vavi.util.Debug;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -25,6 +29,8 @@ public class PlayQueueTest {
     /** The test object. */
     private PlayQueue queue;
 
+    private MockSynthesizer synthesizer;
+
     /**
      * Set up the test environment.
      *
@@ -32,49 +38,73 @@ public class PlayQueueTest {
      */
     @BeforeEach
     public void setUp() throws Exception {
-        BaseSynthesizer synthesizer = new MockSynthesizer();
+        synthesizer = new MockSynthesizer();
         QueueManager manager = new QueueManager(synthesizer);
         queue = manager.getPlayQueue();
     }
 
     /**
-     * Test method for {@link org.jvoicexml.jsapi2.synthesis.PlayQueue#getNextQueueItem()}.
+     * Test method for {@link org.jvoicexml.jsapi2.synthesis.PlayQueue#cancelItemAtTopOfQueue()}.
      */
     @Test
-    void testGetNextQueueItem() {
+    void testCancelItemAtTopOfQueue() throws Exception {
         AudioSegment segment1 = new AudioSegment("http://localhost", "test");
+        AudioSegment segment2 = new AudioSegment("http://foreignhost", "test2");
         QueueItem item1 = new QueueItem(1, segment1, null);
+        QueueItem item2 = new QueueItem(2, segment2, null);
+        CountDownLatch cdl1 = new CountDownLatch(1);
+        CountDownLatch cdl2 = new CountDownLatch(1);
+        synthesizer.addSpeakableListener(e -> {
+            if (e.getRequestId() == item1.getId() && e.getId() == SpeakableEvent.SPEAKABLE_CANCELLED) {
+                cdl1.countDown();
+            } else if (e.getRequestId() == item2.getId()) {
+                cdl2.countDown();
+            } else {
+Debug.println("eventId: " + Integer.toHexString(e.getId()));
+            }
+        });
         item1.setSynthesized(true);
         queue.addQueueItem(item1);
-        AudioSegment segment2 = new AudioSegment("http://foreignhost", "test2");
-        QueueItem item2 = new QueueItem(2, segment2, null);
         item2.setSynthesized(true);
         queue.addQueueItem(item2);
-        assertEquals(item1, queue.getNextQueueItem());
+        assertNull(queue.getQueueItem(item1.getId()), "already out of queue, now playing");
+        assertEquals(item2, queue.getQueueItem(item2.getId()), "1st is playing, so in queue");
         queue.cancelItemAtTopOfQueue();
-        assertEquals(item2, queue.getNextQueueItem());
+        cdl1.await();
+        cdl2.await();
+        assertNull(queue.getQueueItem(item2.getId()), "1st is canceled, so not in queue, it's consumed");
     }
 
     /**
-     * Test method for {@link org.jvoicexml.jsapi2.synthesis.PlayQueue#getNextQueueItem()}.
+     * Test method for {@link org.jvoicexml.jsapi2.synthesis.PlayQueue#cancelItem(int)}.
      */
     @Test
-    void testGetNextQueueItemNotSynthesized() {
+    void testCancelItem() throws Exception {
         AudioSegment segment1 = new AudioSegment("http://localhost", "test");
+        AudioSegment segment2 = new AudioSegment("http://foreignhost", "test2");
         QueueItem item1 = new QueueItem(1, segment1, null);
-        queue.addQueueItem(item1);
-        Thread thread = new Thread(null, () -> {
-            try {
-                Thread.sleep(1000);
-                item1.setSynthesized(true);
-                queue.itemChanged(item1);
-            } catch (InterruptedException e) {
-                fail(e.getMessage());
+        QueueItem item2 = new QueueItem(2, segment2, null);
+        CountDownLatch cdl1 = new CountDownLatch(1);
+        CountDownLatch cdl2 = new CountDownLatch(1);
+        synthesizer.addSpeakableListener(e -> {
+            if (e.getRequestId() == item1.getId() && e.getId() == SpeakableEvent.SPEAKABLE_CANCELLED) {
+                cdl1.countDown();
+            } else if (e.getRequestId() == item2.getId()) {
+                cdl2.countDown();
+            } else {
+Debug.println("eventId: " + Integer.toHexString(e.getId()));
             }
-        }, "Test Fire Event");
-        thread.start();
-        QueueItem fetchedItem = queue.getNextQueueItem();
-        assertTrue(fetchedItem.isSynthesized());
-        assertEquals(item1, fetchedItem);
+        });
+        item1.setSynthesized(true);
+        queue.addQueueItem(item1);
+        item2.setSynthesized(true);
+        queue.addQueueItem(item2);
+        assertNull(queue.getQueueItem(item1.getId()), "already out of queue, now playing");
+        assertEquals(item2, queue.getQueueItem(item2.getId()), "1st is playing, so in queue");
+        queue.cancelItem(item2.getId());
+        cdl2.await();
+        queue.cancelItemAtTopOfQueue();
+        cdl1.await();
+        assertTrue(queue.isQueueEmpty(), "");
     }
 }

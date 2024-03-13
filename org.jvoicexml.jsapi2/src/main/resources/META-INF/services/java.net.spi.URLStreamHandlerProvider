@@ -1,0 +1,2 @@
+org.jvoicexml.jsapi2.protocols.capture.CaptureURLStreamHandlerProvider
+org.jvoicexml.jsapi2.protocols.playback.PlaybackURLStreamHandlerProvider

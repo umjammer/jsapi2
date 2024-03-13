@@ -144,9 +144,9 @@ logger.log(Level.TRACE, String.format("m: %08x, d: %08x, |: %08x", getEngineMask
      *                               <code>null</code>
      */
     protected final void postSpeakableEvent(SpeakableEvent event, SpeakableListener extraSpeakableListener) {
-logger.log(Level.TRACE, event.toString() + " ," + extraSpeakableListener, new Exception("***DUMMY***"));
         // First, check if the event is filtered by the mask
         int id = event.getId();
+logger.log(Level.TRACE, "filtered: " + ((speakableMask & id) != id) + ", " + event.toString() + " ," + extraSpeakableListener);
         if ((speakableMask & id) != id) {
             return;
         }

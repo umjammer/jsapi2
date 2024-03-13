@@ -227,4 +227,9 @@ public class QueueItem {
     public void setPhonesInfo(PhoneInfo[] info) {
         phonesInfo = info;
     }
+
+    @Override
+    public String toString() {
+        return getSource().toString();
+    }
 }

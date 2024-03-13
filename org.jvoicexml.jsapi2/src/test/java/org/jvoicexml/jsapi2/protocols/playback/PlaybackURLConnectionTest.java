@@ -24,14 +24,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public final class PlaybackURLConnectionTest {
 
     /**
-     * Set up the test environment.
-     */
-    @BeforeEach
-    public void setUp() {
-        System.setProperty("java.protocol.handler.pkgs", "org.jvoicexml.jsapi2.protocols");
-    }
-
-    /**
      * Test method for {@link org.jvoicexml.jsapi2.protocols.playback.PlaybackURLConnection#getInputStream()}.
      *
      * @throws Exception test failed.

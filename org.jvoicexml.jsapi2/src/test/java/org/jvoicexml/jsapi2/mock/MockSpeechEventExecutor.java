@@ -26,7 +26,10 @@
 
 package org.jvoicexml.jsapi2.mock;
 
+import java.util.logging.Level;
 import javax.speech.SpeechEventExecutor;
+
+import vavi.util.Debug;
 
 
 /**
@@ -41,7 +44,9 @@ public class MockSpeechEventExecutor implements SpeechEventExecutor {
         if (command == null) {
             throw new NullPointerException("command must not be null!");
         }
-new Exception("***DUMMY***").printStackTrace(System.err);
+if (Debug.isLoggable(Level.FINEST)) {
+ new Exception("***DUMMY***").printStackTrace(System.err);
+}
         Thread thread = new Thread(null, command, "Mock Speech Event");
         thread.start();
     }
