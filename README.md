@@ -1,22 +1,24 @@
-[![Release](https://jitpack.io/v/umjammer/jsapi.svg)](https://jitpack.io/#umjammer/jsapi)
-[![Java CI](https://github.com/umjammer/jsapi/actions/workflows/maven.yml/badge.svg)](https://github.com/umjammer/jsapi/actions/workflows/maven.yml)
-[![CodeQL](https://github.com/umjammer/jsapi/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/umjammer/jsapi/actions/workflows/codeql-analysis.yml)
+[![Release](https://jitpack.io/v/umjammer/jsapi2.svg)](https://jitpack.io/#umjammer/jsapi2)
+[![Java CI](https://github.com/umjammer/jsapi2/actions/workflows/maven.yml/badge.svg)](https://github.com/umjammer/jsapi2/actions/workflows/maven.yml)
+[![CodeQL](https://github.com/umjammer/jsapi2/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/umjammer/jsapi2/actions/workflows/codeql-analysis.yml)
 ![Java](https://img.shields.io/badge/Java-17-b07219)
 [![Parent](https://img.shields.io/badge/Parent-vavi--speech2-pink)](https://github.com/umjammer/vavi-speech2)
 
 # JSAPI2
 
-mavenized JSR-113 fka JSAPI2
+<img alt="" src="https://github.com/umjammer/jsapi2/assets/493908/bdd131b5-9eeb-4afd-8654-b62ba504969b" width="160" />
 
- * this JSAPI 2.0 implementation DOES NOT support the J2ME platform (like CLDC 1.0, MIDP 1.0)
+mavenized [JSR-113](https://jcp.org/en/jsr/detail?id=113) modified fka JSAPI2
+
  * this JSAPI version 2.2.0 (**CAUTION** from 2.2.0 are my original versions, modified from SUN's original)
+   * since 2.0.6 DOES NOT support the J2ME platform (like CLDC 1.0, MIDP 1.0)
    * since 2.2.0 support service loader mechanism.
      * `speech.properties` and `EngineManager#registerEngineListFactory` works, but no more needed
  * volume property is enabled
 
 ## Install
 
- * [maven](https://jitpack.io/#umjammer/jsapi)
+ * [maven](https://jitpack.io/#umjammer/jsapi2)
 
 ## Usage
 
@@ -31,11 +33,12 @@ mavenized JSR-113 fka JSAPI2
  * ~~backport jsapi2 javadoc using codavaj~~
  * demo
  * mac module is temporary unavailable (because NSSpeechSynthesizer is deprecated) use rococoa module in [vavi-speech2](https://github.com/umjammer/vavi-speech2)
+ * ~~rename project jsapi2~~
  * ~~match mechanism~~
 
 ---
 
-[Original](https://github.com/JVoiceXML/jsapi)
+# [Original](https://github.com/JVoiceXML/jsapi)
 
 JSAPI is an independent implementation of the JSAPI 2 standard. It provides a basic framework that can be used for a JSAPI 2 compliant access to speech engines. Demo implementations support FreeTTS, Sphinx 4, Microsoft Speech API 5.4 and the Mac OSX speech synthesizer.
 

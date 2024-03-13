@@ -7,8 +7,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.jvoicexml</groupId>
-  <artifactId>jsapi</artifactId>
   <version>0.6.6</version>
+  <artifactId>jsapi2</artifactId>
   <packaging>pom</packaging>
 
   <modules>
@@ -26,14 +26,14 @@
 -->
   </modules>
 
-  <name>jsapi</name>
+  <name>jsapi2</name>
   <description/>
-  <url>https//github.com/umjammer/jsapi</url>
+  <url>https//github.com/umjammer/jsapi2</url>
   <scm>
-    <url>https//github.com/umjammer/jsapi</url>
+    <url>https//github.com/umjammer/jsapi2</url>
   </scm>
   <issueManagement>
-    <system>https//github.com/umjammer/jsapi/issues</system>
+    <system>https//github.com/umjammer/jsapi2/issues</system>
   </issueManagement>
 
   <properties>
