@@ -571,6 +571,7 @@ logger.log(Level.TRACE, String.format("event filtered: %s, %s, &: %08x, i: %08x,
             synchronized (engineListeners) {
                 listeners = new java.util.ArrayList<>(engineListeners);
             }
+logger.log(Level.TRACE, "fire engine listeners: " + listeners.size());
             fireEvent(listeners, event);
         };
 

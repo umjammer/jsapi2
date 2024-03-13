@@ -29,8 +29,6 @@ package javax.speech.synthesis;
 import java.util.List;
 import javax.speech.EngineEvent;
 
-// Comp. 2.0.6
-
 /**
  * Event issued by a Synthesizer to indicate a change
  * in state or other activity.
@@ -38,9 +36,11 @@ import javax.speech.EngineEvent;
  * A SynthesizerEvent is issued to each SynthesizerListener attached to a
  * Synthesizer using the addSynthesizerListener method in the Synthesizer
  * interface.
+ *
  * @see javax.speech.synthesis.Synthesizer
  * @see javax.speech.synthesis.Synthesizer#addSynthesizerListener(javax.speech.synthesis.SynthesizerListener)
  * @see javax.speech.synthesis.Synthesizer#removeSynthesizerListener(javax.speech.synthesis.SynthesizerListener)
+ * @since 2.0.6
  */
 public class SynthesizerEvent extends EngineEvent {
 

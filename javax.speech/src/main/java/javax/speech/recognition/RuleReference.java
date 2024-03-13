@@ -26,8 +26,6 @@
 
 package javax.speech.recognition;
 
-// Comp. 2.0.6
-
 /**
  * Specifies a reference to a named Rule in a RuleGrammar.
  * <p>
@@ -67,6 +65,7 @@ package javax.speech.recognition;
  * @see javax.speech.recognition.RuleSpecial#NULL
  * @see javax.speech.recognition.RuleSpecial#VOID
  * @see javax.speech.recognition.RuleSpecial#GARBAGE
+ * @since 2.0.6
  */
 public class RuleReference extends RuleComponent {
 

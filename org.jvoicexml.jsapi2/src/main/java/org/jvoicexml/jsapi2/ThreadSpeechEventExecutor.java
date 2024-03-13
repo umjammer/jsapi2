@@ -9,7 +9,7 @@ package org.jvoicexml.jsapi2;
 
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
-import java.util.List;
+import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -24,18 +24,15 @@ import java.util.concurrent.Executors;
  *
  * @author Renato Cassaca
  */
-public final class ThreadSpeechEventExecutor implements TerminatableSpeechEventExecutor, Runnable {
+public final class ThreadSpeechEventExecutor implements TerminatableSpeechEventExecutor {
 
     private static final Logger logger = System.getLogger(ThreadSpeechEventExecutor.class.getName());
-
-    /** Number of msec to wait before inspecting the command queue. */
-    private static final int COMMAND_POLL_INTERVALL = 1000;
 
     /** The thread that executes the commands. */
     private final ExecutorService thread = Executors.newSingleThreadExecutor();
 
     /** Commands to execute. */
-    private final List<Runnable> commands;
+    private final BlockingDeque<Runnable> commands;
 
     /** <code>false</code> if the executor is terminating. */
     private boolean shouldRun;
@@ -44,17 +41,14 @@ public final class ThreadSpeechEventExecutor implements TerminatableSpeechEventE
      * Constructs a new object.
      */
     public ThreadSpeechEventExecutor() {
-        commands = new java.util.ArrayList<>();
+        commands = new java.util.concurrent.LinkedBlockingDeque<>();
         shouldRun = true;
-        thread.submit(this);
+        thread.submit(this::loop);
     }
 
     @Override
     public void terminate() {
         shouldRun = false;
-        synchronized (commands) {
-            commands.notifyAll();
-        }
         thread.shutdown();
         logger.log(Level.TRACE, "shutdown services: " + thread.isShutdown());
     }
@@ -72,32 +66,25 @@ public final class ThreadSpeechEventExecutor implements TerminatableSpeechEventE
         if (!shouldRun) {
             throw new IllegalStateException("SpeechEventExecutor is terminated!");
         }
-        commands.add(command);
-        synchronized (commands) {
-            commands.notify();
-        }
+        commands.offer(command);
     }
 
-    @Override
-    public void run() {
+    private void loop() {
         while (shouldRun) {
-            while ((commands.isEmpty()) && (shouldRun)) {
-                synchronized (commands) {
-                    try {
-                        commands.wait(COMMAND_POLL_INTERVALL);
-                    } catch (InterruptedException ex) {
-                        return;
-                    }
-                }
-            }
-            if (!shouldRun) {
+            // Use this thread to run the command
+            Runnable command;
+            try {
+                command = commands.take();
+            } catch (InterruptedException ex) {
+logger.log(Level.TRACE, "interrupted");
                 return;
             }
-
-            // Use this thread to run the command
-            Runnable command = commands.get(0);
-            commands.remove(0);
+            if (!shouldRun) {
+logger.log(Level.TRACE, "stop looping 1");
+                return;
+            }
             command.run();
         }
+logger.log(Level.TRACE, "stop looping 2");
     }
 }

@@ -29,8 +29,6 @@ package javax.speech.synthesis;
 import java.util.List;
 import javax.speech.SpeechEvent;
 
-// Comp 2.0.6
-
 /**
  * Event issued during spoken output of text.
  * <p>
@@ -50,7 +48,7 @@ import javax.speech.SpeechEvent;
  * <p>
  * The normal sequence of events during output of the item of the top
  * of the synthesizer's speech output is:
- * <p>
+ * <code>
  * TOP_OF_QUEUE
  * SPEAKABLE_STARTED
  * Any number of ELEMENT_REACHED, VOICE_CHANGED,
@@ -58,7 +56,7 @@ import javax.speech.SpeechEvent;
  * WORD_STARTED, PHONEME_STARTED,
  * and MARKUP_FAILED events
  * SPEAKABLE_ENDED
- * <p>
+ * </code>
  * A SPEAKABLE_PAUSED may occur any time after the TOP_OF_QUEUE but before
  * the SPEAKABLE_ENDED event. A SPEAKABLE_PAUSED event can only be followed
  * by a SPEAKABLE_RESUMED or SPEAKABLE_CANCELLED event.
@@ -71,6 +69,7 @@ import javax.speech.SpeechEvent;
  * A SPEAKABLE_CANCELLED event can be issued for items that are not at
  * the top of the speech output queue. The other events are only issued
  * for the top-of-queue item.
+ *
  * @see javax.speech.synthesis.Speakable
  * @see javax.speech.synthesis.SpeakableListener
  * @see javax.speech.synthesis.Synthesizer
@@ -79,10 +78,12 @@ import javax.speech.SpeechEvent;
  * @see javax.speech.synthesis.Synthesizer#speak(javax.speech.synthesis.Speakable, javax.speech.synthesis.SpeakableListener)
  * @see javax.speech.synthesis.Synthesizer#speak(java.lang.String, javax.speech.synthesis.SpeakableListener)
  * @see javax.speech.synthesis.Synthesizer#speakMarkup(java.lang.String, javax.speech.synthesis.SpeakableListener)
+ * @since 2.0.6
  */
 public class SpeakableEvent extends SpeechEvent {
 
     // Events.
+
     /**
      * Event issued when an item on the synthesizer's speech output queue reaches
      * the top of the queue.
@@ -220,15 +221,14 @@ public class SpeakableEvent extends SpeechEvent {
      * returns the position of the mark
      * in the output stream.
      * <p>
-     * <A/>
      * The following example shows how to include the MARK tag in markup text:
-     * <p>
+     * <pre>
      * Go from
      * mark name="HERE"/
      * here, to
      * mark name="THERE"/
      * there!
-     * <p>
+     * </pre>
      * For this example, a MARKER_REACHED SpeakableEvent
      * with the marker value "HERE"
      * will be sent to attached listeners as the word "here"
@@ -312,19 +312,18 @@ public class SpeakableEvent extends SpeechEvent {
      * returns
      * an array of any attribute/value pairs for this element
      * <p>
-     * <A/>
      * For example, if the markup text is
-     * <p>
+     * <pre>
      * prosody rate="-10%" volume="loud"
      * really
      * /prosody
-     * <p>
+     * </pre>
      * then for the type ELEMENT_OPEN, getTextInfo and
      * getAttributes will return values corresponding to
-     * <p>
+     * <pre>
      * String text = "prosody";
      * String[] attributes = {"rate=\"-10%\"", "volume=\"loud\""};
-     * <p>
+     * </pre>
      * Because different synthesizers will render markup text differently,
      * this event helps an application align SpeakableEvents
      * with the corresponding markup text.
@@ -339,14 +338,14 @@ public class SpeakableEvent extends SpeechEvent {
      * <p>
      * The mask is set with setSpeakableMask.
      * The following events are delivered by default:
-     * MARKER_REACHED, MARKUP_FAILED,
+     * {@code MARKER_REACHED, MARKUP_FAILED,
      * SPEAKABLE_CANCELLED,
      * SPEAKABLE_STARTED, SPEAKABLE_ENDED,
      * SPEAKABLE_PAUSED, SPEAKABLE_RESUMED,
-     * AND VOICE_CHANGED.
+     * AND VOICE_CHANGED}.
      * <p>
-     * The ELEMENT_REACHED, PROSODY_UPDATED, WORD_STARTED, PHONEME_STARTED,
-     * and TOP_OF_QUEUE
+     * The {@code ELEMENT_REACHED, PROSODY_UPDATED, WORD_STARTED, PHONEME_STARTED,
+     * and TOP_OF_QUEUE}
      * events may be enabled if desired.
      */
     public static final int DEFAULT_MASK = MARKER_REACHED | SPEAKABLE_FAILED

@@ -26,8 +26,6 @@
 
 package javax.speech.recognition;
 
-// Comp. 2.0.6
-
 /**
  * Defines a tag to be used within a RuleGrammar.
  * <p>
@@ -43,6 +41,7 @@ package javax.speech.recognition;
  *
  * @see javax.speech.recognition.RuleGrammar
  * @see javax.speech.recognition.RuleParse
+ * @since 2.0.6
  */
 public class RuleTag extends RuleComponent {
 

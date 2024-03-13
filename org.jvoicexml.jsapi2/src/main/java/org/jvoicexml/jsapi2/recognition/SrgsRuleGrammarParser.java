@@ -71,8 +71,8 @@ public class SrgsRuleGrammarParser {
 
     private static final Logger logger = getLogger(SrgsRuleGrammarParser.class.getName());
 
-    private static EntityResolver entityResolver = new EmptyEntityResolver();
-    private Map<String, String> attributes;
+    private static final EntityResolver entityResolver = new EmptyEntityResolver();
+    private final Map<String, String> attributes;
 
     public static class EmptyEntityResolver implements EntityResolver {
         @Override

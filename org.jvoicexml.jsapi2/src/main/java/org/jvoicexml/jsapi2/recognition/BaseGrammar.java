@@ -84,12 +84,12 @@ public class BaseGrammar implements Grammar, ResultListener {
     /**
      * Creates a new BaseGrammar.
      *
-     * @param rec                the BaseRecognizer for this Grammar.
-     * @param grammarRefererence the reference of this Grammar.
+     * @param rec              the BaseRecognizer for this Grammar.
+     * @param grammarReference the reference of this Grammar.
      * @throws IllegalArgumentException if the grammar reference is null
      */
-    public BaseGrammar(Recognizer rec, String grammarRefererence) throws IllegalArgumentException {
-        if (grammarRefererence == null) {
+    public BaseGrammar(Recognizer rec, String grammarReference) throws IllegalArgumentException {
+        if (grammarReference == null) {
             throw new IllegalArgumentException("grammar reference must not be null");
         }
         grammarListeners = new java.util.ArrayList<>();
@@ -98,7 +98,7 @@ public class BaseGrammar implements Grammar, ResultListener {
         if (rec != null) {
             recognizer.addResultListener(this);
         }
-        reference = grammarRefererence;
+        reference = grammarReference;
         activatable = false;
         activationMode = ACTIVATION_FOCUS;
     }
@@ -300,4 +300,3 @@ public class BaseGrammar implements Grammar, ResultListener {
         }
     }
 }
-

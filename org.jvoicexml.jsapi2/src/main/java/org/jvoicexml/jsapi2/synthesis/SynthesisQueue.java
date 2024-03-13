@@ -28,7 +28,8 @@ package org.jvoicexml.jsapi2.synthesis;
 
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
-import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.atomic.AtomicReference;
 import javax.speech.AudioSegment;
 import javax.speech.synthesis.Speakable;
 import javax.speech.synthesis.SpeakableEvent;
@@ -46,7 +47,7 @@ import static java.lang.System.getLogger;
  *
  * @author Dirk Schnelle-Walka
  */
-final class SynthesisQueue implements Runnable {
+final class SynthesisQueue {
 
     private static final Logger logger = getLogger(SynthesisQueue.class.getName());
 
@@ -57,10 +58,16 @@ final class SynthesisQueue implements Runnable {
     private final PlayQueue playQueue;
 
     /** Queued speakables. */
-    private final List<QueueItem> queue;
+    private final BlockingQueue<QueueItem> queue;
 
     /** Id of the last queued item. */
     private int queueId;
+
+    private final AtomicReference<QueueItem> currentItem = new AtomicReference<>();
+
+    public QueueItem getCurrentQueueItem() {
+        return currentItem.get();
+    }
 
     /**
      * Constructs a new object.
@@ -71,7 +78,7 @@ final class SynthesisQueue implements Runnable {
     public SynthesisQueue(QueueManager manager, PlayQueue pqueue) {
         queueManager = manager;
         playQueue = pqueue;
-        queue = new java.util.ArrayList<>();
+        queue = new java.util.concurrent.LinkedBlockingQueue<>();
         queueId = 0;
     }
 
@@ -82,7 +89,6 @@ final class SynthesisQueue implements Runnable {
         synchronized (queue) {
             queue.clear();
             queueManager.done();
-            queue.notifyAll();
         }
     }
 
@@ -123,11 +129,9 @@ final class SynthesisQueue implements Runnable {
      */
     public int appendItem(AudioSegment audioSegment, SpeakableListener listener) {
         boolean topOfQueueChanged;
-        synchronized (queue) {
-            ++queueId;
-            QueueItem item = new QueueItem(queueId, audioSegment, listener);
-            topOfQueueChanged = append(item);
-        }
+        ++queueId;
+        QueueItem item = new QueueItem(queueId, audioSegment, listener);
+        topOfQueueChanged = append(item);
         adaptSynthesizerState(topOfQueueChanged);
         return queueId;
     }
@@ -141,8 +145,10 @@ final class SynthesisQueue implements Runnable {
      */
     private boolean append(QueueItem item) {
         boolean topOfQueueChanged = isQueueEmpty();
-        queue.add(item);
-        queue.notifyAll();
+        boolean r = queue.offer(item);
+        if (!r) {
+logger.log(Level.TRACE, "S:: add failed: " + item);
+        }
         return topOfQueueChanged;
     }
 
@@ -160,8 +166,7 @@ final class SynthesisQueue implements Runnable {
         } else {
             states = synthesizer.setEngineState(Synthesizer.QUEUE_NOT_EMPTY, Synthesizer.QUEUE_NOT_EMPTY);
         }
-        synthesizer.postSynthesizerEvent(states[0], states[1],
-                SynthesizerEvent.QUEUE_UPDATED, topOfQueueChanged);
+        synthesizer.postSynthesizerEvent(states[0], states[1], SynthesizerEvent.QUEUE_UPDATED, topOfQueueChanged);
     }
 
     /**
@@ -170,9 +175,7 @@ final class SynthesisQueue implements Runnable {
      * @return true if the queue is empty; otherwise false
      */
     public boolean isQueueEmpty() {
-        synchronized (queue) {
-            return queue.isEmpty();
-        }
+        return queue.isEmpty();
     }
 
     /**
@@ -181,15 +184,15 @@ final class SynthesisQueue implements Runnable {
      * @return <code>true</code> if an item was removed from the queue
      */
     boolean cancelFirstItem() {
-        synchronized (queue) {
-            if (queue.isEmpty()) {
-                return false;
-            }
-            // Get the data of the first item for the notification
-            QueueItem item = queue.get(0);
-            cancelItem(item);
-            return true;
+        QueueItem item = currentItem.get();
+        if (item == null) {
+logger.log(Level.TRACE, "S:: no processing item");
+            return false;
         }
+        // Get the data of the first item for the notification
+        currentItem.set(null);
+        cancelItem(item, false);
+        return true;
     }
 
     /**
@@ -203,9 +206,10 @@ final class SynthesisQueue implements Runnable {
         synchronized (queue) {
             QueueItem item = getQueueItem(id);
             if (item == null) {
+logger.log(Level.TRACE, "S:: cancel but no such id: " + id);
                 return false;
             }
-            cancelItem(item);
+            cancelItem(item, true);
             return true;
         }
     }
@@ -215,14 +219,20 @@ final class SynthesisQueue implements Runnable {
      *
      * @param item the item to remove.
      */
-    private void cancelItem(QueueItem item) {
+    private void cancelItem(QueueItem item, boolean inQueue) {
         int id = item.getId();
         Object source = item.getSource();
         SpeakableListener listener = item.getListener();
         SpeakableEvent event = new SpeakableEvent(source, SpeakableEvent.SPEAKABLE_CANCELLED, id);
         BaseSynthesizer synthesizer = queueManager.getSynthesizer();
         synthesizer.postSpeakableEvent(event, listener);
-        queue.remove(item);
+        if (inQueue) {
+            boolean r = queue.remove(item);
+            if (!r) {
+logger.log(Level.TRACE, "S:: remove failed: " + item);
+            }
+        }
+logger.log(Level.TRACE, "S:: canceled: " + item);
     }
 
     /**
@@ -233,6 +243,7 @@ final class SynthesisQueue implements Runnable {
      * queue item with the given id
      */
     public QueueItem getQueueItem(int id) {
+logger.log(Level.TRACE, "S:: queue: " + queue + ", " + id);
         synchronized (queue) {
             for (QueueItem item : queue) {
                 if (item.getId() == id) {
@@ -240,31 +251,30 @@ final class SynthesisQueue implements Runnable {
                 }
             }
         }
+logger.log(Level.TRACE, "S:: no such id: " + id);
         return null;
     }
 
     /**
-     * Returns, but does not remove, the first item on the queue. Waits
+     * Returns, and remove, the first item on the queue. Waits
      * until a queue item has been added if the queue is empty.
      *
      * @return the first queue item
+     * @since 0.6.7 make item removed from queue
      */
     QueueItem getNextQueueItem() {
-        synchronized (queue) {
-//Debug.println("queue.size(): " + queue.size() + ", queueManager.isDone(): " + queueManager.isDone());
-            while (queue.isEmpty() && !queueManager.isDone()) {
-                try {
-                    queue.wait();
-                } catch (InterruptedException e) {
-                    return null;
-                }
+logger.log(Level.TRACE, "S:: queue.size(): " + queue.size() + ", queueManager.isDone(): " + queueManager.isDone());
+        QueueItem item;
+        if (!queueManager.isDone()) {
+            try {
+                return queue.take();
+            } catch (InterruptedException e) {
+logger.log(Level.TRACE, "S:: interrupted");
+            } finally {
+logger.log(Level.TRACE, "S:: queue taken: " + queue.size());
             }
-
-            if (queueManager.isDone()) {
-                return null;
-            }
-            return queue.get(0);
         }
+        return null;
     }
 
     /**
@@ -285,13 +295,13 @@ final class SynthesisQueue implements Runnable {
     /**
      * Gets the next item from the queue and outputs it.
      */
-    @Override
-    public void run() {
+    void loop() {
         long lastFocusEvent = Synthesizer.DEFOCUSED;
 
         while (!queueManager.isDone()) {
-            QueueItem item = getNextQueueItem();
-            if (item != null) {
+            currentItem.set(getNextQueueItem());
+logger.log(Level.TRACE, "S:: item taken: " + currentItem.get());
+            if (currentItem.get() != null) {
                 BaseSynthesizer synthesizer = queueManager.getSynthesizer();
                 if (lastFocusEvent == Synthesizer.DEFOCUSED) {
                     long[] states = synthesizer.setEngineState(Synthesizer.DEFOCUSED, Synthesizer.FOCUSED);
@@ -299,24 +309,33 @@ final class SynthesisQueue implements Runnable {
                     lastFocusEvent = Synthesizer.FOCUSED;
                 }
 
-                // transfer item from the queue to the play queue
-                removeQueueItem(item);
-                playQueue.addQueueItem(item);
-                // Synthesize it
+logger.log(Level.TRACE, "S:: play item: " + currentItem.get());
                 try {
-                    synthesize(item);
+                    // Synthesize it
+                    if (currentItem.get() != null) {
+                        synthesize(currentItem.get());
+                    } else {
+logger.log(Level.TRACE, "S:: item canceled 1");
+                        continue;
+                    }
+                    // transfer item from the queue to the play queue
+                    if (currentItem.get() != null) {
+                        playQueue.addQueueItem(currentItem.get());
+                    } else {
+logger.log(Level.TRACE, "S:: item canceled 2");
+                        continue;
+                    }
                 } catch (SpeakableException e) {
                     logger.log(Level.ERROR, e.getMessage(), e);
-                    int id = item.getId();
-                    Speakable speakable = item.getSpeakable();
+                    int id = currentItem.get().getId();
+                    Speakable speakable = currentItem.get().getSpeakable();
                     String textInfo = speakable.getMarkupText();
                     SpeakableEvent event = new SpeakableEvent(this,
                             SpeakableEvent.SPEAKABLE_FAILED, id, textInfo,
                             SpeakableEvent.SPEAKABLE_FAILURE_UNRECOVERABLE, e);
                     synthesizer.postSpeakableEvent(event, null);
                 }
-                // Notify the observers that something changed
-                playQueue.itemChanged(item);
+                currentItem.set(null);
             }
         }
     }

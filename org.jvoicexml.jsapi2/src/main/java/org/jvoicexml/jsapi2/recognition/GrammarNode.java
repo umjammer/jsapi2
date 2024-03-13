@@ -38,16 +38,16 @@ public class GrammarNode {
     public static final int SPECIAL = 11;
 
     /** <code>true</code> if this node is a final node of the graph. */
-    private boolean isFinal;
+    private final boolean isFinal;
 
     /** the arcs to the successors nodes. */
     private final List<GrammarArc> arcs;
 
     /** the type of this node. */
-    private int type;
+    private final int type;
 
     /** the rule component associated with this node. */
-    private RuleComponent component;
+    private final RuleComponent component;
 
     /**
      * Creates a grammar node without a rule component associated.

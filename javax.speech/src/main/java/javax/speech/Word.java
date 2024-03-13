@@ -26,8 +26,6 @@
 
 package javax.speech;
 
-// Comp. 2.0.6
-
 import java.util.Arrays;
 
 
@@ -37,11 +35,13 @@ import java.util.Arrays;
  * <p>
  * A Word object provides the following information:
  * <p>
- * "Written form" text: String that can be used to present the Word visually.
- * "Spoken form" text: String that indicates how the Word is spoken.
- * Pronunciation: a string of phonetic characters indicating how the Word is spoken.
- * Audio: the actual audio signal for the Word.
- * Grammatical categories: flags indicating grammatical "part-of-speech" information.
+ * <ul>
+ * <li>"Written form" text: String that can be used to present the Word visually.</li>
+ * <li>"Spoken form" text: String that indicates how the Word is spoken.</li>
+ * <li>Pronunciation: a string of phonetic characters indicating how the Word is spoken.</li>
+ * <li>Audio: the actual audio signal for the Word.</li>
+ * <li>Grammatical categories: flags indicating grammatical "part-of-speech" information.</li>
+ * </ul>
  * <p>
  * The written-form text must be specified.
  * The other properties are optional.
@@ -51,10 +51,12 @@ import java.util.Arrays;
  * If more than one is specified, they are considered in the following precedence
  * order from most to least specific:
  * <p>
- * Audio
- * Pronunciation
- * Spoken form
- * Written form
+ * <ul>
+ * <li>Audio</li>
+ * <li>Pronunciation</li>
+ * <li>Spoken form</li>
+ * <li>Written form</li>
+ * </ul>
  * <p>
  * The Word class allows the specification of multiple pronunciations and
  * multiple grammatical categories.
@@ -67,9 +69,11 @@ import java.util.Arrays;
  * In some applications, the pronunciation may be derived through acoustics
  * and the written-form text may be less useful than the pronunciation.
  * In this case, the Word may be created with the ACOUSTIC category.
+ *
  * @see javax.speech.VocabularyManager
  * @see javax.speech.Engine#getVocabularyManager()
  * @see javax.speech.recognition.RuleToken
+ * @since 2.0.6
  */
 public class Word {
 

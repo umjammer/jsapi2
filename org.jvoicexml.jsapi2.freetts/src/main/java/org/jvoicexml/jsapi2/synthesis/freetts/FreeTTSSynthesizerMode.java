@@ -34,12 +34,13 @@ import javax.speech.synthesis.SynthesizerMode;
  *
  * @author Dirk Schnelle-Walka
  */
-public class FreeTTSSynthesizerMode extends SynthesizerMode
-        implements EngineFactory {
+public class FreeTTSSynthesizerMode extends SynthesizerMode implements EngineFactory {
+
     /**
      * Constructs a new object.
      */
     public FreeTTSSynthesizerMode() {
+        super();
     }
 
     /**
@@ -51,8 +52,7 @@ public class FreeTTSSynthesizerMode extends SynthesizerMode
      * @param locale     the locale associated with this mode
      * @param voices     the known voices
      */
-    public FreeTTSSynthesizerMode(String engineName, String modeName,
-                                  Locale locale, FreeTTSVoice[] voices) {
+    public FreeTTSSynthesizerMode(String engineName, String modeName, Locale locale, FreeTTSVoice[] voices) {
         super(engineName, modeName, null, null, null, voices);
     }
 
@@ -68,8 +68,7 @@ public class FreeTTSSynthesizerMode extends SynthesizerMode
      *                                  engine
      */
     @Override
-    public Engine createEngine() throws IllegalArgumentException,
-            EngineException, SecurityException {
+    public Engine createEngine() throws IllegalArgumentException, EngineException, SecurityException {
         return new FreeTTSSynthesizer(this);
     }
 }

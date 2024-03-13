@@ -26,11 +26,15 @@
 
 package javax.speech.synthesis;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.speech.EngineMode;
 import javax.speech.SpeechLocale;
+
+import static java.lang.System.getLogger;
 
 // Comp 2.0.6
 
@@ -65,6 +69,8 @@ import javax.speech.SpeechLocale;
  * @see javax.speech.EngineManager#createEngine(javax.speech.EngineMode)
  */
 public class SynthesizerMode extends EngineMode {
+
+    private static final Logger logger = getLogger(SynthesizerMode.class.getName());
 
     /**
      * Returns a hash code value for the array
@@ -242,6 +248,7 @@ public class SynthesizerMode extends EngineMode {
     @Override
     public boolean match(EngineMode require) {
         if (!super.match(require)) {
+logger.log(Level.TRACE, "MATCH: not match by super");
             return false;
         }
 
@@ -249,6 +256,7 @@ public class SynthesizerMode extends EngineMode {
             Voice[] otherVoices = mode.getVoices();
             if (otherVoices != null) {
                 if (voices == null) {
+logger.log(Level.TRACE, "MATCH: no voices");
                     return false;
                 }
 
@@ -262,6 +270,7 @@ public class SynthesizerMode extends EngineMode {
                     }
 
                     if (!voiceMatch) {
+logger.log(Level.TRACE, "MATCH: no match voice");
                         return false;
                     }
                 }

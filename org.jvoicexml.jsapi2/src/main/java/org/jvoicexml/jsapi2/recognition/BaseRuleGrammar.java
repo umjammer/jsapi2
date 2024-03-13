@@ -41,7 +41,7 @@ public class BaseRuleGrammar extends BaseGrammar implements RuleGrammar {
     private static final Logger LOGGER = System.getLogger(BaseRuleGrammar.class.getName());
 
     protected Map<String, InternalRule> rules;
-    protected List<RuleGrammarOperation> uncommitedChanges = new java.util.ArrayList<>();
+    protected List<RuleGrammarOperation> uncommittedChanges = new java.util.ArrayList<>();
 
     // Attributes of the rule grammar
     protected String root;
@@ -88,9 +88,9 @@ public class BaseRuleGrammar extends BaseGrammar implements RuleGrammar {
      * <code>activable</code> property.
      */
     private static class InternalRule {
-        private Rule rule;
+        private final Rule rule;
         private boolean activable;
-        private int id;
+        private final int id;
 
         /**
          * Constructs a new object.
@@ -151,7 +151,7 @@ public class BaseRuleGrammar extends BaseGrammar implements RuleGrammar {
      * Class that describes an uncommitted add rule
      */
     private class AddRuleOperation extends RuleGrammarOperation {
-        private InternalRule rule;
+        private final InternalRule rule;
 
         public AddRuleOperation(InternalRule rule) {
             this.rule = rule;
@@ -171,7 +171,7 @@ public class BaseRuleGrammar extends BaseGrammar implements RuleGrammar {
      * Class that describes an uncomitted delete off a rule
      */
     private class RemoveRuleOperation extends RuleGrammarOperation {
-        private String name;
+        private final String name;
 
         public RemoveRuleOperation(String name) {
             this.name = name;
@@ -194,7 +194,7 @@ public class BaseRuleGrammar extends BaseGrammar implements RuleGrammar {
      * Class that describes an uncommited enable of RuleGrammar.
      */
     private class GrammarEnablerOperation extends RuleGrammarOperation {
-        private boolean status;
+        private final boolean status;
 
         public GrammarEnablerOperation(boolean status) {
             this.status = status;
@@ -210,8 +210,8 @@ public class BaseRuleGrammar extends BaseGrammar implements RuleGrammar {
     }
 
     private class RuleEnablerOperation extends RuleGrammarOperation {
-        private String[] ruleNames;
-        private boolean status;
+        private final String[] ruleNames;
+        private final boolean status;
 
         private RuleEnablerOperation(String ruleName, boolean status) {
             ruleNames = new String[1];
@@ -242,7 +242,7 @@ public class BaseRuleGrammar extends BaseGrammar implements RuleGrammar {
     }
 
     private class RootSetterOperation extends RuleGrammarOperation {
-        private String rootRuleName;
+        private final String rootRuleName;
 
         public RootSetterOperation(String rulename) {
             rootRuleName = rulename;
@@ -289,7 +289,7 @@ public class BaseRuleGrammar extends BaseGrammar implements RuleGrammar {
 //     */
 //    public void setEnabled(boolean enabled) {
 //        GrammarEnablerOperation geo = new GrammarEnablerOperation(enabled);
-//        uncommitedChanges.add(geo);
+//        uncommittedChanges.add(geo);
 //    }
 
     //
@@ -310,7 +310,7 @@ public class BaseRuleGrammar extends BaseGrammar implements RuleGrammar {
     public void addRule(Rule rule) {
         InternalRule iRule = new InternalRule(rule, ruleId);
         AddRuleOperation aro = new AddRuleOperation(iRule);
-        uncommitedChanges.add(aro);
+        uncommittedChanges.add(aro);
         ruleId++;
     }
 
@@ -361,7 +361,7 @@ public class BaseRuleGrammar extends BaseGrammar implements RuleGrammar {
     @Override
     public void setRoot(String rulename) {
         RootSetterOperation rsgo = new RootSetterOperation(rulename);
-        uncommitedChanges.add(rsgo);
+        uncommittedChanges.add(rsgo);
 
         LOGGER.log(Level.DEBUG, "added RootRule : {0}", rulename);
     }
@@ -494,13 +494,13 @@ public class BaseRuleGrammar extends BaseGrammar implements RuleGrammar {
     @Override
     public void removeRule(String ruleName) {
         RemoveRuleOperation rro = new RemoveRuleOperation(ruleName);
-        uncommitedChanges.add(rro);
+        uncommittedChanges.add(rro);
     }
 
     @Override
     public void setActivatable(String ruleName, boolean enabled) {
         RuleEnablerOperation operation = new RuleEnablerOperation(ruleName, enabled);
-        uncommitedChanges.add(operation);
+        uncommittedChanges.add(operation);
     }
 
     @Override
@@ -668,7 +668,7 @@ public class BaseRuleGrammar extends BaseGrammar implements RuleGrammar {
 //        } else {
 
         // Return successfully
-        return (RuleReference) (matches.get(0));
+        return (RuleReference) matches.get(0);
         // }
     }
 
@@ -842,10 +842,10 @@ public class BaseRuleGrammar extends BaseGrammar implements RuleGrammar {
      * @throws GrammarException if there is an error in the grammar
      */
     public boolean commitChanges() throws GrammarException {
-        boolean existChanges = !uncommitedChanges.isEmpty();
+        boolean existChanges = !uncommittedChanges.isEmpty();
         RootSetterOperation rootSetter = null;
-        while (!uncommitedChanges.isEmpty()) {
-            RuleGrammarOperation operation = uncommitedChanges.remove(0);
+        while (!uncommittedChanges.isEmpty()) {
+            RuleGrammarOperation operation = uncommittedChanges.remove(0);
             if (operation instanceof RootSetterOperation) {
                 rootSetter = (RootSetterOperation) operation;
             } else {

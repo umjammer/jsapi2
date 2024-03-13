@@ -57,7 +57,7 @@ public class RuleParser {
     private static final Logger logger = System.getLogger(RuleParser.class.getName());
 
     /** the grammarManager that contains all the grammars. */
-    private GrammarManager grammarManager;
+    private final GrammarManager grammarManager;
 
     /**
      * Represents the current position of the input array, during the parse
@@ -110,8 +110,7 @@ public class RuleParser {
      * @return RuleParse the start rule name
      */
     public static RuleParse parse(String[] inputTokens,
-                                  GrammarManager grammarManager, String grammarReference,
-                                  String ruleName) {
+                                  GrammarManager grammarManager, String grammarReference, String ruleName) {
         RuleParse[] parse = mparse(inputTokens, grammarManager, grammarReference, ruleName);
         if (parse == null) {
             return null;
@@ -130,8 +129,7 @@ public class RuleParser {
      * @return RuleParse[]
      */
     public static RuleParse[] mparse(String text,
-                                     GrammarManager grammarManager, String grammarReference,
-                                     String ruleName) {
+                                     GrammarManager grammarManager, String grammarReference, String ruleName) {
         String[] inputTokens = text.split(" ");
         return mparse(inputTokens, grammarManager, grammarReference, ruleName);
     }
@@ -147,8 +145,7 @@ public class RuleParser {
      * @return RuleParse[]
      */
     public static RuleParse[] mparse(String[] inputTokens,
-                                     GrammarManager grammarManager, String grammarReference,
-                                     String ruleName) {
+                                     GrammarManager grammarManager, String grammarReference, String ruleName) {
         RuleParser parse = new RuleParser(grammarManager, 0);
         Grammar gram = grammarManager.getGrammar(grammarReference);
         RuleGrammar grammar;
@@ -316,7 +313,7 @@ public class RuleParser {
      * @param token   the rule token
      * @return GrammarGraph
      */
-    private GrammarGraph buildGrammarGraph(RuleGrammar grammar, RuleToken token) {
+    private static GrammarGraph buildGrammarGraph(RuleGrammar grammar, RuleToken token) {
         GrammarNode startNode = new GrammarNode(false, GrammarNode.TOKEN, token);
         return new GrammarGraph(startNode, startNode);
     }
@@ -401,7 +398,7 @@ public class RuleParser {
      * @param r  the rule tag
      * @return GrammarGraph
      */
-    private GrammarGraph buildGrammarGraph(RuleGrammar rg, RuleTag r) {
+    private static GrammarGraph buildGrammarGraph(RuleGrammar rg, RuleTag r) {
         GrammarNode startNode = new GrammarNode(false, GrammarNode.TAG, r);
         return new GrammarGraph(startNode, startNode);
     }

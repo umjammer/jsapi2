@@ -53,7 +53,6 @@ public final class JavaSoundParser {
     /** Constant for little-endian byte order. */
     private static final String LITTLE_ENDIAN = "little";
 
-
     /**
      * Prevent construction from outside.
      */

@@ -29,71 +29,63 @@ package javax.speech;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-// Comp. 2.0.6
-
 /**
  * The AudioManager is provided by subclasses of Engine
  * to allow an application to control audio input/output and to monitor audio-related events.
  * The AudioManager for an Engine is obtained by calling its getAudioManager method.
  * <p>
- * <A/>
  * The following example shows how to redirect synthesizer output to a file.
  * Redirection to a recognizer is similar.
  * <p>
- * <A/>
- * <p>
+ * <pre>
  * Synthesizer synth = ...                            // see Synthesizer for creation options
  * AudioManager am = synth.getAudioManager();         // can throw SecurityException
  * am.setMediaLocator("file://user/smith/hello.wav"); // can throw AudioException
  * synth.allocate();                                  // after setMediaLocator to avoid error
  * synth.speak("hello world", null);                  // speak
- * <p>
+ * </pre>
  * The media locator description is taken from JSR-135.
  * This JSR uses only the audio part.
  * <p>
  * Media locators are specified in
  * <p>
  * which is defined in the form:
- * <p>
+ * <pre>
  * scheme
  * :
  * scheme-specific-part
- * <p>
+ * </pre>
  * The "scheme" part of the locator string identifies the name
  * of the protocol being used to deliver the data.
  * <p>
  * The locator syntax for live-media capture and RTP streaming is defined as follows:
  * <p>
- * <A/>
- * <p>
  * The locators for capturing live media are defined
  * by the following syntax in
- * <p>
  * notations:
- * <p>
+ * <pre>
  * "capture://" device [ "?" params]
  * "playback://" device [ "?" params]
  * "segment://" device [ "?" params]
- * <p>
+ * </pre>
  * The "segment" scheme supports directionless media locators associated with
  * audio segments.
  * <p>
  * A. Identifying the type or the specific
  * name of the device:
- * <p>
+ * <pre>
  * device       = "audio" / dev_name / logical_name
  * dev_name     = alphanumeric
  * alphanumeric = 1*( ALPHA / DIGIT )
  * logical_name = "microphone" / "speaker" / "headset"
- * <p>
+ * </pre>
  * B. Describing the media and capture parameters:
- * <p>
+ * <pre>
  * params = audio_params / custom_params
- * <p>
- * <A/>
+ * </pre>
  * <p>
  * C. Describing the audio media format:
- * <p>
+ * <pre>
  * audio_params = audio_param *( "&" audio_param )
  * audio_param  = 1*( "encoding=" audio_enc / "rate=" rate /
  * "bits=" bits / "channels=" channels /
@@ -106,45 +98,47 @@ import java.io.OutputStream;
  * endian       = "little" / "big"
  * signed       = "signed" / "unsigned"
  * pos_integer  = 1*DIGIT
- * <p>
+ * </pre>
  * Note: alaw is required for SSML, but is an extension of JSR-135.
  * Example:
- * <p>
+ * <pre>
  * encoding=pcm&rate=11025&bits=16&channels=1
- * <p>
+ * </pre>
  * D. Describing some custom media parameters:
- * <p>
+ * <pre>
  * custom_params = param *( "&" param )
  * param         = key "=" value
  * key           = alphanumeric
  * value         = alphanumeric
- * <p>
+ * </pre>
  * Examples:
- * <p>
+ * <pre>
  * capture://audio  (default input audio)
  * playback://audio (default output audio, other capture examples apply)
  * capture://audio?encoding=pcm   (default audio audio in PCM format)
  * capture://devmic0?encoding=pcm&rate=11025&bits=16&channels=1
  * (audio from a specific device--devmic0)
- * <p>
+ *
  * capture://mydev?myattr=123   (custom device with custom param)
- * <p>
+ * </pre>
  * is a public standard for streaming media.  The locator
  * syntax for specifying RTP sessions is:
- * <p>
+ * <pre>
  * "rtp://" address [ ":" port ] [ "/" type ]
- * <p>
+ * </pre>
  * where:
  * <p>
  * address and port defines the RTP session.  The
  * address and port usage is similar to the host and port
  * usage as defined in the
  * .
- * <p>
+ * <pre>
  * type = "audio"
+ * </pre>
  *
  * @see javax.speech.Engine
  * @see javax.speech.Engine#getAudioManager()
+ * @since 2.0.6
  */
 public interface AudioManager {
 

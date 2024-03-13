@@ -20,8 +20,6 @@
 package org.jvoicexml.jsapi2.demo.helloworld;
 
 import java.lang.System.Logger.Level;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.Handler;
 import javax.speech.Engine;
 import javax.speech.EngineManager;
 import javax.speech.synthesis.SpeakableEvent;
@@ -30,8 +28,6 @@ import javax.speech.synthesis.Synthesizer;
 import javax.speech.synthesis.SynthesizerEvent;
 import javax.speech.synthesis.SynthesizerListener;
 import javax.speech.synthesis.SynthesizerMode;
-
-import org.jvoicexml.jsapi2.synthesis.freetts.FreeTTSEngineListFactory;
 
 import static java.lang.System.getLogger;
 
@@ -56,38 +52,26 @@ public final class HelloWorldDemo implements SpeakableListener, SynthesizerListe
      *
      * @param args command line arguments.
      */
-    public static void main(String[] args) {
-        // Enable logging at all levels.
-        Handler handler = new ConsoleHandler();
-        handler.setLevel(java.util.logging.Level.ALL);
-        java.util.logging.Logger.getLogger("").addHandler(handler);
-        java.util.logging.Logger.getLogger("").setLevel(java.util.logging.Level.ALL);
+    public static void main(String[] args) throws Exception {
+        // Create a synthesizer for the default Locale
+        Synthesizer synthesizer = (Synthesizer) EngineManager.createEngine(SynthesizerMode.DEFAULT);
+        assert synthesizer != null;
+        HelloWorldDemo demo = new HelloWorldDemo();
+        synthesizer.addSynthesizerListener(demo);
+        // Get it ready to speak
+        synthesizer.allocate();
+        synthesizer.waitEngineState(Engine.ALLOCATED);
+        synthesizer.resume();
+        synthesizer.waitEngineState(Synthesizer.RESUMED);
 
-        try {
-            EngineManager.registerEngineListFactory(FreeTTSEngineListFactory.class.getName());
-            // Create a synthesizer for the default Locale
-            Synthesizer synthesizer = (Synthesizer) EngineManager.createEngine(SynthesizerMode.DEFAULT);
-            HelloWorldDemo demo = new HelloWorldDemo();
-            synthesizer.addSynthesizerListener(demo);
-            // Get it ready to speak
-            synthesizer.allocate();
-            synthesizer.waitEngineState(Engine.ALLOCATED);
-            synthesizer.resume();
-            synthesizer.waitEngineState(Synthesizer.RESUMED);
-
-            // Speak the "hello world" string
-            System.out.println("Speaking 'Hello, world!'...");
-            synthesizer.speak("Hello, world!", demo);
-            synthesizer.speakMarkup("<?xml version=\"1.0\"?>"
-                    + "<speak>Goodbye!</speak>", demo);
-            synthesizer.waitEngineState(Synthesizer.QUEUE_EMPTY);
-            System.out.println("done.");
-            // Clean up - includes waiting for the queue to empty
-            synthesizer.deallocate();
-            System.exit(0);
-        } catch (Exception e) {
-            logger.log(Level.ERROR, e.getMessage(), e);
-        }
+        // Speak the "hello world" string
+        logger.log(Level.DEBUG, "Speaking 'Hello, world!'...");
+        synthesizer.speak("Hello, world!", demo);
+        synthesizer.speakMarkup("<?xml version=\"1.0\"?><speak>Goodbye!</speak>", demo);
+        synthesizer.waitEngineState(Synthesizer.QUEUE_EMPTY);
+        logger.log(Level.DEBUG, "done.");
+        // Clean up - includes waiting for the queue to empty
+        synthesizer.deallocate();
     }
 
     @Override

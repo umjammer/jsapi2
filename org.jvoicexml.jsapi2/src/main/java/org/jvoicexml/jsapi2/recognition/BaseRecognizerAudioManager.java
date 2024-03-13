@@ -105,8 +105,8 @@ public class BaseRecognizerAudioManager extends BaseAudioManager {
             URLConnection urlConnection = openURLConnection(false);
             InputStream source = urlConnection.getInputStream();
             return new BufferedInputStream(source);
-        } catch (IOException ex) {
-            throw new AudioException("Cannot get InputStream from URL: " + ex.getMessage());
+        } catch (NullPointerException | IOException ex) {
+            throw new AudioException("Cannot get InputStream from URL: " + ex.getMessage(), ex);
         }
     }
 
@@ -148,7 +148,7 @@ public class BaseRecognizerAudioManager extends BaseAudioManager {
                 try {
                     format = parseAudioFormat(locator);
                 } catch (URISyntaxException e) {
-                    throw new AudioException(e.getMessage());
+                    throw new AudioException(e.getMessage(), e);
                 }
             } else {
                 // Use the microphone with the engine audio format
@@ -158,7 +158,7 @@ public class BaseRecognizerAudioManager extends BaseAudioManager {
             try {
                 inputStream = openMicrophone(format);
             } catch (LineUnavailableException e) {
-                throw new AudioException(e.getMessage());
+                throw new AudioException(e.getMessage(), e);
             }
         } else {
             inputStream = openUrl(locator);
@@ -210,7 +210,7 @@ public class BaseRecognizerAudioManager extends BaseAudioManager {
         try {
             inputStream.close();
         } catch (IOException ex) {
-            throw new AudioException(ex.getMessage());
+            throw new AudioException(ex.getMessage(), ex);
         } finally {
             inputStream = null;
         }

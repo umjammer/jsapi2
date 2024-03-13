@@ -26,11 +26,13 @@
 
 package javax.speech;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-// Comp. 2.0.6
+import static java.lang.System.getLogger;
 
 /**
  * Provides information about a specific operating
@@ -68,11 +70,9 @@ import java.util.stream.Collectors;
  * test the Engine-created EngineModes to
  * select an appropriate Engine for creation.
  * <p>
- * <A/>
- * <p>
  * The following example tests whether an Engine supports
  * Swiss German:
- * <p>
+ * <pre>
  * SynthesizerMode fromEngine = ...;
  * // "de" is the ISO 639 language code for German
  * // "CH" is the ISO 3166 country code for Switzerland
@@ -80,23 +80,21 @@ import java.util.stream.Collectors;
  * SynthesizerMode require = new SynthesizerMode(new Locale("de", "CH"));
  * // test whether the engine mode supports Swiss German.
  * if (fromEngine.match(require)) ...
- * <p>
+ * </pre>
  * An application can create a subclass of EngineMode
  * and pass it to the createEngine
  * method of EngineManager.  In this common approach,
  * the EngineManager performs the Engine
  * selection.
  * <p>
- * <A/>
- * <p>
  * The following example shows the creation of a French
  * Synthesizer:
- * <p>
+ * <pre>
  * // Create a mode that requires French
  * SynthesizerMode mode = new SynthesizerMode(new Locale("fr"));
  * // Create a synthesizer that supports French
  * Synthesizer synth = EngineManager.createEngine(mode);
- * <p>
+ * </pre>
  * The EngineManager class provides additional examples
  * of using EngineModes.
  * <p>
@@ -118,8 +116,11 @@ import java.util.stream.Collectors;
  * @see javax.speech.EngineManager
  * @see javax.speech.EngineManager#availableEngines(javax.speech.EngineMode)
  * @see javax.speech.EngineManager#createEngine(javax.speech.EngineMode)
+ * @since 2.0.6
  */
 public abstract class EngineMode {
+
+    private static final Logger logger = getLogger(EngineMode.class.getName());
 
     public static final Integer FULL = Integer.MAX_VALUE;
 
@@ -138,7 +139,7 @@ public abstract class EngineMode {
     /**
      * Constructs an EngineMode with all mode features set
      * to don't care values.
-     * @see javax.speech.EngineMode#EngineMode(java.lang.String, java.lang.String, java.lang.Boolean, java.lang.Boolean, java.lang.Boolean)
+     * @see javax.speech.EngineMode#EngineMode(String, String, Boolean, Boolean, Boolean)
      */
     public EngineMode() {
     }
@@ -278,6 +279,7 @@ public abstract class EngineMode {
         } else {
             namesMatch = otherEngineName.equals(engineName);
         }
+logger.log(Level.TRACE, "otherEngineName: " + otherEngineName + ", " + namesMatch);
 
         String otherModeName = require.getModeName();
         boolean modesMatch;
@@ -286,6 +288,7 @@ public abstract class EngineMode {
         } else {
             modesMatch = otherModeName.equals(modeName);
         }
+logger.log(Level.TRACE, "otherModeName: " + otherModeName + ", " + modesMatch);
 
         Boolean otherModeRunning = require.getRunning();
         boolean runningsMatch;
@@ -294,6 +297,7 @@ public abstract class EngineMode {
         } else {
             runningsMatch = otherModeRunning.equals(running);
         }
+logger.log(Level.TRACE, "otherModeRunning: " + otherModeRunning + ", " + runningsMatch);
 
         Boolean otherSupportsLetterToSound = require.getSupportsLetterToSound();
         boolean supportsLetterToSoundMatch;
@@ -302,6 +306,7 @@ public abstract class EngineMode {
         } else {
             supportsLetterToSoundMatch = otherSupportsLetterToSound.equals(supportsLetterToSound);
         }
+logger.log(Level.TRACE, "otherSupportsLetterToSound: " + otherSupportsLetterToSound + ", " + supportsLetterToSoundMatch);
 
         Boolean otherMarkupSupport = require.getSupportsMarkup();
         boolean markupSupportMatch;
@@ -310,9 +315,10 @@ public abstract class EngineMode {
         } else {
             markupSupportMatch = otherMarkupSupport.equals(supportsMarkup);
         }
+logger.log(Level.TRACE, "otherMarkupSupport: " + otherMarkupSupport + ", " + markupSupportMatch);
 
-        return namesMatch && modesMatch && runningsMatch
-                && supportsLetterToSoundMatch && markupSupportMatch;
+logger.log(Level.TRACE, "total matches: " + (namesMatch && modesMatch && runningsMatch && supportsLetterToSoundMatch && markupSupportMatch));
+        return namesMatch && modesMatch && runningsMatch && supportsLetterToSoundMatch && markupSupportMatch;
     }
 
     /**

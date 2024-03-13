@@ -26,8 +26,6 @@
 
 package javax.speech.recognition;
 
-// Comp. 2.0.6
-
 /**
  * Parent interface supported by all recognition Grammars.
  * A Grammar defines a set of tokens (such as words) that may be spoken and the
@@ -37,15 +35,17 @@ package javax.speech.recognition;
  * <p>
  * The core functionality provided through the Grammar interface includes:
  * <p>
- * Naming: each Grammar of a Recognizer has a unique name.
+ * <ul>
+ * <li>Naming: each Grammar of a Recognizer has a unique name.</li>
  * Enabling: Grammars may be enabled or disabled for activation
- * of recognition.
- * Activation: the activation mode can be set and the
+ * of recognition.</li>
+ * <li>Activation: the activation mode can be set and the
  * activation state tested.
  * Adding and removing GrammarListeners for Grammar-related events.
  * Adding and removing ResultListeners to receive result events for
  * results matching the Grammar.
- * Access the Recognizer that owns the grammar
+ * Access the Recognizer that owns the grammar</li>
+ * </ul>
  * <p>
  * Each Grammar is associated with a specific Recognizer.
  * All Grammars are located, created and managed through the
@@ -62,8 +62,6 @@ package javax.speech.recognition;
  * Repeat the update, enable and commit steps as required.
  * For application-created grammars, delete the Grammar when it is
  * no longer needed.
- * <p>
- * <A/>
  * <p>
  * When a Grammar is active, the Recognizer listens to incoming audio for
  * speech that matches that Grammar.
@@ -124,8 +122,6 @@ package javax.speech.recognition;
  * number of active Grammars and/or increasing the complexity of those Grammars
  * can lead to slower response time, greater CPU load and reduced recognition
  * accuracy (more mistakes).
- * <p>
- * <A/>
  * <p>
  * Grammars can be dynamically changed and enabled and disabled.
  * Changes may be necessary as the application changes context,
@@ -193,6 +189,7 @@ package javax.speech.recognition;
  * grammar. The listeners receive ResultEvents starting with the
  * GRAMMAR_FINALIZED event (not the preceding RESULT_CREATED or
  * RESULT_UPDATED events).
+ *
  * @see javax.speech.recognition.RuleGrammar
  * @see javax.speech.recognition.GrammarListener
  * @see javax.speech.recognition.GrammarEvent
@@ -216,6 +213,7 @@ package javax.speech.recognition;
  * @see javax.speech.recognition.ResultEvent#RESULT_ACCEPTED
  * @see javax.speech.recognition.ResultEvent#RESULT_REJECTED
  * @see javax.speech.recognition.ResultEvent#GRAMMAR_FINALIZED
+ * @since 2.0.6
  */
 public interface Grammar {
 

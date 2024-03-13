@@ -26,8 +26,6 @@
 
 package javax.speech.recognition;
 
-// Comp. 2.0.6
-
 /**
  * Defines special RuleReferences defined as constants.
  * <p>
@@ -44,6 +42,7 @@ package javax.speech.recognition;
  *
  * @see javax.speech.recognition.RuleGrammar
  * @see javax.speech.recognition.RuleReference
+ * @since 2.0.6
  */
 public class RuleSpecial extends RuleComponent {
 

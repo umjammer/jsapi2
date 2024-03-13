@@ -285,8 +285,7 @@ public class BaseRecognizerProperties extends BaseEngineProperties implements Re
         if (sensitivity == value) {
             return;
         }
-        handlePropertyChangeRequest(SENSITIVITY, sensitivity,
-                value);
+        handlePropertyChangeRequest(SENSITIVITY, sensitivity, value);
     }
 
     @Override

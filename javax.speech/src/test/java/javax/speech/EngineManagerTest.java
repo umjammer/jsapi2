@@ -24,12 +24,11 @@ import static org.junit.jupiter.api.Assertions.assertNull;
  * @author Dirk Schnelle-Walka
  */
 public class EngineManagerTest {
+
     @BeforeEach
     protected void setUp() throws Exception {
-        EngineManager.registerEngineListFactory(
-                MockRecognizerEngineListFactory.class.getCanonicalName());
-        EngineManager.registerEngineListFactory(
-                MockSynthesizerEngineListFactory.class.getCanonicalName());
+        EngineManager.registerEngineListFactory(MockRecognizerEngineListFactory.class.getCanonicalName());
+        EngineManager.registerEngineListFactory(MockSynthesizerEngineListFactory.class.getCanonicalName());
     }
 
     /**
@@ -81,8 +80,7 @@ public class EngineManagerTest {
      */
     @Test
     void testGetSpeechEventExecutor() {
-        SpeechEventExecutor executor =
-                EngineManager.getSpeechEventExecutor();
+        SpeechEventExecutor executor = EngineManager.getSpeechEventExecutor();
         assertNotNull(executor);
     }
 
@@ -103,7 +101,7 @@ public class EngineManagerTest {
      */
     @Test
     void testGetVersion() {
-        assertEquals("2.0.6.0", EngineManager.getVersion());
+        assertEquals("2.2.0", EngineManager.getVersion());
     }
 
     /**
@@ -115,16 +113,12 @@ public class EngineManagerTest {
         EngineList engines1 = EngineManager.availableEngines(null);
         assertEquals(2, engines1.size());
 
-        EngineManager
-                .registerEngineListFactory(MockRecognizerEngineListFactory.class
-                        .getName());
+        EngineManager.registerEngineListFactory(MockRecognizerEngineListFactory.class.getName());
 
         EngineList engines2 = EngineManager.availableEngines(null);
         assertEquals(2, engines2.size());
 
-        EngineManager
-                .registerEngineListFactory(MockRecognizerEngineListFactory.class
-                        .getName());
+        EngineManager.registerEngineListFactory(MockRecognizerEngineListFactory.class.getName());
 
         EngineList engines3 = EngineManager.availableEngines(null);
         assertEquals(2, engines3.size());

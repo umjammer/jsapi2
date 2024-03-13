@@ -26,8 +26,6 @@
 
 package javax.speech;
 
-// Comp. 2.0.6
-
 /**
  * Thrown when there is an illegal call to a method of a speech engine.
  * <p>
@@ -35,6 +33,7 @@ package javax.speech;
  * to request a deallocated Recognizer to create a new grammar, or
  * to request any deallocated engine to pause or resume.
  * @see javax.speech.SpeechException
+ * @since 2.0.6
  */
 public class EngineStateException extends IllegalStateException {
 

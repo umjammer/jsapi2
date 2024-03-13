@@ -29,8 +29,6 @@ package javax.speech.recognition;
 import java.util.ArrayList;
 import java.util.List;
 
-// Comp. 2.0.6
-
 /**
  * Represents the parse structure of a Result or String against a RuleGrammar.
  * <p>
@@ -46,20 +44,22 @@ import java.util.List;
  * The mapping from RuleComponent objects in a RuleGrammar to
  * RuleComponent objects in a RuleParse follows:
  * <p>
- * RuleAlternatives: maps to a RuleAlternatives object containing a
+ * <ul>
+ * <li>RuleAlternatives: maps to a RuleAlternatives object containing a
  * single RuleComponent object for the one entity in the
- * set of alternatives that is matched.
- * RuleCount: the RuleComponent within the RuleCount maps to a RuleSequence
+ * set of alternatives that is matched.</li>
+ * <li>RuleCount: the RuleComponent within the RuleCount maps to a RuleSequence
  * containing a RuleComponent for each match of the
  * RuleComponent contained by RuleCount.
  * The sequence may contain zero, one or multiple RuleComponent matches
  * depending on the count.
  * The min and max repeats are set to the count.
- * RuleReference: maps to a RuleParse indicating how the RuleReference
- * was matched with a parse.
- * RuleSequence: maps to a RuleSequence with a matching RuleComponent
- * for each RuleComponent in the original sequence.
- * RuleTag, RuleToken, and RuleSpecial: map to themselves.
+ * <li>RuleReference: maps to a RuleParse indicating how the RuleReference
+ * was matched with a parse.</li>
+ * <li>RuleSequence: maps to a RuleSequence with a matching RuleComponent
+ * for each RuleComponent in the original sequence.</li>
+ * <li>RuleTag, RuleToken, and RuleSpecial: map to themselves.</li>
+ * </ul>
  * <p>
  * The RuleParse object is not used in defining a RuleGrammar so it
  * is never matched.
@@ -67,175 +67,139 @@ import java.util.List;
  * This example shows the resulting parse structure given a RuleGrammar,
  * a RuleReference, and an array of Strings representing tokens.
  * <p>
- * <A/>
  * Consider the following RuleGrammar defined in SRGS:
- * <p>
+ * <pre>
  * grammar root="command"
- * <p>
  * meta name="id" content="CommandGrammar"/
- * <p>
  * rule id="command" scope="public"
- * <p>
  * ruleref uri="#action"/
- * <p>
  * ruleref uri="#object"/
- * <p>
  * item repeat="0-1"
- * <p>
  * ruleref uri="#polite"/
- * <p>
  * /item
- * <p>
  * /rule
- * <p>
  * rule id="action"
- * <p>
  * one-of
- * <p>
  * item
  * open
  * tag
  * OP
  * /tag
  * /item
- * <p>
  * item
  * close
  * tag
  * CL
  * /tag
  * /item
- * <p>
  * /one-of
- * <p>
  * /rule
- * <p>
  * rule id="object"
- * <p>
  * item repeat="0-1"
- * <p>
  * ruleref uri="determiner"/
- * <p>
  * /item
- * <p>
  * one-of
- * <p>
  * item
  * window
  * /item
- * <p>
  * item
  * door
  * /item
- * <p>
  * /one-of
- * <p>
  * /rule
- * <p>
  * rule id="determiner"
- * <p>
  * one-of
- * <p>
  * item
  * a
  * /item
- * <p>
  * item
  * the
  * /item
- * <p>
  * /one-of
- * <p>
  * /rule
- * <p>
  * rule id="polite"
- * <p>
  * one-of
- * <p>
  * item
  * please
  * /item
- * <p>
  * item
  * kindly
  * /item
- * <p>
  * /one-of
- * <p>
  * /rule
  * /grammar
- * <p>
+ * </pre>
  * This same grammar may be defined programmatically as follows:
- * <p>
+ * <pre>
  * RuleSequence commandRHS =
- * new RuleSequence(new RuleComponent[] {
- * new RuleReference("action"),
- * new RuleReference("object"),
- * new RuleCount(new RuleReference("polite"), 0, 1)});
+ *   new RuleSequence(new RuleComponent[] {
+ *     new RuleReference("action"),
+ *     new RuleReference("object"),
+ *     new RuleCount(new RuleReference("polite"), 0, 1)});
  * RuleAlternatives actionRHS =
- * new RuleAlternatives(new RuleComponent[] {
- * new RuleSequence(new RuleComponent[] {
- * new RuleToken("open"),
- * new RuleTag("OP")}),
- * new RuleSequence(new RuleComponent[] {
- * new RuleToken("close"),
- * new RuleTag("CL")})});
+ *   new RuleAlternatives(new RuleComponent[] {
+ *     new RuleSequence(new RuleComponent[] {
+ *       new RuleToken("open"),
+ *       new RuleTag("OP")}),
+ *   new RuleSequence(new RuleComponent[] {
+ *     new RuleToken("close"),
+ *     new RuleTag("CL")})});
  * RuleSequence objectRHS =
- * new RuleSequence(new RuleComponent[] {
- * new RuleCount(new RuleReference("determiner"), 0, 1),
- * new RuleAlternatives(new String[] {"window", "door"})});
+ *   new RuleSequence(new RuleComponent[] {
+ *     new RuleCount(new RuleReference("determiner"), 0, 1),
+ *     new RuleAlternatives(new String[] {"window", "door"})});
  * RuleAlternatives determinerRHS =
- * new RuleAlternatives(new String[] {"a", "the"});
+ *   new RuleAlternatives(new String[] {"a", "the"});
  * RuleAlternatives politeRHS =
- * new RuleAlternatives(new String[] {"please", "kindly"});
- * <p>
+ *   new RuleAlternatives(new String[] {"please", "kindly"});
+ *
  * Recognizer r = ...
  * RuleGrammar rg = r.createRuleGrammar("CommandGrammar", "command");
  * rg.addRules(new Rules[] {
- * new Rule("command", commandRHS, RuleGrammar.PUBLIC_SCOPE);
- * new Rule("action", actionRHS);
- * new Rule("object", objectRHS);
- * new Rule("determiner", determinerRHS);
- * new Rule("polite", politeRHS)});
- * <p>
+ *   new Rule("command", commandRHS, RuleGrammar.PUBLIC_SCOPE);
+ *   new Rule("action", actionRHS);
+ *   new Rule("object", objectRHS);
+ *   new Rule("determiner", determinerRHS);
+ *   new Rule("polite", politeRHS)});
+ * </pre>
  * Now we can create a parse for the sentence "close the door please"
  * beginning with the root Rule as follows:
  * <p>
  * RuleParse ruleParse =
  * rg.parse(new String[] {"close", "the", "door", "please"}, "command");
- * <p>
+ * </pre>
  * Now the parse will have the same structure as follows:
- * <p>
+ * <pre>
  * RuleParse ruleParse =
- * new RuleParse(
- * new RuleReference("command"),
- * new RuleSequence(new RuleComponent[] {            // Parse for "command"
- * new RuleParse(
- * new RuleReference("action"),
- * new RuleAlternatives(new RuleComponent[] {    // Parse for "action"
- * new RuleSequence(new RuleComponent[] {      // The chosen alternative
- * new RuleToken("close"),
- * new RuleTag("CL")})})),
- * new RuleParse(
- * new RuleReference("object"),
- * new RuleSequence(new RuleComponent[] {        // Parse for "object"
- * new RuleCount(                              // RuleComponent argument
- * new RuleSequence(new RuleComponent[] {    //   becomes RuleSequence
- * new RuleParse(                          // One item per match
- * new RuleReference("determiner"),
- * new RuleAlternatives(new RuleComponent[] { // "determiner" parse
- * new RuleToken("the")}))}),          // RuleToken from String
- * 1, 1),                                    // 1 and only 1
- * new RuleAlternatives(new RuleComponent[] {
- * new RuleToken("door")})})),               // The chosen alternative
- * new RuleCount(                                  // Option chosen
- * new RuleSequence(new RuleComponent[] {        //   with one repeat
- * new RuleParse(
- * new RuleReference("polite"),
- * new RuleAlternatives(new RuleComponent[] { // Parse for "polite"
- * new RuleToken("please")}))}),           // The chosen alternative
- * 1, 1)}));                                     // 1 and only 1
- * <p>
+ *   new RuleParse(
+ *     new RuleReference("command"),
+ *     new RuleSequence(new RuleComponent[] {            // Parse for "command"
+ *       new RuleParse(
+ *         new RuleReference("action"),
+ *         new RuleAlternatives(new RuleComponent[] {    // Parse for "action"
+ *           new RuleSequence(new RuleComponent[] {      // The chosen alternative
+ *             new RuleToken("close"),
+ *             new RuleTag("CL")})})),
+ *       new RuleParse(
+ *         new RuleReference("object"),
+ *         new RuleSequence(new RuleComponent[] {        // Parse for "object"
+ *           new RuleCount(                              // RuleComponent argument
+ *             new RuleSequence(new RuleComponent[] {    //   becomes RuleSequence
+ *               new RuleParse(                          // One item per match
+ *                 new RuleReference("determiner"),
+ *            new RuleAlternatives(new RuleComponent[] { // "determiner" parse
+ *                   new RuleToken("the")}))}),          // RuleToken from String
+ *             1, 1),                                    // 1 and only 1
+ *           new RuleAlternatives(new RuleComponent[] {
+ *             new RuleToken("door")})})),               // The chosen alternative
+ *       new RuleCount(                                  // Option chosen
+ *         new RuleSequence(new RuleComponent[] {        //   with one repeat
+ *           new RuleParse(
+ *             new RuleReference("polite"),
+ *            new RuleAlternatives(new RuleComponent[] { // Parse for "polite"
+ *               new RuleToken("please")}))}),           // The chosen alternative
+ *         1, 1)}));                                     // 1 and only 1
+ * <pre>
  * Completing the cycle, ruleParse.toString will take the parse structure back
  * to a markup string.  In this case, the information represented by each
  * RuleParse instance is represented by a corresponding
@@ -317,6 +281,7 @@ import java.util.List;
  * @see javax.speech.recognition.RuleSpecial
  * @see javax.speech.recognition.RuleTag
  * @see javax.speech.recognition.RuleToken
+ * @since 2.0.6
  */
 public class RuleParse extends RuleComponent {
 

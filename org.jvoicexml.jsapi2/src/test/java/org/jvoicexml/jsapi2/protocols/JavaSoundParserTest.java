@@ -21,14 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public final class JavaSoundParserTest {
 
     /**
-     * Set up the test environment.
-     */
-    @BeforeEach
-    public void setUp() {
-        System.setProperty("java.protocol.handler.pkgs", "org.jvoicexml.jsapi2.protocols");
-    }
-
-    /**
      * Test method for {@link org.jvoicexml.jsapi2.protocols.JavaSoundParser#parse(java.net.URL)}.
      *
      * @throws Exception test failed.

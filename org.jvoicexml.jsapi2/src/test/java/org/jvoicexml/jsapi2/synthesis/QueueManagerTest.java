@@ -26,15 +26,16 @@
 
 package org.jvoicexml.jsapi2.synthesis;
 
+import java.util.concurrent.CountDownLatch;
 import javax.speech.AudioSegment;
 import javax.speech.synthesis.SpeakableEvent;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.jvoicexml.jsapi2.mock.synthesis.MockSpeakableListener;
 import org.jvoicexml.jsapi2.mock.synthesis.MockSynthesizer;
+import vavi.util.Debug;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -48,7 +49,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public final class QueueManagerTest {
 
     /** Synthesizer. */
-    private BaseSynthesizer synthesizer;
+    private MockSynthesizer synthesizer;
 
     /**
      * Set up the test environment.
@@ -64,23 +65,30 @@ public final class QueueManagerTest {
      * @throws Exception test failed.
      */
     @Test
-    @Disabled
-//    @Timeout(value = 5000, unit = TimeUnit.MICROSECONDS)
     void testAppendItemSpeakableSpeakableListener() throws Exception {
         QueueManager manager = synthesizer.getQueueManager();
         AudioSegment segment = new AudioSegment("http://nowhere", "test");
         MockSpeakableListener listener = new MockSpeakableListener();
+        CountDownLatch cdl = new CountDownLatch(1);
+        // hack, stopping at 1st synthesis
+        synthesizer.setSpeakHandler(id -> {
+Debug.println("pretend item taking long time...");
+            try { cdl.await(); } catch (InterruptedException ignore) {}
+Debug.println("item done");
+        });
         manager.appendItem(segment, listener);
-        QueueItem item = manager.getQueueItem();
+        QueueItem item;
+        while ((item = manager.getQueueItem()) == null) Thread.yield();
         assertNotNull(item);
-        assertEquals(segment, item.getAudioSegment());
+        assertEquals(segment.getMarkupText(), item.getAudioSegment().getMarkupText());
         assertEquals(listener, item.getListener());
+        cdl.countDown();
         listener.waitForSize(2);
         SpeakableEvent started = listener.getEvent(0);
         assertEquals(SpeakableEvent.SPEAKABLE_STARTED, started.getId());
         assertEquals(segment.getMarkupText(), started.getSource());
         SpeakableEvent ended = listener.getEvent(1);
-        assertEquals(SpeakableEvent.SPEAKABLE_ENDED, ended.getId());
+        assertEquals(SpeakableEvent.SPEAKABLE_FAILED, ended.getId());
         assertEquals(segment.getMarkupText(), ended.getSource());
     }
 

@@ -26,8 +26,6 @@
 
 package javax.speech;
 
-// Comp. 2.0.6
-
 /**
  * Interface for management of words used by a speech Engine.
  * <p>
@@ -52,9 +50,11 @@ package javax.speech;
  * <p>
  * Words in the VocabularyManager can improve the accuracy of recognition.
  * They can also affect the quality of synthesis.
+ *
  * @see javax.speech.Engine
  * @see javax.speech.Engine#getVocabularyManager()
  * @see javax.speech.Word
+ * @since 2.0.6
  */
 public interface VocabularyManager {
 

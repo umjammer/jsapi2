@@ -28,8 +28,6 @@ package javax.speech;
 
 import java.util.List;
 
-// Comp. 2.0.6
-
 /**
  * Describes events associated with audio input/output for an Engine.
  * <p>
@@ -48,7 +46,9 @@ import java.util.List;
  * The input is also quiet when the user is not speaking.
  * <p>
  * AUDIO_STARTED and AUDIO_STOPPED events indicate the state of the audio stream.
+ *
  * @see javax.speech.AudioListener
+ * @since 2.0.6
  */
 public class AudioEvent extends SpeechEvent {
 

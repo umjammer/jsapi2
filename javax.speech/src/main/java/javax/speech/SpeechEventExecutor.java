@@ -26,8 +26,6 @@
 
 package javax.speech;
 
-// Comp. 2.0.6
-
 /**
  * Interface for objects that execute Runnables.
  * <p>
@@ -42,14 +40,14 @@ package javax.speech;
  * </pre>
  * For example uses of this class to integrate speech events with
  * lcdui or Swing,
- * see
- * {@link javax.speech.EngineManager#setSpeechEventExecutor(javax.speech.SpeechEventExecutor)}
- * .
+ * see {@link javax.speech.EngineManager#setSpeechEventExecutor(javax.speech.SpeechEventExecutor)}.
  * <p>
  * This interface is compatible with more complete implementations
  * that employ queuing or pooling, or perform additional bookkeeping.
  * For example, see JSR-166 intended for J2SE.
  * Java 2 Platform SE 5.0 defines a compatible interface.
+ *
+ * @since 2.0.6
  */
 public interface SpeechEventExecutor {
 

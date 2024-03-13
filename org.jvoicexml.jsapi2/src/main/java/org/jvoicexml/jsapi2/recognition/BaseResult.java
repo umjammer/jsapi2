@@ -65,7 +65,7 @@ public class BaseResult implements Result, FinalResult, FinalRuleResult, Seriali
     private static final long serialVersionUID = -7742652622067884474L;
 
     /** Registered result listeners. */
-    private Collection<ResultListener> resultListeners;
+    private final Collection<ResultListener> resultListeners;
     private ResultToken[] tokens;
     private int nTokens;
     /** The rule grammar that matches this result. */
@@ -308,7 +308,7 @@ public class BaseResult implements Result, FinalResult, FinalRuleResult, Seriali
         if (nBest == 0) {
             return getBestTokens();
         }
-        // WDW - throw InvalidArgumentException?
+        // TODO WDW: throw InvalidArgumentException?
         return null;
     }
 
@@ -321,7 +321,7 @@ public class BaseResult implements Result, FinalResult, FinalRuleResult, Seriali
         if (nBest == 0) {
             return grammar;
         }
-        // WDW - throw InvalidArgumentException?
+        // TODO WDW: throw InvalidArgumentException?
         return null;
     }
 

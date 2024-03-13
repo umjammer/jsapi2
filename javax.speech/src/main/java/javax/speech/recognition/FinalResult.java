@@ -28,8 +28,6 @@ package javax.speech.recognition;
 
 import javax.speech.AudioSegment;
 
-// Comp. 2.0.6
-
 /**
  * Provides information about a Result that has been finalized -
  * that is, recognition is complete.
@@ -102,6 +100,7 @@ import javax.speech.AudioSegment;
  * @see javax.speech.recognition.ResultListener
  * @see javax.speech.recognition.FinalRuleResult
  * @see javax.speech.recognition.RecognizerProperties#setResultAudioProvided(boolean)
+ * @since 2.0.6
  */
 public interface FinalResult extends Result {
 

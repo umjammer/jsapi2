@@ -50,20 +50,20 @@ public class QueueManager {
     private static final Logger logger = System.getLogger(QueueManager.class.getName());
 
     /** Reference to the synthesizer. */
-    private BaseSynthesizer synthesizer;
+    private final BaseSynthesizer synthesizer;
     /** Queued play items. */
-    private SynthesisQueue synthQueue;
+    private final SynthesisQueue synthQueue;
     /** Synthesized play items. */
-    private PlayQueue playQueue;
+    private final PlayQueue playQueue;
     /** <code>true</code> if the queue manager is terminated. */
     private boolean done;
 
     boolean cancelFirstItem;
     final Object cancelLock;
 
-    private ExecutorService synthThread = Executors.newSingleThreadExecutor();
+    private final ExecutorService synthThread = Executors.newSingleThreadExecutor();
 
-    private ExecutorService playThread = Executors.newSingleThreadExecutor();
+    private final ExecutorService playThread = Executors.newSingleThreadExecutor();
 
     /**
      * Constructs a new object.
@@ -78,8 +78,8 @@ public class QueueManager {
         playQueue = new PlayQueue(this);
         synthQueue = new SynthesisQueue(this, playQueue);
 
-        synthThread.submit(synthQueue);
-        playThread.submit(playQueue);
+        synthThread.submit(synthQueue::loop);
+        playThread.submit(playQueue::loop);
     }
 
     /**
@@ -278,12 +278,12 @@ public class QueueManager {
     }
 
     /**
-     * Returns, but does not remove, the first item on the queue.
+     * Returns, and remove, the first item on the queue.
      *
      * @return the first queue item
      */
     protected QueueItem getQueueItem() {
-        return synthQueue.getNextQueueItem();
+        return synthQueue.getCurrentQueueItem();
     }
 
     /**

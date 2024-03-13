@@ -13,10 +13,7 @@
 package org.jvoicexml.jsapi2.demo.input;
 
 import java.io.InputStream;
-import java.lang.System.Logger.Level;
 import java.nio.charset.StandardCharsets;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.Handler;
 import javax.speech.AudioManager;
 import javax.speech.Engine;
 import javax.speech.EngineManager;
@@ -31,9 +28,6 @@ import javax.speech.recognition.ResultListener;
 import javax.speech.recognition.ResultToken;
 import javax.speech.synthesis.Synthesizer;
 import javax.speech.synthesis.SynthesizerMode;
-
-import org.jvoicexml.jsapi2.recognition.sphinx4.SphinxEngineListFactory;
-import org.jvoicexml.jsapi2.synthesis.freetts.FreeTTSEngineListFactory;
 
 import static java.lang.System.getLogger;
 
@@ -112,28 +106,10 @@ public final class InputDemo implements ResultListener {
      *
      * @param args command line arguments.
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         InputDemo demo = new InputDemo();
 
-        // Enable logging at all levels.
-        Handler handler = new ConsoleHandler();
-        handler.setLevel(java.util.logging.Level.ALL);
-        java.util.logging.Logger.getLogger("").addHandler(handler);
-        java.util.logging.Logger.getLogger("").setLevel(java.util.logging.Level.ALL);
-
-        try {
-            EngineManager.registerEngineListFactory(
-                    FreeTTSEngineListFactory.class.getName());
-
-            EngineManager.registerEngineListFactory(
-                    SphinxEngineListFactory.class.getName());
-
-            demo.run();
-        } catch (Exception e) {
-            logger.log(Level.ERROR, e.getMessage(), e);
-            System.exit(-1);
-        }
-
+        demo.run();
     }
 
     @Override

@@ -65,7 +65,6 @@ public final class LineInputStream extends InputStream {
         return line.read(buffer, off, len);
     }
 
-
     /**
      * Retrieves a line to read the audio data.
      * @throws IOException
@@ -76,9 +75,7 @@ public final class LineInputStream extends InputStream {
             DataLine.Info info = new DataLine.Info(TargetDataLine.class, format);
 
             line = (TargetDataLine) AudioSystem.getLine(info);
-            if (logger.isLoggable(Level.DEBUG)) {
-                logger.log(Level.DEBUG, "opened line " + line + " with format " + format);
-            }
+            logger.log(Level.DEBUG, "opened line " + line + " with format " + format);
             line.open();
             line.start();
         } catch (LineUnavailableException e) {
