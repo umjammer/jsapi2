@@ -49,11 +49,13 @@ public class PlayQueueTest {
      */
     @Test
     void testCancelItemAtTopOfQueue() throws Exception {
+        CountDownLatch cdl0 = new CountDownLatch(1);
         CountDownLatch cdl = new CountDownLatch(1);
         AudioSegment segment1 = new AudioSegment("http://localhost", "test") {
             @Override
             public InputStream openInputStream() throws IOException, SecurityException {
 Debug.println("pretend taking long time when open id");
+                cdl0.countDown();
                 try { cdl.await(); } catch (InterruptedException ignore) {}
 Debug.println("pretend done");
                 return super.openInputStream();
@@ -77,6 +79,7 @@ Debug.println("eventId: " + Integer.toHexString(e.getId()));
         });
         item1.setSynthesized(true);
         queue.addQueueItem(item1);
+        cdl0.await();
         item2.setSynthesized(true);
         queue.addQueueItem(item2);
         while (queue.getQueueItem(item1.getId()) != null) Thread.yield();
@@ -105,11 +108,13 @@ Debug.println("testCancelItemAtTopOfQueue::done");
      */
     @Test
     void testCancelItem() throws Exception {
+        CountDownLatch cdl0 = new CountDownLatch(1);
         CountDownLatch cdl = new CountDownLatch(1);
         AudioSegment segment1 = new AudioSegment("http://localhost", "test") {
             @Override
             public InputStream openInputStream() throws IOException, SecurityException {
 Debug.println("pretend taking long time when open id");
+                cdl0.countDown();
                 try { cdl.await(); } catch (InterruptedException ignore) {}
 Debug.println("pretend done");
                 return super.openInputStream();
@@ -133,6 +138,7 @@ Debug.println("eventId: " + Integer.toHexString(e.getId()));
         });
         item1.setSynthesized(true);
         queue.addQueueItem(item1);
+        cdl0.await();
         item2.setSynthesized(true);
         queue.addQueueItem(item2);
         while (queue.getQueueItem(item1.getId()) != null) Thread.yield();
