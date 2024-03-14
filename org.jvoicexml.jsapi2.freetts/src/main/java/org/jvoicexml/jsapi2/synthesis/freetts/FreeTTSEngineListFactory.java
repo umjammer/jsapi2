@@ -146,7 +146,7 @@ logger.log(Level.TRACE, "MODE: " + mode);
      * @param o      the object to look for using vector.get(i).equals(o)
      * @return the item if it exists in the vector, else null
      */
-    private DomainLocale getItem(List<DomainLocale> vector, DomainLocale o) {
+    private static DomainLocale getItem(List<DomainLocale> vector, DomainLocale o) {
         int index = vector.indexOf(o);
         if (index < 0) {
             return null;
