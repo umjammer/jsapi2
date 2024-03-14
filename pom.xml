@@ -38,7 +38,7 @@
 
   <properties>
     <freetts.groupId>com.github.umjammer.FreeTTS</freetts.groupId>
-    <freetts.version>1.2.5</freetts.version>
+    <freetts.version>1.2.6</freetts.version>
   </properties>
 
   <build>
