@@ -26,9 +26,24 @@
 
 package javax.speech;
 
-//Comp. 2.0.6
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
+
+import static java.lang.System.getLogger;
+
+
+/**
+ * TODO this class should be replaced by Locale?
+ * system property
+ * <li>javax.speech.SpeechLocale.comparisonStrictness ... set strictness for #match() method values are
+ *                                                        STRICT</li>
+ *
+ * @since 2.0.6
+ */
 public final class SpeechLocale {
+
+    private static final Logger logger = getLogger(SpeechLocale.class.getName());
 
     public static final SpeechLocale ENGLISH;
 
@@ -124,6 +139,29 @@ public final class SpeechLocale {
         return result;
     }
 
+    /** for {@link #match(SpeechLocale)} */
+    private enum ComparisonStrictness {
+        /** match if on of them is matched */
+        LENIENT,
+        /** compare all */
+        STRICT;
+    };
+
+    /** strictness for {@link #match(SpeechLocale)} */
+    private static ComparisonStrictness comparisonStrictness;
+
+    /* */
+    static {
+        String property = System.getProperty("javax.speech.SpeechLocale.comparisonStrictness", "STRICT");
+        try {
+            comparisonStrictness = ComparisonStrictness.valueOf(property.toUpperCase());
+        } catch (Exception e) {
+logger.log(Level.WARNING, "javax.speech.SpeechLocale.comparisonStrictness is wring: " + property);
+            comparisonStrictness = ComparisonStrictness.STRICT;
+        }
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -159,26 +197,36 @@ public final class SpeechLocale {
         return true;
     }
 
+    /**
+     * @since 2.2.1 using {@link #comparisonStrictness} for comparison strictness.
+     * @param require null means any match
+     */
     public boolean match(SpeechLocale require) {
         if (require == null) {
             return true;
         }
+        boolean countryMatched = true;
         if (!require.country.isEmpty()) {
             if (!require.country.equals(country)) {
-                return false;
+                countryMatched = false;
             }
         }
+        boolean languageMatched = true;
         if (!require.language.isEmpty()) {
             if (!require.language.equals(language)) {
-                return false;
+                languageMatched = false;
             }
         }
+        boolean variantMatched = true;
         if (!require.variant.isEmpty()) {
             if (!require.variant.equals(variant)) {
-                return false;
+                variantMatched = false;
             }
         }
-        return true;
+        return switch (comparisonStrictness) {
+            case STRICT -> countryMatched && languageMatched && variantMatched;
+            case LENIENT -> languageMatched || countryMatched && !require.country.isEmpty();
+        };
     }
 
     public String toString() {

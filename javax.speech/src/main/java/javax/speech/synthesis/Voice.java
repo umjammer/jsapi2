@@ -26,9 +26,11 @@
 
 package javax.speech.synthesis;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import javax.speech.SpeechLocale;
 
-// Comp 2.0.6
+import static java.lang.System.getLogger;
 
 /**
  * Describes one output voice of a speech Synthesizer.
@@ -46,8 +48,11 @@ import javax.speech.SpeechLocale;
  * @see javax.speech.synthesis.SynthesizerProperties
  * @see javax.speech.synthesis.SynthesizerProperties#getVoice()
  * @see javax.speech.synthesis.SynthesizerProperties#setVoice(javax.speech.synthesis.Voice)
+ * @since 2.0.6
  */
 public class Voice {
+
+    private static final Logger logger = getLogger(Voice.class.getName());
 
     /**
      * Age representing a child.
@@ -353,6 +358,7 @@ public class Voice {
         if (require == null) {
             return true;
         }
+logger.log(Level.TRACE, "---- VOICE MATCH: require: " + require + ", " + this);
 
         boolean namesMatch;
         String requiredName = require.getName();
@@ -361,6 +367,7 @@ public class Voice {
         } else {
             namesMatch = requiredName.equals(name);
         }
+logger.log(Level.TRACE, "VOICE MATCH: requiredName: " + requiredName + ", " + namesMatch);
 
         boolean genderMatch;
         int requiredGender = require.getGender();
@@ -369,13 +376,16 @@ public class Voice {
         } else {
             genderMatch = (gender == requiredGender);
         }
+logger.log(Level.TRACE, "VOICE MATCH: requiredGender: " + requiredGender + ", " + genderMatch);
+
         boolean localeMatch;
         SpeechLocale requiredLocale = require.getSpeechLocale();
         if (requiredLocale == null) {
             localeMatch = true;
         } else {
-            localeMatch = requiredLocale.equals(locale);
+            localeMatch = requiredLocale.match(locale);
         }
+logger.log(Level.TRACE, "VOICE MATCH: requiredLocale: " + requiredLocale + ", " + localeMatch);
 
         boolean ageMatch;
         int requiredAge = require.getAge();
@@ -385,6 +395,7 @@ public class Voice {
             int closestAge = getClosestAge(requiredAge);
             ageMatch = (age == closestAge);
         }
+logger.log(Level.TRACE, "VOICE MATCH: requiredAge: " + requiredAge + ", " + ageMatch);
 
         boolean variantMatch;
         int requiredVariant = require.getVariant();
@@ -393,7 +404,9 @@ public class Voice {
         } else {
             variantMatch = (variant == requiredVariant);
         }
+logger.log(Level.TRACE, "VOICE MATCH: requiredVariant: " + requiredVariant + ", " + variantMatch);
 
+logger.log(Level.TRACE, "TOTAL VOICE MATCH: " + (namesMatch && genderMatch && localeMatch && ageMatch && variantMatch));
         return namesMatch && genderMatch && localeMatch && ageMatch && variantMatch;
     }
 
