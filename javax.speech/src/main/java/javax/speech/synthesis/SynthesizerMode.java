@@ -264,7 +264,7 @@ logger.log(Level.TRACE, "MATCH: no voices");
                     boolean voiceMatch = false;
                     for (int k = 0; (k < voices.length) && !voiceMatch; k++) {
                         Voice voice = voices[k];
-                        if (otherVoice.match(voice)) {
+                        if (voice.match(otherVoice)) {
                             voiceMatch = true;
                         }
                     }

@@ -9,7 +9,7 @@ package org.jvoicexml.jsapi2;
 
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
-import java.util.concurrent.BlockingDeque;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -32,7 +32,7 @@ public final class ThreadSpeechEventExecutor implements TerminatableSpeechEventE
     private final ExecutorService thread = Executors.newSingleThreadExecutor();
 
     /** Commands to execute. */
-    private final BlockingDeque<Runnable> commands;
+    private final BlockingQueue<Runnable> commands;
 
     /** <code>false</code> if the executor is terminating. */
     private boolean shouldRun;
@@ -41,7 +41,7 @@ public final class ThreadSpeechEventExecutor implements TerminatableSpeechEventE
      * Constructs a new object.
      */
     public ThreadSpeechEventExecutor() {
-        commands = new java.util.concurrent.LinkedBlockingDeque<>();
+        commands = new java.util.concurrent.LinkedBlockingQueue<>();
         shouldRun = true;
         thread.submit(this::loop);
     }

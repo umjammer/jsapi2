@@ -179,7 +179,7 @@ public class EngineManager {
 
         // since 2.2.0
         ServiceLoader.load(EngineListFactory.class).forEach(ENGINE_LIST_FACTORIES::add);
-logger.log(Level.TRACE, "factory: by service loader" + ENGINE_LIST_FACTORIES.size());
+logger.log(Level.TRACE, "factory: by service loader: " + ENGINE_LIST_FACTORIES.size());
 
         InputStream input;
         try {
@@ -390,7 +390,7 @@ logger.log(Level.WARNING, "EngineFactory is not implemented for " + mode.getClas
      * @return textual version information for this API.
      */
     public static String getVersion() {
-        return "2.2.0";
+        return "2.2.1";
     }
 
     /**

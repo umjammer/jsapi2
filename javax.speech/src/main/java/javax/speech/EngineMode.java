@@ -271,6 +271,7 @@ public abstract class EngineMode {
         if (require == null) {
             return true;
         }
+logger.log(Level.TRACE, "----- EngineMode MATCH: require: " + require + ", " + this);
 
         String otherEngineName = require.getEngineName();
         boolean namesMatch;
@@ -279,7 +280,7 @@ public abstract class EngineMode {
         } else {
             namesMatch = otherEngineName.equals(engineName);
         }
-logger.log(Level.TRACE, "otherEngineName: " + otherEngineName + ", " + namesMatch);
+logger.log(Level.TRACE, "EngineMode MATCH: otherEngineName: " + otherEngineName + ", " + namesMatch);
 
         String otherModeName = require.getModeName();
         boolean modesMatch;
@@ -288,7 +289,7 @@ logger.log(Level.TRACE, "otherEngineName: " + otherEngineName + ", " + namesMatc
         } else {
             modesMatch = otherModeName.equals(modeName);
         }
-logger.log(Level.TRACE, "otherModeName: " + otherModeName + ", " + modesMatch);
+logger.log(Level.TRACE, "EngineMode MATCH: otherModeName: " + otherModeName + ", " + modesMatch);
 
         Boolean otherModeRunning = require.getRunning();
         boolean runningsMatch;
@@ -297,7 +298,7 @@ logger.log(Level.TRACE, "otherModeName: " + otherModeName + ", " + modesMatch);
         } else {
             runningsMatch = otherModeRunning.equals(running);
         }
-logger.log(Level.TRACE, "otherModeRunning: " + otherModeRunning + ", " + runningsMatch);
+logger.log(Level.TRACE, "EngineMode MATCH: otherModeRunning: " + otherModeRunning + ", " + runningsMatch);
 
         Boolean otherSupportsLetterToSound = require.getSupportsLetterToSound();
         boolean supportsLetterToSoundMatch;
@@ -306,7 +307,7 @@ logger.log(Level.TRACE, "otherModeRunning: " + otherModeRunning + ", " + running
         } else {
             supportsLetterToSoundMatch = otherSupportsLetterToSound.equals(supportsLetterToSound);
         }
-logger.log(Level.TRACE, "otherSupportsLetterToSound: " + otherSupportsLetterToSound + ", " + supportsLetterToSoundMatch);
+logger.log(Level.TRACE, "EngineMode MATCH: otherSupportsLetterToSound: " + otherSupportsLetterToSound + ", " + supportsLetterToSoundMatch);
 
         Boolean otherMarkupSupport = require.getSupportsMarkup();
         boolean markupSupportMatch;
@@ -315,9 +316,9 @@ logger.log(Level.TRACE, "otherSupportsLetterToSound: " + otherSupportsLetterToSo
         } else {
             markupSupportMatch = otherMarkupSupport.equals(supportsMarkup);
         }
-logger.log(Level.TRACE, "otherMarkupSupport: " + otherMarkupSupport + ", " + markupSupportMatch);
+logger.log(Level.TRACE, "EngineMode MATCH: otherMarkupSupport: " + otherMarkupSupport + ", " + markupSupportMatch);
 
-logger.log(Level.TRACE, "total matches: " + (namesMatch && modesMatch && runningsMatch && supportsLetterToSoundMatch && markupSupportMatch));
+logger.log(Level.TRACE, "EngineMode MATCH: total matches: " + (namesMatch && modesMatch && runningsMatch && supportsLetterToSoundMatch && markupSupportMatch));
         return namesMatch && modesMatch && runningsMatch && supportsLetterToSoundMatch && markupSupportMatch;
     }
 

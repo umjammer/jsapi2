@@ -18,7 +18,6 @@ import vavi.util.Debug;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 
 /**
@@ -50,11 +49,13 @@ public class PlayQueueTest {
      */
     @Test
     void testCancelItemAtTopOfQueue() throws Exception {
+        CountDownLatch cdl0 = new CountDownLatch(1);
         CountDownLatch cdl = new CountDownLatch(1);
         AudioSegment segment1 = new AudioSegment("http://localhost", "test") {
             @Override
             public InputStream openInputStream() throws IOException, SecurityException {
 Debug.println("pretend taking long time when open id");
+                cdl0.countDown();
                 try { cdl.await(); } catch (InterruptedException ignore) {}
 Debug.println("pretend done");
                 return super.openInputStream();
@@ -68,7 +69,8 @@ Debug.println("pretend done");
         synthesizer.addSpeakableListener(e -> {
             if (e.getRequestId() == item1.getId() && e.getId() == SpeakableEvent.SPEAKABLE_CANCELLED) {
                 cdl1.countDown();
-            } else if (e.getRequestId() == item2.getId()) {
+Debug.println("cdl1: " + cdl1.getCount());
+            } else if (e.getRequestId() == item2.getId() && e.getId() == SpeakableEvent.SPEAKABLE_STARTED) {
                 cdl2.countDown();
 Debug.println("cdl2: " + cdl2.getCount());
             } else {
@@ -77,20 +79,28 @@ Debug.println("eventId: " + Integer.toHexString(e.getId()));
         });
         item1.setSynthesized(true);
         queue.addQueueItem(item1);
+        cdl0.await();
         item2.setSynthesized(true);
         queue.addQueueItem(item2);
         while (queue.getQueueItem(item1.getId()) != null) Thread.yield();
         assertNull(queue.getQueueItem(item1.getId()), "already out of queue, now playing");
         assertEquals(item2, queue.getQueueItem(item2.getId()), "1st is playing, so in queue");
-        cdl.countDown();
         queue.cancelItemAtTopOfQueue();
+        cdl.countDown();
+        if (cdl1.getCount() != 0) {
 Debug.println("testCancelItemAtTopOfQueue::cdl1 start waiting");
-        cdl1.await();
+            cdl1.await();
+        } else {
+Debug.println("testCancelItemAtTopOfQueue::cdl1 countdown is faster");
+        }
         if (cdl2.getCount() != 0) {
 Debug.println("testCancelItemAtTopOfQueue::cdl2 start waiting");
             cdl2.await();
+        } else {
+Debug.println("testCancelItemAtTopOfQueue::cdl2 countdown is faster");
         }
         assertNull(queue.getQueueItem(item2.getId()), "1st is canceled, so not in queue, it's consumed");
+Debug.println("testCancelItemAtTopOfQueue::done");
     }
 
     /**
@@ -98,11 +108,13 @@ Debug.println("testCancelItemAtTopOfQueue::cdl2 start waiting");
      */
     @Test
     void testCancelItem() throws Exception {
+        CountDownLatch cdl0 = new CountDownLatch(1);
         CountDownLatch cdl = new CountDownLatch(1);
         AudioSegment segment1 = new AudioSegment("http://localhost", "test") {
             @Override
             public InputStream openInputStream() throws IOException, SecurityException {
 Debug.println("pretend taking long time when open id");
+                cdl0.countDown();
                 try { cdl.await(); } catch (InterruptedException ignore) {}
 Debug.println("pretend done");
                 return super.openInputStream();
@@ -116,26 +128,38 @@ Debug.println("pretend done");
         synthesizer.addSpeakableListener(e -> {
             if (e.getRequestId() == item1.getId() && e.getId() == SpeakableEvent.SPEAKABLE_CANCELLED) {
                 cdl1.countDown();
-            } else if (e.getRequestId() == item2.getId()) {
+Debug.println("cdl1: " + cdl1.getCount());
+            } else if (e.getRequestId() == item2.getId() && e.getId() == SpeakableEvent.SPEAKABLE_CANCELLED) {
                 cdl2.countDown();
+Debug.println("cdl2: " + cdl2.getCount());
             } else {
 Debug.println("eventId: " + Integer.toHexString(e.getId()));
             }
         });
         item1.setSynthesized(true);
         queue.addQueueItem(item1);
+        cdl0.await();
         item2.setSynthesized(true);
         queue.addQueueItem(item2);
         while (queue.getQueueItem(item1.getId()) != null) Thread.yield();
         assertNull(queue.getQueueItem(item1.getId()), "already out of queue, now playing");
         assertEquals(item2, queue.getQueueItem(item2.getId()), "1st is playing, so in queue");
-        cdl.countDown();
         queue.cancelItem(item2.getId());
+        cdl.countDown();
+        if (cdl2.getCount() != 0) {
 Debug.println("testCancelItem::cdl2 start waiting");
-        cdl2.await();
+            cdl2.await();
+        } else {
+Debug.println("testCancelItem::cdl2 countdown is faster");
+        }
         queue.cancelItemAtTopOfQueue();
+        if (cdl1.getCount() != 0) {
 Debug.println("testCancelItem::cdl1 start waiting");
-        cdl1.await();
+            cdl1.await();
+        } else {
+Debug.println("testCancelItem::cdl1 countdown is faster");
+        }
         assertTrue(queue.isQueueEmpty(), "cancelled all");
+Debug.println("testCancelItem::done");
     }
 }

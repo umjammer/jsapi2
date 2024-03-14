@@ -117,14 +117,14 @@ public class QueueManager {
         // No need to terminate the play queue since this will terminate once
         // the synthQueue terminates
         playThread.shutdownNow();
-        synthThread.shutdown();
+        synthThread.shutdownNow();
         logger.log(Level.TRACE, "shutdown services: " + playThread.isShutdown() + ", " + synthThread.isShutdown());
     }
 
     /**
      * Notifies the queue manager that the synthesis queue has stopped.
      */
-    void done() {
+    final void done() {
         done = true;
     }
 
@@ -134,6 +134,7 @@ public class QueueManager {
      * @return <code>true</code> if the queue manager has terminated
      */
     final boolean isDone() {
+//logger.log(Level.TRACE, "is done?: " + done);
         return done;
     }
 
