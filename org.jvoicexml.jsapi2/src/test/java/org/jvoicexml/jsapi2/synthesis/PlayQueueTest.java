@@ -18,7 +18,6 @@ import vavi.util.Debug;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 
 /**
@@ -68,7 +67,8 @@ Debug.println("pretend done");
         synthesizer.addSpeakableListener(e -> {
             if (e.getRequestId() == item1.getId() && e.getId() == SpeakableEvent.SPEAKABLE_CANCELLED) {
                 cdl1.countDown();
-            } else if (e.getRequestId() == item2.getId()) {
+Debug.println("cdl1: " + cdl1.getCount());
+            } else if (e.getRequestId() == item2.getId() && e.getId() == SpeakableEvent.SPEAKABLE_STARTED) {
                 cdl2.countDown();
 Debug.println("cdl2: " + cdl2.getCount());
             } else {
@@ -82,15 +82,22 @@ Debug.println("eventId: " + Integer.toHexString(e.getId()));
         while (queue.getQueueItem(item1.getId()) != null) Thread.yield();
         assertNull(queue.getQueueItem(item1.getId()), "already out of queue, now playing");
         assertEquals(item2, queue.getQueueItem(item2.getId()), "1st is playing, so in queue");
-        cdl.countDown();
         queue.cancelItemAtTopOfQueue();
+        cdl.countDown();
+        if (cdl1.getCount() != 0) {
 Debug.println("testCancelItemAtTopOfQueue::cdl1 start waiting");
-        cdl1.await();
+            cdl1.await();
+        } else {
+Debug.println("testCancelItemAtTopOfQueue::cdl1 countdown is faster");
+        }
         if (cdl2.getCount() != 0) {
 Debug.println("testCancelItemAtTopOfQueue::cdl2 start waiting");
             cdl2.await();
+        } else {
+Debug.println("testCancelItemAtTopOfQueue::cdl2 countdown is faster");
         }
         assertNull(queue.getQueueItem(item2.getId()), "1st is canceled, so not in queue, it's consumed");
+Debug.println("testCancelItemAtTopOfQueue::done");
     }
 
     /**
@@ -117,8 +124,9 @@ Debug.println("pretend done");
             if (e.getRequestId() == item1.getId() && e.getId() == SpeakableEvent.SPEAKABLE_CANCELLED) {
                 cdl1.countDown();
 Debug.println("cdl1: " + cdl1.getCount());
-            } else if (e.getRequestId() == item2.getId()) {
+            } else if (e.getRequestId() == item2.getId() && e.getId() == SpeakableEvent.SPEAKABLE_CANCELLED) {
                 cdl2.countDown();
+Debug.println("cdl2: " + cdl2.getCount());
             } else {
 Debug.println("eventId: " + Integer.toHexString(e.getId()));
             }
@@ -130,15 +138,22 @@ Debug.println("eventId: " + Integer.toHexString(e.getId()));
         while (queue.getQueueItem(item1.getId()) != null) Thread.yield();
         assertNull(queue.getQueueItem(item1.getId()), "already out of queue, now playing");
         assertEquals(item2, queue.getQueueItem(item2.getId()), "1st is playing, so in queue");
-        cdl.countDown();
         queue.cancelItem(item2.getId());
+        cdl.countDown();
+        if (cdl2.getCount() != 0) {
 Debug.println("testCancelItem::cdl2 start waiting");
-        cdl2.await();
+            cdl2.await();
+        } else {
+Debug.println("testCancelItem::cdl2 countdown is faster");
+        }
         queue.cancelItemAtTopOfQueue();
         if (cdl1.getCount() != 0) {
 Debug.println("testCancelItem::cdl1 start waiting");
             cdl1.await();
+        } else {
+Debug.println("testCancelItem::cdl1 countdown is faster");
         }
         assertTrue(queue.isQueueEmpty(), "cancelled all");
+Debug.println("testCancelItem::done");
     }
 }

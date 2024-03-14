@@ -206,11 +206,13 @@ Debug.println("done");
         AtomicInteger firstId = new AtomicInteger();
         AtomicInteger secondId = new AtomicInteger();
         CountDownLatch cdl0 = new CountDownLatch(1);
-        CountDownLatch cdl = new CountDownLatch(2);
+        CountDownLatch cdl1 = new CountDownLatch(1);
+        CountDownLatch cdl2 = new CountDownLatch(2);
         // hack, stopping at 1st synthesis
         synthesizer.setSpeakHandler(id -> {
             if (id == zerothId.get()) {
 Debug.println("pretend 0th taking long time...");
+                cdl1.countDown();
                 try { cdl0.await(); } catch (InterruptedException ignore) {}
 Debug.println("0th done");
             }
@@ -219,18 +221,19 @@ Debug.println("0th done");
             if (e.getId() == SpeakableEvent.SPEAKABLE_CANCELLED) {
                 assertTrue(List.of(firstId.get(), secondId.get()).contains(e.getRequestId()));
 Debug.println("id " + e.getRequestId() + " is canceled");
-                cdl.countDown();
+                cdl2.countDown();
             } else {
 Debug.println("eventId: " + Integer.toHexString(e.getId()));
             }
         });
         zerothId.set(queue.appendItem(segment0, null)); // takes long time
+        cdl1.await();
         firstId.set(queue.appendItem(segment1, null));
         secondId.set(queue.appendItem(segment2, null));
         assertFalse(queue.isQueueEmpty(), "because of 0th takes long time"); // TODO ci error
         assertTrue(queue.cancelItem(firstId.get()), "1st is in queue because 0th takes long time");
         assertTrue(queue.cancelItem(secondId.get()), "2nd is in queue because 0th takes long time");
-        cdl.await();
+        cdl2.await();
         cdl0.countDown();
         assertTrue(queue.isQueueEmpty(), "queue is empty because all are canceled");
         assertFalse(queue.cancelItem(-1), "no such id");

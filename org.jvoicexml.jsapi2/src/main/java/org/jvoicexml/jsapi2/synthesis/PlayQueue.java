@@ -235,7 +235,7 @@ logger.log(Level.TRACE, "cancelled by outer loop: " + e.getStackTrace()[2], e);
             currentItem.set(null);
             postEventsAfterPlay();
         }
-logger.log(Level.WARNING, "P:: loop terminated");
+logger.log(Level.DEBUG, "play queue loop terminated");
     }
 
     /**

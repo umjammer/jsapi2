@@ -90,6 +90,7 @@ final class SynthesisQueue {
             queue.clear();
             queueManager.done();
         }
+logger.log(Level.TRACE, "synth queue terminated");
     }
 
     /**
@@ -338,6 +339,7 @@ logger.log(Level.TRACE, "S:: item canceled 2");
                 currentItem.set(null);
             }
         }
+logger.log(Level.DEBUG, "synth queue loop terminated");
     }
 
     /**

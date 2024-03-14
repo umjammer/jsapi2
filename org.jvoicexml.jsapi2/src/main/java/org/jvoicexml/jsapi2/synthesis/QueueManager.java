@@ -134,7 +134,7 @@ public class QueueManager {
      * @return <code>true</code> if the queue manager has terminated
      */
     final boolean isDone() {
-logger.log(Level.TRACE, "is done?: " + done);
+//logger.log(Level.TRACE, "is done?: " + done);
         return done;
     }
 
