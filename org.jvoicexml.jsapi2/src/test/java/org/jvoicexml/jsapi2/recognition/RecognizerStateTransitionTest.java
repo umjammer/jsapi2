@@ -6,6 +6,7 @@ import javax.speech.synthesis.Synthesizer;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.jvoicexml.jsapi2.mock.recognition.MockRecognizer;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -17,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  *
  * @author Dirk Schnelle-Walka
  */
+@DisabledIfEnvironmentVariable(named = "GITHUB_WORKFLOW", matches = ".*")
 public final class RecognizerStateTransitionTest {
 
     /** The recognizer to test. */

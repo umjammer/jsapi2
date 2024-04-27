@@ -8,7 +8,7 @@
 
   <groupId>org.jvoicexml</groupId>
   <artifactId>jsapi2</artifactId>
-  <version>0.6.9</version>
+  <version>0.6.10</version>
   <packaging>pom</packaging>
 
   <modules>
@@ -38,7 +38,7 @@
 
   <properties>
     <freetts.groupId>com.github.umjammer.FreeTTS</freetts.groupId>
-    <freetts.version>1.2.6</freetts.version>
+    <freetts.version>1.2.7</freetts.version>
   </properties>
 
   <build>
@@ -74,7 +74,7 @@
       <dependency>
         <groupId>com.github.umjammer</groupId>
         <artifactId>vavi-commons</artifactId>
-        <version>1.1.10</version>
+        <version>1.1.12</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
