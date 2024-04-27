@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  *
  * @author Dirk Schnelle-Walka
  */
+@DisabledIfEnvironmentVariable(named = "GITHUB_WORKFLOW", matches = ".*")
 public final class CaptureURLConnectionTest {
 
     /**
@@ -30,7 +31,6 @@ public final class CaptureURLConnectionTest {
      * @throws Exception test failed.
      */
     @Test
-    @DisabledIfEnvironmentVariable(named = "GITHUB_WORKFLOW", matches = ".*")
     void testGetInputStream() throws Exception {
         URL url = new URL("capture://audio?rate=16000&bits=16&channels=2&endian=big&encoding=pcm&signed=true");
         CaptureURLConnection connection = new CaptureURLConnection(url);
