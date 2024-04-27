@@ -52,12 +52,12 @@
       <version>${freetts.version}</version>
       <exclusions>
         <exclusion>
-          <artifactId>org.jvoicexml.jsapi2.freetts</artifactId>
-          <groupId>com.github.umjammer.jsapi</groupId>
+          <groupId>com.github.umjammer</groupId>
+          <artifactId>javax-speech</artifactId>
         </exclusion>
         <exclusion>
-          <artifactId>javax.speech</artifactId>
-          <groupId>com.github.umjammer.jsapi</groupId>
+          <groupId>com.github.umjammer.jsapi2</groupId>
+          <artifactId>freetts-jsapi10</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
