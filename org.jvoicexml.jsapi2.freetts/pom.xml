@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.jvoicexml</groupId>
     <artifactId>jsapi2</artifactId>
-    <version>0.6.10</version>
+    <version>0.6.11</version>
   </parent>
 
   <artifactId>org.jvoicexml.jsapi2.freetts</artifactId>
@@ -20,7 +20,6 @@
           <trimStackTrace>false</trimStackTrace>
           <argLine>
             -Djava.util.logging.config.file=${project.build.testOutputDirectory}/logging.properties
-            -Dvavi.util.logging.VaviFormatter.extraClassMethod=sun\.util\.logging\.internal\.LoggingProviderImpl\$JULWrapper#log
           </argLine>
         </configuration>
       </plugin>
@@ -38,13 +37,13 @@
     <dependency>
       <groupId>org.mozilla</groupId>
       <artifactId>rhino</artifactId>
-      <version>1.7.14</version>
+      <scope>runtime</scope>
     </dependency>
 
     <dependency>
       <groupId>org.jvoicexml</groupId>
       <artifactId>org.jvoicexml.jsapi2</artifactId>
-      <version>0.6.10</version>
+      <version>0.6.11</version>
     </dependency>
     <dependency>
       <groupId>${freetts.groupId}</groupId>

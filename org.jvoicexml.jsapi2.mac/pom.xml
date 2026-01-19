@@ -20,7 +20,6 @@
           <reuseForks>true</reuseForks>
           <argLine>
             -Djava.util.logging.config.file=${project.build.testOutputDirectory}/logging.properties
-            -Dvavi.util.logging.VaviFormatter.extraClassMethod=sun\\.util\\.logging\\.internal\\.LoggingProviderImpl\\$JULWrapper#log
           </argLine>
         </configuration>
       </plugin>
@@ -38,7 +37,7 @@
     <dependency>
       <groupId>org.mozilla</groupId>
       <artifactId>rhino</artifactId>
-      <version>1.7.14</version>
+      <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>org.jvoicexml</groupId>
@@ -53,7 +52,7 @@
     <dependency>
       <groupId>com.github.umjammer.rococoa</groupId>
       <artifactId>rococoa-contrib</artifactId>
-      <version>0.8.7</version>
+      <version>0.8.13</version>
     </dependency>
 
     <dependency>

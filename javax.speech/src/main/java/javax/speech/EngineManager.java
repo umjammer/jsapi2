@@ -49,7 +49,7 @@ import static java.lang.System.getLogger;
  * The EngineManager provides the ability to
  * locate, select and create speech Engine instances.
  * <p>
- * The createEngine method creates create speech Engines.
+ * The createEngine method creates speech Engines.
  * It accepts a single parameter that
  * defines the required properties for the Engine to create.
  * The parameter is a subclass of EngineMode corresponding to a
@@ -92,7 +92,7 @@ import static java.lang.System.getLogger;
  * Locale is treated specially in the selection to ensure that language is
  * always considered when selecting an engine.
  * If a locale is not provided, the default locale
- * (java.util.Locale.getDefault) is used.
+ * ({@code java.util.Locale.getDefault}) is used.
  * <p>
  * The selection procedure is:
  * <p>
@@ -109,7 +109,7 @@ import static java.lang.System.getLogger;
  * the required properties.
  * Amongst the matching engines, give preference to:
  * <p>
- * A running engine (EngineMode.getRunning is true),
+ * A running engine ({@link EngineMode#getRunning} is true),
  * An engine that matches the default Locale's country.
  * <p>
  * When more than one engine is a legal match in the final step,
@@ -149,8 +149,8 @@ import static java.lang.System.getLogger;
  * </pre>
  * <p>
  * This line is interpreted as "the EngineListFactory object for the
- * com.acme.recognizer engine is the class called
- * com.acme.recognizer.AcmeEngineListFactory.
+ * {@code com.acme.recognizer} engine is the class called
+ * {@code com.acme.recognizer.AcmeEngineListFactory}.
  * When it is first called, the EngineManager class will attempt to create an
  * instance of each EngineListFactory object and will ensure that it implements
  * the EngineListFactory interface.
@@ -186,7 +186,7 @@ logger.log(Level.TRACE, "factory: by service loader: " + ENGINE_LIST_FACTORIES.s
             Class<?> clazz = Class.forName("javax.speech.EngineManager");
             input = clazz.getResourceAsStream("/speech.properties");
         } catch (ClassNotFoundException e) {
-            throw new IllegalArgumentException(e.getMessage());
+            throw new IllegalArgumentException(e);
         }
         if (input != null) {
             Properties props = new Properties();
@@ -196,7 +196,7 @@ logger.log(Level.TRACE, "factory: by service loader: " + ENGINE_LIST_FACTORIES.s
                 // Close input
                 input.close();
             } catch (IOException e) {
-                // Ignore.
+                logger.log(Level.DEBUG, e.getMessage(), e);
             }
 
             Enumeration<?> keys = props.keys();
@@ -206,7 +206,7 @@ logger.log(Level.TRACE, "factory: by service loader: " + ENGINE_LIST_FACTORIES.s
                 try {
                     registerEngineListFactory(className);
                 } catch (IllegalArgumentException | SecurityException | EngineException e) {
-                    // Ignore.
+                    logger.log(Level.DEBUG, e.getMessage(), e);
                 }
             }
         }
@@ -217,7 +217,7 @@ logger.log(Level.TRACE, "factory: total: " + ENGINE_LIST_FACTORIES.size());
      * Lists EngineMode objects for available engine modes
      * that match the required properties.
      * <p>
-     * If the require parameter is null, then all known Engines are listed.
+     * If the {@code require} parameter is null, then all known Engines are listed.
      * <p>
      * Returns a zero-length list if no Engines are available or if no Engines
      * have the required properties. (The method never returns null).
