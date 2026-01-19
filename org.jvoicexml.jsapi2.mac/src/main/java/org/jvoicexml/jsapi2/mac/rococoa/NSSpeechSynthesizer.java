@@ -506,7 +506,7 @@ logger.log(Level.TRACE, String.format("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ delegat
      * @param baselinePitch the baseline pitch to use
      */
     public void setPitchBase(float baselinePitch) {
-        setProperty(SpeechProperty.PitchBaseProperty, NSNumber.of((double) baselinePitch)); // TODO float bug?
+        setProperty(SpeechProperty.PitchBaseProperty, NSNumber.of((double) baselinePitch));
     }
 
     /**
@@ -527,7 +527,7 @@ logger.log(Level.TRACE, String.format("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ delegat
         if (modulation < 0.0f || modulation > 127.0f) {
             throw new IllegalArgumentException("Pitch modulation must be in the range 0.0 - 127.0");
         }
-        setProperty(SpeechProperty.PitchModProperty, NSNumber.of((double) modulation)); // TODO float bug?
+        setProperty(SpeechProperty.PitchModProperty, NSNumber.of((double) modulation));
     }
 
     /**

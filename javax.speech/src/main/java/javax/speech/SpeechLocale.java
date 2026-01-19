@@ -26,7 +26,6 @@
 
 package javax.speech;
 
-
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 
@@ -35,9 +34,10 @@ import static java.lang.System.getLogger;
 
 /**
  * TODO this class should be replaced by Locale?
+ * <p>
  * system property
  * <li>javax.speech.SpeechLocale.comparisonStrictness ... set strictness for #match() method values are
- *                                                        STRICT</li>
+ *                                                        LENIENT or STRICT (default)</li>
  *
  * @since 2.0.6
  */
@@ -66,18 +66,18 @@ public final class SpeechLocale {
         FRENCH = new SpeechLocale("fr");
         GERMAN = new SpeechLocale("de");
 
-        String defaultLanguage = System.getProperty("microedition.locale");
+        String defaultLanguage = System.getProperty("microedition.locale"); // TODO cldc is deprecated
         if (defaultLanguage == null) {
             defaultLanguage = "en";
         }
         DEFAULT_LOCALE = new SpeechLocale(defaultLanguage);
     }
 
-    private String language;
+    private final String language;
 
-    private String country;
+    private final String country;
 
-    private String variant;
+    private final String variant;
 
     /**
      * Convert new iso639 codes to the old ones.
@@ -85,7 +85,7 @@ public final class SpeechLocale {
      * @param language the language to check
      * @return the appropriate code
      */
-    private String convertLanguage(String language) {
+    private static String convertLanguage(String language) {
         if (language.isEmpty())
             return language;
         language = language.toLowerCase();
@@ -117,14 +117,17 @@ public final class SpeechLocale {
         return new SpeechLocale[] {ENGLISH, US, FRENCH, GERMAN};
     }
 
+    /** @return not null */
     public String getLanguage() {
         return language;
     }
 
+    /** @return not null */
     public String getCountry() {
         return country;
     }
 
+    /** @return not null */
     public String getVariant() {
         return variant;
     }
@@ -139,9 +142,12 @@ public final class SpeechLocale {
         return result;
     }
 
-    /** for {@link #match(SpeechLocale)} */
+    /**
+     * for {@link #match(SpeechLocale)}
+     * @since 2.2.1
+     */
     private enum ComparisonStrictness {
-        /** match if on of them is matched */
+        /** match if specified ones are matched */
         LENIENT,
         /** compare all */
         STRICT;
@@ -198,6 +204,10 @@ logger.log(Level.WARNING, "javax.speech.SpeechLocale.comparisonStrictness is wri
     }
 
     /**
+     * when {@link #comparisonStrictness} is {@link ComparisonStrictness#STRICT} it's needed perfect match
+     * (country & language & variant), when {@link #comparisonStrictness} is {@link ComparisonStrictness#LENIENT}
+     * it's needed language & country (if it's specified).
+     *
      * @since 2.2.1 using {@link #comparisonStrictness} for comparison strictness.
      * @param require null means any match
      */

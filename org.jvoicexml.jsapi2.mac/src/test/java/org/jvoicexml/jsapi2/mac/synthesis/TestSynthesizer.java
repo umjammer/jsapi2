@@ -29,9 +29,6 @@ import org.jvoicexml.jsapi2.mac.MacEngineListFactory;
 @EnabledOnOs(OS.MAC)
 public final class TestSynthesizer {
 
-    static {
-        System.setProperty("vavi.util.logging.VaviFormatter.extraClassMethod", "sun\\.util\\.logging\\.internal\\..+#log");
-    }
     /** The test object. */
     private Synthesizer synthesizer;
 

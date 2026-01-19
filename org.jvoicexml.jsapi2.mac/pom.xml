@@ -20,7 +20,6 @@
           <reuseForks>true</reuseForks>
           <argLine>
             -Djava.util.logging.config.file=${project.build.testOutputDirectory}/logging.properties
-            -Dvavi.util.logging.VaviFormatter.extraClassMethod=sun\\.util\\.logging\\.internal\\.LoggingProviderImpl\\$JULWrapper#log
           </argLine>
         </configuration>
       </plugin>
