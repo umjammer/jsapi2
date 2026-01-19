@@ -10,13 +10,13 @@
 
 mavenized [JSR-113](https://jcp.org/en/jsr/detail?id=113) modified aka JSAPI2
 
- * this JSAPI version 2.2.1 (**CAUTION** since 2.2.0, versions are my original (modified from SUN's original))
+ * this JSAPI version 2.2.1 (**CAUTION**: starting from version 2.2.0, these are my own versions, modified from SUN's original.)
    * 2.0.6
      * DOES NOT support the J2ME platform (like CLDC 1.0, MIDP 1.0)
      * volume property is enabled
    * 2.2.0 support service loader mechanism.
-     * `speech.properties` and `EngineManager#registerEngineListFactory` works, but no more needed
-   * 2.2.1 add voice comparison level for `SpeechLocal#match()`
+     * `speech.properties` and `EngineManager#registerEngineListFactory` work, but no longer needed
+   * 2.2.1 add voice comparison level for [`SpeechLocal#match()`](javax.speech/src/main/java/javax/speech/SpeechLocale.java)
 
 ## Install
 
