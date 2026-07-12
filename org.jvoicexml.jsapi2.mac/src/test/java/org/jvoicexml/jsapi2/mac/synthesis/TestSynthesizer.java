@@ -16,6 +16,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
 
@@ -35,6 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
  */
 @EnabledOnOs(OS.MAC)
 @Disabled("crash")
+@DisabledIfEnvironmentVariable(named = "GITHUB_WORKFLOW", matches = ".*")
 public final class TestSynthesizer {
 
     /** The test object. */
@@ -67,7 +69,7 @@ public final class TestSynthesizer {
         assertInstanceOf(MacSynthesizer.class, synthesizer);
 
 Debug.print("voices: " + ((SynthesizerMode) synthesizer.getEngineMode()).getVoices().length);
-        String voiceName = "Albert";
+        String voiceName = "Kyoko";
         Voice voice = Arrays.stream(((SynthesizerMode) synthesizer.getEngineMode()).getVoices()).filter(v -> {
 //Debug.print(v.getName());
             return v.getName().equals(voiceName);

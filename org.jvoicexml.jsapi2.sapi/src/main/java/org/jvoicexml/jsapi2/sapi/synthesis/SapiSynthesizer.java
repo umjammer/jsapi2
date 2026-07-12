@@ -63,20 +63,6 @@ public final class SapiSynthesizer extends BaseSynthesizer {
         super(mode);
     }
 
-    /**
-     * Do some cleanup.
-     *
-     * @throws Throwable error finalizing
-     */
-    @Override
-    protected void finalize() throws Throwable {
-        if (synthesizerHandle != 0) {
-            sapiHandlDeallocate(synthesizerHandle);
-            synthesizerHandle = 0;
-        }
-        super.finalize();
-    }
-
     @Override
     protected void handleAllocate() throws EngineStateException,
             EngineException, AudioException, SecurityException {
