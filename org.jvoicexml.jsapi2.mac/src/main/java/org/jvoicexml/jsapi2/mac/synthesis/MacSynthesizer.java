@@ -29,15 +29,17 @@ package org.jvoicexml.jsapi2.mac.synthesis;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicReference;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.speech.AudioException;
 import javax.speech.AudioManager;
 import javax.speech.AudioSegment;
@@ -50,9 +52,22 @@ import javax.speech.synthesis.Voice;
 import org.jvoicexml.jsapi2.BaseAudioSegment;
 import org.jvoicexml.jsapi2.BaseEngineProperties;
 import org.jvoicexml.jsapi2.mac.SynthesizerDelegate;
-import org.jvoicexml.jsapi2.mac.rococoa.NSSpeechSynthesizer;
-import org.jvoicexml.jsapi2.mac.rococoa.NSVoice;
 import org.jvoicexml.jsapi2.synthesis.BaseSynthesizer;
+import org.rococoa.Foundation;
+import org.rococoa.ObjCBlocks.BlockLiteral;
+import org.rococoa.ObjCObjectByReference;
+import org.rococoa.Rococoa;
+import org.rococoa.cocoa.foundation.NSError;
+import org.rococoa.cocoa.foundation.NSObject;
+import vavix.rococoa.avfoundation.AVAudioFile;
+import vavix.rococoa.avfoundation.AVAudioFormat;
+import vavix.rococoa.avfoundation.AVAudioPCMBuffer;
+import vavix.rococoa.avfoundation.AVSpeechSynthesisVoice;
+import vavix.rococoa.avfoundation.AVSpeechSynthesizer;
+import vavix.rococoa.avfoundation.AVSpeechSynthesizer.AVSpeechSynthesizerBufferCallback;
+import vavix.rococoa.avfoundation.AVSpeechUtterance;
+
+import static org.rococoa.ObjCBlocks.block;
 
 
 /**
@@ -67,7 +82,7 @@ public final class MacSynthesizer extends BaseSynthesizer {
     private static final Logger logger = System.getLogger(MacSynthesizer.class.getName());
 
     /** */
-    private NSSpeechSynthesizer synthesizer;
+    private AVSpeechSynthesizer synthesizer;
 
     /** */
     private SynthesizerDelegate delegate;
@@ -83,25 +98,27 @@ public final class MacSynthesizer extends BaseSynthesizer {
 
     @Override
     protected void handleAllocate() throws EngineStateException, EngineException, AudioException, SecurityException {
-        Voice voice;
-        MacSynthesizerMode mode = (MacSynthesizerMode) getEngineMode();
-        if (mode == null) {
-            throw new EngineException("engine mode is null");
-        } else {
-            Voice[] voices = mode.getVoices();
-logger.log(Level.INFO, "voices: " + voices.length);
-            if (voices.length == 0) {
-                throw new EngineException("no voice");
+        if (getSynthesizerProperties().getVoice() == null) {
+            Voice voice;
+            MacSynthesizerMode mode = (MacSynthesizerMode) getEngineMode();
+            if (mode == null) {
+                throw new EngineException("engine mode is null");
             } else {
-                voice = voices[0];
+                Voice[] voices = mode.getVoices();
+logger.log(Level.INFO, "voices: " + voices.length);
+                if (voices.length == 0) {
+                    throw new EngineException("no voice");
+                } else {
+                    voice = voices[0];
+                }
             }
-        }
 logger.log(Level.TRACE, "voice: " + voice.getName());
-        getSynthesizerProperties().setVoice(voice);
+            getSynthesizerProperties().setVoice(voice);
+        }
 
 //logger.log(Level.TRACE, "default voice2: " + NSSpeechSynthesizer.defaultVoice().getName());
-        synthesizer = NSSpeechSynthesizer.synthesizerWithVoice(toNativeVoice(voice));
-        delegate = new SynthesizerDelegate(synthesizer); // delegate is implemented in vavi-speech
+        synthesizer = AVSpeechSynthesizer.newInstance();
+//        delegate = new SynthesizerDelegate(synthesizer);
 
         //
         long newState = ALLOCATED | RESUMED;
@@ -110,13 +127,21 @@ logger.log(Level.TRACE, "voice: " + voice.getName());
     }
 
     /** */
-    private NSVoice toNativeVoice(Voice voice) {
-//logger.log(Level.TRACE, "vioce2: " + getSynthesizerProperties().getVoice());
+    private AVSpeechSynthesisVoice toNativeVoice(Voice voice) {
+logger.log(Level.TRACE, "toNativeVoice: " + getSynthesizerProperties().getVoice());
         if (voice == null) {
-            return null;
+logger.log(Level.TRACE, "voice not set");
+            return AVSpeechSynthesisVoice.speechVoices().get(0);
         }
-        Optional<NSVoice> result = NSSpeechSynthesizer.availableVoices().stream().filter(v -> v.getName().equals(voice.getName())).findFirst();
-        return result.orElse(null);
+        AVSpeechSynthesisVoice nativeVoice = null;
+        for (NSObject object : AVSpeechSynthesisVoice.speechVoices()) {
+            AVSpeechSynthesisVoice nv = Rococoa.cast(object, AVSpeechSynthesisVoice.class);
+            if (nv.name().equals(voice.getName())) {
+                nativeVoice = nv;
+            }
+        }
+logger.log(Level.TRACE, "toNativeVoice: " + nativeVoice);
+        return nativeVoice != null ? nativeVoice : AVSpeechSynthesisVoice.speechVoices().get(0);
     }
 
     @Override
@@ -165,9 +190,10 @@ logger.log(Level.TRACE, "voice: " + voice.getName());
 
     @Override
     public AudioSegment handleSpeak(int id, String item) {
+logger.log(Level.TRACE, "handleSpeak");
         AudioManager manager = getAudioManager();
         String locator = manager.getMediaLocator();
-        InputStream in = synthe(item);
+        InputStream in = synthesize(item);
         AudioSegment segment;
         if (locator == null) {
             segment = new BaseAudioSegment(item, in);
@@ -178,21 +204,73 @@ logger.log(Level.TRACE, "voice: " + voice.getName());
     }
 
     /** */
-    private AudioInputStream synthe(String text) {
+    private AudioInputStream synthesize(String text) {
+logger.log(Level.TRACE, "text: " + text);
         try {
-//logger.log(Level.TRACE, "vioce: " + getSynthesizerProperties().getVoice());
-            synthesizer.setVoice(toNativeVoice(getSynthesizerProperties().getVoice()));
-            Path path = Files.createTempFile(getClass().getName(), ".aiff");
-            synthesizer.startSpeakingStringToURL(text, path.toUri());
-            // wait to finish writing whole data
-            delegate.waitForSpeechDone(10000, true);
-            byte[] wav = Files.readAllBytes(path);
-            ByteArrayInputStream bais = new ByteArrayInputStream(wav);
-            // you should pass bytes to BaseAudioSegment as AudioInputStream or causes crackling!
-            AudioInputStream ais = AudioSystem.getAudioInputStream(bais);
-            Files.delete(path);
-            return ais;
-        } catch (IOException | UnsupportedAudioFileException e) {
+logger.log(Level.TRACE, "voice: " + getSynthesizerProperties().getVoice());
+            Path path = Files.createTempFile(getClass().getName(), ".wav");
+            BlockLiteral bufferCallback = null;
+            try {
+                AVSpeechUtterance utterance = AVSpeechUtterance.of(text);
+                var voice = toNativeVoice(getSynthesizerProperties().getVoice());
+logger.log(Level.TRACE, "nativeVoice: " + voice);
+                utterance.setVoice(voice);
+                utterance.setVolume(getSynthesizerProperties().getVolume() / 100f);
+
+                CountDownLatch cdl = new CountDownLatch(1);
+                AtomicReference<AVAudioFile> audioFile = new AtomicReference<>();
+
+                bufferCallback = block((AVSpeechSynthesizerBufferCallback) (block, audioBufferId) -> {
+                    try {
+                        AVAudioPCMBuffer audioBuffer = Rococoa.wrap(audioBufferId, AVAudioPCMBuffer.class);
+                        if (audioBuffer == null) {
+logger.log(Level.WARNING, "audioBuffer is null");
+                            cdl.countDown();
+                            throw new IllegalStateException("buffer is not pcm");
+                        }
+                        if (audioBuffer.frameLength() == 0) {
+                            // done
+                            cdl.countDown();
+                        } else {
+                            if (audioFile.get() == null) {
+                                AVAudioFormat format16 = AVAudioFormat.init(3, audioBuffer.format().sampleRate(), 1, true);
+                                audioFile.set(AVAudioFile.init(path.toUri(), format16.settings(), audioBuffer.format().commonFormat(), audioBuffer.format().isInterleaved()));
+                                if (audioFile.get() == null) {
+                                    cdl.countDown();
+                                    throw new IllegalStateException("file creation failed");
+                                }
+                            }
+                            ObjCObjectByReference outError = new ObjCObjectByReference();
+                            audioFile.get().writeFromBuffer_error(audioBuffer, outError);
+                            NSError error = outError.getValueAs(NSError.class);
+                            if (error != null) {
+logger.log(Level.WARNING, "writeFromBuffer: " + error.description());
+                                cdl.countDown();
+                                throw new IllegalStateException(error.description());
+                            }
+                        }
+                    } catch (IOException e) {
+logger.log(Level.ERROR, e.getMessage(), e);
+                        cdl.countDown();
+                        throw new UncheckedIOException(e);
+                    }
+                });
+
+                synthesizer.writeUtterance_toBufferCallback(utterance, bufferCallback);
+                cdl.await();
+
+                if (audioFile.get() != null) {
+                    audioFile.get().close();
+                }
+
+                return AudioSystem.getAudioInputStream(new ByteArrayInputStream(Files.readAllBytes(path)));
+            } finally {
+                Files.deleteIfExists(path);
+                if (bufferCallback != null)
+                    Foundation.getRococoaLibrary().releaseObjCBlock(bufferCallback.getPointer());
+            }
+        } catch (Exception e) {
+logger.log(Level.ERROR, e.getMessage(), e);
             throw new IllegalStateException(e);
         }
     }

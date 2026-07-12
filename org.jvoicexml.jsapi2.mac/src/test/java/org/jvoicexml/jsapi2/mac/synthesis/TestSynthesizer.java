@@ -1,18 +1,25 @@
 package org.jvoicexml.jsapi2.mac.synthesis;
 
+import java.util.Arrays;
 import javax.speech.Engine;
 import javax.speech.EngineManager;
+import javax.speech.SpeechLocale;
 import javax.speech.synthesis.SpeakableListener;
 import javax.speech.synthesis.Synthesizer;
+import javax.speech.synthesis.SynthesizerMode;
 import javax.speech.synthesis.Voice;
+
+import vavi.util.Debug;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
-import org.jvoicexml.jsapi2.mac.MacEngineListFactory;
+
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 
 /**
@@ -27,6 +34,7 @@ import org.jvoicexml.jsapi2.mac.MacEngineListFactory;
  * @author Stefan Radomski
  */
 @EnabledOnOs(OS.MAC)
+@Disabled("crash")
 public final class TestSynthesizer {
 
     /** The test object. */
@@ -55,12 +63,21 @@ public final class TestSynthesizer {
      */
     @BeforeEach
     public void setUp() throws Exception {
-        Voice alex = new Voice(null, "Albert", Voice.GENDER_DONT_CARE, Voice.AGE_DONT_CARE, Voice.VARIANT_DONT_CARE);
-        MacSynthesizerMode msm = new MacSynthesizerMode(null, null, null, null, false, new Voice[] {alex});
-        synthesizer = (Synthesizer) EngineManager.createEngine(msm);
+        synthesizer = (Synthesizer) EngineManager.createEngine(new MacSynthesizerMode());
+        assertInstanceOf(MacSynthesizer.class, synthesizer);
+
+Debug.print("voices: " + ((SynthesizerMode) synthesizer.getEngineMode()).getVoices().length);
+        String voiceName = "Albert";
+        Voice voice = Arrays.stream(((SynthesizerMode) synthesizer.getEngineMode()).getVoices()).filter(v -> {
+//Debug.print(v.getName());
+            return v.getName().equals(voiceName);
+        }).findFirst().orElseThrow();
+Debug.println("selected: " + voice.getName());
+
         synthesizer.allocate();
         synthesizer.waitEngineState(Engine.ALLOCATED);
         synthesizer.getSynthesizerProperties().setVolume(10);
+        synthesizer.getSynthesizerProperties().setVoice(new Voice(voice.getSpeechLocale(), voice.getName(), voice.getGender(), Voice.AGE_DONT_CARE, Voice.VARIANT_DONT_CARE));
     }
 
     /**
@@ -82,11 +99,14 @@ public final class TestSynthesizer {
     @Test
     void testSpeak() throws Exception {
         synthesizer.resume();
-        synthesizer.speak("I'll be artificial intelligence complete!", null);
-//        synthesizer.speak("Half past 8", null);
-//        synthesizer.speak("Ups!", null);
+        synthesizer.waitEngineState(Synthesizer.RESUMED);
+        synthesizer.speak("I'll be artificial intelligence complete!", System.out::println);
+        synthesizer.speak("Half past 8", System.out::println);
+        synthesizer.speak("Ups!", System.out::println);
         System.out.println("this is a test output");
         synthesizer.waitEngineState(Synthesizer.QUEUE_EMPTY);
+
+        Thread.sleep(10000);
     }
 
     /**

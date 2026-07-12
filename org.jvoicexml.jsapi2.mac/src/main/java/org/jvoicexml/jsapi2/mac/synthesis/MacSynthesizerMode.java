@@ -23,7 +23,8 @@ public final class MacSynthesizerMode extends SynthesizerMode implements EngineF
      * Constructs a new object.
      */
     public MacSynthesizerMode() {
-        super();
+        super("Mac", null,
+                null, null, null, null);
     }
 
     /**
@@ -31,7 +32,8 @@ public final class MacSynthesizerMode extends SynthesizerMode implements EngineF
      * @param locale  the locale associated with this mode
      */
     public MacSynthesizerMode(SpeechLocale locale) {
-        super(locale);
+        super("Mac", null, null, null, null,
+                new Voice[] {new Voice(locale, null, Voice.GENDER_DONT_CARE, Voice.AGE_DONT_CARE, Voice.VARIANT_DONT_CARE)});
     }
 
     /**
