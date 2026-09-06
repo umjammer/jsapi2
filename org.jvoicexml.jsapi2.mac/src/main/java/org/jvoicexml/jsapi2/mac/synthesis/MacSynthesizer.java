@@ -146,46 +146,40 @@ logger.log(Level.TRACE, "toNativeVoice: " + nativeVoice);
 
     @Override
     public boolean handleCancel() {
-//        synthesizer.stopSpeaking();
-        return false;
+        return true;
     }
 
     @Override
     protected boolean handleCancel(int id) {
-//        synthesizer.stopSpeaking();
-        return false;
+        return true;
     }
 
     @Override
     protected boolean handleCancelAll() {
-//        synthesizer.stopSpeaking();
-        return false;
+        return true;
     }
 
     @Override
     public void handleDeallocate() {
+        setEngineState(CLEAR_ALL_STATE, DEALLOCATED);
+        getQueueManager().cancelAllItems();
+        getQueueManager().terminate();
+
         // Leave some time to let all resources detach
         try {
             Thread.sleep(500);
         } catch (InterruptedException ignore) {
         }
         synthesizer.release();
-
-        //
-        setEngineState(CLEAR_ALL_STATE, DEALLOCATED);
-        getQueueManager().cancelAllItems();
-        getQueueManager().terminate();
     }
 
     @Override
     public void handlePause() {
-//        synthesizer.pauseSpeakingAtBoundary(NSSpeechBoundary.ImmediateBoundary);
     }
 
     @Override
     public boolean handleResume() {
-//        synthesizer.continueSpeaking();
-        return false;
+        return true;
     }
 
     @Override

@@ -334,7 +334,10 @@ logger.log(Level.TRACE, "filtered: " + ((speakableMask & id) != id) + ", " + eve
 
         // Proceed to real engine allocation
         handleAllocate();
-        long[] states = setEngineState(CLEAR_ALL_STATE, ALLOCATED | DEFOCUSED | QUEUE_EMPTY | RESUMED);
+
+        long newState = ALLOCATED | RESUMED;
+        newState |= (getQueueManager().isQueueEmpty() ? QUEUE_EMPTY : QUEUE_NOT_EMPTY);
+        long[] states = setEngineState(CLEAR_ALL_STATE, newState);
 
         postStateTransitionEngineEvent(states[0], states[1], EngineEvent.ENGINE_ALLOCATED);
     }
@@ -359,6 +362,9 @@ logger.log(Level.TRACE, "filtered: " + ((speakableMask & id) != id) + ", " + eve
         if (audioManager.isAudioStarted()) {
             audioManager.audioStop();
         }
+
+        getQueueManager().cancelAllItems();
+        getQueueManager().terminate();
 
         // Proceed to real engine deallocation
         handleDeallocate();
