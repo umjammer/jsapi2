@@ -124,12 +124,16 @@ class PlayQueue {
         byte[] buffer = new byte[BUFFER_LENGTH];
 
         while (!queueManager.isDone()) {
-            currentItem.set(getNextQueueItem());
-            if (currentItem.get() == null) {
+            // hold the item in a local: a concurrent cancel may clear the
+            // current item at any moment, but the error paths below still have
+            // to know which item they are reporting about
+            QueueItem item = getNextQueueItem();
+            currentItem.set(item);
+            if (item == null) {
 logger.log(Level.TRACE, "P:: queue item null???");
                 continue;
             }
-logger.log(Level.TRACE, "P:: queue item taken: " + currentItem.get());
+logger.log(Level.TRACE, "P:: queue item taken: " + item);
             boolean failed = false;
             try {
                 Object source = getCurrent().getSource();
@@ -229,7 +233,19 @@ logger.log(Level.TRACE, ex.getMessage(), ex);
                             new SpeakableEvent(source, SpeakableEvent.SPEAKABLE_ENDED, id), listener);
                 }
             } catch (CancelledException e) {
-logger.log(Level.TRACE, "cancelled by outer loop: " + e.getStackTrace()[2], e);
+                // indexing the stack trace here would be a second way to kill
+                // this thread, the exception itself carries the origin anyway
+logger.log(Level.TRACE, "cancelled by outer loop", e);
+            } catch (RuntimeException e) {
+                // playing back an item may fail in ways that are not an
+                // IOException, e.g. an unsupported format conversion or an
+                // audio device that rejects a control. Report the item as
+                // failed instead of letting the exception terminate this
+                // thread, which would leave the synthesizer silent for good.
+                logger.log(Level.ERROR, e.getMessage(), e);
+                BaseSynthesizer synthesizer = queueManager.getSynthesizer();
+                synthesizer.postSpeakableEvent(new SpeakableEvent(
+                        item.getSource(), SpeakableEvent.SPEAKABLE_FAILED, item.getId()), item.getListener());
             } finally {
                 // The item is consumed in any case (played, failed or cancelled):
                 // reset the per-item state and publish the new queue state.
