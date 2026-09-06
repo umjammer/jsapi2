@@ -116,7 +116,9 @@ public final class SpeakerOutputStream extends OutputStream implements LineListe
 
     @Override
     public void flush() throws IOException {
-        line.drain();
+        if (line != null) {
+            line.drain();
+        }
     }
 
     @Override
@@ -124,6 +126,11 @@ public final class SpeakerOutputStream extends OutputStream implements LineListe
         if (line != null) {
             logger.log(Level.TRACE, "line close: " + line.hashCode());
             line.close();
+            // this stream outlives the line: a cancel closes it (see
+            // QueueManager#cancelItem) while later speakables keep writing to it.
+            // Drop the closed line so that openLine() acquires a fresh one,
+            // otherwise every subsequent write is silently discarded.
+            line = null;
         }
         super.close();
     }
