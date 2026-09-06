@@ -24,8 +24,9 @@ import java.lang.System.Logger.Level;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jvoicexml.jsapi2.mac.rococoa.NSSpeechSynthesizer;
 import org.rococoa.cocoa.foundation.NSRange;
+import vavix.rococoa.avfoundation.AVSpeechSynthesizer;
+import vavix.rococoa.avfoundation.AVSpeechUtterance;
 
 import static java.lang.System.getLogger;
 
@@ -36,7 +37,7 @@ import static java.lang.System.getLogger;
  * @author <a href="mailto:umjammer@gmail.com">Naohide Sano</a> (umjammer)
  * @version 0.00 2019/09/18 umjammer initial version <br>
  */
-public class SynthesizerDelegate implements NSSpeechSynthesizer.NSSpeechSynthesizerDelegate {
+public class SynthesizerDelegate implements AVSpeechSynthesizer.AVSpeechSynthesizerDelegate {
 
     private static final Logger logger = getLogger(SynthesizerDelegate.class.getName());
     
@@ -53,7 +54,7 @@ public class SynthesizerDelegate implements NSSpeechSynthesizer.NSSpeechSynthesi
     private static final Object speechDoneMonitor = new Object();
     private static final Object waitForSpeechWordMonitor = new Object();
 
-    public SynthesizerDelegate(NSSpeechSynthesizer ss) {
+    public SynthesizerDelegate(AVSpeechSynthesizer ss) {
         ss.setDelegate(this);
     }
 
@@ -79,7 +80,7 @@ public class SynthesizerDelegate implements NSSpeechSynthesizer.NSSpeechSynthesi
         return phonemesSpoken;
     }
 
-    public void speechSynthesizer_didFinishSpeaking(NSSpeechSynthesizer sender, boolean success) {
+    public void speechSynthesizer_didFinishSpeaking(AVSpeechSynthesizer sender, boolean success) {
         this.success = success;
         synchronized (speechDoneMonitor) {
             speechDoneMonitor.notify();
@@ -131,35 +132,32 @@ public class SynthesizerDelegate implements NSSpeechSynthesizer.NSSpeechSynthesi
     }
 
     @Override
-    public void speechSynthesizer_didEncounterErrorAtIndex_ofString_message(NSSpeechSynthesizer sender,
-                                                                            Integer characterIndex,
-                                                                            String text,
-                                                                            String errorMessage) {
-logger.log(Level.TRACE, "speechSynthesizer_didEncounterErrorAtIndex_ofString_message: " + sender);
-        position = characterIndex;
-        this.errorMessage = errorMessage;
+    public void speechSynthesizer_didStartSpeechUtterance(AVSpeechSynthesizer synthesizer, AVSpeechUtterance utterance) {
+logger.log(Level.TRACE, "speechSynthesizer_didStartSpeechUtterance: " + synthesizer);
     }
 
     @Override
-    public void speechSynthesizer_didEncounterSyncMessage(NSSpeechSynthesizer sender, String synchMark) {
-logger.log(Level.TRACE, "speechSynthesizer_didEncounterSyncMessage: " + sender);
-        this.synchMark = synchMark;
+    public void speechSynthesizer_willSpeakRangeOfSpeechString_utterance(AVSpeechSynthesizer sender, NSRange characterRange, AVSpeechUtterance utterance) {
+logger.log(Level.TRACE, "speechSynthesizer_willSpeakRangeOfSpeechString_utterance: " + sender);
     }
 
     @Override
-    public synchronized void speechSynthesizer_willSpeakPhoneme(NSSpeechSynthesizer sender, short phonemeOpcode) {
-logger.log(Level.TRACE, "speechSynthesizer_willSpeakPhoneme: " + sender);
-        phonemesSpoken.add(sender.opcodeToPhoneme(phonemeOpcode));
+    public void speechSynthesizer_didPauseSpeechUtterance(AVSpeechSynthesizer sender, AVSpeechUtterance utterance) {
+logger.log(Level.TRACE, "speechSynthesizer_didPauseSpeechUtterance: " + sender);
     }
 
     @Override
-    public void speechSynthesizer_willSpeakWord_ofString(NSSpeechSynthesizer sender, NSRange wordToSpeak, String text) {
-logger.log(Level.TRACE, "speechSynthesizer_willSpeakWord_ofString: " + sender);
-        wordsSpoken.add(text.substring((int) wordToSpeak.getLocation(), (int) wordToSpeak.getEndLocation()));
-        if (wordWaitingFor == null || wordsSpoken.get(wordsSpoken.size() - 1).equals(wordWaitingFor)) {
-            synchronized (waitForSpeechWordMonitor) {
-                waitForSpeechWordMonitor.notify();
-            }
-        }
+    public void speechSynthesizer_didContinueSpeechUtterance(AVSpeechSynthesizer sender, AVSpeechUtterance utterance) {
+logger.log(Level.TRACE, "speechSynthesizer_didContinueSpeechUtterance: " + sender);
+    }
+
+    @Override
+    public void speechSynthesizer_didFinishSpeechUtterance(AVSpeechSynthesizer sender, AVSpeechUtterance utterance) {
+logger.log(Level.TRACE, "speechSynthesizer_didFinishSpeechUtterance: " + sender);
+    }
+
+    @Override
+    public void speechSynthesizer_didCancelSpeechUtterance(AVSpeechSynthesizer sender, AVSpeechUtterance utterance) {
+logger.log(Level.TRACE, "speechSynthesizer_didCancelSpeechUtterance: " + sender);
     }
 }

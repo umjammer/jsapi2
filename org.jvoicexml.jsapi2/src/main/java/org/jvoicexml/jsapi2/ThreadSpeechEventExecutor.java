@@ -29,7 +29,8 @@ public final class ThreadSpeechEventExecutor implements TerminatableSpeechEventE
     private static final Logger logger = System.getLogger(ThreadSpeechEventExecutor.class.getName());
 
     /** The thread that executes the commands. */
-    private final ExecutorService thread = Executors.newSingleThreadExecutor();
+    private final ExecutorService thread = Executors.newSingleThreadExecutor(
+            r -> new Thread(r, "jsapi2-speech-event"));
 
     /** Commands to execute. */
     private final BlockingQueue<Runnable> commands;
@@ -83,7 +84,13 @@ logger.log(Level.TRACE, "interrupted");
 logger.log(Level.TRACE, "stop looping 1");
                 return;
             }
-            command.run();
+            try {
+                command.run();
+            } catch (RuntimeException | Error e) {
+                // a misbehaving listener must not stop the delivery of
+                // all further events
+                logger.log(Level.ERROR, "speech event listener failed: " + e.getMessage(), e);
+            }
         }
 logger.log(Level.TRACE, "stop looping 2");
     }

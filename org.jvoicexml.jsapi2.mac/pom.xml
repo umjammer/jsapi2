@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.jvoicexml</groupId>
     <artifactId>jsapi2</artifactId>
-    <version>0.6.4-SNAPSHOT</version>
+    <version>0.6.12</version>
   </parent>
 
   <artifactId>org.jvoicexml.jsapi2.mac</artifactId>
@@ -42,17 +42,17 @@
     <dependency>
       <groupId>org.jvoicexml</groupId>
       <artifactId>javax.speech</artifactId>
-      <version>0.6.4-SNAPSHOT</version>
+      <version>0.6.12</version>
     </dependency>
     <dependency>
       <groupId>org.jvoicexml</groupId>
       <artifactId>org.jvoicexml.jsapi2</artifactId>
-      <version>0.6.4-SNAPSHOT</version>
+      <version>0.6.12</version>
     </dependency>
     <dependency>
-      <groupId>com.github.umjammer.rococoa</groupId>
-      <artifactId>rococoa-contrib</artifactId>
-      <version>0.8.13</version>
+      <groupId>com.github.umjammer</groupId> <!-- com.github.umjammer -->
+      <artifactId>vavi-sound-sandbox</artifactId>
+      <version>1.0.16</version>
     </dependency>
 
     <dependency>

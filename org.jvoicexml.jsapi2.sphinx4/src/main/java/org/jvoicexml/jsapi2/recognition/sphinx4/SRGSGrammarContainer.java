@@ -39,19 +39,18 @@ import static java.lang.System.getLogger;
  * @author Stefan Radomski
  * @author Dirk Schnelle-Walka
  */
-
 public class SRGSGrammarContainer extends Grammar {
 
-    private static final Logger logger = getLogger(Sphinx4Recognizer.class.getName());
+    private static final Logger logger = getLogger(SRGSGrammarContainer.class.getName());
 
     /**
      * The GrammarDefinitions as set through loadGrammars from the
      * GrammarManager
      */
-    private Map<String, GrammarDefinition> grammarDefs = new HashMap<>();
+    private final Map<String, GrammarDefinition> grammarDefs = new HashMap<>();
 
     /** All active SRGSGrammars */
-    private Map<String, SRGSGrammar> grammars = new HashMap<>();
+    private final Map<String, SRGSGrammar> grammars = new HashMap<>();
 
     /** The initial node for the searchGraph of the linguist */
     private GrammarNode firstNode = null;
@@ -60,7 +59,7 @@ public class SRGSGrammarContainer extends Grammar {
     private BaseRuleGrammar ruleGrammar = null;
 
     /** All GrammarNodes of contained grammars plus the firstNode */
-    private Set<GrammarNode> grammarNodes = new LinkedHashSet<>();
+    private final Set<GrammarNode> grammarNodes = new LinkedHashSet<>();
 
     /** The JSAPI recognizer. */
     private BaseRecognizer recognizer;

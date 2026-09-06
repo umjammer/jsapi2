@@ -55,7 +55,7 @@ package javax.speech.recognition;
  * <p>
  * of XML 1.0
  * <p>
- * <A href="http://www.w3.org/TR/2000/REC-xml-20001006">[XML �2.3]</A>
+ * <A href="http://www.w3.org/TR/2000/REC-xml-20001006">[XML §2.3]</A>
  * and be a legal XML ID.
  * <p>
  * The RuleSpecial class defines the special definitions

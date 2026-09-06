@@ -27,26 +27,37 @@
 package org.jvoicexml.jsapi2.synthesis;
 
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import javax.speech.AudioSegment;
 import javax.speech.synthesis.SpeakableEvent;
 
-import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 import org.jvoicexml.jsapi2.mock.synthesis.MockSpeakableListener;
 import org.jvoicexml.jsapi2.mock.synthesis.MockSynthesizer;
 import vavi.util.Debug;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * Test cases for {@link QueueManager}.
+ * <p>
+ * Every wait in here is bounded: a broken hand-off between the queue threads
+ * must show up as a failed test with a stack trace, never as a hanging build.
+ * </p>
  *
  * @author Dirk Schnelle-Walka
  */
+@Timeout(value = 20, unit = TimeUnit.SECONDS)
 public final class QueueManagerTest {
+
+    /** Upper bound for a single wait, in seconds. */
+    private static final long WAIT = 10;
 
     /** Synthesizer. */
     private MockSynthesizer synthesizer;
@@ -60,6 +71,14 @@ public final class QueueManagerTest {
     }
 
     /**
+     * Stops the queue threads so that they can not interfere with the next test.
+     */
+    @AfterEach
+    public void tearDown() {
+        synthesizer.shutdown();
+    }
+
+    /**
      * Test method for {@link org.jvoicexml.jsapi2.synthesis.QueueManager#appendItem(javax.speech.synthesis.Speakable, javax.speech.synthesis.SpeakableListener)}.
      *
      * @throws Exception test failed.
@@ -69,11 +88,11 @@ public final class QueueManagerTest {
         QueueManager manager = synthesizer.getQueueManager();
         AudioSegment segment = new AudioSegment("http://nowhere", "test");
         MockSpeakableListener listener = new MockSpeakableListener();
-        CountDownLatch cdl = new CountDownLatch(1);
+        CountDownLatch release = new CountDownLatch(1);
         // hack, stopping at 1st synthesis
         synthesizer.setSpeakHandler(id -> {
 Debug.println("pretend item taking long time...");
-            try { cdl.await(); } catch (InterruptedException ignore) {}
+            try { release.await(); } catch (InterruptedException ignore) {}
 Debug.println("item done");
         });
         manager.appendItem(segment, listener);
@@ -82,21 +101,13 @@ Debug.println("item done");
         assertNotNull(item);
         assertEquals(segment.getMarkupText(), item.getAudioSegment().getMarkupText());
         assertEquals(listener, item.getListener());
-        cdl.countDown();
-        listener.waitForSize(2);
+        release.countDown();
+        assertTrue(listener.waitForSize(2, WAIT, TimeUnit.SECONDS), "timed out waiting for 2 speakable events");
         SpeakableEvent started = listener.getEvent(0);
         assertEquals(SpeakableEvent.SPEAKABLE_STARTED, started.getId());
         assertEquals(segment.getMarkupText(), started.getSource());
         SpeakableEvent ended = listener.getEvent(1);
         assertEquals(SpeakableEvent.SPEAKABLE_FAILED, ended.getId());
         assertEquals(segment.getMarkupText(), ended.getSource());
-    }
-
-    @AfterAll
-    static void teardown() {
-//        Thread.getAllStackTraces().forEach((k, v) -> {
-//            System.err.println("---- " + k + " ----");
-//            Arrays.stream(v).forEach(System.err::println);
-//        });
     }
 }

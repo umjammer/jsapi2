@@ -26,14 +26,21 @@
 
 package org.jvoicexml.jsapi2.synthesis;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.speech.AudioSegment;
 import javax.speech.synthesis.SpeakableEvent;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 import org.jvoicexml.jsapi2.mock.synthesis.MockSynthesizer;
 import vavi.util.Debug;
 
@@ -46,15 +53,34 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Test cases for {@link SynthesisQueue}.
+ * <p>
+ * The synthesis thread starts consuming an item the moment it is appended,
+ * possibly before {@code appendItem()} has even returned its id to the test.
+ * Therefore nothing in here identifies "the item under test" by an id that is
+ * stored after {@code appendItem()}: the speak handler blocks the first
+ * synthesis it sees whatever its id, and listeners match events by their
+ * source text. Every wait is bounded so that a regression fails instead of
+ * hanging the build.
+ * </p>
  *
  * @author Dirk Schnelle-Walka
  */
+@Timeout(value = 20, unit = TimeUnit.SECONDS)
 class SynthesisQueueTest {
+
+    /** Upper bound for a single wait, in seconds. */
+    private static final long WAIT = 10;
 
     /** The test object. */
     private SynthesisQueue queue;
 
+    /** The queue manager owning {@link #queue}. */
+    private QueueManager manager;
+
     private MockSynthesizer synthesizer;
+
+    /** Failures detected on listener threads, checked at the end of a test. */
+    private final List<Throwable> listenerErrors = Collections.synchronizedList(new ArrayList<>());
 
     /**
      * Set up the test environment.
@@ -65,8 +91,52 @@ class SynthesisQueueTest {
     void setUp() throws Exception {
         synthesizer = new MockSynthesizer();
         synthesizer.setEngineMask(0);
-        QueueManager manager = new QueueManager(synthesizer);
+        manager = new QueueManager(synthesizer);
         queue = manager.getSynthesisQueue();
+    }
+
+    /**
+     * Stops the queue threads so that they can not interfere with the next test.
+     */
+    @AfterEach
+    void tearDown() {
+        manager.terminate();
+        synthesizer.shutdown();
+        assertTrue(listenerErrors.isEmpty(), () -> "listener failures: " + listenerErrors);
+    }
+
+    /** Waits for the latch, failing instead of hanging. */
+    private static void await(CountDownLatch latch, String what) throws InterruptedException {
+        assertTrue(latch.await(WAIT, TimeUnit.SECONDS), "timed out waiting for " + what);
+    }
+
+    /** Waits for the latch inside a callback where checked exceptions are not possible. */
+    private static void awaitQuietly(CountDownLatch latch) {
+        try {
+            latch.await(WAIT, TimeUnit.SECONDS);
+        } catch (InterruptedException ignore) {
+        }
+    }
+
+    /**
+     * Installs a speak handler that blocks the very first synthesis until
+     * {@code release} is counted down and reports it via {@code blocked}.
+     *
+     * @return the id of the blocked item, {@code -1} until it is known
+     */
+    private AtomicInteger blockFirstSynthesis(CountDownLatch blocked, CountDownLatch release) {
+        AtomicInteger blockedId = new AtomicInteger(-1);
+        synthesizer.setSpeakHandler(id -> {
+            if (blockedId.compareAndSet(-1, id)) {
+Debug.println("pretend " + id + " taking long time...");
+                blocked.countDown();
+                awaitQuietly(release);
+Debug.println(id + " done");
+            } else {
+Debug.println("speak: " + id);
+            }
+        });
+        return blockedId;
     }
 
     /**
@@ -76,25 +146,23 @@ class SynthesisQueueTest {
     void testGetNextQueueItem() throws Exception {
         AudioSegment segment1 = new AudioSegment("http://localhost", "test");
         AudioSegment segment2 = new AudioSegment("http://foreignhost", "test2");
+        // one event per item is enough to prove that both reached the play queue
         CountDownLatch cdl = new CountDownLatch(2);
-        AtomicInteger firstId = new AtomicInteger();
-        AtomicInteger secondId = new AtomicInteger();
+        Set<String> seen = ConcurrentHashMap.newKeySet();
         synthesizer.addSpeakableListener(e -> {
-            if (e.getRequestId() == firstId.get()) {
-                assertEquals(segment1.getMarkupText(), e.getSource().toString());
-Debug.println("1st in playing queue...");
-                cdl.countDown();
-            } else if (e.getRequestId() == secondId.get()) {
-                assertEquals(segment2.getMarkupText(), e.getSource().toString());
-Debug.println("2nd in playing queue...");
-                cdl.countDown();
+            String source = String.valueOf(e.getSource());
+            if (source.equals(segment1.getMarkupText()) || source.equals(segment2.getMarkupText())) {
+Debug.println(source + " in playing queue...");
+                if (seen.add(source)) {
+                    cdl.countDown();
+                }
             } else {
-                assert false;
+                listenerErrors.add(new AssertionError("unexpected event: " + e));
             }
         });
-        firstId.set(queue.appendItem(segment1, null));
-        secondId.set(queue.appendItem(segment2, null));
-        cdl.await();
+        queue.appendItem(segment1, null);
+        queue.appendItem(segment2, null);
+        await(cdl, "both items to reach the play queue");
 Debug.println("done");
     }
 
@@ -102,29 +170,25 @@ Debug.println("done");
      * Test method for {@link SynthesisQueue#getQueueItem(int)}.
      */
     @Test
-    void testGetQueueItem() {
+    void testGetQueueItem() throws Exception {
         AudioSegment segment1 = new AudioSegment("http://localhost", "test");
         AudioSegment segment2 = new AudioSegment("http://foreignhost", "test2");
-        AtomicInteger firstId = new AtomicInteger();
-        CountDownLatch cdl = new CountDownLatch(1);
+        CountDownLatch blocked = new CountDownLatch(1);
+        CountDownLatch release = new CountDownLatch(1);
         // hack, stopping at 1st synthesis
-        synthesizer.setSpeakHandler(id -> {
-            if (id == firstId.get()) {
-Debug.println("pretend 1st taking long time...");
-                try { cdl.await(); } catch (InterruptedException ignore) {}
-Debug.println("1st done");
-            }
-        });
-        firstId.set(queue.appendItem(segment1, null));
+        AtomicInteger blockedId = blockFirstSynthesis(blocked, release);
+        int firstId = queue.appendItem(segment1, null);
         int secondId = queue.appendItem(segment2, null);
-        QueueItem item1 = queue.getQueueItem(firstId.get());
+        await(blocked, "1st item to be taken by the synthesis thread");
+        assertEquals(firstId, blockedId.get(), "1st appended item is the one being synthesized");
+        QueueItem item1 = queue.getQueueItem(firstId);
         assertNull(item1, "already consumed");
         QueueItem item2 = queue.getQueueItem(secondId);
         assertNotNull(item2, "still in queue");
         assertEquals(segment2.getMarkupText(), item2.getAudioSegment().getMarkupText(), "can retrieve because 1st synthesis is still working");
         QueueItem item3 = queue.getQueueItem(-1);
         assertNull(item3, "no such id");
-        cdl.countDown();
+        release.countDown();
     }
 
     /**
@@ -135,16 +199,15 @@ Debug.println("1st done");
         assertTrue(queue.isQueueEmpty());
         AudioSegment segment1 = new AudioSegment("http://localhost", "test");
         CountDownLatch cdl = new CountDownLatch(1);
-        AtomicInteger id = new AtomicInteger();
         synthesizer.addSpeakableListener(e -> {
-            if (e.getRequestId() == id.get()) {
+            if (segment1.getMarkupText().equals(String.valueOf(e.getSource()))) {
 Debug.println("1st in playing queue...");
                 cdl.countDown();
             }
         });
-        id.set(queue.appendItem(segment1, null));
-        cdl.await();
-        assertTrue(queue.isQueueEmpty(), "1st is in queue, so empty");
+        queue.appendItem(segment1, null);
+        await(cdl, "1st item to reach the play queue");
+        assertTrue(queue.isQueueEmpty(), "1st is in play queue, so empty");
     }
 
     /**
@@ -155,39 +218,33 @@ Debug.println("1st in playing queue...");
         assertTrue(queue.isQueueEmpty());
         AudioSegment segment1 = new AudioSegment("http://localhost", "test");
         AudioSegment segment2 = new AudioSegment("http://foreignhost", "test2");
-        CountDownLatch cdl1 = new CountDownLatch(1);
-        CountDownLatch cdl2 = new CountDownLatch(1);
-        CountDownLatch cdl3 = new CountDownLatch(1);
+        CountDownLatch blocked = new CountDownLatch(1);
+        CountDownLatch cancelled = new CountDownLatch(1);
+        CountDownLatch secondPlayed = new CountDownLatch(1);
         AtomicInteger firstId = new AtomicInteger();
-        AtomicInteger secondId = new AtomicInteger();
-        // hack, stopping at 1st synthesis
-        synthesizer.setSpeakHandler(id -> {
-            if (id == firstId.get()) {
-Debug.println("pretend 1st taking long time...");
-                cdl1.countDown();
-                try { cdl2.await(); } catch (InterruptedException ignore) {}
-Debug.println("1st done");
-            } else {
-Debug.println("speak: " + id);
-            }
-        });
+        // hack, stopping at 1st synthesis until it is cancelled
+        AtomicInteger blockedId = blockFirstSynthesis(blocked, cancelled);
         synthesizer.addSpeakableListener(e -> {
             if (e.getId() == SpeakableEvent.SPEAKABLE_CANCELLED) {
-                assertEquals(firstId.get(), e.getRequestId());
+                if (e.getRequestId() != firstId.get()) {
+                    listenerErrors.add(new AssertionError("cancelled wrong item: " + e));
+                }
 Debug.println("1st canceled");
-                cdl2.countDown();
-            } else if (e.getRequestId() == secondId.get()) {
+                cancelled.countDown();
+            } else if (segment2.getMarkupText().equals(String.valueOf(e.getSource()))) {
 Debug.println("2nd in playing queue, means processing done");
-                cdl3.countDown();
+                secondPlayed.countDown();
             } else {
 Debug.println("eventId: " + Integer.toHexString(e.getId()));
             }
         });
         firstId.set(queue.appendItem(segment1, null)); // takes long time
-        secondId.set(queue.appendItem(segment2, null));
-        cdl1.await();
+        queue.appendItem(segment2, null);
+        await(blocked, "1st item to be taken by the synthesis thread");
+        assertEquals(firstId.get(), blockedId.get(), "1st appended item is the one being synthesized");
         assertTrue(queue.cancelFirstItem(), "1st is processing and not in queue, so 1st is cancelable as 1st");
-        cdl3.await();
+        await(cancelled, "cancel event of the 1st item");
+        await(secondPlayed, "2nd item to reach the play queue");
         assertFalse(queue.cancelFirstItem(), "no processing item");
         assertTrue(queue.isQueueEmpty(), "queue is empty");
 Debug.println("done");
@@ -202,39 +259,34 @@ Debug.println("done");
         AudioSegment segment0 = new AudioSegment("http://localhost", "test0");
         AudioSegment segment1 = new AudioSegment("http://localhost", "test");
         AudioSegment segment2 = new AudioSegment("http://foreignhost", "test2");
-        AtomicInteger zerothId = new AtomicInteger();
         AtomicInteger firstId = new AtomicInteger();
         AtomicInteger secondId = new AtomicInteger();
-        CountDownLatch cdl0 = new CountDownLatch(1);
-        CountDownLatch cdl1 = new CountDownLatch(1);
-        CountDownLatch cdl2 = new CountDownLatch(2);
-        // hack, stopping at 1st synthesis
-        synthesizer.setSpeakHandler(id -> {
-            if (id == zerothId.get()) {
-Debug.println("pretend 0th taking long time...");
-                cdl1.countDown();
-                try { cdl0.await(); } catch (InterruptedException ignore) {}
-Debug.println("0th done");
-            }
-        });
+        CountDownLatch blocked = new CountDownLatch(1);
+        CountDownLatch release = new CountDownLatch(1);
+        CountDownLatch cancelled = new CountDownLatch(2);
+        // hack, stopping at 0th synthesis
+        AtomicInteger blockedId = blockFirstSynthesis(blocked, release);
         synthesizer.addSpeakableListener(e -> {
             if (e.getId() == SpeakableEvent.SPEAKABLE_CANCELLED) {
-                assertTrue(List.of(firstId.get(), secondId.get()).contains(e.getRequestId()));
+                if (!List.of(firstId.get(), secondId.get()).contains(e.getRequestId())) {
+                    listenerErrors.add(new AssertionError("cancelled wrong item: " + e));
+                }
 Debug.println("id " + e.getRequestId() + " is canceled");
-                cdl2.countDown();
+                cancelled.countDown();
             } else {
 Debug.println("eventId: " + Integer.toHexString(e.getId()));
             }
         });
-        zerothId.set(queue.appendItem(segment0, null)); // takes long time
-        cdl1.await();
+        int zerothId = queue.appendItem(segment0, null); // takes long time
+        await(blocked, "0th item to be taken by the synthesis thread");
+        assertEquals(zerothId, blockedId.get(), "0th appended item is the one being synthesized");
         firstId.set(queue.appendItem(segment1, null));
         secondId.set(queue.appendItem(segment2, null));
-        assertFalse(queue.isQueueEmpty(), "because of 0th takes long time"); // TODO ci error
+        assertFalse(queue.isQueueEmpty(), "because of 0th takes long time");
         assertTrue(queue.cancelItem(firstId.get()), "1st is in queue because 0th takes long time");
         assertTrue(queue.cancelItem(secondId.get()), "2nd is in queue because 0th takes long time");
-        cdl2.await();
-        cdl0.countDown();
+        await(cancelled, "cancel events of the 1st and 2nd item");
+        release.countDown();
         assertTrue(queue.isQueueEmpty(), "queue is empty because all are canceled");
         assertFalse(queue.cancelItem(-1), "no such id");
     }

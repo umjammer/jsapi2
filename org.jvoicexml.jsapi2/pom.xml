@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.jvoicexml</groupId>
     <artifactId>jsapi2</artifactId>
-    <version>0.6.11</version>
+    <version>0.6.12</version>
   </parent>
 
   <artifactId>org.jvoicexml.jsapi2</artifactId>
@@ -43,7 +43,7 @@
     <dependency>
       <groupId>org.jvoicexml</groupId>
       <artifactId>javax.speech</artifactId>
-      <version>0.6.11</version>
+      <version>0.6.12</version>
     </dependency>
 
     <dependency>

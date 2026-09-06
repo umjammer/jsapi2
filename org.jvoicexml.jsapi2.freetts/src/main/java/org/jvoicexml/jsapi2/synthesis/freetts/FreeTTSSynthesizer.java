@@ -94,9 +94,6 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
         if (ok) {
             BaseAudioManager manager = (BaseAudioManager) getAudioManager();
             audioPlayer = new FreeTTSAudioPlayer(manager);
-            long newState = ALLOCATED | RESUMED;
-            newState |= (getQueueManager().isQueueEmpty() ? QUEUE_EMPTY : QUEUE_NOT_EMPTY);
-            setEngineState(CLEAR_ALL_STATE, newState);
         } else {
             throw new AudioException("Can't allocate FreeTTS synthesizer");
         }
@@ -132,9 +129,6 @@ public class FreeTTSSynthesizer extends BaseSynthesizer {
      */
     @Override
     public void handleDeallocate() throws EngineStateException, EngineException, AudioException {
-        setEngineState(CLEAR_ALL_STATE, DEALLOCATED);
-        getQueueManager().cancelAllItems();
-        getQueueManager().terminate();
 
         // Close the audio. This should flush out any queued audio data
         if (audioPlayer != null) {

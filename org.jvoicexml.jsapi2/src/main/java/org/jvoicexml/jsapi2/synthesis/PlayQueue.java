@@ -128,6 +128,7 @@ logger.log(Level.TRACE, "P:: queue item null???");
                 continue;
             }
 logger.log(Level.TRACE, "P:: queue item taken: " + currentItem.get());
+            boolean failed = false;
             try {
                 Object source = getCurrent().getSource();
                 int id = getCurrent().getId();
@@ -213,27 +214,32 @@ logger.log(Level.TRACE, "delayUntilResumed 2: " + e.getMessage());
                     }
                 } catch (IOException ex) {
 logger.log(Level.TRACE, ex.getMessage(), ex);
+                    // an item cancelled while its stream was being opened
+                    // is reported as cancelled, not as failed
+                    getCurrent();
+                    failed = true;
                     synthesizer.postSpeakableEvent(
                             new SpeakableEvent(source, SpeakableEvent.SPEAKABLE_FAILED, id), listener);
-                    continue;
                 }
 
-                if (!queueManager.cancelFirstItem) {
+                if (!failed && !queueManager.cancelFirstItem) {
                     synthesizer.postSpeakableEvent(
                             new SpeakableEvent(source, SpeakableEvent.SPEAKABLE_ENDED, id), listener);
                 }
-
+            } catch (CancelledException e) {
+logger.log(Level.TRACE, "cancelled by outer loop: " + e.getStackTrace()[2], e);
+            } finally {
+                // The item is consumed in any case (played, failed or cancelled):
+                // reset the per-item state and publish the new queue state.
+                // Skipping this after a failure or a cancel left a stale
+                // current item behind and never moved the engine to
+                // QUEUE_EMPTY, so clients waiting for it blocked forever.
                 synchronized (queueManager.cancelLock) {
                     queueManager.cancelFirstItem = false;
                 }
-            } catch (CancelledException e) {
-logger.log(Level.TRACE, "cancelled by outer loop: " + e.getStackTrace()[2], e);
-                queueManager.cancelFirstItem = false;
-                continue;
+                currentItem.set(null);
+                postEventsAfterPlay();
             }
-
-            currentItem.set(null);
-            postEventsAfterPlay();
         }
 logger.log(Level.DEBUG, "play queue loop terminated");
     }

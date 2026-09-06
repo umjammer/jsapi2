@@ -128,9 +128,13 @@ public final class MockSynthesizer extends BaseSynthesizer {
         return new MockAudioManager();
     }
 
+    /** The event executor created by {@link #createSpeechEventExecutor()}. */
+    private MockSpeechEventExecutor speechEventExecutor;
+
     @Override
     protected SpeechEventExecutor createSpeechEventExecutor() {
-        return new MockSpeechEventExecutor();
+        speechEventExecutor = new MockSpeechEventExecutor();
+        return speechEventExecutor;
     }
 
     @Override
@@ -148,6 +152,18 @@ public final class MockSynthesizer extends BaseSynthesizer {
     @Override
     protected AudioFormat getEngineAudioFormat() {
         return null;
+    }
+
+    /**
+     * Stops the background threads of this synthesizer: the queue manager
+     * and the speech event executor. Tests call this in their tear down so
+     * that no thread of a finished test can interfere with the next one.
+     */
+    public void shutdown() {
+        getQueueManager().terminate();
+        if (speechEventExecutor != null) {
+            speechEventExecutor.shutdown();
+        }
     }
 
     @Override
