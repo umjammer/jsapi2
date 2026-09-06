@@ -61,6 +61,30 @@ public class QueueManager {
     boolean cancelFirstItem;
     final Object cancelLock;
 
+    /**
+     * Name of the system property that selects how {@link #cancelAllItems()}
+     * empties the queues, see {@link #DRAIN_ON_CANCEL_ALL}.
+     *
+     * @since 0.6.13
+     */
+    public static final String CANCEL_STRATEGY_PROPERTY =
+            "org.jvoicexml.jsapi2.synthesis.QueueManager.cancelStrategy";
+
+    /**
+     * How {@link #cancelAllItems()} empties the queues, set by the
+     * {@link #CANCEL_STRATEGY_PROPERTY} system property.
+     * <p>
+     * {@code drain}, the default, takes the pending items off the queues right
+     * away. {@code spin} restores the legacy behavior of looping until the
+     * queue threads happen to consume them, which busies the calling thread
+     * for as long as the pending syntheses take.
+     * </p>
+     *
+     * @since 0.6.13
+     */
+    private static final boolean DRAIN_ON_CANCEL_ALL =
+            !"spin".equalsIgnoreCase(System.getProperty(CANCEL_STRATEGY_PROPERTY, "drain"));
+
     private final ExecutorService synthThread = Executors.newSingleThreadExecutor(
             r -> new Thread(r, "jsapi2-synthesis-queue"));
 
@@ -207,14 +231,29 @@ public class QueueManager {
         if (playQueue.isQueueEmpty()) {
             return synthQueue.cancelFirstItem();
         } else {
-            BaseAudioManager manager = (BaseAudioManager) synthesizer.getAudioManager();
-            OutputStream out = manager.getOutputStream();
-            try {
-                out.close();
-            } catch (IOException e) {
-                throw new EngineStateException(e.getMessage());
-            }
+            closeOutputStream();
             return playQueue.cancelItemAtTopOfQueue();
+        }
+    }
+
+    /**
+     * Closes the audio output so that a play thread that is waiting for the
+     * audio device stops right away instead of when the device drained. The
+     * stream reopens itself upon the next write.
+     *
+     * @throws EngineStateException error closing the output
+     * @since 0.6.13
+     */
+    private void closeOutputStream() throws EngineStateException {
+        BaseAudioManager manager = (BaseAudioManager) synthesizer.getAudioManager();
+        OutputStream out = manager.getOutputStream();
+        if (out == null) {
+            return;
+        }
+        try {
+            out.close();
+        } catch (IOException e) {
+            throw new EngineStateException(e.getMessage());
         }
     }
 
@@ -225,6 +264,48 @@ public class QueueManager {
      */
     public boolean cancelAllItems() {
         synthesizer.handleCancelAll();
+        return DRAIN_ON_CANCEL_ALL ? drainAllItems() : spinAllItems();
+    }
+
+    /**
+     * Cancels all items by taking them off the queues, so that the call
+     * returns without waiting for the queue threads.
+     *
+     * @return {@code true} if at least one item was canceled
+     * @since 0.6.13
+     */
+    private boolean drainAllItems() {
+        // First remove all pending requests and the one being synthesized...
+        boolean found = synthQueue.drainQueue();
+        found |= synthQueue.cancelFirstItem();
+
+        // ...then all the stuff waiting for playback and the one being played
+        // back. Cancel the played back item before closing the output, so that
+        // the play thread sees the cancel rather than resuming on a reopened
+        // audio line.
+        found |= playQueue.drainQueue();
+        if (playQueue.isPlaying()) {
+            found |= playQueue.cancelItemAtTopOfQueue();
+            closeOutputStream();
+        }
+
+        return found;
+    }
+
+    /**
+     * Cancels all items by looping until the queue threads have consumed them.
+     * <p>
+     * Neither {@link SynthesisQueue#cancelFirstItem()} nor
+     * {@link PlayQueue#cancelItemAtTopOfQueue()} removes anything from its
+     * queue, so both loops spin for as long as the pending syntheses and
+     * playbacks take. Kept for {@code -D}
+     * {@link #CANCEL_STRATEGY_PROPERTY}{@code =spin} only.
+     * </p>
+     *
+     * @return {@code true} if at least one item was canceled
+     * @since 0.6.13
+     */
+    private boolean spinAllItems() {
         boolean found = false;
 
         // First remove all pending requests...

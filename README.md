@@ -27,6 +27,11 @@ mavenized [JSR-113](https://jcp.org/en/jsr/detail?id=113) modified aka JSAPI2
  * [vavi-speech2](https://github.com/umjammer/vavi-speech2)
  * [FreeTTS](https://github.com/umjammer/FreeTTS/tree/vavi/freetts)
 
+### system property
+
+- `org.jvoicexml.jsapi2.synthesis.QueueManager.cancelStrategy` ... `spin` or `drain`, default `drain`
+  - ⚠️ using `drain` changes the semantics of cancel method
+
 ## TODO
 
  * ~~clean up remaining running threads at exiting~~

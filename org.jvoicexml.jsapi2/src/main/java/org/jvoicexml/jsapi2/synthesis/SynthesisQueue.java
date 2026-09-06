@@ -28,6 +28,8 @@ package org.jvoicexml.jsapi2.synthesis;
 
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicReference;
 import javax.speech.AudioSegment;
@@ -180,6 +182,27 @@ logger.log(Level.TRACE, "S:: add failed: " + item);
     }
 
     /**
+     * Removes all pending items from the queue at once, posting the
+     * corresponding events. The item that is currently being synthesized is
+     * left untouched, cancel it with {@link #cancelFirstItem()}.
+     *
+     * @return <code>true</code> if at least one item was removed
+     * @since 0.6.13
+     */
+    boolean drainQueue() {
+        List<QueueItem> drained = new ArrayList<>();
+        synchronized (queue) {
+            queue.drainTo(drained);
+        }
+        for (QueueItem item : drained) {
+            // already taken off the queue by the drain above
+            cancelItem(item, false);
+        }
+logger.log(Level.TRACE, "S:: drained: " + drained.size());
+        return !drained.isEmpty();
+    }
+
+    /**
      * Cancels the first item in the queue.
      *
      * @return <code>true</code> if an item was removed from the queue
@@ -300,9 +323,12 @@ logger.log(Level.TRACE, "S:: queue taken: " + queue.size());
         long lastFocusEvent = Synthesizer.DEFOCUSED;
 
         while (!queueManager.isDone()) {
-            currentItem.set(getNextQueueItem());
-logger.log(Level.TRACE, "S:: item taken: " + currentItem.get());
-            if (currentItem.get() != null) {
+            // hold the item in a local: a concurrent cancel may clear the
+            // current item at any moment and every use below would be a NPE
+            QueueItem item = getNextQueueItem();
+            currentItem.set(item);
+logger.log(Level.TRACE, "S:: item taken: " + item);
+            if (item != null) {
                 BaseSynthesizer synthesizer = queueManager.getSynthesizer();
                 if (lastFocusEvent == Synthesizer.DEFOCUSED) {
                     long[] states = synthesizer.setEngineState(Synthesizer.DEFOCUSED, Synthesizer.FOCUSED);
@@ -310,15 +336,14 @@ logger.log(Level.TRACE, "S:: item taken: " + currentItem.get());
                     lastFocusEvent = Synthesizer.FOCUSED;
                 }
 
-logger.log(Level.TRACE, "S:: play item: " + currentItem.get());
+logger.log(Level.TRACE, "S:: play item: " + item);
                 try {
-                    // Synthesize it
-                    if (currentItem.get() != null) {
-                        synthesize(currentItem.get());
-                    } else {
+                    // Synthesize it, unless it was canceled in the meantime
+                    if (currentItem.get() == null) {
 logger.log(Level.TRACE, "S:: item canceled 1");
                         continue;
                     }
+                    synthesize(item);
                     // transfer item from the queue to the play queue.
                     // Clear the current item first: once the play queue owns
                     // it, cancelFirstItem() must not see it here any more.
@@ -329,15 +354,22 @@ logger.log(Level.TRACE, "S:: item canceled 1");
 logger.log(Level.TRACE, "S:: item canceled 2");
                         continue;
                     }
-                } catch (SpeakableException e) {
+                } catch (SpeakableException | RuntimeException e) {
+                    // a synthesizer may fail on any item, e.g. because its
+                    // backend is unreachable: report the item as failed instead
+                    // of letting the exception terminate this thread for good
                     logger.log(Level.ERROR, e.getMessage(), e);
-                    int id = currentItem.get().getId();
-                    Speakable speakable = currentItem.get().getSpeakable();
+                    SpeakableException cause = e instanceof SpeakableException se
+                            ? se : (SpeakableException) new SpeakableException(e.getMessage()).initCause(e);
+                    int id = item.getId();
+                    Speakable speakable = item.getSpeakable();
                     String textInfo = speakable.getMarkupText();
                     SpeakableEvent event = new SpeakableEvent(this,
                             SpeakableEvent.SPEAKABLE_FAILED, id, textInfo,
-                            SpeakableEvent.SPEAKABLE_FAILURE_UNRECOVERABLE, e);
-                    synthesizer.postSpeakableEvent(event, null);
+                            SpeakableEvent.SPEAKABLE_FAILURE_UNRECOVERABLE, cause);
+                    // the caller of speak() registered this listener and is the
+                    // one that has to learn about the failure
+                    synthesizer.postSpeakableEvent(event, item.getListener());
                 }
                 currentItem.set(null);
             }
