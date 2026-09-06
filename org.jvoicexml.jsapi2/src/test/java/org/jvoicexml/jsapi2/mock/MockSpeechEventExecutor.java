@@ -26,6 +26,9 @@
 
 package org.jvoicexml.jsapi2.mock;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import javax.speech.SpeechEventExecutor;
 
@@ -33,11 +36,33 @@ import vavi.util.Debug;
 
 
 /**
- * Dummy implementation of a speech event executor that executes asynchronously.
+ * A {@link SpeechEventExecutor} for tests.
+ * <p>
+ * Events are delivered asynchronously but strictly in the order they were
+ * posted, on a single daemon thread. A listener that throws does not stop
+ * the delivery of later events. This mirrors the ordering guarantee of the
+ * real {@link org.jvoicexml.jsapi2.ThreadSpeechEventExecutor} and keeps
+ * tests deterministic; a thread per event would deliver events in random
+ * order under load.
+ * </p>
+ * <p>
+ * Deliberately not a {@code TerminatableSpeechEventExecutor}: the engine
+ * terminates those on deallocation, and state transition tests re-allocate
+ * the same engine afterwards. Tests that want the thread gone call
+ * {@link #shutdown()} in their tear down.
+ * </p>
  *
  * @author Dirk Schnelle-Walka
  */
 public class MockSpeechEventExecutor implements SpeechEventExecutor {
+
+    private static final AtomicInteger COUNTER = new AtomicInteger();
+
+    private final ExecutorService executor = Executors.newSingleThreadExecutor(r -> {
+        Thread thread = new Thread(r, "Mock Speech Event " + COUNTER.incrementAndGet());
+        thread.setDaemon(true);
+        return thread;
+    });
 
     @Override
     public void execute(Runnable command) throws IllegalStateException, NullPointerException {
@@ -47,7 +72,18 @@ public class MockSpeechEventExecutor implements SpeechEventExecutor {
 if (Debug.isLoggable(Level.FINEST)) {
  new Exception("***DUMMY***").printStackTrace(System.err);
 }
-        Thread thread = new Thread(null, command, "Mock Speech Event");
-        thread.start();
+        executor.execute(() -> {
+            try {
+                command.run();
+            } catch (Throwable t) {
+Debug.println(Level.WARNING, "listener threw: " + t);
+                t.printStackTrace(System.err);
+            }
+        });
+    }
+
+    /** Stops the delivery thread. */
+    public void shutdown() {
+        executor.shutdownNow();
     }
 }

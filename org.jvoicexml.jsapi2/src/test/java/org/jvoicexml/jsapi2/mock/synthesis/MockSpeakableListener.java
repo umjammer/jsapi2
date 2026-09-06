@@ -26,7 +26,9 @@
 
 package org.jvoicexml.jsapi2.mock.synthesis;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 import javax.speech.synthesis.SpeakableEvent;
 import javax.speech.synthesis.SpeakableListener;
 
@@ -34,38 +36,67 @@ import vavi.util.Debug;
 
 
 /**
- * An implementation of a {@link SpeakableListener} for test purposes.
+ * A {@link SpeakableListener} that records the received events and lets a
+ * test wait until a given number of events has arrived.
  *
  * @author Dirk Schnelle-Walka
  */
 public class MockSpeakableListener implements SpeakableListener {
 
-    /** Received speakable events. */
-    private final Vector<SpeakableEvent> events;
+    /** Received speakable events, guarded by {@link #lock}. */
+    private final List<SpeakableEvent> events;
 
-    /** Snchronization lock. */
+    /** Synchronization lock. */
     private final Object lock;
 
     /**
      * Constructs a new object.
      */
     public MockSpeakableListener() {
-        events = new Vector<>();
+        events = new ArrayList<>();
         lock = new Object();
     }
 
     /**
-     * Waits until the number of events matches the given size.
+     * Waits until at least the given number of events has been received.
+     * <p>
+     * The check and the wait happen under the same lock, so a notification
+     * that arrives between them can not be lost.
+     * </p>
      *
      * @param size the number of expected events
      * @throws InterruptedException if waiting was interrupted
      */
     public void waitForSize(int size) throws InterruptedException {
-        while (events.size() != size) {
+        waitForSize(size, 0, TimeUnit.MILLISECONDS);
+    }
+
+    /**
+     * Waits until at least the given number of events has been received
+     * or the timeout elapsed.
+     *
+     * @param size    the number of expected events
+     * @param timeout the maximum time to wait, {@code 0} waits forever
+     * @param unit    the unit of {@code timeout}
+     * @return {@code true} if the events arrived, {@code false} on timeout
+     * @throws InterruptedException if waiting was interrupted
+     */
+    public boolean waitForSize(int size, long timeout, TimeUnit unit) throws InterruptedException {
+        long deadline = System.nanoTime() + unit.toNanos(timeout);
+        synchronized (lock) {
+            while (events.size() < size) {
 Debug.println("events.size(): " + events.size() + " / " + size);
-            synchronized (lock) {
-                lock.wait();
+                if (timeout <= 0) {
+                    lock.wait();
+                } else {
+                    long remaining = deadline - System.nanoTime();
+                    if (remaining <= 0) {
+                        return false;
+                    }
+                    TimeUnit.NANOSECONDS.timedWait(lock, remaining);
+                }
             }
+            return true;
         }
     }
 
@@ -76,14 +107,27 @@ Debug.println("events.size(): " + events.size() + " / " + size);
      * @return the event at the given position
      */
     public SpeakableEvent getEvent(int pos) {
-        return events.get(pos);
+        synchronized (lock) {
+            return events.get(pos);
+        }
+    }
+
+    /**
+     * Returns the number of received events.
+     *
+     * @return number of received events
+     */
+    public int size() {
+        synchronized (lock) {
+            return events.size();
+        }
     }
 
     @Override
     public void speakableUpdate(SpeakableEvent e) {
-        events.add(e);
-new Exception("event added: " + e).printStackTrace();
+Debug.println("event added: " + e);
         synchronized (lock) {
+            events.add(e);
             lock.notifyAll();
         }
     }

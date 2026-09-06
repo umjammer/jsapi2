@@ -61,9 +61,11 @@ public class QueueManager {
     boolean cancelFirstItem;
     final Object cancelLock;
 
-    private final ExecutorService synthThread = Executors.newSingleThreadExecutor();
+    private final ExecutorService synthThread = Executors.newSingleThreadExecutor(
+            r -> new Thread(r, "jsapi2-synthesis-queue"));
 
-    private final ExecutorService playThread = Executors.newSingleThreadExecutor();
+    private final ExecutorService playThread = Executors.newSingleThreadExecutor(
+            r -> new Thread(r, "jsapi2-play-queue"));
 
     /**
      * Constructs a new object.

@@ -319,9 +319,12 @@ logger.log(Level.TRACE, "S:: play item: " + currentItem.get());
 logger.log(Level.TRACE, "S:: item canceled 1");
                         continue;
                     }
-                    // transfer item from the queue to the play queue
-                    if (currentItem.get() != null) {
-                        playQueue.addQueueItem(currentItem.get());
+                    // transfer item from the queue to the play queue.
+                    // Clear the current item first: once the play queue owns
+                    // it, cancelFirstItem() must not see it here any more.
+                    QueueItem synthesized = currentItem.getAndSet(null);
+                    if (synthesized != null) {
+                        playQueue.addQueueItem(synthesized);
                     } else {
 logger.log(Level.TRACE, "S:: item canceled 2");
                         continue;
