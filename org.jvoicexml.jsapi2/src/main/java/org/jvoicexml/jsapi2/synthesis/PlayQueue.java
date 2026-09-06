@@ -31,6 +31,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicReference;
 import javax.sound.sampled.AudioFormat;
@@ -407,6 +409,48 @@ logger.log(Level.TRACE, "P:: queue is taken then size is " + queue.size());
      */
     public boolean isQueueEmpty() {
         return queue.isEmpty();
+    }
+
+    /**
+     * Checks if an item is currently being played back.
+     *
+     * @return <code>true</code> if an item is being played back
+     * @since 0.6.13
+     */
+    boolean isPlaying() {
+        return currentItem.get() != null;
+    }
+
+    /**
+     * Removes all items waiting for playback at once, posting the
+     * corresponding events. The item that is currently being played back is
+     * left untouched, cancel it with {@link #cancelItemAtTopOfQueue()}.
+     *
+     * @return <code>true</code> if at least one item was removed
+     * @since 0.6.13
+     */
+    boolean drainQueue() {
+        List<QueueItem> drained = new ArrayList<>();
+        synchronized (queue) {
+            queue.drainTo(drained);
+        }
+logger.log(Level.TRACE, "P:: drained: " + drained.size());
+        if (drained.isEmpty()) {
+            return false;
+        }
+        BaseSynthesizer synthesizer = queueManager.getSynthesizer();
+        for (QueueItem item : drained) {
+            if (!item.isSynthesized()) {
+                synthesizer.handleCancel(item.getId());
+            }
+            synthesizer.postSpeakableEvent(new SpeakableEvent(
+                    item.getSource(), SpeakableEvent.SPEAKABLE_CANCELLED, item.getId()), item.getListener());
+        }
+        synthesizer.postSynthesizerEvent(
+                synthesizer.getEngineState(),
+                synthesizer.getEngineState(),
+                SynthesizerEvent.QUEUE_UPDATED, false);
+        return true;
     }
 
     /**
